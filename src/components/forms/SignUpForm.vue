@@ -87,6 +87,7 @@ export default {
     };
   },
   methods: {
+    // TODO: This needs validation
     loginActually: function() {
       this.$router.push({ path: "login" });
     },

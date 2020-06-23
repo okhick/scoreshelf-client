@@ -2,6 +2,7 @@
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-end">
       <div class="navbar-item">
+        <!-- If user is not logged in -->
         <div v-if="!isLoggedIn" class="buttons">
           <router-link
             :to="{ name: 'Login', params: { form: 'signup' } }"
@@ -17,6 +18,7 @@
           </router-link>
         </div>
 
+        <!-- If user is logged in -->
         <div v-if="isLoggedIn" class="buttons">
           <div
             class="button is-primary"

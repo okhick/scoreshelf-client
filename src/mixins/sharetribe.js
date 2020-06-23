@@ -1,3 +1,7 @@
+// ===============================
+// Functions related to Sharetribe that need to be used across components
+// ===============================
+
 import { mapState, mapMutations } from "vuex";
 const sharetribeSdk = require("sharetribe-flex-sdk");
 
