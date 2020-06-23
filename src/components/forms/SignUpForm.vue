@@ -50,7 +50,9 @@
         :class="{ 'is-loading': isLoading }"
         type="submit"
         @click="signup_attempt()"
-      >Sign Up</button>
+      >
+        Sign Up
+      </button>
 
       <div class="level-right is-block has-text-right">
         <div @click="loginActually()">
@@ -105,7 +107,7 @@ export default {
 
         switch (signupResError.status) {
           case 401:
-            // do something with this error
+          // do something with this error
         }
       }
     }

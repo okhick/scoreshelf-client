@@ -5,11 +5,15 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    SHARETRIBE: ""
+    SHARETRIBE: "",
+    isLoggedIn: false
   },
   mutations: {
     initSharetribe(state, payload) {
       state.SHARETRIBE = payload;
+    },
+    updateIsLoggedIn(state, payload) {
+      state.isLoggedIn = payload;
     }
   },
   actions: {},

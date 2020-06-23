@@ -3,12 +3,14 @@
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from "@/components/HelloWorld.vue";
-// import Navbar from "@/components/Navbar.vue";
+import { sharetribe } from "../mixins/sharetribe.js";
 
 export default {
   name: "Home",
+  mixins: [sharetribe],
+  async mounted() {
+    this.refreshLogin();
+  },
   components: {
     // Navbar
   }

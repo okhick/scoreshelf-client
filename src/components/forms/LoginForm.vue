@@ -4,7 +4,9 @@
       <div class="message-header">
         <p>Warning</p>
       </div>
-      <div class="message-body">This doesn't seem to be a valid email and password combination.</div>
+      <div class="message-body">
+        This doesn't seem to be a valid email and password combination.
+      </div>
     </article>
 
     <div class="field">
@@ -17,7 +19,12 @@
     <div class="field">
       <label class="label">Password</label>
       <div class="control">
-        <input class="input" type="password" v-model="password" />
+        <input
+          class="input"
+          type="password"
+          v-model="password"
+          v-on:keyup.enter="login_attempt"
+        />
       </div>
     </div>
 
@@ -26,8 +33,10 @@
         class="button is-dark level-left"
         :class="{ 'is-loading': isLoading }"
         type="submit"
-        @click="login_attempt()"
-      >Login</button>
+        @click="login_attempt"
+      >
+        Login
+      </button>
 
       <div class="level-right is-block has-text-right">
         <div @click="signUpActually()">
@@ -48,9 +57,11 @@
 
 <script>
 import { mapState } from "vuex";
+import { sharetribe } from "../../mixins/sharetribe.js";
 
 export default {
   name: "LoginForm",
+  mixins: [sharetribe],
   data: function() {
     return {
       email: "",
@@ -67,11 +78,14 @@ export default {
     login_attempt: async function() {
       try {
         this.isLoading = true;
-        let loginRes = await this.SHARETRIBE.login({
+        // validate creds
+        await this.SHARETRIBE.login({
           username: this.email,
           password: this.password
         });
-        console.log(loginRes);
+        // update vuex with update login info
+        await this.refreshLogin();
+        this.$router.push({ path: "/dashboard" });
         this.isLoading = false;
       } catch (loginResError) {
         this.isLoading = false;
