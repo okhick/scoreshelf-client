@@ -22,3 +22,11 @@ export default {
 </script>
 
 <style lang="scss" src="./styles/index.scss"></style>
+<style lang="scss">
+html, body {
+  @import "./styles/index.scss";
+  background: $background;
+}
+</style>
+
+
