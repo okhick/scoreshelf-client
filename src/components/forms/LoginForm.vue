@@ -35,7 +35,7 @@
         type="submit"
         @click="login_attempt"
       >
-        Login
+        <strong> Login </strong>
       </button>
 
       <div class="level-right is-block has-text-right">
