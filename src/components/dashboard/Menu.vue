@@ -90,12 +90,12 @@ export default {
   font-weight: 700;
 }
 .menu-list a:hover {
-  background-color: transparent;
-  color: #276cda;
+  background-color: $silver;
+  color: $lime;
 }
 .menu-list a.is-active {
-  background-color: transparent;
-  color: #276cda;
+  background-color: $silver;
+  color: $lime;
   font-weight: 700;
 }
 </style>

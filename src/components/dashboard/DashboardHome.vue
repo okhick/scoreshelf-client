@@ -11,7 +11,7 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      displayName: "",
+      displayName: ""
     };
   },
   async mounted() {
