@@ -15,11 +15,10 @@ export default {
     };
   },
   async mounted() {
-    let currentUser = await this.SHARETRIBE.currentUser.show();
-    this.displayName = currentUser.data.data.attributes.profile.displayName;
+    this.displayName = this.currentUser.attributes.profile.displayName;
   },
   computed: {
-    ...mapState(["SHARETRIBE"])
+    ...mapState(["SHARETRIBE", "currentUser"])
   }
 };
 </script>

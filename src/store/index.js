@@ -6,7 +6,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     SHARETRIBE: "",
-    isLoggedIn: false
+    isLoggedIn: false,
+    currentUser: Object
   },
   mutations: {
     initSharetribe(state, payload) {
@@ -14,6 +15,9 @@ export default new Vuex.Store({
     },
     updateIsLoggedIn(state, payload) {
       state.isLoggedIn = payload;
+    },
+    updateCurrentUser(state, payload) {
+      state.currentUser = payload;
     }
   },
   actions: {},
