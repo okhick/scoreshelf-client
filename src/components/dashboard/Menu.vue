@@ -3,10 +3,10 @@
     <p class="menu-label">General</p>
     <ul class="menu-list">
       <li>
-        <a class="is-active">Dashboard</a>
+        <router-link :to="{ name: 'Dashboard' }">Dashboard</router-link>
       </li>
       <li>
-        <a>Edit Profile</a>
+        <router-link :to="{ name: 'EditProfile' }">Edit Profile</router-link>
       </li>
     </ul>
 
@@ -44,7 +44,15 @@
 
 <script>
 export default {
-  name: "Menu"
+  name: "Menu",
+  methods: {
+    link_editProfile: function() {
+      this.$router.push({ path: "edit-profile" });
+    },
+    link_dashboardHome: function() {
+      this.$router.push({ path: "dashboard" });
+    }
+  }
 };
 </script>
 

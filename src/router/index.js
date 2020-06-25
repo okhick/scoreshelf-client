@@ -10,7 +10,7 @@ const routes = [
   {
     name: "Home",
     path: "/",
-    component: Home
+    component: Home,
   },
   {
     name: "About",
@@ -19,24 +19,59 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
+      import(/* webpackChunkName: "about" */ "../views/About.vue"),
   },
   {
-    name: "Login",
-    path: "/login/:form",
+    path: "/login",
     component: () =>
-      import(/* webpackChunkName: "login" */ "../views/Login.vue")
+      import(/* webpackChunkName: "login" */ "../views/Login.vue"),
+    children: [
+      {
+        name: "Login",
+        path: "",
+        component: () =>
+          import(
+            /* webpackChunkName: "login-login" */ "@/components/forms/LoginForm.vue"
+          ),
+      },
+      {
+        name: "SignUp",
+        path: "signup",
+        component: () =>
+          import(
+            /* webpackChunkName: "login-signup" */ "@/components/forms/SignUpForm.vue"
+          ),
+      },
+    ],
   },
   {
-    name: "Dashboard",
     path: "/dashboard",
     component: () =>
-      import(/* webpackChunkName: "login" */ "../views/Dashboard.vue")
-  }
+      import(/* webpackChunkName: "dashboard" */ "../views/Dashboard.vue"),
+    children: [
+      {
+        name: "Dashboard",
+        path: "",
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard-home" */ "@/components/dashboard/DashboardHome.vue"
+          ),
+      },
+
+      {
+        name: "EditProfile",
+        path: "edit-profile",
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard-edit-profile" */ "@/components/dashboard/EditProfile.vue"
+          ),
+      },
+    ],
+  },
 ];
 
 const router = new VueRouter({
-  routes
+  routes,
 });
 
 router.beforeEach((to, from, next) => {

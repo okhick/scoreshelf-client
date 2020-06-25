@@ -73,7 +73,7 @@ export default {
   methods: {
     // TODO: This needs validation
     signUpActually: function() {
-      this.$router.push({ path: "signup" });
+      this.$router.push({ name: "SignUp" });
     },
 
     login_attempt: async function() {
