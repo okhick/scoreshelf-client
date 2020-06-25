@@ -3,10 +3,18 @@
     <p class="menu-label">General</p>
     <ul class="menu-list">
       <li>
-        <router-link :to="{ name: 'Dashboard' }">Dashboard</router-link>
+        <router-link
+          :class="{ 'is-active': activeMenu == 'Dashboard' }"
+          :to="{ name: 'Dashboard' }"
+          >Dashboard</router-link
+        >
       </li>
       <li>
-        <router-link :to="{ name: 'EditProfile' }">Edit Profile</router-link>
+        <router-link
+          :class="{ 'is-active': activeMenu == 'EditProfile' }"
+          :to="{ name: 'EditProfile' }"
+          >Edit Profile</router-link
+        >
       </li>
     </ul>
 
@@ -45,12 +53,22 @@
 <script>
 export default {
   name: "Menu",
+  data: function() {
+    return {
+      activeMenu: ""
+    }
+  },
   methods: {
     link_editProfile: function() {
       this.$router.push({ path: "edit-profile" });
     },
     link_dashboardHome: function() {
       this.$router.push({ path: "dashboard" });
+    }
+  },
+  watch: {
+    $route(to) {
+      this.activeMenu = to.name;
     }
   }
 };
