@@ -11,10 +11,16 @@
         ></button>
       </header>
       <section class="modal-card-body">
-        <!-- Content ... -->
+        <input class="input" type="text" v-model="title" placeholder="Title" />
       </section>
       <footer class="modal-card-foot">
-        <button class="button is-success">Save changes</button>
+        <button
+          class="button is-success"
+          :class="{ 'is-loading': isLoading }"
+          @click="publishDraft"
+        >
+          Publish Draft
+        </button>
         <button class="button" @click="togglePublishModal">Cancel</button>
       </footer>
     </div>
@@ -25,14 +31,26 @@
 import { mapState, mapMutations } from "vuex";
 export default {
   data: function() {
-    return {};
+    return {
+      title: "",
+      isLoading: false
+    };
   },
   methods: {
-    ...mapMutations("dashboard", ["togglePublishModal"])
+    ...mapMutations("dashboard", ["togglePublishModal"]),
+    publishDraft: async function() {
+      this.isLoading = true;
+      await this.SHARETRIBE.ownListings.createDraft({
+        title: this.title
+      });
+      this.togglePublishModal();
+      this.isLoading = false;
+    }
   },
   computed: {
     ...mapState({
-      publishModalOpen: state => state.dashboard.publishModalOpen
+      publishModalOpen: state => state.dashboard.publishModalOpen,
+      SHARETRIBE: state => state.sharetribe.SHARETRIBE
     })
   }
 };

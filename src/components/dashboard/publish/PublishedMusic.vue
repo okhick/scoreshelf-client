@@ -2,7 +2,9 @@
   <div>
     <div class="level">
       <h2 class="subtitle is-3 level-left">Published Music</h2>
-      <button class="button level-right" @click="togglePublishModal">Publish music</button>
+      <button class="button level-right" @click="togglePublishModal">
+        Publish music
+      </button>
     </div>
     <table class="table is-fullwidth is-hoverable">
       <thead>

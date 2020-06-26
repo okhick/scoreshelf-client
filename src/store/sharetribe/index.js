@@ -16,4 +16,4 @@ export const sharetribe = {
       state.currentUser = payload;
     }
   }
-}
+};

@@ -20,12 +20,10 @@ export default {
   },
   data: function() {
     return {
-      currentUserLoaded: false,
-    }
+      currentUserLoaded: false
+    };
   },
-  methods: {
-    
-  },
+  methods: {},
   computed: {
     ...mapState({
       currentUser: state => state.sharetribe.currentUser
@@ -35,5 +33,5 @@ export default {
     await this.refreshLogin();
     this.currentUserLoaded = true;
   }
-}
+};
 </script>

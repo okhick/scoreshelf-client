@@ -7,5 +7,5 @@ export const dashboard = {
     togglePublishModal(state) {
       state.publishModalOpen = !state.publishModalOpen;
     }
-  },
+  }
 };
