@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     SHARETRIBE: "",
     isLoggedIn: false,
-    currentUser: Object
+    currentUser: Object,
+    publishModalOpen: false
   },
   mutations: {
     initSharetribe(state, payload) {
@@ -18,6 +19,9 @@ export default new Vuex.Store({
     },
     updateCurrentUser(state, payload) {
       state.currentUser = payload;
+    },
+    togglePublishModal(state) {
+      state.publishModalOpen = !state.publishModalOpen;
     }
   },
   actions: {},

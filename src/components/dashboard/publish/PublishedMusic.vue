@@ -1,8 +1,8 @@
 <template>
   <div>
-  <div class="level">
-    <h2 class="subtitle is-3 level-left">Published Music</h2>
-    <button class="button level-right">Publish music</button>
+    <div class="level">
+      <h2 class="subtitle is-3 level-left">Published Music</h2>
+      <button class="button level-right" @click="togglePublishModal">Publish music</button>
     </div>
     <table class="table is-fullwidth is-hoverable">
       <thead>
@@ -29,21 +29,23 @@
       </tbody>
     </table>
     <!-- If there user has no music -->
-    <div
-      v-if="!hasPublishedMusic"
-      class="notification is-danger is-light"
-    >You have no published music!</div>
+    <div v-if="!hasPublishedMusic" class="notification is-danger is-light">
+      You have no published music!
+    </div>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   data: function() {
     return {
       hasPublishedMusic: false
     };
+  },
+  methods: {
+    ...mapMutations(["togglePublishModal"])
   },
   async mounted() {
     let userUUID = this.currentUser.id.uuid;
