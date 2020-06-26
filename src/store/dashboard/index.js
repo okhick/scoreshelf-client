@@ -3,13 +3,9 @@ export const dashboard = {
   state: {
     publishModalOpen: false
   },
-
   mutations: {
     togglePublishModal(state) {
       state.publishModalOpen = !state.publishModalOpen;
     }
   },
-
-  actions: {},
-  modules: {}
 };

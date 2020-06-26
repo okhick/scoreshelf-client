@@ -43,10 +43,13 @@ export default {
     };
   },
   computed: {
-    ...mapState(["SHARETRIBE", "isLoggedIn"])
+    ...mapState({
+      SHARETRIBE: state => state.sharetribe.SHARETRIBE,
+      isLoggedIn: state => state.sharetribe.isLoggedIn
+    })
   },
   methods: {
-    ...mapMutations(["updateIsLoggedIn"]),
+    ...mapMutations("sharetribe", ["updateIsLoggedIn"]),
 
     logout: async function() {
       this.isLoading = true;

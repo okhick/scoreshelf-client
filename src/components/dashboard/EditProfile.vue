@@ -166,7 +166,9 @@ export default {
     this.email.value = this.currentUser.attributes.email;
   },
   computed: {
-    ...mapState(["currentUser"])
+    ...mapState({
+      currentUser: state => state.sharetribe.currentUser
+    })
   }
 };
 </script>

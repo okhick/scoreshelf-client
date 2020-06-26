@@ -2,28 +2,12 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import { dashboard } from "@/store/dashboard";
-
+import { sharetribe } from "@/store/sharetribe";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {
-    SHARETRIBE: "",
-    isLoggedIn: false,
-    currentUser: Object
-  },
-  mutations: {
-    initSharetribe(state, payload) {
-      state.SHARETRIBE = payload;
-    },
-    updateIsLoggedIn(state, payload) {
-      state.isLoggedIn = payload;
-    },
-    updateCurrentUser(state, payload) {
-      state.currentUser = payload;
-    }
-  },
-  actions: {},
   modules: {
-    dashboard
+    dashboard,
+    sharetribe
   }
 });

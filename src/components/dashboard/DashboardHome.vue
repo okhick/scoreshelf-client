@@ -18,7 +18,11 @@ export default {
     this.displayName = this.currentUser.attributes.profile.displayName;
   },
   computed: {
-    ...mapState(["SHARETRIBE", "currentUser"])
+    ...mapState({
+      SHARETRIBE: state => state.sharetribe.SHARETRIBE,
+      isLoggedIn: state => state.sharetribe.isLoggedIn,
+      currentUser: state => state.sharetribe.currentUser
+    })
   }
 };
 </script>

@@ -99,7 +99,9 @@ export default {
     }
   },
   computed: {
-    ...mapState(["SHARETRIBE"])
+    ...mapState({
+      SHARETRIBE: state => state.sharetribe.SHARETRIBE
+    })
   }
 };
 </script>

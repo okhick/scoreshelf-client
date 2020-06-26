@@ -3,9 +3,6 @@
     <!-- empty column -->
     <div class="column"></div>
 
-    <!-- The form chosen by path -->
-    <!-- <Login v-if="whichForm === 'login'" />
-    <SignUp v-else-if="whichForm === 'signup'" /> -->
     <router-view></router-view>
 
     <!-- empty column -->
@@ -14,23 +11,10 @@
 </template>
 
 <script>
-// import Login from "@/components/forms/LoginForm.vue";
-// import SignUp from "@/components/forms/SignUpForm.vue";
-
 export default {
   data: function() {
-    return {
-      // whichForm: this.$route.params.form
-    };
+    return {};
   },
-  components: {
-    // Login,
-    // SignUp
-  },
-  watch: {
-    // $route(to) {
-    //   this.whichForm = to.params.form;
-    // }
-  }
+  components: {}
 };
 </script>

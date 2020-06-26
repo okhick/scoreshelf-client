@@ -56,7 +56,10 @@ export default {
       this.publishedMusic.data.meta.totalItems > 0 ? true : false;
   },
   computed: {
-    ...mapState(["SHARETRIBE", "currentUser"])
+    ...mapState({
+      SHARETRIBE: state => state.sharetribe.SHARETRIBE,
+      currentUser: state => state.sharetribe.currentUser
+    })
   }
 };
 </script>

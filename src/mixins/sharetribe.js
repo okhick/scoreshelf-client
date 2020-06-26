@@ -7,7 +7,7 @@ const sharetribeSdk = require("sharetribe-flex-sdk");
 
 export const sharetribe = {
   methods: {
-    ...mapMutations([
+    ...mapMutations("sharetribe", [
       "initSharetribe",
       "updateIsLoggedIn",
       "updateCurrentUser"
@@ -46,6 +46,10 @@ export const sharetribe = {
   },
 
   computed: {
-    ...mapState(["SHARETRIBE", "isLoggedIn"])
+    // ...mapState(["SHARETRIBE", "isLoggedIn"])
+    ...mapState({
+      SHARETRIBE: state => state.sharetribe.SHARETRIBE,
+      isLoggedIn: state => state.sharetribe.isLoggedIn
+    })
   }
 };

@@ -1,7 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
-import store from "../store/index.js";
 
 Vue.use(VueRouter);
 // Vue.use(Vuex);
@@ -82,12 +81,12 @@ const router = new VueRouter({
   routes
 });
 
-router.beforeEach((to, from, next) => {
-  if (to.name == "Dashboard" && !store.state.isLoggedIn) {
-    next({ path: "login" });
-  } else {
-    next();
-  }
-});
+// router.beforeEach((to, from, next) => {
+//   if (to.name == "Dashboard" && !store.state.isLoggedIn) {
+//     next({ path: "login" });
+//   } else {
+//     next();
+//   }
+// });
 
 export default router;

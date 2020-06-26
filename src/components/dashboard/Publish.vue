@@ -27,7 +27,9 @@ export default {
     
   },
   computed: {
-    ...mapState(["currentUser"])
+    ...mapState({
+      currentUser: state => state.sharetribe.currentUser
+    })
   },
   async beforeMount() {
     await this.refreshLogin();
