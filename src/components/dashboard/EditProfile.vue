@@ -1,7 +1,13 @@
 <template>
   <div>
-    <div v-show="messages.success.profile" class="notification is-success is-light">
-      <button class="delete" @click="closeMessage('success','profile')"></button>
+    <div
+      v-show="messages.success.profile"
+      class="notification is-success is-light"
+    >
+      <button
+        class="delete"
+        @click="closeMessage('success', 'profile')"
+      ></button>
       Your profile has been updated!
     </div>
     <h1 class="title">Edit your profile</h1>

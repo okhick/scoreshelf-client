@@ -14,7 +14,11 @@
 
         <!-- If user is logged in -->
         <div v-if="isLoggedIn" class="buttons">
-          <div class="button is-primary" :class="{ 'is-loading': isLoading }" @click="logout">
+          <div
+            class="button is-primary"
+            :class="{ 'is-loading': isLoading }"
+            @click="logout"
+          >
             <strong>Log Out</strong>
           </div>
           <router-link :to="{ name: 'Dashboard' }" class="button is-dark">

@@ -10,7 +10,7 @@ const routes = [
   {
     name: "Home",
     path: "/",
-    component: Home,
+    component: Home
   },
   {
     name: "About",
@@ -19,7 +19,7 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+      import(/* webpackChunkName: "about" */ "../views/About.vue")
   },
   {
     path: "/login",
@@ -32,7 +32,7 @@ const routes = [
         component: () =>
           import(
             /* webpackChunkName: "login-login" */ "@/components/forms/LoginForm.vue"
-          ),
+          )
       },
       {
         name: "SignUp",
@@ -40,9 +40,9 @@ const routes = [
         component: () =>
           import(
             /* webpackChunkName: "login-signup" */ "@/components/forms/SignUpForm.vue"
-          ),
-      },
-    ],
+          )
+      }
+    ]
   },
   {
     path: "/dashboard",
@@ -55,7 +55,7 @@ const routes = [
         component: () =>
           import(
             /* webpackChunkName: "dashboard-home" */ "@/components/dashboard/DashboardHome.vue"
-          ),
+          )
       },
 
       {
@@ -64,19 +64,27 @@ const routes = [
         component: () =>
           import(
             /* webpackChunkName: "dashboard-edit-profile" */ "@/components/dashboard/EditProfile.vue"
-          ),
+          )
       },
-    ],
-  },
+      {
+        name: "Publish",
+        path: "publish",
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard-publish" */ "@/components/dashboard/Publish.vue"
+          )
+      }
+    ]
+  }
 ];
 
 const router = new VueRouter({
-  routes,
+  routes
 });
 
 router.beforeEach((to, from, next) => {
   if (to.name == "Dashboard" && !store.state.isLoggedIn) {
-    next({ path: "login/login" });
+    next({ path: "login" });
   } else {
     next();
   }

@@ -26,7 +26,7 @@ export default {
 html,
 body {
   @import "./styles/index.scss";
-  
+
   background: $background;
 
   .title {

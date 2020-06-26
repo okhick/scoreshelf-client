@@ -31,8 +31,15 @@
       </li>
     </ul>
 
-    <p class="menu-label">Sell</p>
+    <p class="menu-label">Publish</p>
     <ul class="menu-list">
+      <li>
+        <router-link
+          :class="{ 'is-active': activeMenu == 'Publish' }"
+          :to="{ name: 'Publish' }"
+          >Publish Music</router-link
+        >
+      </li>
       <li>
         <a>Published Music</a>
       </li>
@@ -56,7 +63,7 @@ export default {
   data: function() {
     return {
       activeMenu: ""
-    }
+    };
   },
   methods: {
     link_editProfile: function() {

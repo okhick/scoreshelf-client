@@ -7,7 +7,11 @@ const sharetribeSdk = require("sharetribe-flex-sdk");
 
 export const sharetribe = {
   methods: {
-    ...mapMutations(["initSharetribe", "updateIsLoggedIn", "updateCurrentUser"]),
+    ...mapMutations([
+      "initSharetribe",
+      "updateIsLoggedIn",
+      "updateCurrentUser"
+    ]),
 
     //get the SDK going.
     initSharetribeSdk: async function() {
