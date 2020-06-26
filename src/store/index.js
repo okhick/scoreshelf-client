@@ -1,14 +1,15 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+import { dashboard } from "@/store/dashboard";
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     SHARETRIBE: "",
     isLoggedIn: false,
-    currentUser: Object,
-    publishModalOpen: false
+    currentUser: Object
   },
   mutations: {
     initSharetribe(state, payload) {
@@ -19,11 +20,10 @@ export default new Vuex.Store({
     },
     updateCurrentUser(state, payload) {
       state.currentUser = payload;
-    },
-    togglePublishModal(state) {
-      state.publishModalOpen = !state.publishModalOpen;
     }
   },
   actions: {},
-  modules: {}
+  modules: {
+    dashboard
+  }
 });

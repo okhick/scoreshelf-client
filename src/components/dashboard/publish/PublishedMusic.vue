@@ -45,7 +45,7 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(["togglePublishModal"])
+    ...mapMutations("dashboard", ["togglePublishModal"])
   },
   async mounted() {
     let userUUID = this.currentUser.id.uuid;

@@ -4,7 +4,11 @@
     <div class="modal-card">
       <header class="modal-card-head">
         <p class="modal-card-title">Modal title</p>
-        <button class="delete" @click="togglePublishModal" aria-label="close"></button>
+        <button
+          class="delete"
+          @click="togglePublishModal"
+          aria-label="close"
+        ></button>
       </header>
       <section class="modal-card-body">
         <!-- Content ... -->
@@ -21,15 +25,15 @@
 import { mapState, mapMutations } from "vuex";
 export default {
   data: function() {
-    return {
-     
-    };
+    return {};
   },
   methods: {
-    ...mapMutations(["togglePublishModal"])
+    ...mapMutations("dashboard", ["togglePublishModal"])
   },
   computed: {
-    ...mapState(["publishModalOpen"])
+    ...mapState({
+      publishModalOpen: state => state.dashboard.publishModalOpen
+    })
   }
 };
 </script>
