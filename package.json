@@ -14,6 +14,7 @@
     "bulma": "^0.9.0",
     "core-js": "^3.6.5",
     "sharetribe-flex-sdk": "^1.11.0",
+    "v-click-outside": "^3.0.1",
     "vue": "^2.6.11",
     "vue-moment": "^4.1.0",
     "vue-router": "^3.2.0",
