@@ -12,21 +12,19 @@
           <th>Title</th>
           <th>Formats offered</th>
           <th>Instrumentation</th>
+          <th>Status</th>
           <th>Date Published</th>
         </tr>
       </thead>
       <tbody v-if="hasPublishedMusic">
-        <tr>
-          <td>Extinguish</td>
+        <tr v-for="piece in publishedMusic" :key="piece.id.uuid">
+          <td>{{ piece.attributes.title }}</td>
           <td>Score, Parts</td>
           <td>Piano, Bass, Drums, Electronics</td>
-          <td>April 23, 2020</td>
-        </tr>
-        <tr>
-          <td>CO3</td>
-          <td>Score</td>
-          <td>Piano, Bass, Drums, Electronics</td>
-          <td>April 23, 2020</td>
+          <td>{{ piece.attributes.state }}</td>
+          <td>
+            {{ piece.attributes.createdAt | moment("MMMM Do YYYY, h:mm a") }}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -38,7 +36,10 @@
 </template>
 
 <script>
+import Vue from "vue";
 import { mapState, mapMutations } from "vuex";
+
+Vue.use(require("vue-moment"));
 
 export default {
   data: function() {
@@ -47,15 +48,23 @@ export default {
     };
   },
   methods: {
-    ...mapMutations("dashboard", ["togglePublishModal"])
+    ...mapMutations("dashboard", ["togglePublishModal"]),
+    formatDate(date) {
+      console.log(date);
+    }
   },
   async mounted() {
-    let userUUID = this.currentUser.id.uuid;
-    this.publishedMusic = await this.SHARETRIBE.listings.query({
-      authorId: userUUID
+    // let userUUID = this.currentUser.id.uuid;
+    this.publishedMusicRes = await this.SHARETRIBE.ownListings.query({
+      // authorId: userUUID
     });
-    this.hasPublishedMusic =
-      this.publishedMusic.data.meta.totalItems > 0 ? true : false;
+
+    if (this.publishedMusicRes.data.meta.totalItems > 0) {
+      this.hasPublishedMusic = true;
+      this.publishedMusic = this.publishedMusicRes.data.data;
+    } else {
+      this.hasPublishedMusic = false;
+    }
   },
   computed: {
     ...mapState({
