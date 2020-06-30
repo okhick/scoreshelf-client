@@ -3,9 +3,7 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <p class="modal-card-title">
-          {{ fieldData.title != "" ? fieldData.title : "Publish Music" }}
-        </p>
+        <p class="modal-card-title">Publish Music</p>
         <button
           class="delete"
           @click="closeEditModal"
@@ -13,116 +11,11 @@
         ></button>
       </header>
 
-      <section class="modal-card-body">
-        <div class="field">
-          <label class="label">Title</label>
-          <div class="control">
-            <input
-              class="input"
-              type="text"
-              v-model="fieldData.title"
-              placeholder="Title"
-            />
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label">Subtitle</label>
-          <div class="control">
-            <input
-              class="input"
-              type="text"
-              v-model="fieldData.subtitle"
-              placeholder="Subtitle"
-            />
-          </div>
-        </div>
-
-        <hr />
-
-        <div class="field">
-          <label class="label">Year of Completion</label>
-          <div class="control">
-            <input
-              class="input"
-              type="text"
-              v-model="fieldData.year"
-              placeholder="2020"
-            />
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label">Composer(s)</label>
-          <div class="control">
-            <input
-              class="input"
-              type="text"
-              v-model="fieldData.composer"
-              placeholder="Person 1, Person 2"
-            />
-          </div>
-        </div>
-
-        <hr />
-
-        <div class="field">
-          <label class="label">Ensemble</label>
-          <div class="control">
-            <input
-              class="input"
-              type="text"
-              v-model="fieldData.ensemble"
-              placeholder="String Quartet"
-            />
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label">Instrumentation</label>
-          <div class="control">
-            <input
-              class="input"
-              type="text"
-              v-model="fieldData.instrumentation"
-              placeholder="Violin 1, Violin 2, Viola, Cello"
-            />
-          </div>
-        </div>
-
-        <hr />
-
-        <div class="field">
-          <label class="label">Format</label>
-          <div class="control">
-            <input
-              class="input"
-              type="text"
-              v-model="fieldData.format"
-              placeholder="Score and Parts"
-            />
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label">Price</label>
-          <div class="field is-expanded">
-            <div class="field has-addons">
-              <p class="control">
-                <a class="button is-static">$</a>
-              </p>
-              <p class="control is-expanded">
-                <input
-                  class="input"
-                  type="text"
-                  v-model="fieldData.price"
-                  placeholder="20"
-                />
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <PublishForm
+        v-bind:isNewPiece="isNewPiece"
+        v-bind:pieceStatus="pieceStatus"
+        ref="form"
+      ></PublishForm>
 
       <footer class="modal-card-foot">
         <div class="level">
@@ -210,6 +103,7 @@
 import Vue from "vue";
 import { mapState, mapMutations } from "vuex";
 import { sharetribe } from "@/mixins/sharetribe.js";
+import PublishForm from "@/components/forms/PublishForm.vue";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faTrashAlt, faAngleDown } from "@fortawesome/free-solid-svg-icons";
@@ -222,21 +116,12 @@ Vue.use(vClickOutside);
 
 export default {
   components: {
-    FontAwesomeIcon
+    FontAwesomeIcon,
+    PublishForm
   },
   mixins: [sharetribe],
   data: function() {
     return {
-      fieldData: {
-        title: "",
-        subtitle: "",
-        year: "",
-        composer: "",
-        ensemble: "",
-        instrumentation: "",
-        format: "",
-        price: ""
-      },
       isLoading: false,
       isNewPiece: true,
       pieceStatus: "",
@@ -253,7 +138,9 @@ export default {
     ]),
     createDraft: async function() {
       this.isLoading = true;
-      await this.SHARETRIBE.ownListings.createDraft(this.formatArgs());
+      await this.SHARETRIBE.ownListings.createDraft({
+        ...this.getFormattedArgs()
+      });
       this.closeEditModal();
       this.isLoading = false;
     },
@@ -261,7 +148,7 @@ export default {
       this.isLoading = true;
       await this.SHARETRIBE.ownListings.update({
         id: this.publishModalEditData.id.uuid,
-        ...this.formatArgs()
+        ...this.getFormattedArgs()
       });
       this.closeEditModal();
       this.isLoading = false;
@@ -271,7 +158,7 @@ export default {
       // if it's a new piece we first need to create a draft
       if (this.isNewPiece) {
         let draft = await this.SHARETRIBE.ownListings.createDraft({
-          ...this.formatArgs()
+          ...this.getFormattedArgs()
         });
         this.editPublishModalEditData(draft.data.data);
       }
@@ -300,7 +187,7 @@ export default {
       this.isLoading = true;
       await this.SHARETRIBE.ownListings.update({
         id: this.publishModalEditData.id.uuid,
-        ...this.formatArgs()
+        ...this.getFormattedArgs()
       });
       await this.SHARETRIBE.ownListings.open({
         id: this.publishModalEditData.id.uuid
@@ -312,23 +199,10 @@ export default {
       this.togglePublishModal();
       this.clearPublishModalEditData();
       this.pieceStatus = "";
-      for (const field in this.fieldData) {
-        this.fieldData[field] = "";
-      }
+      this.$refs.form.clearFormData();
     },
-    formatArgs: function() {
-      return {
-        title: this.fieldData.title,
-        price: this.convertToSharetribePrice(this.fieldData.price),
-        publicData: {
-          subtitle: this.fieldData.subtitle,
-          year: this.fieldData.year,
-          composer: this.fieldData.composer,
-          ensemble: this.fieldData.ensemble,
-          instrumentation: this.fieldData.instrumentation,
-          format: this.fieldData.format
-        }
-      };
+    getFormattedArgs: function() {
+      return this.$refs.form.formatArgs();
     },
     togglePublishDropdown: function() {
       this.publishDropDown.isActive = !this.publishDropDown.isActive;
@@ -350,22 +224,8 @@ export default {
       if (newData != null && newData.attributes) {
         this.isNewPiece = false;
         this.pieceStatus = newData.attributes.state;
-        this.fieldData.title = newData.attributes.title;
-        this.fieldData.price = this.convertFromSharetribePrice(
-          newData.attributes.price
-        );
-        this.fieldData.subtitle = newData.attributes.publicData.subtitle;
-        this.fieldData.year = newData.attributes.publicData.year;
-        this.fieldData.composer = newData.attributes.publicData.composer;
-        this.fieldData.ensemble = newData.attributes.publicData.ensemble;
-        this.fieldData.instrumentation =
-          newData.attributes.publicData.instrumentation;
-        this.fieldData.format = newData.attributes.publicData.format;
       } else {
         this.isNewPiece = true;
-        for (const field in this.fieldData) {
-          this.fieldData[field] = "";
-        }
       }
     }
   }
