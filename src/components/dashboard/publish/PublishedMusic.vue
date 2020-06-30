@@ -8,9 +8,9 @@
       <thead>
         <tr>
           <th>Title</th>
+          <th><!-- Status column --></th> 
           <th>Formats offered</th>
           <th>Instrumentation</th>
-          <th>Status</th>
           <th>Date Published</th>
           <th>
             <!-- Edit column -->
@@ -20,10 +20,24 @@
       <!-- if there is music to be published -->
       <tbody v-if="hasPublishedMusic" :key="reloadTable">
         <tr v-for="piece in publishedMusic" :key="piece.id.uuid">
-          <td>{{ piece.attributes.title }}</td>
+          <td> {{ piece.attributes.title }} </td>
+          <td>
+            <div class="field is-grouped">
+              <div class="control">
+                <div class="tags has-addons" v-if="piece.attributes.state == 'draft'">
+                  <span class="tag is-dark">Draft</span>
+                  <span class="tag is-info"></span>
+                </div>
+                 <div class="tags has-addons" v-if="piece.attributes.state == 'closed'">
+                  <span class="tag is-dark">Disabled</span>
+                  <span class="tag is-redorange"></span>
+                </div>
+              </div>
+            </div>
+          </td>
           <td>Score, Parts</td>
           <td>Piano, Bass, Drums, Electronics</td>
-          <td>{{ piece.attributes.state }}</td>
+          <!-- <td>{{ piece.attributes.state }}</td> -->
           <td>{{ piece.attributes.createdAt | moment("MMMM Do YYYY, h:mm a") }}</td>
           <td>
             <font-awesome-icon icon="edit" class="action-buttons" @click="openEditModal(piece)" />
@@ -101,10 +115,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/styles/index.scss";
+
 .subtitle.is-3.level-left {
   margin-bottom: 0;
 }
 .action-buttons {
   margin: 0 4px 0 4px;
+}
+.table-title {
+  padding-right: 6px;
+}
+.tag.is-redorange {
+  background-color: $redOrange;
 }
 </style>
