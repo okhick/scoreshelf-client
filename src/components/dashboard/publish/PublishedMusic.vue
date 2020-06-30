@@ -2,13 +2,15 @@
   <div>
     <div class="level">
       <h2 class="subtitle is-3 level-left">Published Music</h2>
-      <button class="button level-right" @click="togglePublishModal">Publish music</button>
+      <button class="button level-right" @click="togglePublishModal">
+        Publish music
+      </button>
     </div>
     <table class="table is-fullwidth is-hoverable">
       <thead>
         <tr>
           <th>Title</th>
-          <th><!-- Status column --></th> 
+          <th><!-- Status column --></th>
           <th>Formats offered</th>
           <th>Instrumentation</th>
           <th>Date Published</th>
@@ -20,15 +22,21 @@
       <!-- if there is music to be published -->
       <tbody v-if="hasPublishedMusic" :key="reloadTable">
         <tr v-for="piece in publishedMusic" :key="piece.id.uuid">
-          <td> {{ piece.attributes.title }} </td>
+          <td>{{ piece.attributes.title }}</td>
           <td>
             <div class="field is-grouped">
               <div class="control">
-                <div class="tags has-addons" v-if="piece.attributes.state == 'draft'">
+                <div
+                  class="tags has-addons"
+                  v-if="piece.attributes.state == 'draft'"
+                >
                   <span class="tag is-dark">Draft</span>
                   <span class="tag is-info"></span>
                 </div>
-                 <div class="tags has-addons" v-if="piece.attributes.state == 'closed'">
+                <div
+                  class="tags has-addons"
+                  v-if="piece.attributes.state == 'closed'"
+                >
                   <span class="tag is-dark">Disabled</span>
                   <span class="tag is-redorange"></span>
                 </div>
@@ -38,9 +46,15 @@
           <td>Score, Parts</td>
           <td>Piano, Bass, Drums, Electronics</td>
           <!-- <td>{{ piece.attributes.state }}</td> -->
-          <td>{{ piece.attributes.createdAt | moment("MMMM Do YYYY, h:mm a") }}</td>
           <td>
-            <font-awesome-icon icon="edit" class="action-buttons" @click="openEditModal(piece)" />
+            {{ piece.attributes.createdAt | moment("MMMM Do YYYY, h:mm a") }}
+          </td>
+          <td>
+            <font-awesome-icon
+              icon="edit"
+              class="action-buttons"
+              @click="openEditModal(piece)"
+            />
           </td>
         </tr>
       </tbody>

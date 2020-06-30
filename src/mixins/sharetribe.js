@@ -42,6 +42,13 @@ export const sharetribe = {
         }
       }
       return;
+    },
+
+    convertToSharetribePrice: function(money) {
+      return { amount: money * 100, currency: "USD" };
+    },
+    convertFromSharetribePrice: function(money) {
+      return parseInt(money.amount) / 100;
     }
   },
 
