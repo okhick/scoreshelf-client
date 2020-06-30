@@ -136,6 +136,9 @@ export default {
       "clearPublishModalEditData",
       "editPublishModalEditData"
     ]),
+    // =========================
+    // CRUD Functions
+    // =========================
     createDraft: async function() {
       this.isLoading = true;
       await this.SHARETRIBE.ownListings.createDraft({
@@ -185,16 +188,21 @@ export default {
     },
     republishPublication: async function() {
       this.isLoading = true;
+      // update just incase anyones changed anything
       await this.SHARETRIBE.ownListings.update({
         id: this.publishModalEditData.id.uuid,
         ...this.getFormattedArgs()
       });
+      // now we can reopen 
       await this.SHARETRIBE.ownListings.open({
         id: this.publishModalEditData.id.uuid
       });
       this.closeEditModal();
       this.isLoading = false;
     },
+    // =========================
+    // Helpers
+    // =========================
     closeEditModal: function() {
       this.togglePublishModal();
       this.clearPublishModalEditData();
@@ -219,6 +227,7 @@ export default {
     })
   },
   watch: {
+    // PublishForm also watches this
     publishModalEditData: function(newData) {
       // if newData.attributes is falsy, we're publishing from a blank
       if (newData != null && newData.attributes) {
