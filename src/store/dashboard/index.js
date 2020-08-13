@@ -2,7 +2,8 @@ export const dashboard = {
   namespaced: true,
   state: {
     publishModalOpen: false,
-    publishModalEditData: null
+    publishModalEditData: null,
+    fileList: []
   },
   mutations: {
     togglePublishModal(state) {
@@ -13,6 +14,9 @@ export const dashboard = {
     },
     clearPublishModalEditData(state) {
       state.publishModalEditData = null;
+    },
+    updateFileList(state, payload) {
+      state.fileList.push(payload);
     }
   }
 };

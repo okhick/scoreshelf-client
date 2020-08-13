@@ -81,6 +81,9 @@
             <button class="button level-item" @click="closeEditModal">
               Cancel
             </button>
+            <button class="button level-item" @click="testUpload">
+              Test Upload
+            </button>
           </div>
           <!-- End class level-left -->
 
@@ -103,6 +106,7 @@
 import Vue from "vue";
 import { mapState, mapMutations } from "vuex";
 import { sharetribe } from "@/mixins/sharetribe.js";
+import { uploader } from "@/mixins/upload.js";
 import PublishForm from "@/components/forms/PublishForm.vue";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -119,7 +123,7 @@ export default {
     FontAwesomeIcon,
     PublishForm
   },
-  mixins: [sharetribe],
+  mixins: [sharetribe, uploader],
   data: function() {
     return {
       isLoading: false,
@@ -139,6 +143,9 @@ export default {
     // =========================
     // CRUD Functions
     // =========================
+    testUpload: function() {
+      this.submitUpload();
+    },
     createDraft: async function() {
       this.isLoading = true;
       await this.SHARETRIBE.ownListings.createDraft({
@@ -193,7 +200,7 @@ export default {
         id: this.publishModalEditData.id.uuid,
         ...this.getFormattedArgs()
       });
-      // now we can reopen 
+      // now we can reopen
       await this.SHARETRIBE.ownListings.open({
         id: this.publishModalEditData.id.uuid
       });

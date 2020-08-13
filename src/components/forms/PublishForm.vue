@@ -3,14 +3,24 @@
     <div class="field">
       <label class="label">Title</label>
       <div class="control">
-        <input class="input" type="text" v-model="fieldData.title" placeholder="Title" />
+        <input
+          class="input"
+          type="text"
+          v-model="fieldData.title"
+          placeholder="Title"
+        />
       </div>
     </div>
 
     <div class="field">
       <label class="label">Subtitle</label>
       <div class="control">
-        <input class="input" type="text" v-model="fieldData.subtitle" placeholder="Subtitle" />
+        <input
+          class="input"
+          type="text"
+          v-model="fieldData.subtitle"
+          placeholder="Subtitle"
+        />
       </div>
     </div>
 
@@ -19,7 +29,12 @@
     <div class="field">
       <label class="label">Year of Completion</label>
       <div class="control">
-        <input class="input" type="text" v-model="fieldData.year" placeholder="2020" />
+        <input
+          class="input"
+          type="text"
+          v-model="fieldData.year"
+          placeholder="2020"
+        />
       </div>
     </div>
 
@@ -40,7 +55,12 @@
     <div class="field">
       <label class="label">Ensemble</label>
       <div class="control">
-        <input class="input" type="text" v-model="fieldData.ensemble" placeholder="String Quartet" />
+        <input
+          class="input"
+          type="text"
+          v-model="fieldData.ensemble"
+          placeholder="String Quartet"
+        />
       </div>
     </div>
 
@@ -61,7 +81,12 @@
     <div class="field">
       <label class="label">Format</label>
       <div class="control">
-        <input class="input" type="text" v-model="fieldData.format" placeholder="Score and Parts" />
+        <input
+          class="input"
+          type="text"
+          v-model="fieldData.format"
+          placeholder="Score and Parts"
+        />
       </div>
     </div>
 
@@ -73,10 +98,50 @@
             <a class="button is-static">$</a>
           </p>
           <p class="control is-expanded">
-            <input class="input" type="text" v-model="fieldData.price" placeholder="20" />
+            <input
+              class="input"
+              type="text"
+              v-model="fieldData.price"
+              placeholder="20"
+            />
           </p>
         </div>
       </div>
+    </div>
+
+    <hr />
+
+    <div class="field bottom-margin">
+      <label class="label">Upload</label>
+
+      <div class="file is-boxed is-centered">
+        <label class="file-label">
+          <input
+            class="file-input"
+            type="file"
+            ref="file"
+            multiple
+            @change="processUpload"
+          />
+          <span class="file-cta">
+            <span class="file-icon">
+              <font-awesome-icon icon="upload" />
+            </span>
+            <span class="file-label">Upload your file(s)</span>
+          </span>
+        </label>
+      </div>
+
+      <table class="table is-fullwidth" v-show="fileList.length > 0">
+        <thead>
+          <th>Filename</th>
+          <th>Size</th>
+        </thead>
+        <tr v-for="(file, index) in fileList" :key="index">
+          <td>{{ file.name }}</td>
+          <td>{{ calculateSize(file) }}</td>
+        </tr>
+      </table>
     </div>
   </section>
 </template>
@@ -84,6 +149,12 @@
 <script>
 import { mapState } from "vuex";
 import { sharetribe } from "@/mixins/sharetribe.js";
+import { uploader } from "@/mixins/upload.js";
+
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faUpload } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+library.add(faUpload);
 
 export default {
   data: function() {
@@ -96,15 +167,20 @@ export default {
         ensemble: "",
         instrumentation: "",
         format: "",
-        price: ""
-      },
+        price: "",
+        upload: ""
+      }
     };
   },
   props: ["isNewPiece", "pieceStatus"],
-  mixins: [sharetribe],
+  components: {
+    FontAwesomeIcon
+  },
+  mixins: [sharetribe, uploader],
   computed: {
     ...mapState({
-      publishModalEditData: state => state.dashboard.publishModalEditData
+      publishModalEditData: state => state.dashboard.publishModalEditData,
+      fileList: state => state.dashboard.fileList
     })
   },
   methods: {
@@ -153,3 +229,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.bottom-margin {
+  margin-bottom: 24px;
+}
+</style>
