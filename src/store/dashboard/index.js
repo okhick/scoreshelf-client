@@ -15,8 +15,15 @@ export const dashboard = {
     clearPublishModalEditData(state) {
       state.publishModalEditData = null;
     },
-    updateFileList(state, payload) {
+    addFileToFileList(state, payload) {
       state.fileList.push(payload);
+    },
+    addScoreshelfIdToFile(state, payload) {
+      state.fileList.forEach(file => {
+        let name = file.name;
+        let scoreshelf_id = payload[name]._id;
+        file.scoreshelf_id = scoreshelf_id;
+      });
     }
   }
 };

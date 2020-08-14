@@ -148,6 +148,7 @@ export default {
     },
     createDraft: async function() {
       this.isLoading = true;
+      await this.submitUpload();
       await this.SHARETRIBE.ownListings.createDraft({
         ...this.getFormattedArgs()
       });
@@ -165,6 +166,7 @@ export default {
     },
     publishDraft: async function() {
       this.isLoading = true;
+      await this.submitUpload();
       // if it's a new piece we first need to create a draft
       if (this.isNewPiece) {
         let draft = await this.SHARETRIBE.ownListings.createDraft({

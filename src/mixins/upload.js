@@ -2,11 +2,11 @@ import { mapState, mapMutations } from "vuex";
 
 export const uploader = {
   methods: {
-    ...mapMutations("dashboard", ["updateFileList"]),
+    ...mapMutations("dashboard", ["addFileToFileList", "addScoreshelfIdToFile"]),
 
     processUpload: function() {
       const newFiles = this.$refs.file.files;
-      newFiles.forEach(file => this.updateFileList(file));
+      newFiles.forEach(file => this.addFileToFileList(file));
     },
 
     submitUpload: async function() {
@@ -15,13 +15,15 @@ export const uploader = {
       this.fileList.forEach((file, index) => {
         formData.append(`file_${index}`, file);
       });
+      formData.append("sharetribe_user_id", this.user_id);
       // send off the files. returns the files uploaded
       let res = await this.$axios.post("/musicUpload", formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         }
       });
-      console.log(res.data);
+      this.addScoreshelfIdToFile(res.data);
+      return res;
     },
 
     // ripped from stackoverflow
@@ -39,7 +41,8 @@ export const uploader = {
   },
   computed: {
     ...mapState({
-      fileList: state => state.dashboard.fileList
+      fileList: state => state.dashboard.fileList,
+      user_id: state => state.sharetribe.currentUser.id.uuid
     })
   }
 };

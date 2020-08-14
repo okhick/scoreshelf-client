@@ -195,8 +195,22 @@ export default {
           ensemble: this.fieldData.ensemble,
           instrumentation: this.fieldData.instrumentation,
           format: this.fieldData.format
+        },
+        privateData: {
+          assetData: this.formatAssetData()
         }
       };
+    },
+    formatAssetData: function() {
+      let assetData = [];
+      this.fileList.forEach((file) => {
+        let thisFileData = {
+          scoreshelf_id: file.scoreshelf_id,
+          name: file.name
+        };
+        assetData.push(thisFileData);
+      });
+      return assetData;
     },
     clearFormData: function() {
       for (const field in this.fieldData) {
