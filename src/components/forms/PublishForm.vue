@@ -132,14 +132,18 @@
         </label>
       </div>
 
-      <table class="table is-fullwidth" v-show="fileList.length > 0">
+      <table class="table is-fullwidth is-narrow" v-show="fileList.length > 0">
         <thead>
           <th>Filename</th>
           <th>Size</th>
+          <th></th>
         </thead>
-        <tr v-for="(file, index) in fileList" :key="index">
-          <td>{{ file.name }}</td>
-          <td>{{ calculateSize(file) }}</td>
+        <tr v-for="file in fileList" :key="file.name">
+          <td valign="middle">{{ file.name }}</td>
+          <td valign="middle">{{ calculateSize(file) }}</td>
+          <td align="right">
+            <font-awesome-icon icon="trash-alt" @click="removeUpload(file.name)"/>
+          </td>
         </tr>
       </table>
     </div>
@@ -147,14 +151,15 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 import { sharetribe } from "@/mixins/sharetribe.js";
-import { uploader } from "@/mixins/upload.js";
+import { uploader } from "@/mixins/scoreshelf.js";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faUpload } from "@fortawesome/free-solid-svg-icons";
+import { faUpload, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 library.add(faUpload);
+library.add(faTrashAlt);
 
 export default {
   data: function() {
@@ -168,7 +173,6 @@ export default {
         instrumentation: "",
         format: "",
         price: "",
-        upload: ""
       }
     };
   },
@@ -184,6 +188,9 @@ export default {
     })
   },
   methods: {
+    ...mapMutations("dashboard", [
+      "removeFromFileList"
+    ]),
     formatArgs: function() {
       return {
         title: this.fieldData.title,
@@ -206,7 +213,8 @@ export default {
       this.fileList.forEach((file) => {
         let thisFileData = {
           scoreshelf_id: file.scoreshelf_id,
-          name: file.name
+          name: file.name,
+          size: file.size
         };
         assetData.push(thisFileData);
       });
@@ -216,6 +224,7 @@ export default {
       for (const field in this.fieldData) {
         this.fieldData[field] = "";
       }
+      this.fileList.forEach(file => this.removeFromFileList(file.name));
       return true;
     }
   },

@@ -90,10 +90,18 @@ export default {
   methods: {
     ...mapMutations("dashboard", [
       "togglePublishModal",
-      "editPublishModalEditData"
+      "editPublishModalEditData",
+      "addFileToFileList"
     ]),
     openEditModal: function(pieceData) {
       this.editPublishModalEditData(pieceData);
+      if (pieceData.attributes.privateData.assetData) {
+        let fileList = pieceData.attributes.privateData.assetData;
+        fileList.forEach(file => {
+          file.isStored = true;
+          this.addFileToFileList(file)
+        });
+      }
       this.togglePublishModal();
     },
     getPublishedMusic: async function() {

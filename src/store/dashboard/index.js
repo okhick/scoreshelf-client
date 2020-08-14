@@ -18,11 +18,17 @@ export const dashboard = {
     addFileToFileList(state, payload) {
       state.fileList.push(payload);
     },
+    removeFromFileList(state, payload) {
+      state.fileList = state.fileList.filter(file => file.name !== payload);
+    },
     addScoreshelfIdToFile(state, payload) {
+      // find the file the id needs to go in
       state.fileList.forEach(file => {
         let name = file.name;
-        let scoreshelf_id = payload[name]._id;
-        file.scoreshelf_id = scoreshelf_id;
+        if(payload[name]) {
+          let scoreshelf_id = payload[name]._id;
+          file.scoreshelf_id = scoreshelf_id;
+        }
       });
     }
   }

@@ -31,6 +31,7 @@
               <div class="dropdown-trigger">
                 <button
                   class="button"
+                  :class="{ 'is-loading': isLoading }"
                   aria-haspopup="true"
                   aria-controls="dropdown-menu"
                 >
@@ -65,6 +66,7 @@
             <button
               v-if="pieceStatus == 'published'"
               class="button level-item"
+              :class="{ 'is-loading': isLoading }"
               @click="updatePublication"
             >
               Update
@@ -73,6 +75,7 @@
             <button
               v-if="pieceStatus == 'closed'"
               class="button level-item"
+              :class="{ 'is-loading': isLoading }"
               @click="republishPublication"
             >
               Re-publish
@@ -80,9 +83,6 @@
 
             <button class="button level-item" @click="closeEditModal">
               Cancel
-            </button>
-            <button class="button level-item" @click="testUpload">
-              Test Upload
             </button>
           </div>
           <!-- End class level-left -->
@@ -106,7 +106,7 @@
 import Vue from "vue";
 import { mapState, mapMutations } from "vuex";
 import { sharetribe } from "@/mixins/sharetribe.js";
-import { uploader } from "@/mixins/upload.js";
+import { uploader } from "@/mixins/scoreshelf.js";
 import PublishForm from "@/components/forms/PublishForm.vue";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -143,9 +143,6 @@ export default {
     // =========================
     // CRUD Functions
     // =========================
-    testUpload: function() {
-      this.submitUpload();
-    },
     createDraft: async function() {
       this.isLoading = true;
       await this.submitUpload();
@@ -157,6 +154,7 @@ export default {
     },
     updatePublication: async function() {
       this.isLoading = true;
+      await this.submitUpload();
       await this.SHARETRIBE.ownListings.update({
         id: this.publishModalEditData.id.uuid,
         ...this.getFormattedArgs()
@@ -197,6 +195,7 @@ export default {
     },
     republishPublication: async function() {
       this.isLoading = true;
+      await this.submitUpload();
       // update just incase anyones changed anything
       await this.SHARETRIBE.ownListings.update({
         id: this.publishModalEditData.id.uuid,
