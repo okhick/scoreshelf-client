@@ -6,7 +6,7 @@ import axios from "axios";
 
 // configure axios here
 const axiosConfig = {
-  baseURL: "http://127.0.0.1:3001/",
+  baseURL: "http://127.0.0.1:3000/",
   timeout: 30000
 };
 Vue.prototype.$axios = axios.create(axiosConfig);

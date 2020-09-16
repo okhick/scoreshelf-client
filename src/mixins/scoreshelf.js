@@ -2,7 +2,11 @@ import { mapState, mapMutations } from "vuex";
 
 export const uploader = {
   methods: {
-    ...mapMutations("dashboard", ["addFileToFileList", "addScoreshelfIdToFile"]),
+    ...mapMutations("dashboard", [
+      "addFileToFileList", 
+      "addScoreshelfIdToFile",
+      "clearToBeRemoved"
+    ]),
 
     processUpload: function() {
       const newFiles = this.$refs.file.files;
@@ -13,9 +17,19 @@ export const uploader = {
     },
 
     submitUpload: async function() {
-      // there may not be any new files
+      let res = {};
       if (this.areNewFiles()) {
-        const formData = new FormData();
+        res.uploadRes = await this.uploadNewFiles();
+      }
+
+      if (this.filesToBeRemoved.length > 0) {
+        res.deleteRes = await this.removeUploads();
+      }
+      return res;
+    },
+
+    uploadNewFiles: async function() {
+      const formData = new FormData();
 
         // create a 'unique key' for each file, push it into formdata
         this.fileList.forEach((file, index) => {
@@ -26,43 +40,25 @@ export const uploader = {
         formData.append("sharetribe_user_id", this.user_id);
 
         // send off the files. returns the files uploaded
-        let res = await this.$axios.post("/musicUpload", formData, {
+        let res = await this.$axios.post("/uploadAsset", formData, {
           headers: {
             "Content-Type": "multipart/form-data"
           }
         });
         this.addScoreshelfIdToFile(res.data);
         return res;
-      }
     },
 
-    removeUpload: async function(fileName) {
-      // get some data about the file to be deleted. This feels messy...
-      let scoreshelf_id; let isStored;
-      for (let i=0; this.fileList.length; i++) {
-        let file = this.fileList[i];
-        if (file.name == fileName) {
-          scoreshelf_id = file.scoreshelf_id;
-          isStored = file.isStored;
-          break;
+    removeUploads: async function() {
+      // call the server to delete db and asset
+      await this.$axios.delete("/deleteAsset", {
+        data: {
+          filesToRemove: this.filesToBeRemoved
         }
-      }
-
-      // call the db to remove it if we need to
-      if (isStored) {
-        await this.$axios.delete("/deleteAsset", {
-          data: {
-            id: scoreshelf_id
-          }
-        });
-      }
-      
-      // reminder that it won't be removed from sharetribe until it is saved.
-      // probably best not remove it from the database without removing all refrences
-      // fixing this is a high on the TODO list
+      });
 
       // finally, remove it from the store
-      this.removeFromFileList(fileName);
+      this.clearToBeRemoved();
       return true;
     },
 
@@ -89,12 +85,22 @@ export const uploader = {
       }
       const exactSize = Math.round(_size * 100) / 100 + " " + fSExt[i];
       return exactSize;
-    }
+    },
+
+    testScoreshelf: async function() {
+      try{
+        let res = await this.$axios.get("/test");
+        console.log(res);
+      } catch (e) {
+        console.log(e);
+      }
+    },
   },
   computed: {
     ...mapState({
       fileList: state => state.dashboard.fileList,
-      user_id: state => state.sharetribe.currentUser.id.uuid
+      user_id: state => state.sharetribe.currentUser.id.uuid,
+      filesToBeRemoved: state => state.dashboard.filesToBeRemoved
     })
   }
 };

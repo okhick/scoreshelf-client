@@ -225,7 +225,7 @@ export default {
     },
     closePublishDropdown: function() {
       this.publishDropDown.isActive = false;
-    }
+    },
   },
   computed: {
     ...mapState({

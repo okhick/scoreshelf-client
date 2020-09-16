@@ -173,7 +173,8 @@ export default {
         instrumentation: "",
         format: "",
         price: "",
-      }
+      },
+      reloadAssetTable: 0
     };
   },
   props: ["isNewPiece", "pieceStatus"],
@@ -189,7 +190,8 @@ export default {
   },
   methods: {
     ...mapMutations("dashboard", [
-      "removeFromFileList"
+      "removeFromFileList",
+      "setFileToBeRemoved"
     ]),
     formatArgs: function() {
       return {
@@ -214,11 +216,23 @@ export default {
         let thisFileData = {
           scoreshelf_id: file.scoreshelf_id,
           name: file.name,
-          size: file.size
+          size: file.size,
         };
         assetData.push(thisFileData);
       });
       return assetData;
+    },
+    removeUpload: function(fileName) {
+      this.fileList.forEach((file) => {
+        if (file.name == fileName) {
+          if(file.isStored) {
+            this.setFileToBeRemoved(fileName);
+            this.removeFromFileList(fileName);
+          } else {
+            this.removeFromFileList(fileName);
+          }
+        }
+      })
     },
     clearFormData: function() {
       for (const field in this.fieldData) {
