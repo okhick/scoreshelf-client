@@ -38,6 +38,7 @@ export const uploader = {
           }
         });
         formData.append("sharetribe_user_id", this.user_id);
+        formData.append("sharetribe_listing_id", this.listing_id);
 
         // send off the files. returns the files uploaded
         let res = await this.$axios.post("/uploadAsset", formData, {
@@ -53,7 +54,9 @@ export const uploader = {
       // call the server to delete db and asset
       await this.$axios.delete("/deleteAsset", {
         data: {
-          filesToRemove: this.filesToBeRemoved
+          filesToRemove: this.filesToBeRemoved,
+          sharetribe_user_id: this.user_id,
+          sharetribe_listing_id: this.listing_id
         }
       });
 
@@ -100,6 +103,7 @@ export const uploader = {
     ...mapState({
       fileList: state => state.dashboard.fileList,
       user_id: state => state.sharetribe.currentUser.id.uuid,
+      listing_id: state => state.dashboard.publishModalEditData.id.uuid,
       filesToBeRemoved: state => state.dashboard.filesToBeRemoved
     })
   }

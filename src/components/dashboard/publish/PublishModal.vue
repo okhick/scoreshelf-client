@@ -6,7 +6,7 @@
         <p class="modal-card-title">Publish Music</p>
         <button
           class="delete"
-          @click="closeEditModal"
+          @click="cancelModal"
           aria-label="close"
         ></button>
       </header>
@@ -56,7 +56,7 @@
                   <a
                     class="dropdown-item"
                     v-if="isNewPiece"
-                    @click="createDraft"
+                    @click="updatePublication"
                     >Create Draft</a
                   >
                 </div>
@@ -81,7 +81,7 @@
               Re-publish
             </button>
 
-            <button class="button level-item" @click="closeEditModal">
+            <button class="button level-item" @click="cancelModal">
               Cancel
             </button>
           </div>
@@ -165,14 +165,10 @@ export default {
     publishDraft: async function() {
       this.isLoading = true;
       await this.submitUpload();
-      // if it's a new piece we first need to create a draft
-      if (this.isNewPiece) {
-        let draft = await this.SHARETRIBE.ownListings.createDraft({
-          ...this.getFormattedArgs()
-        });
-        this.editPublishModalEditData(draft.data.data);
-      }
-      // publish it
+      await this.SHARETRIBE.ownListings.update({
+        id: this.publishModalEditData.id.uuid,
+        ...this.getFormattedArgs()
+      });
       await this.SHARETRIBE.ownListings.publishDraft({
         id: this.publishModalEditData.id.uuid
       });
@@ -208,14 +204,24 @@ export default {
       this.closeEditModal();
       this.isLoading = false;
     },
+    cancelModal: async function() {
+      this.isLoading = true;
+      if (this.publishModalEditData.isBlankDraft) {
+        await this.SHARETRIBE.ownListings.discardDraft({
+          id: this.publishModalEditData.id.uuid
+        });
+      }
+      this.closeEditModal();
+      this.isLoading = false;
+    },
     // =========================
     // Helpers
     // =========================
     closeEditModal: function() {
-      this.togglePublishModal();
       this.clearPublishModalEditData();
       this.pieceStatus = "";
       this.$refs.form.clearFormData();
+      this.togglePublishModal();
     },
     getFormattedArgs: function() {
       return this.$refs.form.formatArgs();
@@ -236,7 +242,7 @@ export default {
   },
   watch: {
     // PublishForm also watches this
-    publishModalEditData: function(newData) {
+    publishModalEditData: async function(newData) {
       // if newData.attributes is falsy, we're publishing from a blank
       if (newData != null && newData.attributes) {
         this.isNewPiece = false;

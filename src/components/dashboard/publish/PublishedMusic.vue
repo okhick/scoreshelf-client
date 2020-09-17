@@ -2,8 +2,8 @@
   <div>
     <div class="level">
       <h2 class="subtitle is-3 level-left">Published Music</h2>
-      <button class="button level-right" @click="togglePublishModal">
-        Publish music
+      <button class="button level-right" @click="createNewDraft">
+        Create new draft
       </button>
     </div>
     <table class="table is-fullwidth is-hoverable">
@@ -93,13 +93,21 @@ export default {
       "editPublishModalEditData",
       "addFileToFileList"
     ]),
+    createNewDraft: async function() {
+      // actually create a temp draft so we can have an uuid
+      // we need a uuid up front so save assets
+      let draft = await this.SHARETRIBE.ownListings.createDraft({title: `new_draft_${this.currentUser.id.uuid}`});
+      draft.data.data.isBlankDraft = true;
+      this.editPublishModalEditData(draft.data.data);
+      this.togglePublishModal();
+    },
     openEditModal: function(pieceData) {
       this.editPublishModalEditData(pieceData);
       if (pieceData.attributes.privateData.assetData) {
         let fileList = pieceData.attributes.privateData.assetData;
         fileList.forEach(file => {
           file.isStored = true;
-          this.addFileToFileList(file)
+          this.addFileToFileList(file);
         });
       }
       this.togglePublishModal();
