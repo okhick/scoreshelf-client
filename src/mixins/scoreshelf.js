@@ -55,8 +55,6 @@ export const uploader = {
       await this.$axios.delete("/deleteAsset", {
         data: {
           filesToRemove: this.filesToBeRemoved,
-          sharetribe_user_id: this.user_id,
-          sharetribe_listing_id: this.listing_id
         }
       });
 
