@@ -25,7 +25,7 @@ export const dashboard = {
     },
     setFileToBeRemoved(state, payload) {
       state.fileList.forEach(file => {
-        if(file.name == payload) {
+        if (file.name == payload) {
           state.filesToBeRemoved.push(file);
         }
       });
@@ -37,7 +37,7 @@ export const dashboard = {
       // find the file the id needs to go in
       state.fileList.forEach(file => {
         let name = file.name;
-        if(payload[name]) {
+        if (payload[name]) {
           let scoreshelf_id = payload[name]._id;
           file.scoreshelf_id = scoreshelf_id;
         }

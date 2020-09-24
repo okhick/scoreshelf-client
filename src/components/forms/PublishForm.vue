@@ -138,11 +138,11 @@
           <th>Size</th>
           <th></th>
         </thead>
-        <tr v-for="file in fileList" :key="file.name">
-          <td valign="middle">{{ file.name }}</td>
+        <tr v-for="file in fileList" :key="file.asset_name">
+          <td valign="middle">{{ file.asset_name }}</td>
           <td valign="middle">{{ calculateSize(file) }}</td>
           <td align="right">
-            <font-awesome-icon icon="trash-alt" @click="removeUpload(file.name)"/>
+            <font-awesome-icon icon="trash-alt" @click="removeUpload(file.asset_name)"/>
           </td>
         </tr>
       </table>
@@ -153,7 +153,7 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 import { sharetribe } from "@/mixins/sharetribe.js";
-import { uploader } from "@/mixins/scoreshelf.js";
+import { scoreshelf } from "@/mixins/scoreshelf.js";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faUpload, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
@@ -181,7 +181,7 @@ export default {
   components: {
     FontAwesomeIcon
   },
-  mixins: [sharetribe, uploader],
+  mixins: [sharetribe, scoreshelf],
   computed: {
     ...mapState({
       publishModalEditData: state => state.dashboard.publishModalEditData,
@@ -215,8 +215,6 @@ export default {
       this.fileList.forEach((file) => {
         let thisFileData = {
           scoreshelf_id: file.scoreshelf_id,
-          name: file.name,
-          size: file.size,
         };
         assetData.push(thisFileData);
       });

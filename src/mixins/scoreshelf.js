@@ -1,6 +1,6 @@
 import { mapState, mapMutations } from "vuex";
 
-export const uploader = {
+export const scoreshelf = {
   methods: {
     ...mapMutations("dashboard", [
       "addFileToFileList", 
@@ -12,6 +12,7 @@ export const uploader = {
       const newFiles = this.$refs.file.files;
       newFiles.forEach(file => {
         file.isStored = false;
+        file.asset_name = file.name; // we use asset name everywhere else, start from the beg
         this.addFileToFileList(file);
       });
     },
@@ -54,13 +55,21 @@ export const uploader = {
       // call the server to delete db and asset
       await this.$axios.delete("/deleteAsset", {
         data: {
-          filesToRemove: this.filesToBeRemoved,
+          filesToRemove: this.filesToBeRemoved
         }
       });
 
       // finally, remove it from the store
       this.clearToBeRemoved();
       return true;
+    },
+    
+    hyrdateAssetData: async function(fileList, getLink) {
+      const hydratedAssets = await this.$axios.post("/getAssetdata", {
+        ids: fileList,
+        get_link: getLink
+      });
+      return hydratedAssets;
     },
 
     // check if there are new files that need storing

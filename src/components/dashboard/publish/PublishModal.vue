@@ -106,7 +106,7 @@
 import Vue from "vue";
 import { mapState, mapMutations } from "vuex";
 import { sharetribe } from "@/mixins/sharetribe.js";
-import { uploader } from "@/mixins/scoreshelf.js";
+import { scoreshelf } from "@/mixins/scoreshelf.js";
 import PublishForm from "@/components/forms/PublishForm.vue";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -123,7 +123,7 @@ export default {
     FontAwesomeIcon,
     PublishForm
   },
-  mixins: [sharetribe, uploader],
+  mixins: [sharetribe, scoreshelf],
   data: function() {
     return {
       isLoading: false,

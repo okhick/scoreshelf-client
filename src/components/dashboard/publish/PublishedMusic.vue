@@ -69,6 +69,7 @@
 <script>
 import Vue from "vue";
 import { mapState, mapMutations } from "vuex";
+import { scoreshelf } from "@/mixins/scoreshelf";
 Vue.use(require("vue-moment"));
 
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -81,6 +82,7 @@ export default {
   components: {
     FontAwesomeIcon
   },
+  mixins: [scoreshelf],
   data: function() {
     return {
       hasPublishedMusic: false,
@@ -101,11 +103,15 @@ export default {
       this.editPublishModalEditData(draft.data.data);
       this.togglePublishModal();
     },
-    openEditModal: function(pieceData) {
+    openEditModal: async function(pieceData) {
       this.editPublishModalEditData(pieceData);
+      // get init data about the files
       if (pieceData.attributes.privateData.assetData) {
-        let fileList = pieceData.attributes.privateData.assetData;
-        fileList.forEach(file => {
+        const fileList = pieceData.attributes.privateData.assetData;
+        const hydratedFileListRes = await this.hyrdateAssetData(fileList, true);
+
+        // store the files
+        hydratedFileListRes.data.forEach(file => {
           file.isStored = true;
           this.addFileToFileList(file);
         });
