@@ -142,7 +142,7 @@
           <td v-if="file.link" valign="middle"><a :href="file.link">{{ file.asset_name }}</a></td>
           <td v-else valign="middle">{{ file.asset_name }}</td>
           <td valign="middle">{{ calculateSize(file) }}</td>
-          <td align="right">
+          <td align="right" class="hover-pointer">
             <font-awesome-icon icon="trash-alt" @click="removeUpload(file.asset_name)"/>
           </td>
         </tr>
@@ -269,5 +269,8 @@ export default {
 <style scoped>
 .bottom-margin {
   margin-bottom: 24px;
+}
+.hover-pointer:hover {
+  cursor: pointer;
 }
 </style>
