@@ -7,7 +7,11 @@ const sharetribeSdk = require("sharetribe-flex-sdk");
 
 export const sharetribe = {
   methods: {
-    ...mapMutations(["initSharetribe", "updateIsLoggedIn"]),
+    ...mapMutations("sharetribe", [
+      "initSharetribe",
+      "updateIsLoggedIn",
+      "updateCurrentUser"
+    ]),
 
     //get the SDK going.
     initSharetribeSdk: async function() {
@@ -28,16 +32,31 @@ export const sharetribe = {
         if (authInfo && authInfo.isAnonymous === false) {
           this.updateIsLoggedIn(true);
           console.log("User is logged in.");
+
+          // update currentUser store
+          let currentUser = await this.SHARETRIBE.currentUser.show();
+          this.updateCurrentUser(currentUser.data.data);
         } else {
           this.updateIsLoggedIn(false);
           console.log("User is NOT logged in.");
         }
       }
       return;
+    },
+
+    convertToSharetribePrice: function(money) {
+      return { amount: money * 100, currency: "USD" };
+    },
+    convertFromSharetribePrice: function(money) {
+      return parseInt(money.amount) / 100;
     }
   },
 
   computed: {
-    ...mapState(["SHARETRIBE", "isLoggedIn"])
+    // ...mapState(["SHARETRIBE", "isLoggedIn"])
+    ...mapState({
+      SHARETRIBE: state => state.sharetribe.SHARETRIBE,
+      isLoggedIn: state => state.sharetribe.isLoggedIn
+    })
   }
 };

@@ -35,7 +35,7 @@
         type="submit"
         @click="login_attempt"
       >
-        Login
+        <strong> Login </strong>
       </button>
 
       <div class="level-right is-block has-text-right">
@@ -73,7 +73,7 @@ export default {
   methods: {
     // TODO: This needs validation
     signUpActually: function() {
-      this.$router.push({ path: "signup" });
+      this.$router.push({ name: "SignUp" });
     },
 
     login_attempt: async function() {
@@ -99,7 +99,9 @@ export default {
     }
   },
   computed: {
-    ...mapState(["SHARETRIBE"])
+    ...mapState({
+      SHARETRIBE: state => state.sharetribe.SHARETRIBE
+    })
   }
 };
 </script>

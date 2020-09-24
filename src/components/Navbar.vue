@@ -4,16 +4,10 @@
       <div class="navbar-item">
         <!-- If user is not logged in -->
         <div v-if="!isLoggedIn" class="buttons">
-          <router-link
-            :to="{ name: 'Login', params: { form: 'signup' } }"
-            class="button is-primary"
-          >
+          <router-link :to="{ name: 'SignUp' }" class="button is-primary">
             <strong>Sign up</strong>
           </router-link>
-          <router-link
-            :to="{ name: 'Login', params: { form: 'login' } }"
-            class="button is-dark"
-          >
+          <router-link :to="{ name: 'Login' }" class="button is-dark">
             <strong>Log in</strong>
           </router-link>
         </div>
@@ -49,10 +43,13 @@ export default {
     };
   },
   computed: {
-    ...mapState(["SHARETRIBE", "isLoggedIn"])
+    ...mapState({
+      SHARETRIBE: state => state.sharetribe.SHARETRIBE,
+      isLoggedIn: state => state.sharetribe.isLoggedIn
+    })
   },
   methods: {
-    ...mapMutations(["updateIsLoggedIn"]),
+    ...mapMutations("sharetribe", ["updateIsLoggedIn"]),
 
     logout: async function() {
       this.isLoading = true;
