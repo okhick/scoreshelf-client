@@ -21,11 +21,11 @@ export const dashboard = {
       state.fileList.push(payload);
     },
     removeFromFileList(state, payload) {
-      state.fileList = state.fileList.filter(file => file.name !== payload);
+      state.fileList = state.fileList.filter(file => file.asset_name !== payload);
     },
     setFileToBeRemoved(state, payload) {
       state.fileList.forEach(file => {
-        if (file.name == payload) {
+        if (file.asset_name == payload) {
           state.filesToBeRemoved.push(file);
         }
       });
@@ -36,10 +36,10 @@ export const dashboard = {
     addScoreshelfIdToFile(state, payload) {
       // find the file the id needs to go in
       state.fileList.forEach(file => {
-        let name = file.name;
+        let name = file.asset_name;
         if (payload[name]) {
           let scoreshelf_id = payload[name]._id;
-          file.scoreshelf_id = scoreshelf_id;
+          file._id = scoreshelf_id;
         }
       });
     }

@@ -139,7 +139,8 @@
           <th></th>
         </thead>
         <tr v-for="file in fileList" :key="file.asset_name">
-          <td valign="middle">{{ file.asset_name }}</td>
+          <td v-if="file.link" valign="middle"><a :href="file.link">{{ file.asset_name }}</a></td>
+          <td v-else valign="middle">{{ file.asset_name }}</td>
           <td valign="middle">{{ calculateSize(file) }}</td>
           <td align="right">
             <font-awesome-icon icon="trash-alt" @click="removeUpload(file.asset_name)"/>
@@ -214,7 +215,7 @@ export default {
       let assetData = [];
       this.fileList.forEach((file) => {
         let thisFileData = {
-          scoreshelf_id: file.scoreshelf_id,
+          scoreshelf_id: file._id,
         };
         assetData.push(thisFileData);
       });
@@ -222,7 +223,7 @@ export default {
     },
     removeUpload: function(fileName) {
       this.fileList.forEach((file) => {
-        if (file.name == fileName) {
+        if (file.asset_name == fileName) {
           if(file.isStored) {
             this.setFileToBeRemoved(fileName);
             this.removeFromFileList(fileName);
@@ -236,7 +237,7 @@ export default {
       for (const field in this.fieldData) {
         this.fieldData[field] = "";
       }
-      this.fileList.forEach(file => this.removeFromFileList(file.name));
+      this.fileList.forEach(file => this.removeFromFileList(file.asset_name));
       return true;
     }
   },
