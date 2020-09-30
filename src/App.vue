@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Navbar from "@/components/Navbar.vue";
+import Navbar from "@/components/navbar/Navbar.vue";
 import { sharetribe } from "./mixins/sharetribe.js";
 
 export default {
