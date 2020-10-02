@@ -2,6 +2,7 @@
   <div id="app">
     <Sidenav />
     <div class="main" :class="{shiftMain: menuOpen}">
+      <Search />
       <router-view />
     </div>
   </div>
@@ -10,12 +11,14 @@
 <script>
 // import Navbar from "@/components/Navbar.vue";
 import Sidenav from "@/components/Sidenav.vue";
+import Search from "@/components/Search.vue";
 import { sharetribe } from "./mixins/sharetribe.js";
 import { mapState } from "vuex";
 
 export default {
   components: {
-    Sidenav
+    Sidenav,
+    Search
   },
   mixins: [sharetribe],
   computed: {

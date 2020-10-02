@@ -11,7 +11,7 @@ export default new Vuex.Store({
   modules: {
     dashboard,
     sharetribe,
-    search
+    search,
     sidenav
   }
 });
