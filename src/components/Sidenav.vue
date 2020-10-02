@@ -1,12 +1,12 @@
 <template>
-  <div class="sidenav" :class="{showMenu: menuOpen}">
+  <div class="sidenav" :class="{showMenu: menuOpen}" v-click-outside="closeSidenav">
     <div class="menu-body">
       <!-- If user is not logged in -->
       <ul v-if="!isLoggedIn">
-        <li @click="toggleMenu">
+        <li @click="toggleSidenav">
           <router-link :to="{ name: 'Login' }"> <strong>Log in</strong> </router-link>
         </li>
-        <li @click="toggleMenu">
+        <li @click="toggleSidenav">
           <router-link :to="{ name: 'SignUp' }"> <strong>Sign up</strong> </router-link>
         </li>
       </ul>
@@ -14,9 +14,9 @@
       <!-- If user is logged in -->
       <ul v-if="isLoggedIn">
         <li @click="logout">
-          <strong>Log Out</strong>
+          <a><strong>Log Out</strong></a>
         </li>
-        <li @click="toggleMenu">
+        <li @click="toggleSidenav">
           <router-link :to="{ name: 'Dashboard' }"> <strong>Dashboard</strong> </router-link>
         </li>
       </ul>
@@ -24,7 +24,7 @@
 
     <div class=right-side>
       <p>SCORESHELF</p>
-      <span class="menu-container" @click="toggleMenu">
+      <span class="menu-container" @click="toggleSidenav">
         <font-awesome-icon icon="bars" size="2x" class="burger" :class="{rotateBurger: menuOpen}"/>
       </span>
     </div>
@@ -40,28 +40,25 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 library.add(faBars);
 
+import Vue from "vue";
+import vClickOutside from "v-click-outside";
+Vue.use(vClickOutside);
+
 export default {
   components: {
-    FontAwesomeIcon
+    FontAwesomeIcon,
   },
   mixins: [sharetribe],
-  data() {
-    return {
-      menuOpen: false
-    }
-  },
   computed: {
     ...mapState({
       SHARETRIBE: state => state.sharetribe.SHARETRIBE,
-      isLoggedIn: state => state.sharetribe.isLoggedIn
+      isLoggedIn: state => state.sharetribe.isLoggedIn,
+      menuOpen: state => state.sidenav.isOpen
     })
   },
   methods: {
     ...mapMutations("sharetribe", ["updateIsLoggedIn"]),
-
-    toggleMenu: function() {
-      this.menuOpen = !this.menuOpen;
-    },
+    ...mapMutations("sidenav", ["toggleSidenav", "closeSidenav"]),
 
     logout: async function() {
       this.isLoading = true;
@@ -86,6 +83,7 @@ export default {
   grid-template-columns: [menubar] 180px [sidebar] 60px;
   justify-items: center;
   transition: transform 0.25s ease-in-out;
+  z-index: 2;
 }
 .showMenu {
   transform: translate3d(180px, 0, 0);
