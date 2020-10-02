@@ -12,7 +12,7 @@
           <th>Title</th>
           <th><!-- Status column --></th>
           <th>Formats offered</th>
-          <th>Instrumentation</th>
+          <th>Ensemble</th>
           <th>Date Published</th>
           <th>
             <!-- Edit column -->
@@ -43,13 +43,13 @@
               </div>
             </div>
           </td>
-          <td>Score, Parts</td>
-          <td>Piano, Bass, Drums, Electronics</td>
+          <td>{{ piece.attributes.publicData.format }}</td>
+          <td>{{ (piece.attributes.publicData.ensemble) ? piece.attributes.publicData.ensemble : piece.attributes.publicData.instrumentation }}</td>
           <!-- <td>{{ piece.attributes.state }}</td> -->
           <td>
             {{ piece.attributes.createdAt | moment("MMMM Do YYYY, h:mm a") }}
           </td>
-          <td>
+          <td class="hover-pointer">
             <font-awesome-icon
               icon="edit"
               class="action-buttons"
@@ -164,5 +164,8 @@ export default {
 }
 .tag.is-redorange {
   background-color: $redOrange;
+}
+.hover-pointer:hover {
+  cursor: pointer;
 }
 </style>

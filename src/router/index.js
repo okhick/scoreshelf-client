@@ -86,7 +86,7 @@ const router = new VueRouter({
 });
 
 // router.beforeEach((to, from, next) => {
-//   if (to.name == "Dashboard" && !store.state.isLoggedIn) {
+//   if (to.name == "Dashboard" && !this.store.state.isLoggedIn) {
 //     next({ path: "login" });
 //   } else {
 //     next();
