@@ -1,10 +1,10 @@
 <template>
   <div class="container">
     <div class="columns">
-      <div class="column is-3">
+      <div class="column is-2">
         <Menu />
       </div>
-      <div class="column is-9">
+      <div class="column is-10">
         <section class="is-info welcome is-small">
           <router-view></router-view>
         </section>
@@ -27,7 +27,7 @@ export default {
 @import "../styles/index.scss";
 
 .container {
-  padding-top: 6px;
+  padding-top: 6px;;
 }
 .columns {
   width: 100%;
