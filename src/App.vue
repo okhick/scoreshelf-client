@@ -1,19 +1,29 @@
 <template>
   <div id="app">
-    <Navbar />
-    <router-view />
+    <Sidenav />
+    <div class="main" :class="{shiftMain: menuOpen}">
+      <Search />
+      <router-view />
+    </div>
   </div>
 </template>
 
 <script>
-import Navbar from "@/components/navbar/Navbar.vue";
+// import Navbar from "@/components/Navbar.vue";
+import Sidenav from "@/components/Sidenav.vue";
+import Search from "@/components/Search.vue";
 import { sharetribe } from "./mixins/sharetribe.js";
+import { mapState } from "vuex";
 
 export default {
   components: {
-    Navbar
+    Sidenav,
+    Search
   },
   mixins: [sharetribe],
+  computed: {
+    ...mapState({ menuOpen: state => state.sidenav.isOpen })
+  },
   async created() {
     await this.initSharetribeSdk();
     await this.refreshLogin();
@@ -31,6 +41,14 @@ body {
 
   .title {
     color: $dark;
+  }
+
+  .main {
+    transition: transform 0.25s ease-in-out;
+    margin-left: 60px;
+  }
+  .shiftMain {
+    transform: translate3d(180px, 0, 0);
   }
 }
 </style>
