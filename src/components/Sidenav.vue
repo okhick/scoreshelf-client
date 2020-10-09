@@ -1,5 +1,5 @@
 <template>
-  <div class="sidenav" :class="{showMenu: menuOpen}" v-click-outside="closeSidenav">
+  <div class="sidenav" :class="{showMenu: menuOpen}" v-click-outside="clickOut">
     <div class="menu-body">
       <!-- If user is not logged in -->
       <ul v-if="!isLoggedIn">
@@ -67,6 +67,12 @@ export default {
       this.$router.push({ path: "/" });
       this.toggleMenu();
       this.isLoading = false;
+    },
+
+    clickOut: function() {
+      if (this.menuOpen) {
+        this.closeSidenav();
+      }
     }
   }
 }
