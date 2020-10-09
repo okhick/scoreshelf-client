@@ -31,11 +31,9 @@ export default {
   props: { listing: Object },
   computed: {
     showEnsembleOrInstrumentation: function() {
-      if(this.listing.attributes.publicData.ensemble != "") {
-        return this.listing.attributes.publicData.ensemble
-      } else {
-        return this.listing.attributes.publicData.instrumentation
-      }
+      return (this.listing.attributes.publicData.ensemble) ?
+        this.listing.attributes.publicData.ensemble :
+        this.listing.attributes.publicData.instrumentation
     }
   }
 };

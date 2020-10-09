@@ -159,8 +159,7 @@ import { scoreshelf } from "@/mixins/scoreshelf.js";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faUpload, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-library.add(faUpload);
-library.add(faTrashAlt);
+library.add(faUpload, faTrashAlt);
 
 export default {
   data: function() {
@@ -196,20 +195,30 @@ export default {
     ]),
     formatArgs: function() {
       return {
-        title: this.fieldData.title,
-        price: this.convertToSharetribePrice(this.fieldData.price),
-        publicData: {
-          subtitle: this.fieldData.subtitle,
-          year: this.fieldData.year,
-          composer: this.fieldData.composer,
-          ensemble: this.fieldData.ensemble,
-          instrumentation: this.fieldData.instrumentation,
-          format: this.fieldData.format
-        },
+        ...this.sanitizeFormData(),
         privateData: {
           assetData: this.formatAssetData()
         }
       };
+    },
+    sanitizeFormData: function() {
+      let cleanFormData = {publicData:{}};
+      
+      for(const field in this.fieldData) {
+        if(this.fieldData[field] != "") {
+          switch (field) {
+            case "title": 
+              cleanFormData.title = this.fieldData[field];
+              break;
+            case "price":
+              cleanFormData.price = this.fieldData[field];
+              break;
+            default:
+              cleanFormData['publicData'][field] = this.fieldData[field];
+          }
+        }
+      }
+      return cleanFormData;
     },
     formatAssetData: function() {
       let assetData = [];
