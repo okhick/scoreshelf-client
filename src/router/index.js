@@ -74,6 +74,12 @@ const routes = [
           )
       }
     ]
+  },
+  {
+    name: "Search",
+    path: "/search/:query",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/Search.vue")
   }
 ];
 
