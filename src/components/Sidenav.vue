@@ -1,13 +1,21 @@
 <template>
-  <div class="sidenav" :class="{showMenu: menuOpen}" v-click-outside="clickOut">
+  <div
+    class="sidenav"
+    :class="{ showMenu: menuOpen }"
+    v-click-outside="clickOut"
+  >
     <div class="menu-body">
       <!-- If user is not logged in -->
       <ul v-if="!isLoggedIn">
         <li @click="toggleSidenav">
-          <router-link :to="{ name: 'Login' }"> <strong>Log in</strong> </router-link>
+          <router-link :to="{ name: 'Login' }">
+            <strong>Log in</strong>
+          </router-link>
         </li>
         <li @click="toggleSidenav">
-          <router-link :to="{ name: 'SignUp' }"> <strong>Sign up</strong> </router-link>
+          <router-link :to="{ name: 'SignUp' }">
+            <strong>Sign up</strong>
+          </router-link>
         </li>
       </ul>
 
@@ -17,15 +25,22 @@
           <a><strong>Log Out</strong></a>
         </li>
         <li @click="toggleSidenav">
-          <router-link :to="{ name: 'Dashboard' }"> <strong>Dashboard</strong> </router-link>
+          <router-link :to="{ name: 'Dashboard' }">
+            <strong>Dashboard</strong>
+          </router-link>
         </li>
       </ul>
     </div>
 
-    <div class=right-side>
+    <div class="right-side">
       <p>SCORESHELF</p>
       <span class="menu-container" @click="toggleSidenav">
-        <font-awesome-icon icon="bars" size="2x" class="burger" :class="{rotateBurger: menuOpen}"/>
+        <font-awesome-icon
+          icon="bars"
+          size="2x"
+          class="burger"
+          :class="{ rotateBurger: menuOpen }"
+        />
       </span>
     </div>
   </div>
@@ -46,7 +61,7 @@ Vue.use(vClickOutside);
 
 export default {
   components: {
-    FontAwesomeIcon,
+    FontAwesomeIcon
   },
   mixins: [sharetribe],
   computed: {
@@ -75,7 +90,7 @@ export default {
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -124,5 +139,5 @@ export default {
 }
 .rotateBurger {
   transform: rotateZ(90deg);
-} 
+}
 </style>

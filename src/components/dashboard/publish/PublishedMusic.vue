@@ -44,7 +44,13 @@
             </div>
           </td>
           <td>{{ piece.attributes.publicData.format }}</td>
-          <td>{{ (piece.attributes.publicData.ensemble) ? piece.attributes.publicData.ensemble : piece.attributes.publicData.instrumentation }}</td>
+          <td>
+            {{
+              piece.attributes.publicData.ensemble
+                ? piece.attributes.publicData.ensemble
+                : piece.attributes.publicData.instrumentation
+            }}
+          </td>
           <!-- <td>{{ piece.attributes.state }}</td> -->
           <td>
             {{ piece.attributes.createdAt | moment("MMMM Do YYYY, h:mm a") }}
@@ -98,7 +104,9 @@ export default {
     createNewDraft: async function() {
       // actually create a temp draft so we can have an uuid
       // we need a uuid up front so save assets
-      let draft = await this.SHARETRIBE.ownListings.createDraft({title: `new_draft_${this.currentUser.id.uuid}`});
+      let draft = await this.SHARETRIBE.ownListings.createDraft({
+        title: `new_draft_${this.currentUser.id.uuid}`
+      });
       draft.data.data.isBlankDraft = true;
       this.editPublishModalEditData(draft.data.data);
       this.togglePublishModal();

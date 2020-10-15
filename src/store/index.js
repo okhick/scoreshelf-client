@@ -3,7 +3,7 @@ import Vuex from "vuex";
 
 import { dashboard } from "@/store/dashboard";
 import { sharetribe } from "@/store/sharetribe";
-import { sidenav } from "@/store/sidenav"
+import { sidenav } from "@/store/sidenav";
 import { search } from "@/store/search";
 Vue.use(Vuex);
 

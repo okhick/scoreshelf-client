@@ -16,4 +16,4 @@ export const search = {
       state.searchResultsMeta = payload;
     }
   }
-}
+};
