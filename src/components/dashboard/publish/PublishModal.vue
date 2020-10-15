@@ -4,11 +4,7 @@
     <div class="modal-card">
       <header class="modal-card-head">
         <p class="modal-card-title">Publish Music</p>
-        <button
-          class="delete"
-          @click="cancelModal"
-          aria-label="close"
-        ></button>
+        <button class="delete" @click="cancelModal" aria-label="close"></button>
       </header>
 
       <PublishForm
@@ -231,7 +227,7 @@ export default {
     },
     closePublishDropdown: function() {
       this.publishDropDown.isActive = false;
-    },
+    }
   },
   computed: {
     ...mapState({

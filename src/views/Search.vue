@@ -18,10 +18,14 @@
         <p><b>Total results:</b> {{ searchResultsMeta.totalItems }}</p>
       </div>
       <div class="searchResults">
-        <search-result v-for="listing in searchListingData" :key="listing.id.uuid" v-bind:listing="listing" />        
+        <search-result
+          v-for="listing in searchListingData"
+          :key="listing.id.uuid"
+          v-bind:listing="listing"
+        />
       </div>
     </div>
-    
+
     <div class="column is-1"></div>
   </div>
 </template>
@@ -54,8 +58,8 @@ export default {
 <style lang="css" scoped>
 .searchResults {
   flex-direction: row;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 </style>

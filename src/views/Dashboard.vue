@@ -27,7 +27,7 @@ export default {
 @import "../styles/index.scss";
 
 .container {
-  padding-top: 6px;;
+  padding-top: 6px;
 }
 .columns {
   width: 100%;

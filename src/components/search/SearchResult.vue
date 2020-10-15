@@ -6,7 +6,9 @@
     <div class="info">
       <div class="human">{{ listing.attributes.publicData.composer }}</div>
       <div class="result-title">{{ listing.attributes.title }}</div>
-      <div class="result-subtitle">{{ listing.attributes.publicData.subtitle }}</div>
+      <div class="result-subtitle">
+        {{ listing.attributes.publicData.subtitle }}
+      </div>
       <div class="ensemble">{{ showEnsembleOrInstrumentation }}</div>
     </div>
     <div class="thumb">
@@ -31,16 +33,15 @@ export default {
   props: { listing: Object },
   computed: {
     showEnsembleOrInstrumentation: function() {
-      return (this.listing.attributes.publicData.ensemble) ?
-        this.listing.attributes.publicData.ensemble :
-        this.listing.attributes.publicData.instrumentation
+      return this.listing.attributes.publicData.ensemble
+        ? this.listing.attributes.publicData.ensemble
+        : this.listing.attributes.publicData.instrumentation;
     }
   }
 };
 </script>
 
 <style lang="css" scoped>
-
 .work-card {
   width: 360px;
   height: 380px;

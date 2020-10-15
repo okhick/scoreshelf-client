@@ -139,11 +139,16 @@
           <th></th>
         </thead>
         <tr v-for="file in fileList" :key="file.asset_name">
-          <td v-if="file.link" valign="middle"><a :href="file.link">{{ file.asset_name }}</a></td>
+          <td v-if="file.link" valign="middle">
+            <a :href="file.link">{{ file.asset_name }}</a>
+          </td>
           <td v-else valign="middle">{{ file.asset_name }}</td>
           <td valign="middle">{{ calculateSize(file) }}</td>
           <td align="right" class="hover-pointer">
-            <font-awesome-icon icon="trash-alt" @click="removeUpload(file.asset_name)"/>
+            <font-awesome-icon
+              icon="trash-alt"
+              @click="removeUpload(file.asset_name)"
+            />
           </td>
         </tr>
       </table>
@@ -172,7 +177,7 @@ export default {
         ensemble: "",
         instrumentation: "",
         format: "",
-        price: "",
+        price: ""
       },
       reloadAssetTable: 0
     };
@@ -189,10 +194,7 @@ export default {
     })
   },
   methods: {
-    ...mapMutations("dashboard", [
-      "removeFromFileList",
-      "setFileToBeRemoved"
-    ]),
+    ...mapMutations("dashboard", ["removeFromFileList", "setFileToBeRemoved"]),
     formatArgs: function() {
       return {
         ...this.sanitizeFormData(),
@@ -202,19 +204,19 @@ export default {
       };
     },
     sanitizeFormData: function() {
-      let cleanFormData = {publicData:{}};
-      
-      for(const field in this.fieldData) {
-        if(this.fieldData[field] != "") {
+      let cleanFormData = { publicData: {} };
+
+      for (const field in this.fieldData) {
+        if (this.fieldData[field] != "") {
           switch (field) {
-            case "title": 
+            case "title":
               cleanFormData.title = this.fieldData[field];
               break;
             case "price":
               cleanFormData.price = this.fieldData[field];
               break;
             default:
-              cleanFormData['publicData'][field] = this.fieldData[field];
+              cleanFormData["publicData"][field] = this.fieldData[field];
           }
         }
       }
@@ -222,25 +224,25 @@ export default {
     },
     formatAssetData: function() {
       let assetData = [];
-      this.fileList.forEach((file) => {
+      this.fileList.forEach(file => {
         let thisFileData = {
-          scoreshelf_id: file._id,
+          scoreshelf_id: file._id
         };
         assetData.push(thisFileData);
       });
       return assetData;
     },
     removeUpload: function(fileName) {
-      this.fileList.forEach((file) => {
+      this.fileList.forEach(file => {
         if (file.asset_name == fileName) {
-          if(file.isStored) {
+          if (file.isStored) {
             this.setFileToBeRemoved(fileName);
             this.removeFromFileList(fileName);
           } else {
             this.removeFromFileList(fileName);
           }
         }
-      })
+      });
     },
     clearFormData: function() {
       for (const field in this.fieldData) {

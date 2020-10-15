@@ -14,7 +14,11 @@
           </span>
         </div>
         <div class="control">
-          <div class="button is-dark" :class="{ 'is-loading': searchIsLoading }"  @click="doSearch">
+          <div
+            class="button is-dark"
+            :class="{ 'is-loading': searchIsLoading }"
+            @click="doSearch"
+          >
             <font-awesome-icon icon="arrow-right" />
           </div>
         </div>
@@ -47,18 +51,26 @@ export default {
     })
   },
   methods: {
-    ...mapMutations("search", ["toggleSearchIsLoading", "addSearchListingData", "addSearchResultsMeta"]),
+    ...mapMutations("search", [
+      "toggleSearchIsLoading",
+      "addSearchListingData",
+      "addSearchResultsMeta"
+    ]),
     doSearch: async function() {
       this.toggleSearchIsLoading();
-      const res = await this.SHARETRIBE.listings.query({keywords: this.searchInput});
+      const res = await this.SHARETRIBE.listings.query({
+        keywords: this.searchInput
+      });
       this.$router.push({
-        name: "Search", 
-        params:{ query: encodeURIComponent(this.searchInput) }
+        name: "Search",
+        params: { query: encodeURIComponent(this.searchInput) }
       });
       this.processSearchResults(res);
-      
+
       // wait until the dom has reloaded to turn the toggle off
-      this.$nextTick(() => { this.toggleSearchIsLoading() });
+      this.$nextTick(() => {
+        this.toggleSearchIsLoading();
+      });
     },
     processSearchResults: function(rawRes) {
       const listingData = rawRes.data.data;
@@ -70,5 +82,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
