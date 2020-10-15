@@ -4,7 +4,7 @@ export const dashboard = {
     publishModalOpen: false,
     publishModalEditData: null,
     fileList: [],
-    filesToBeRemoved: []
+    filesToBeRemoved: [],
   },
   mutations: {
     togglePublishModal(state) {

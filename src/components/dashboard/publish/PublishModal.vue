@@ -103,7 +103,7 @@ import Vue from "vue";
 import { mapState, mapMutations } from "vuex";
 import { sharetribe } from "@/mixins/sharetribe.js";
 import { scoreshelf } from "@/mixins/scoreshelf.js";
-import PublishForm from "@/components/forms/PublishForm.vue";
+import PublishForm from "@/components/forms/publish/PublishForm.vue";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faTrashAlt, faAngleDown } from "@fortawesome/free-solid-svg-icons";

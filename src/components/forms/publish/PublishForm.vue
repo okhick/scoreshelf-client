@@ -78,7 +78,9 @@
 
     <hr />
 
-    <div class="field">
+    <format ref="formats"></format>
+
+    <!-- <div class="field">
       <label class="label">Format</label>
       <div class="control">
         <input
@@ -88,9 +90,9 @@
           placeholder="Score and Parts"
         />
       </div>
-    </div>
+    </div> -->
 
-    <div class="field">
+    <!-- <div class="field">
       <label class="label">Price</label>
       <div class="field is-expanded">
         <div class="field has-addons">
@@ -107,7 +109,7 @@
           </p>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <hr />
 
@@ -160,6 +162,7 @@
 import { mapState, mapMutations } from "vuex";
 import { sharetribe } from "@/mixins/sharetribe.js";
 import { scoreshelf } from "@/mixins/scoreshelf.js";
+import Format from "./Format";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faUpload, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
@@ -176,21 +179,19 @@ export default {
         composer: "",
         ensemble: "",
         instrumentation: "",
-        format: "",
-        price: ""
       },
       reloadAssetTable: 0
     };
   },
   props: ["isNewPiece", "pieceStatus"],
   components: {
-    FontAwesomeIcon
+    FontAwesomeIcon, Format
   },
   mixins: [sharetribe, scoreshelf],
   computed: {
     ...mapState({
       publishModalEditData: state => state.dashboard.publishModalEditData,
-      fileList: state => state.dashboard.fileList
+      fileList: state => state.dashboard.fileList,
     })
   },
   methods: {
@@ -220,6 +221,8 @@ export default {
           }
         }
       }
+
+      cleanFormData.publicData.formats = this.$refs.formats.formats;
       return cleanFormData;
     },
     formatAssetData: function() {
@@ -249,6 +252,7 @@ export default {
         this.fieldData[field] = "";
       }
       this.fileList.forEach(file => this.removeFromFileList(file.asset_name));
+      this.$refs.formats.formats = null;
       return true;
     }
   },
@@ -266,7 +270,7 @@ export default {
         this.fieldData.ensemble = newData.attributes.publicData.ensemble;
         this.fieldData.instrumentation =
           newData.attributes.publicData.instrumentation;
-        this.fieldData.format = newData.attributes.publicData.format;
+        this.formatData = newData.attributes.publicData.formats;
       } else {
         for (const field in this.fieldData) {
           this.fieldData[field] = "";

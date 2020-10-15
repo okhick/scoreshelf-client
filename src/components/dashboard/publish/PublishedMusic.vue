@@ -43,7 +43,7 @@
               </div>
             </div>
           </td>
-          <td>{{ piece.attributes.publicData.format }}</td>
+          <td>{{ formatsAvailable(piece) }}</td>
           <td>
             {{
               piece.attributes.publicData.ensemble
@@ -135,6 +135,13 @@ export default {
       } else {
         this.hasPublishedMusic = false;
       }
+    },
+    formatsAvailable: function(piece) {
+      if (piece.attributes.publicData.formats) {
+        const formatsAvailable = piece.attributes.publicData.formats.map(format => format.format);
+        return formatsAvailable.join(", ");
+      }
+      return "";
     }
   },
   async mounted() {
@@ -146,6 +153,7 @@ export default {
       currentUser: state => state.sharetribe.currentUser,
       publishModalOpen: state => state.dashboard.publishModalOpen
     })
+
   },
   watch: {
     publishModalOpen: async function(newModalState) {
