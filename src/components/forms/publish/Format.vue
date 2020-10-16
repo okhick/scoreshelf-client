@@ -1,40 +1,47 @@
 <template>
   <div class="format">
     <label class="label">Format and Price</label>
-    <div
-      v-for="format in formats"
-      :key="format.formatId"
-      class="field is-horizontal"
-    >
-      <input
-        class="input field-body"
-        type="text"
-        placeholder="Format"
-        v-model="format.format"
-      />
+    <div v-for="format in formats" :key="format.formatId">
+      <div class="field is-horizontal">
+        <input
+          class="input field-body"
+          type="text"
+          placeholder="Format"
+          v-model="format.format"
+        />
 
-      <div class="field is-expanded field-body">
-        <div class="field has-addons">
-          <p class="control">
-            <a class="button is-static">$</a>
-          </p>
-          <p class="control is-expanded">
-            <input
-              class="input"
-              type="text"
-              placeholder="20"
-              v-model="format.price"
-            />
-          </p>
+        <div class="field is-expanded field-body">
+          <div class="field has-addons">
+            <p class="control">
+              <a class="button is-static">$</a>
+            </p>
+            <p class="control is-expanded">
+              <input
+                class="input"
+                type="text"
+                placeholder="20"
+                v-model="format.price"
+              />
+            </p>
+          </div>
         </div>
+
+        <button class="button">
+          <font-awesome-icon
+            icon="trash-alt"
+            @click="removeFormat(format.formatId)"
+          />
+        </button>
       </div>
 
-      <button class="button">
-        <font-awesome-icon
-          icon="trash-alt"
-          @click="removeFormat(format.formatId)"
-        />
-      </button>
+      <label class="label">Add file(s) to format</label>
+      <div class="select is-primary">
+        <select>
+          <option></option>
+          <option v-for="file in fileList" :key="file.asset_name">{{file.asset_name}}</option>
+        </select>
+      </div>
+      <hr>
     </div>
 
     <button @click="addFormat" class="button is-outlined">
@@ -44,7 +51,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -57,7 +64,7 @@ export default {
   },
   data() {
     return {
-      formats: [{ formatId: 0, format: "", price: "" }]
+      formats: null
     };
   },
   methods: {
@@ -68,11 +75,13 @@ export default {
       return Date.now();
     },
     getBlankFormat: function() {
-      return { formatId: this.getFormatId(), format: "", price: "" }
+      return { formatId: this.getFormatId(), format: "", price: "" };
     },
     removeFormat: function(formatId) {
       if (this.formats.length > 1) {
-        const remainingFormats = this.formats.filter(format => format.formatId != formatId);
+        const remainingFormats = this.formats.filter(
+          format => format.formatId != formatId
+        );
         this.formats = remainingFormats;
       } else {
         this.formats = [this.getBlankFormat()];
@@ -82,13 +91,18 @@ export default {
   computed: {
     ...mapState({
       publishModalEditData: state => state.dashboard.publishModalEditData,
+      fileList: state => state.dashboard.fileList,
     })
   },
   watch: {
     publishModalEditData: function(newData) {
-      // if newData.attributes is falsy, we're publishing from a blank
+      // if we've opened an existing work
       if (newData?.attributes?.publicData?.formats) {
         this.formats = newData.attributes.publicData.formats;
+        // if we're closing the modal
+      } else if (newData == null) {
+        this.formats = null;
+        // if it's a new work
       } else {
         this.formats = [this.getBlankFormat()];
       }

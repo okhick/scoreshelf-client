@@ -197,8 +197,9 @@ export default {
   methods: {
     ...mapMutations("dashboard", ["removeFromFileList", "setFileToBeRemoved"]),
     formatArgs: function() {
+      const cleanData = this.sanitizeFormData();
       return {
-        ...this.sanitizeFormData(),
+        ...cleanData,
         privateData: {
           assetData: this.formatAssetData()
         }
@@ -208,13 +209,10 @@ export default {
       let cleanFormData = { publicData: {} };
 
       for (const field in this.fieldData) {
-        if (this.fieldData[field] != "") {
+        if (this.fieldData[field] !== void 0) {
           switch (field) {
             case "title":
               cleanFormData.title = this.fieldData[field];
-              break;
-            case "price":
-              cleanFormData.price = this.fieldData[field];
               break;
             default:
               cleanFormData["publicData"][field] = this.fieldData[field];
