@@ -78,69 +78,12 @@
 
     <hr />
 
-    <format ref="formats"></format>
+    <format ref="formats" />
 
     <hr />
 
-    <div class="field bottom-margin">
-      <label class="label">Upload</label>
-
-      <div class="file is-boxed is-centered">
-        <label class="file-label">
-          <input
-            class="file-input"
-            type="file"
-            ref="file"
-            multiple
-            @change="processUpload"
-          />
-          <span class="file-cta">
-            <span class="file-icon">
-              <font-awesome-icon icon="upload" />
-            </span>
-            <span class="file-label">Upload your file(s)</span>
-          </span>
-        </label>
-      </div>
-
-      <table class="table is-fullwidth is-narrow" v-show="fileList.length > 0">
-        <thead>
-          <th>Filename</th>
-          <th>Thumbnail?</th>
-          <th>Size</th>
-          <th></th>
-        </thead>
-        <tr v-for="file in fileList" :key="file.asset_name">
-
-          <td v-if="file.link" valign="middle">
-            <a :href="file.link">{{ file.asset_name }}</a>
-          </td>
-          <td v-else valign="middle">{{ file.asset_name }}</td>
-
-          <td>
-            <div class="field is-horizontal">
-              <div class="field-body">
-                <div class="field">
-                  <input type="checkbox">
-                </div>
-                <div class="field page-picker">
-                  <input class="input is-small" type="text" placeholder="Page No.">
-                </div>
-              </div>
-            </div>
-          </td>
-
-          <td valign="middle">{{ calculateSize(file) }}</td>
-
-          <td align="right" class="hover-pointer">
-            <font-awesome-icon
-              icon="trash-alt"
-              @click="removeUpload(file.asset_name)"
-            />
-          </td>
-        </tr>
-      </table>
-    </div>
+    <asset ref="assets" />
+   
   </section>
 </template>
 
@@ -148,12 +91,9 @@
 import { mapState, mapMutations } from "vuex";
 import { sharetribe } from "@/mixins/sharetribe.js";
 import { scoreshelf } from "@/mixins/scoreshelf.js";
-import Format from "./Format";
 
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faUpload, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-library.add(faUpload, faTrashAlt);
+import Format from "./Format";
+import Asset from "./Asset"
 
 export default {
   data: function() {
@@ -171,7 +111,7 @@ export default {
   },
   props: ["isNewPiece", "pieceStatus"],
   components: {
-    FontAwesomeIcon, Format
+    Format, Asset
   },
   mixins: [sharetribe, scoreshelf],
   computed: {
@@ -181,7 +121,7 @@ export default {
     })
   },
   methods: {
-    ...mapMutations("dashboard", ["removeFromFileList", "setFileToBeRemoved"]),
+    ...mapMutations("dashboard", ["removeFromFileList"]),
     formatArgs: function() {
       const cleanData = this.sanitizeFormData();
       return {
@@ -229,24 +169,14 @@ export default {
       });
       return formats;
     },
-    removeUpload: function(fileName) {
-      this.fileList.forEach(file => {
-        if (file.asset_name == fileName) {
-          if (file.isStored) {
-            this.setFileToBeRemoved(fileName);
-            this.removeFromFileList(fileName);
-          } else {
-            this.removeFromFileList(fileName);
-          }
-        }
-      });
-    },
     clearFormData: function() {
       for (const field in this.fieldData) {
         this.fieldData[field] = "";
       }
       this.fileList.forEach(file => this.removeFromFileList(file.asset_name));
       this.$refs.formats.formats = null;
+
+      this.$refs.assets.isThumb = {};
       return true;
     }
   },
