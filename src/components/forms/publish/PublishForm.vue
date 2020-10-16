@@ -220,7 +220,7 @@ export default {
         }
       }
 
-      cleanFormData.publicData.formats = this.$refs.formats.formats;
+      cleanFormData.publicData.formats = this.formatFormatData();
       return cleanFormData;
     },
     formatAssetData: function() {
@@ -232,6 +232,16 @@ export default {
         assetData.push(thisFileData);
       });
       return assetData;
+    },
+    formatFormatData: function() {
+      const formats = this.$refs.formats.formats;
+      formats.forEach(format => {
+        format.assets = format.assets.map(asset => {
+          const thisFile = this.fileList.find(file => file.asset_name == asset);
+          return thisFile._id;
+        });
+      });
+      return formats;
     },
     removeUpload: function(fileName) {
       this.fileList.forEach(file => {

@@ -133,14 +133,11 @@ export default {
   },
   watch: {
     publishModalEditData: function(newData) {
-      // if we've opened an existing work
-      if (newData?.attributes?.publicData?.formats) {
+      if (newData?.attributes?.publicData?.formats) { // if we've opened an existing work
         this.formats = newData.attributes.publicData.formats;
-        // if we're closing the modal
-      } else if (newData == null) {
+      } else if (newData == null) { // if we're closing the modal
         this.formats = null;
-        // if it's a new work
-      } else {
+      } else { // if it's a new work
         this.formats = [this.getBlankFormat()];
       }
     },
@@ -148,7 +145,16 @@ export default {
       const newFileList = newData.map(file => file.asset_name);
       
       if (this.formats != null) {
-        // loop through the formats' assets and filter out anything that's not there 
+        // first swapout the asset ids for the asset name
+        // this is used on modal open 
+        this.formats.forEach(format => {
+          format.assets = format.assets.map(asset => {
+            const thisFile = this.fileList.find(file => file._id == asset);
+            return thisFile.asset_name;
+          });
+        });
+        // loop through the formats' assets and filter out anything that's not there
+        // this is used when you delete an asset file
         this.formats.forEach(format => {
           format.assets = format.assets.filter(asset => !(newFileList.indexOf(asset) == -1));
         })
