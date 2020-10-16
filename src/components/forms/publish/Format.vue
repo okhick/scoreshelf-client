@@ -34,12 +34,34 @@
         </button>
       </div>
 
-      <label class="label">Add file(s) to format</label>
-      <div class="select is-primary">
-        <select>
-          <option></option>
-          <option v-for="file in fileList" :key="file.asset_name">{{file.asset_name}}</option>
-        </select>
+       <table class="table is-fullwidth is-narrow" v-show="format.assets.length > 0">
+        <tr v-for="asset in format.assets" :key="asset">
+          <td valign="middle">
+            {{ asset }}
+          </td>
+          <td align="right" class="hover-pointer">
+            <font-awesome-icon
+              icon="times"
+              @click="removeAsset(asset, format.formatId)"
+            />
+          </td>
+        </tr>
+      </table>
+
+      <div v-show="(fileList.length > 0)">
+        <label class="label">Add file(s) to format</label>
+        <div class="select is-primary">
+          <select @change="newAssetSelected($event, format.formatId)">
+            <option value=""></option>
+            <option 
+              v-for="file in fileList" 
+              :key="file.asset_name"
+              :value="file.asset_name"
+            >
+              {{file.asset_name}}
+            </option>
+          </select>
+        </div>
       </div>
       <hr>
     </div>
@@ -52,16 +74,18 @@
 
 <script>
 import { mapState } from "vuex";
+import { scoreshelf } from "@/mixins/scoreshelf.js";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faTrash, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-library.add(faPlus, faTrash);
+library.add(faPlus, faTrash, faTimes);
 
 export default {
   components: {
     FontAwesomeIcon
   },
+  mixins: [scoreshelf],
   data() {
     return {
       formats: null
@@ -75,7 +99,7 @@ export default {
       return Date.now();
     },
     getBlankFormat: function() {
-      return { formatId: this.getFormatId(), format: "", price: "" };
+      return { formatId: this.getFormatId(), format: "", price: "", assets: [] };
     },
     removeFormat: function(formatId) {
       if (this.formats.length > 1) {
@@ -86,7 +110,20 @@ export default {
       } else {
         this.formats = [this.getBlankFormat()];
       }
-    }
+    },
+    newAssetSelected: function(event, formatId) {
+      const selectedAsset = event.target.value;
+      const thisFormat = this.formats.find(format => format.formatId == formatId);
+
+      // make sure it's not the blank option or an already chosen option
+      if (selectedAsset != "" && thisFormat.assets.indexOf(selectedAsset) == -1) {
+        thisFormat.assets.push(selectedAsset);
+      }
+    },
+    removeAsset: function(assetToRemove, formatId) {
+      const thisFormat = this.formats.find(format => format.formatId == formatId);
+      thisFormat.assets = thisFormat.assets.filter(asset => asset != assetToRemove);
+    },
   },
   computed: {
     ...mapState({
@@ -106,6 +143,16 @@ export default {
       } else {
         this.formats = [this.getBlankFormat()];
       }
+    },
+    fileList: function(newData) {
+      const newFileList = newData.map(file => file.asset_name);
+      
+      if (this.formats != null) {
+        // loop through the formats' assets and filter out anything that's not there 
+        this.formats.forEach(format => {
+          format.assets = format.assets.filter(asset => !(newFileList.indexOf(asset) == -1));
+        })
+      }
     }
   }
 };
@@ -117,5 +164,8 @@ export default {
 }
 .price-input {
   margin-right: 10px;
+}
+.hover-pointer:hover {
+  cursor: pointer;
 }
 </style>
