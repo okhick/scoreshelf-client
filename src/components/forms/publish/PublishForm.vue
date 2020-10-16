@@ -80,37 +80,6 @@
 
     <format ref="formats"></format>
 
-    <!-- <div class="field">
-      <label class="label">Format</label>
-      <div class="control">
-        <input
-          class="input"
-          type="text"
-          v-model="fieldData.format"
-          placeholder="Score and Parts"
-        />
-      </div>
-    </div> -->
-
-    <!-- <div class="field">
-      <label class="label">Price</label>
-      <div class="field is-expanded">
-        <div class="field has-addons">
-          <p class="control">
-            <a class="button is-static">$</a>
-          </p>
-          <p class="control is-expanded">
-            <input
-              class="input"
-              type="text"
-              v-model="fieldData.price"
-              placeholder="20"
-            />
-          </p>
-        </div>
-      </div>
-    </div> -->
-
     <hr />
 
     <div class="field bottom-margin">
@@ -137,15 +106,32 @@
       <table class="table is-fullwidth is-narrow" v-show="fileList.length > 0">
         <thead>
           <th>Filename</th>
+          <th>Thumbnail?</th>
           <th>Size</th>
           <th></th>
         </thead>
         <tr v-for="file in fileList" :key="file.asset_name">
+
           <td v-if="file.link" valign="middle">
             <a :href="file.link">{{ file.asset_name }}</a>
           </td>
           <td v-else valign="middle">{{ file.asset_name }}</td>
+
+          <td>
+            <div class="field is-horizontal">
+              <div class="field-body">
+                <div class="field">
+                  <input type="checkbox">
+                </div>
+                <div class="field page-picker">
+                  <input class="input is-small" type="text" placeholder="Page No.">
+                </div>
+              </div>
+            </div>
+          </td>
+
           <td valign="middle">{{ calculateSize(file) }}</td>
+
           <td align="right" class="hover-pointer">
             <font-awesome-icon
               icon="trash-alt"
@@ -295,5 +281,8 @@ export default {
 }
 .hover-pointer:hover {
   cursor: pointer;
+}
+.page-picker {
+  width: 15px;
 }
 </style>

@@ -26,11 +26,8 @@
           </div>
         </div>
 
-        <button class="button">
-          <font-awesome-icon
-            icon="trash-alt"
-            @click="removeFormat(format.formatId)"
-          />
+        <button class="button"  @click="removeFormat(format.formatId)">
+          <font-awesome-icon icon="trash-alt"/>
         </button>
       </div>
 
@@ -142,19 +139,21 @@ export default {
       }
     },
     fileList: function(newData) {
-      const newFileList = newData.map(file => file.asset_name);
-      
       if (this.formats != null) {
-        // first swapout the asset ids for the asset name
-        // this is used on modal open 
+        // first swapout the asset ids for the asset name, don't do anything if there's not match
+        // this is used on modal open
         this.formats.forEach(format => {
           format.assets = format.assets.map(asset => {
             const thisFile = this.fileList.find(file => file._id == asset);
-            return thisFile.asset_name;
+            if (thisFile !== undefined) {
+              return thisFile.asset_name;
+            } 
+            return asset;
           });
         });
         // loop through the formats' assets and filter out anything that's not there
         // this is used when you delete an asset file
+        const newFileList = newData.map(file => file.asset_name);
         this.formats.forEach(format => {
           format.assets = format.assets.filter(asset => !(newFileList.indexOf(asset) == -1));
         })
