@@ -17,10 +17,13 @@ export const scoreshelf = {
       });
     },
 
-    submitUpload: async function() {
-      let res = {};
+    submitUpload: async function(uploadParams) {
+      const res = {};
+
       if (this.areNewFiles()) {
-        res.uploadRes = await this.uploadNewFiles();
+        res.uploadRes = await this.uploadNewFiles(uploadParams);
+      } else {
+        res.updateMetadataRes = await this.updateAssetMetadata(uploadParams);
       }
 
       if (this.filesToBeRemoved.length > 0) {
@@ -29,7 +32,7 @@ export const scoreshelf = {
       return res;
     },
 
-    uploadNewFiles: async function() {
+    uploadNewFiles: async function(uploadParams) {
       const formData = new FormData();
 
       // create a 'unique key' for each file, push it into formdata
@@ -38,8 +41,9 @@ export const scoreshelf = {
           formData.append(`file_${index}`, file);
         }
       });
-      formData.append("sharetribe_user_id", this.user_id);
-      formData.append("sharetribe_listing_id", this.listing_id);
+
+      const assetMetadata = this.formatAssetMetadata(uploadParams);
+      formData.append("assetMetadata", assetMetadata);
 
       // send off the files. returns the files uploaded
       let res = await this.$axios.post("/uploadAsset", formData, {
@@ -62,6 +66,30 @@ export const scoreshelf = {
       // finally, remove it from the store
       this.clearToBeRemoved();
       return true;
+    },
+
+    updateAssetMetadata: async function(uploadParams) {
+      const assetMetadata = this.formatAssetMetadata(uploadParams);
+      const res = await this.$axios.post("/updateAssetMetadata", assetMetadata);
+      return res;
+    },
+
+    formatAssetMetadata: function(uploadParams) {
+      const formattedUploadParams = {};
+
+      formattedUploadParams.sharetribe_listing_id = this.listing_id;
+      formattedUploadParams.sharetribe_user_id = this.user_id;
+
+      // format the thumbnail settings
+      const formattedThumbnailSettings = {};
+      for (let thumbnail in uploadParams.thumbnailSettings) {
+        const file = this.fileList.find(file => file.asset_name == thumbnail);
+        formattedThumbnailSettings[file._id] =
+          uploadParams.thumbnailSettings[thumbnail];
+      }
+      formattedUploadParams.thumbnailSettings = formattedThumbnailSettings;
+
+      return formattedUploadParams;
     },
 
     hyrdateAssetData: async function(fileList, getLink) {

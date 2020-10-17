@@ -38,10 +38,18 @@
           <div class="field is-horizontal">
             <div class="field-body">
               <div class="field">
-                <input type="checkbox" @change="newThumbSelected(file.asset_name)">
+                <input 
+                  type="checkbox" 
+                  v-model="thumbnailSettings[file.asset_name].isThumbnail"
+                  @click="newThumbSelected($event, file.asset_name)"
+                >
               </div>
               <div class="field page-picker">
-                <input class="input is-small" type="text" placeholder="Page No." v-model="isThumbnail[file.asset_name].page">
+                <input 
+                  class="input is-small" 
+                  type="text" placeholder="Page No." 
+                  v-model="thumbnailSettings[file.asset_name].page"
+                >
               </div>
             </div>
           </div>
@@ -76,7 +84,7 @@ export default {
   mixins: [scoreshelf],
   data() {
     return {
-      isThumbnail: {},
+      thumbnailSettings: {},
     }
   },
   computed: {
@@ -98,15 +106,15 @@ export default {
         }
       });
     },
-    newThumbSelected: function(checkedAsset) {
-      for (let asset in this.isThumbnail) {
-        if (checkedAsset == asset) {
-          this.isThumbnail[checkedAsset].isThumbnail = true;
-        } else {
-          this.isThumbnail[checkedAsset].isThumbnail = this.makeBlankThumbnail();
+    newThumbSelected: function(event, checkedAsset) {
+      const isChecked = event.target.checked;
+      if(isChecked) {
+        for(let asset in this.thumbnailSettings) {
+          if (asset != checkedAsset) {
+            this.thumbnailSettings[asset] = this.makeBlankThumbnail()
+          }
         }
       }
-      
     },
     makeBlankThumbnail: function() {
       return { isThumbnail: false, page: null }
@@ -115,12 +123,12 @@ export default {
   watch: {
     fileList: function() {
       this.fileList.forEach(file => {
-        const thisThumb = this.isThumbnail[file.asset_name]
-        if (thisThumb === undefined) {
-          this.isThumbnail[file.asset_name] = this.makeBlankThumbnail();
+        if (this.thumbnailSettings[file.asset_name] === undefined) {
+          // because we're making these on the fly, we need to use $set to make them reactive
+          this.$set(this.thumbnailSettings, file.asset_name, { ...this.makeBlankThumbnail() })
         }
       });
-    }
+    },
   }
 }
 </script>

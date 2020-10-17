@@ -141,7 +141,10 @@ export default {
     // =========================
     createDraft: async function() {
       this.isLoading = true;
-      await this.submitUpload();
+
+      const uploadParams = { thumbnailSettings: this.getThumbnailSettings() };
+      await this.submitUpload(uploadParams);
+
       await this.SHARETRIBE.ownListings.createDraft({
         ...this.getFormattedArgs()
       });
@@ -150,7 +153,10 @@ export default {
     },
     updatePublication: async function() {
       this.isLoading = true;
-      await this.submitUpload();
+
+      const uploadParams = { thumbnailSettings: this.getThumbnailSettings() };
+      await this.submitUpload(uploadParams);
+
       await this.SHARETRIBE.ownListings.update({
         id: this.publishModalEditData.id.uuid,
         ...this.getFormattedArgs()
@@ -160,7 +166,10 @@ export default {
     },
     publishDraft: async function() {
       this.isLoading = true;
-      await this.submitUpload();
+
+      const uploadParams = { thumbnailSettings: this.getThumbnailSettings() };
+      await this.submitUpload(uploadParams);
+
       await this.SHARETRIBE.ownListings.update({
         id: this.publishModalEditData.id.uuid,
         ...this.getFormattedArgs()
@@ -187,7 +196,10 @@ export default {
     },
     republishPublication: async function() {
       this.isLoading = true;
-      await this.submitUpload();
+
+      const uploadParams = { thumbnailSettings: this.getThumbnailSettings() };
+      await this.submitUpload(uploadParams);
+
       // update just incase anyones changed anything
       await this.SHARETRIBE.ownListings.update({
         id: this.publishModalEditData.id.uuid,
@@ -227,6 +239,10 @@ export default {
     },
     closePublishDropdown: function() {
       this.publishDropDown.isActive = false;
+    },
+    getThumbnailSettings: function() {
+      // reach deep to get this. seems icky but works for now...
+      return this.$refs.form.$refs.assets.thumbnailSettings;
     }
   },
   computed: {

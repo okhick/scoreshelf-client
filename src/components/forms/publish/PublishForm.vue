@@ -150,13 +150,13 @@ export default {
       return cleanFormData;
     },
     formatAssetData: function() {
-      let assetData = [];
+      const assetData = [];
+
       this.fileList.forEach(file => {
-        let thisFileData = {
-          scoreshelf_id: file._id
-        };
+        const thisFileData = { scoreshelf_id: file._id };
         assetData.push(thisFileData);
       });
+
       return assetData;
     },
     formatFormatData: function() {
@@ -176,7 +176,7 @@ export default {
       this.fileList.forEach(file => this.removeFromFileList(file.asset_name));
       this.$refs.formats.formats = null;
 
-      this.$refs.assets.isThumb = {};
+      this.$refs.assets.thumbnailSettings = {};
       return true;
     }
   },
@@ -185,16 +185,12 @@ export default {
       // if newData.attributes is falsy, we're publishing from a blank
       if (newData != null && newData.attributes) {
         this.fieldData.title = newData.attributes.title;
-        this.fieldData.price = this.convertFromSharetribePrice(
-          newData.attributes.price
-        );
         this.fieldData.subtitle = newData.attributes.publicData.subtitle;
         this.fieldData.year = newData.attributes.publicData.year;
         this.fieldData.composer = newData.attributes.publicData.composer;
         this.fieldData.ensemble = newData.attributes.publicData.ensemble;
         this.fieldData.instrumentation =
           newData.attributes.publicData.instrumentation;
-        this.formatData = newData.attributes.publicData.formats;
       } else {
         for (const field in this.fieldData) {
           this.fieldData[field] = "";
