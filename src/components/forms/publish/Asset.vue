@@ -28,7 +28,6 @@
         <th></th>
       </thead>
       <tr v-for="file in fileList" :key="file.asset_name">
-
         <td v-if="file.link" valign="middle">
           <a :href="file.link">{{ file.asset_name }}</a>
         </td>
@@ -38,18 +37,19 @@
           <div class="field is-horizontal">
             <div class="field-body">
               <div class="field">
-                <input 
-                  type="checkbox" 
+                <input
+                  type="checkbox"
                   v-model="thumbnailSettings[file.asset_name].isThumbnail"
                   @click="newThumbSelected($event, file.asset_name)"
-                >
+                />
               </div>
               <div class="field page-picker">
-                <input 
-                  class="input is-small" 
-                  type="text" placeholder="Page No." 
+                <input
+                  class="input is-small"
+                  type="text"
+                  placeholder="Page No."
                   v-model="thumbnailSettings[file.asset_name].page"
-                >
+                />
               </div>
             </div>
           </div>
@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations } from "vuex";
 import { scoreshelf } from "@/mixins/scoreshelf.js";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -84,12 +84,12 @@ export default {
   mixins: [scoreshelf],
   data() {
     return {
-      thumbnailSettings: {},
-    }
+      thumbnailSettings: {}
+    };
   },
   computed: {
     ...mapState({
-      fileList: state => state.dashboard.fileList,
+      fileList: state => state.dashboard.fileList
     })
   },
   methods: {
@@ -108,16 +108,16 @@ export default {
     },
     newThumbSelected: function(event, checkedAsset) {
       const isChecked = event.target.checked;
-      if(isChecked) {
-        for(let asset in this.thumbnailSettings) {
+      if (isChecked) {
+        for (let asset in this.thumbnailSettings) {
           if (asset != checkedAsset) {
-            this.thumbnailSettings[asset] = this.makeBlankThumbnail()
+            this.thumbnailSettings[asset] = this.makeBlankThumbnail();
           }
         }
       }
     },
     makeBlankThumbnail: function() {
-      return { isThumbnail: false, page: null }
+      return { isThumbnail: false, page: null };
     }
   },
   watch: {
@@ -125,12 +125,21 @@ export default {
       this.fileList.forEach(file => {
         if (this.thumbnailSettings[file.asset_name] === undefined) {
           // because we're making these on the fly, we need to use $set to make them reactive
-          this.$set(this.thumbnailSettings, file.asset_name, { ...this.makeBlankThumbnail() })
+          this.$set(this.thumbnailSettings, file.asset_name, {
+            ...this.makeBlankThumbnail()
+          });
+        }
+        // loadup any settings that may alread exist
+        if (file.thumbnail_settings) {
+          this.thumbnailSettings[file.asset_name].isThumbnail =
+            file.thumbnail_settings.isThumbnail;
+          this.thumbnailSettings[file.asset_name].page =
+            file.thumbnail_settings.page;
         }
       });
-    },
+    }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -140,5 +149,4 @@ export default {
 .page-picker {
   width: 15px;
 }
-
 </style>

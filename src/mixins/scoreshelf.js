@@ -5,12 +5,12 @@ export const scoreshelf = {
     ...mapMutations("dashboard", [
       "addFileToFileList",
       "addScoreshelfIdToFile",
-      "clearToBeRemoved"
+      "clearToBeRemoved",
     ]),
 
     processUpload: function() {
       const newFiles = this.$refs.file.files;
-      newFiles.forEach(file => {
+      newFiles.forEach((file) => {
         file.isStored = false;
         file.asset_name = file.name; // we use asset name everywhere else, start from the beg
         this.addFileToFileList(file);
@@ -22,13 +22,13 @@ export const scoreshelf = {
 
       if (this.areNewFiles()) {
         res.uploadRes = await this.uploadNewFiles(uploadParams);
-      } else {
-        res.updateMetadataRes = await this.updateAssetMetadata(uploadParams);
       }
 
       if (this.filesToBeRemoved.length > 0) {
         res.deleteRes = await this.removeUploads();
       }
+
+      res.updateMetadataRes = await this.updateAssetMetadata(uploadParams);
       return res;
     },
 
@@ -42,14 +42,15 @@ export const scoreshelf = {
         }
       });
 
-      const assetMetadata = this.formatAssetMetadata(uploadParams);
-      formData.append("assetMetadata", assetMetadata);
+      const assetMetadata = this.formatAssetMetadata(uploadParams, "new");
+      // stringify this so we can stuff it in a form field
+      formData.append("assetMetadata", JSON.stringify(assetMetadata));
 
       // send off the files. returns the files uploaded
       let res = await this.$axios.post("/uploadAsset", formData, {
         headers: {
-          "Content-Type": "multipart/form-data"
-        }
+          "Content-Type": "multipart/form-data",
+        },
       });
       this.addScoreshelfIdToFile(res.data);
       return res;
@@ -59,8 +60,8 @@ export const scoreshelf = {
       // call the server to delete db and asset
       await this.$axios.delete("/deleteAsset", {
         data: {
-          filesToRemove: this.filesToBeRemoved
-        }
+          filesToRemove: this.filesToBeRemoved,
+        },
       });
 
       // finally, remove it from the store
@@ -69,34 +70,46 @@ export const scoreshelf = {
     },
 
     updateAssetMetadata: async function(uploadParams) {
-      const assetMetadata = this.formatAssetMetadata(uploadParams);
+      const assetMetadata = this.formatAssetMetadata(uploadParams, "existing");
       const res = await this.$axios.post("/updateAssetMetadata", assetMetadata);
       return res;
     },
 
-    formatAssetMetadata: function(uploadParams) {
+    formatAssetMetadata: function(uploadParams, action) {
       const formattedUploadParams = {};
 
       formattedUploadParams.sharetribe_listing_id = this.listing_id;
       formattedUploadParams.sharetribe_user_id = this.user_id;
 
-      // format the thumbnail settings
       const formattedThumbnailSettings = {};
-      for (let thumbnail in uploadParams.thumbnailSettings) {
-        const file = this.fileList.find(file => file.asset_name == thumbnail);
-        formattedThumbnailSettings[file._id] =
-          uploadParams.thumbnailSettings[thumbnail];
+      switch (action) {
+        case "new": {
+          let newFiles = this.fileList.filter((file) => !file.isStored);
+          newFiles.forEach((file) => {
+            formattedThumbnailSettings[file.asset_name] =
+              uploadParams.thumbnailSettings[file.asset_name];
+          });
+          break;
+        }
+        case "existing": {
+          let existingFiles = this.fileList.filter((file) => file.isStored);
+          existingFiles.forEach((file) => {
+            formattedThumbnailSettings[file._id] =
+              uploadParams.thumbnailSettings[file.asset_name];
+          });
+          break;
+        }
       }
-      formattedUploadParams.thumbnailSettings = formattedThumbnailSettings;
 
+      formattedUploadParams.thumbnailSettings = formattedThumbnailSettings;
       return formattedUploadParams;
     },
 
     hyrdateAssetData: async function(fileList, getLink) {
-      const scoreshelf_ids = fileList.map(file => file.scoreshelf_id);
+      const scoreshelf_ids = fileList.map((file) => file.scoreshelf_id);
       const hydratedAssets = await this.$axios.post("/getAssetdata", {
         scoreshelf_ids: scoreshelf_ids,
-        get_link: getLink
+        get_link: getLink,
       });
       return hydratedAssets;
     },
@@ -133,14 +146,14 @@ export const scoreshelf = {
       } catch (e) {
         console.log(e);
       }
-    }
+    },
   },
   computed: {
     ...mapState({
-      fileList: state => state.dashboard.fileList,
-      user_id: state => state.sharetribe.currentUser.id.uuid,
-      listing_id: state => state.dashboard.publishModalEditData.id.uuid,
-      filesToBeRemoved: state => state.dashboard.filesToBeRemoved
-    })
-  }
+      fileList: (state) => state.dashboard.fileList,
+      user_id: (state) => state.sharetribe.currentUser.id.uuid,
+      listing_id: (state) => state.dashboard.publishModalEditData.id.uuid,
+      filesToBeRemoved: (state) => state.dashboard.filesToBeRemoved,
+    }),
+  },
 };
