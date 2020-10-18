@@ -15,11 +15,7 @@
 
           <!-- If user is logged in -->
           <div v-if="isLoggedIn" class="buttons">
-            <div
-              class="button is-primary"
-              :class="{ 'is-loading': isLoading }"
-              @click="logout"
-            >
+            <div class="button is-primary" :class="{ 'is-loading': isLoading }" @click="logout">
               <strong>Log Out</strong>
             </div>
             <router-link :to="{ name: 'Dashboard' }" class="button is-dark">
@@ -36,38 +32,38 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
-import { sharetribe } from "../../mixins/sharetribe.js";
-import search from "./Search";
+import { mapState, mapMutations } from 'vuex';
+import { sharetribe } from '../../mixins/sharetribe.js';
+import search from './Search';
 
 export default {
-  name: "Navbar",
+  name: 'Navbar',
   mixins: [sharetribe],
   components: {
-    search
+    search,
   },
   data: function() {
     return {
-      isLoading: false
+      isLoading: false,
     };
   },
   computed: {
     ...mapState({
       SHARETRIBE: state => state.sharetribe.SHARETRIBE,
-      isLoggedIn: state => state.sharetribe.isLoggedIn
-    })
+      isLoggedIn: state => state.sharetribe.isLoggedIn,
+    }),
   },
   methods: {
-    ...mapMutations("sharetribe", ["updateIsLoggedIn"]),
+    ...mapMutations('sharetribe', ['updateIsLoggedIn']),
 
     logout: async function() {
       this.isLoading = true;
       await this.SHARETRIBE.logout();
       this.updateIsLoggedIn();
-      this.$router.push({ path: "/" });
+      this.$router.push({ path: '/' });
       this.isLoading = false;
-    }
-  }
+    },
+  },
 };
 </script>
 

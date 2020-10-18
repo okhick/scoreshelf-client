@@ -6,12 +6,12 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex';
 
 export default {
   data() {
     return {
-      displayName: ""
+      displayName: '',
     };
   },
   async mounted() {
@@ -21,8 +21,8 @@ export default {
     ...mapState({
       SHARETRIBE: state => state.sharetribe.SHARETRIBE,
       isLoggedIn: state => state.sharetribe.isLoggedIn,
-      currentUser: state => state.sharetribe.currentUser
-    })
-  }
+      currentUser: state => state.sharetribe.currentUser,
+    }),
+  },
 };
 </script>

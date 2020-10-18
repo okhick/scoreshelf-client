@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       hideInfo: false,
-      publicPath: process.env.BASE_URL
+      publicPath: process.env.BASE_URL,
     };
   },
   props: { listing: Object },
@@ -36,8 +36,8 @@ export default {
       return this.listing.attributes.publicData.ensemble
         ? this.listing.attributes.publicData.ensemble
         : this.listing.attributes.publicData.instrumentation;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -56,14 +56,14 @@ export default {
 /* Stuff for the info */
 .info {
   padding: 20px;
-  font-family: "Fira Sans";
+  font-family: 'Fira Sans';
   font-weight: 200;
   font-size: 16px;
   color: black;
 }
 
 .result-title {
-  font-family: "Fira Sans", sans-serif;
+  font-family: 'Fira Sans', sans-serif;
   font-weight: 500;
   font-size: 24px;
   padding-top: 20px;
@@ -76,13 +76,13 @@ export default {
 }
 
 .ensemble {
-  font-family: "Ubuntu";
+  font-family: 'Ubuntu';
   font-weight: 300;
   padding-top: 20px;
 }
 
 .human {
-  font-family: "Ubuntu";
+  font-family: 'Ubuntu';
   font-weight: 300;
 }
 

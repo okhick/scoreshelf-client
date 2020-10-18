@@ -3,12 +3,7 @@
     <label class="label">Format and Price</label>
     <div v-for="format in formats" :key="format.formatId">
       <div class="field is-horizontal">
-        <input
-          class="input field-body"
-          type="text"
-          placeholder="Format"
-          v-model="format.format"
-        />
+        <input class="input field-body" type="text" placeholder="Format" v-model="format.format" />
 
         <div class="field is-expanded field-body">
           <div class="field has-addons">
@@ -16,51 +11,39 @@
               <a class="button is-static">$</a>
             </p>
             <p class="control is-expanded">
-              <input
-                class="input"
-                type="text"
-                placeholder="20"
-                v-model="format.price"
-              />
+              <input class="input" type="text" placeholder="20" v-model="format.price" />
             </p>
           </div>
         </div>
 
-        <button class="button"  @click="removeFormat(format.formatId)">
-          <font-awesome-icon icon="trash-alt"/>
+        <button class="button" @click="removeFormat(format.formatId)">
+          <font-awesome-icon icon="trash-alt" />
         </button>
       </div>
 
-       <table class="table is-fullwidth is-narrow" v-show="format.assets.length > 0">
+      <table class="table is-fullwidth is-narrow" v-show="format.assets.length > 0">
         <tr v-for="asset in format.assets" :key="asset">
           <td valign="middle">
             {{ asset }}
           </td>
           <td align="right" class="hover-pointer">
-            <font-awesome-icon
-              icon="times"
-              @click="removeAsset(asset, format.formatId)"
-            />
+            <font-awesome-icon icon="times" @click="removeAsset(asset, format.formatId)" />
           </td>
         </tr>
       </table>
 
-      <div v-show="(fileList.length > 0)">
+      <div v-show="fileList.length > 0">
         <label class="label">Add file(s) to format</label>
         <div class="select is-primary">
           <select @change="newAssetSelected($event, format.formatId)">
             <option value=""></option>
-            <option 
-              v-for="file in fileList" 
-              :key="file.asset_name"
-              :value="file.asset_name"
-            >
-              {{file.asset_name}}
+            <option v-for="file in fileList" :key="file.asset_name" :value="file.asset_name">
+              {{ file.asset_name }}
             </option>
           </select>
         </div>
       </div>
-      <hr>
+      <hr />
     </div>
 
     <button @click="addFormat" class="button is-outlined">
@@ -70,22 +53,22 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { scoreshelf } from "@/mixins/scoreshelf.js";
+import { mapState } from 'vuex';
+import { scoreshelf } from '@/mixins/scoreshelf.js';
 
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faPlus, faTrash, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faPlus, faTrash, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faPlus, faTrash, faTimes);
 
 export default {
   components: {
-    FontAwesomeIcon
+    FontAwesomeIcon,
   },
   mixins: [scoreshelf],
   data() {
     return {
-      formats: null
+      formats: null,
     };
   },
   methods: {
@@ -96,13 +79,11 @@ export default {
       return Date.now();
     },
     getBlankFormat: function() {
-      return { formatId: this.getFormatId(), format: "", price: "", assets: [] };
+      return { formatId: this.getFormatId(), format: '', price: '', assets: [] };
     },
     removeFormat: function(formatId) {
       if (this.formats.length > 1) {
-        const remainingFormats = this.formats.filter(
-          format => format.formatId != formatId
-        );
+        const remainingFormats = this.formats.filter(format => format.formatId != formatId);
         this.formats = remainingFormats;
       } else {
         this.formats = [this.getBlankFormat()];
@@ -113,7 +94,7 @@ export default {
       const thisFormat = this.formats.find(format => format.formatId == formatId);
 
       // make sure it's not the blank option or an already chosen option
-      if (selectedAsset != "" && thisFormat.assets.indexOf(selectedAsset) == -1) {
+      if (selectedAsset != '' && thisFormat.assets.indexOf(selectedAsset) == -1) {
         thisFormat.assets.push(selectedAsset);
       }
     },
@@ -126,15 +107,18 @@ export default {
     ...mapState({
       publishModalEditData: state => state.dashboard.publishModalEditData,
       fileList: state => state.dashboard.fileList,
-    })
+    }),
   },
   watch: {
     publishModalEditData: function(newData) {
-      if (newData?.attributes?.publicData?.formats) { // if we've opened an existing work
+      if (newData?.attributes?.publicData?.formats) {
+        // if we've opened an existing work
         this.formats = newData.attributes.publicData.formats;
-      } else if (newData == null) { // if we're closing the modal
+      } else if (newData == null) {
+        // if we're closing the modal
         this.formats = null;
-      } else { // if it's a new work
+      } else {
+        // if it's a new work
         this.formats = [this.getBlankFormat()];
       }
     },
@@ -147,7 +131,7 @@ export default {
             const thisFile = this.fileList.find(file => file._id == asset);
             if (thisFile !== undefined) {
               return thisFile.asset_name;
-            } 
+            }
             return asset;
           });
         });
@@ -156,10 +140,10 @@ export default {
         const newFileList = newData.map(file => file.asset_name);
         this.formats.forEach(format => {
           format.assets = format.assets.filter(asset => !(newFileList.indexOf(asset) == -1));
-        })
+        });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

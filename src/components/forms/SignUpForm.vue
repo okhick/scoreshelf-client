@@ -71,25 +71,25 @@
 </style>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex';
 
 export default {
-  name: "SignUpForm",
+  name: 'SignUpForm',
   data: function() {
     return {
-      email: "",
-      password: "",
-      passwordAgain: "",
-      firstName: "",
-      lastName: "",
-      displayName: "",
-      isLoading: false
+      email: '',
+      password: '',
+      passwordAgain: '',
+      firstName: '',
+      lastName: '',
+      displayName: '',
+      isLoading: false,
     };
   },
   methods: {
     // TODO: This needs validation
     loginActually: function() {
-      this.$router.push({ name: "Login" });
+      this.$router.push({ name: 'Login' });
     },
     signup_attempt: async function() {
       try {
@@ -99,7 +99,7 @@ export default {
           password: this.password,
           firstName: this.firstName,
           lastName: this.lastName,
-          displayName: this.displayName
+          displayName: this.displayName,
         });
         console.log(signupRes);
         this.isLoading = false;
@@ -111,12 +111,12 @@ export default {
           // do something with this error
         }
       }
-    }
+    },
   },
   computed: {
     ...mapState({
-      SHARETRIBE: state => state.sharetribe.SHARETRIBE
-    })
-  }
+      SHARETRIBE: state => state.sharetribe.SHARETRIBE,
+    }),
+  },
 };
 </script>

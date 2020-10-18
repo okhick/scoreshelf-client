@@ -21,9 +21,7 @@ export const dashboard = {
       state.fileList.push(payload);
     },
     removeFromFileList(state, payload) {
-      state.fileList = state.fileList.filter(
-        file => file.asset_name !== payload
-      );
+      state.fileList = state.fileList.filter(file => file.asset_name !== payload);
     },
     setFileToBeRemoved(state, payload) {
       state.fileList.forEach(file => {
@@ -44,6 +42,6 @@ export const dashboard = {
           file._id = scoreshelf_id;
         }
       });
-    }
-  }
+    },
+  },
 };

@@ -3,7 +3,7 @@ export const search = {
   state: {
     searchIsLoading: false,
     searchListingData: [],
-    searchResultsMeta: {}
+    searchResultsMeta: {},
   },
   mutations: {
     toggleSearchIsLoading(state) {
@@ -14,6 +14,6 @@ export const search = {
     },
     addSearchResultsMeta(state, payload) {
       state.searchResultsMeta = payload;
-    }
-  }
+    },
+  },
 };

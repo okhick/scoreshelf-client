@@ -1,16 +1,16 @@
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations } from 'vuex';
 
 export const scoreshelf = {
   methods: {
-    ...mapMutations("dashboard", [
-      "addFileToFileList",
-      "addScoreshelfIdToFile",
-      "clearToBeRemoved",
+    ...mapMutations('dashboard', [
+      'addFileToFileList',
+      'addScoreshelfIdToFile',
+      'clearToBeRemoved',
     ]),
 
     processUpload: function() {
       const newFiles = this.$refs.file.files;
-      newFiles.forEach((file) => {
+      newFiles.forEach(file => {
         file.isStored = false;
         file.asset_name = file.name; // we use asset name everywhere else, start from the beg
         this.addFileToFileList(file);
@@ -42,14 +42,14 @@ export const scoreshelf = {
         }
       });
 
-      const assetMetadata = this.formatAssetMetadata(uploadParams, "new");
+      const assetMetadata = this.formatAssetMetadata(uploadParams, 'new');
       // stringify this so we can stuff it in a form field
-      formData.append("assetMetadata", JSON.stringify(assetMetadata));
+      formData.append('assetMetadata', JSON.stringify(assetMetadata));
 
       // send off the files. returns the files uploaded
-      let res = await this.$axios.post("/uploadAsset", formData, {
+      let res = await this.$axios.post('/uploadAsset', formData, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
         },
       });
       this.addScoreshelfIdToFile(res.data);
@@ -58,7 +58,7 @@ export const scoreshelf = {
 
     removeUploads: async function() {
       // call the server to delete db and asset
-      await this.$axios.delete("/deleteAsset", {
+      await this.$axios.delete('/deleteAsset', {
         data: {
           filesToRemove: this.filesToBeRemoved,
         },
@@ -70,8 +70,8 @@ export const scoreshelf = {
     },
 
     updateAssetMetadata: async function(uploadParams) {
-      const assetMetadata = this.formatAssetMetadata(uploadParams, "existing");
-      const res = await this.$axios.post("/updateAssetMetadata", assetMetadata);
+      const assetMetadata = this.formatAssetMetadata(uploadParams, 'existing');
+      const res = await this.$axios.post('/updateAssetMetadata', assetMetadata);
       return res;
     },
 
@@ -83,19 +83,18 @@ export const scoreshelf = {
 
       const formattedThumbnailSettings = {};
       switch (action) {
-        case "new": {
-          let newFiles = this.fileList.filter((file) => !file.isStored);
-          newFiles.forEach((file) => {
+        case 'new': {
+          let newFiles = this.fileList.filter(file => !file.isStored);
+          newFiles.forEach(file => {
             formattedThumbnailSettings[file.asset_name] =
               uploadParams.thumbnailSettings[file.asset_name];
           });
           break;
         }
-        case "existing": {
-          let existingFiles = this.fileList.filter((file) => file.isStored);
-          existingFiles.forEach((file) => {
-            formattedThumbnailSettings[file._id] =
-              uploadParams.thumbnailSettings[file.asset_name];
+        case 'existing': {
+          let existingFiles = this.fileList.filter(file => file.isStored);
+          existingFiles.forEach(file => {
+            formattedThumbnailSettings[file._id] = uploadParams.thumbnailSettings[file.asset_name];
           });
           break;
         }
@@ -106,8 +105,8 @@ export const scoreshelf = {
     },
 
     hyrdateAssetData: async function(fileList, getLink) {
-      const scoreshelf_ids = fileList.map((file) => file.scoreshelf_id);
-      const hydratedAssets = await this.$axios.post("/getAssetdata", {
+      const scoreshelf_ids = fileList.map(file => file.scoreshelf_id);
+      const hydratedAssets = await this.$axios.post('/getAssetdata', {
         scoreshelf_ids: scoreshelf_ids,
         get_link: getLink,
       });
@@ -128,20 +127,20 @@ export const scoreshelf = {
 
     // ripped from stackoverflow
     calculateSize: function(file) {
-      const fSExt = ["Bytes", "KB", "MB", "GB"];
+      const fSExt = ['Bytes', 'KB', 'MB', 'GB'];
       let _size = file.size;
       let i = 0;
       while (_size > 900) {
         _size /= 1024;
         i++;
       }
-      const exactSize = Math.round(_size * 100) / 100 + " " + fSExt[i];
+      const exactSize = Math.round(_size * 100) / 100 + ' ' + fSExt[i];
       return exactSize;
     },
 
     testScoreshelf: async function() {
       try {
-        let res = await this.$axios.get("/test");
+        let res = await this.$axios.get('/test');
         console.log(res);
       } catch (e) {
         console.log(e);
@@ -150,10 +149,10 @@ export const scoreshelf = {
   },
   computed: {
     ...mapState({
-      fileList: (state) => state.dashboard.fileList,
-      user_id: (state) => state.sharetribe.currentUser.id.uuid,
-      listing_id: (state) => state.dashboard.publishModalEditData.id.uuid,
-      filesToBeRemoved: (state) => state.dashboard.filesToBeRemoved,
+      fileList: state => state.dashboard.fileList,
+      user_id: state => state.sharetribe.currentUser.id.uuid,
+      listing_id: state => state.dashboard.publishModalEditData.id.uuid,
+      filesToBeRemoved: state => state.dashboard.filesToBeRemoved,
     }),
   },
 };

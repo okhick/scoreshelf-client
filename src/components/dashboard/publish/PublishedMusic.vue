@@ -26,17 +26,11 @@
           <td>
             <div class="field is-grouped">
               <div class="control">
-                <div
-                  class="tags has-addons"
-                  v-if="piece.attributes.state == 'draft'"
-                >
+                <div class="tags has-addons" v-if="piece.attributes.state == 'draft'">
                   <span class="tag is-dark">Draft</span>
                   <span class="tag is-info"></span>
                 </div>
-                <div
-                  class="tags has-addons"
-                  v-if="piece.attributes.state == 'closed'"
-                >
+                <div class="tags has-addons" v-if="piece.attributes.state == 'closed'">
                   <span class="tag is-dark">Disabled</span>
                   <span class="tag is-redorange"></span>
                 </div>
@@ -53,14 +47,10 @@
           </td>
           <!-- <td>{{ piece.attributes.state }}</td> -->
           <td>
-            {{ piece.attributes.createdAt | moment("MMMM Do YYYY, h:mm a") }}
+            {{ piece.attributes.createdAt | moment('MMMM Do YYYY, h:mm a') }}
           </td>
           <td class="hover-pointer">
-            <font-awesome-icon
-              icon="edit"
-              class="action-buttons"
-              @click="openEditModal(piece)"
-            />
+            <font-awesome-icon icon="edit" class="action-buttons" @click="openEditModal(piece)" />
           </td>
         </tr>
       </tbody>
@@ -73,39 +63,39 @@
 </template>
 
 <script>
-import Vue from "vue";
-import { mapState, mapMutations } from "vuex";
-import { scoreshelf } from "@/mixins/scoreshelf";
-Vue.use(require("vue-moment"));
+import Vue from 'vue';
+import { mapState, mapMutations } from 'vuex';
+import { scoreshelf } from '@/mixins/scoreshelf';
+Vue.use(require('vue-moment'));
 
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faEdit);
 library.add(faTrashAlt);
 
 export default {
   components: {
-    FontAwesomeIcon
+    FontAwesomeIcon,
   },
   mixins: [scoreshelf],
   data: function() {
     return {
       hasPublishedMusic: false,
-      reloadTable: 0
+      reloadTable: 0,
     };
   },
   methods: {
-    ...mapMutations("dashboard", [
-      "togglePublishModal",
-      "editPublishModalEditData",
-      "addFileToFileList"
+    ...mapMutations('dashboard', [
+      'togglePublishModal',
+      'editPublishModalEditData',
+      'addFileToFileList',
     ]),
     createNewDraft: async function() {
       // actually create a temp draft so we can have an uuid
       // we need a uuid up front so save assets
       let draft = await this.SHARETRIBE.ownListings.createDraft({
-        title: `new_draft_${this.currentUser.id.uuid}`
+        title: `new_draft_${this.currentUser.id.uuid}`,
       });
       draft.data.data.isBlankDraft = true;
       this.editPublishModalEditData(draft.data.data);
@@ -139,10 +129,10 @@ export default {
     formatsAvailable: function(piece) {
       if (piece.attributes.publicData.formats) {
         const formatsAvailable = piece.attributes.publicData.formats.map(format => format.format);
-        return formatsAvailable.join(", ");
+        return formatsAvailable.join(', ');
       }
-      return "";
-    }
+      return '';
+    },
   },
   async mounted() {
     this.getPublishedMusic();
@@ -151,9 +141,8 @@ export default {
     ...mapState({
       SHARETRIBE: state => state.sharetribe.SHARETRIBE,
       currentUser: state => state.sharetribe.currentUser,
-      publishModalOpen: state => state.dashboard.publishModalOpen
-    })
-
+      publishModalOpen: state => state.dashboard.publishModalOpen,
+    }),
   },
   watch: {
     publishModalOpen: async function(newModalState) {
@@ -161,13 +150,13 @@ export default {
         await this.getPublishedMusic();
         this.reloadTable += 1;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/index.scss";
+@import '@/styles/index.scss';
 
 .subtitle.is-3.level-left {
   margin-bottom: 0;

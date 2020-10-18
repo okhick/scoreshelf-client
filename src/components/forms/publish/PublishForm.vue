@@ -3,24 +3,14 @@
     <div class="field">
       <label class="label">Title</label>
       <div class="control">
-        <input
-          class="input"
-          type="text"
-          v-model="fieldData.title"
-          placeholder="Title"
-        />
+        <input class="input" type="text" v-model="fieldData.title" placeholder="Title" />
       </div>
     </div>
 
     <div class="field">
       <label class="label">Subtitle</label>
       <div class="control">
-        <input
-          class="input"
-          type="text"
-          v-model="fieldData.subtitle"
-          placeholder="Subtitle"
-        />
+        <input class="input" type="text" v-model="fieldData.subtitle" placeholder="Subtitle" />
       </div>
     </div>
 
@@ -29,12 +19,7 @@
     <div class="field">
       <label class="label">Year of Completion</label>
       <div class="control">
-        <input
-          class="input"
-          type="text"
-          v-model="fieldData.year"
-          placeholder="2020"
-        />
+        <input class="input" type="text" v-model="fieldData.year" placeholder="2020" />
       </div>
     </div>
 
@@ -83,52 +68,52 @@
     <hr />
 
     <asset ref="assets" />
-   
   </section>
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
-import { sharetribe } from "@/mixins/sharetribe.js";
-import { scoreshelf } from "@/mixins/scoreshelf.js";
+import { mapState, mapMutations } from 'vuex';
+import { sharetribe } from '@/mixins/sharetribe.js';
+import { scoreshelf } from '@/mixins/scoreshelf.js';
 
-import Format from "./Format";
-import Asset from "./Asset"
+import Format from './Format';
+import Asset from './Asset';
 
 export default {
   data: function() {
     return {
       fieldData: {
-        title: "",
-        subtitle: "",
-        year: "",
-        composer: "",
-        ensemble: "",
-        instrumentation: "",
+        title: '',
+        subtitle: '',
+        year: '',
+        composer: '',
+        ensemble: '',
+        instrumentation: '',
       },
-      reloadAssetTable: 0
+      reloadAssetTable: 0,
     };
   },
-  props: ["isNewPiece", "pieceStatus"],
+  props: ['isNewPiece', 'pieceStatus'],
   components: {
-    Format, Asset
+    Format,
+    Asset,
   },
   mixins: [sharetribe, scoreshelf],
   computed: {
     ...mapState({
       publishModalEditData: state => state.dashboard.publishModalEditData,
       fileList: state => state.dashboard.fileList,
-    })
+    }),
   },
   methods: {
-    ...mapMutations("dashboard", ["removeFromFileList"]),
+    ...mapMutations('dashboard', ['removeFromFileList']),
     formatArgs: function() {
       const cleanData = this.sanitizeFormData();
       return {
         ...cleanData,
         privateData: {
-          assetData: this.formatAssetData()
-        }
+          assetData: this.formatAssetData(),
+        },
       };
     },
     sanitizeFormData: function() {
@@ -137,11 +122,11 @@ export default {
       for (const field in this.fieldData) {
         if (this.fieldData[field] !== void 0) {
           switch (field) {
-            case "title":
+            case 'title':
               cleanFormData.title = this.fieldData[field];
               break;
             default:
-              cleanFormData["publicData"][field] = this.fieldData[field];
+              cleanFormData['publicData'][field] = this.fieldData[field];
           }
         }
       }
@@ -171,14 +156,14 @@ export default {
     },
     clearFormData: function() {
       for (const field in this.fieldData) {
-        this.fieldData[field] = "";
+        this.fieldData[field] = '';
       }
       this.fileList.forEach(file => this.removeFromFileList(file.asset_name));
       this.$refs.formats.formats = null;
 
       this.$refs.assets.thumbnailSettings = {};
       return true;
-    }
+    },
   },
   watch: {
     publishModalEditData: function(newData) {
@@ -189,15 +174,14 @@ export default {
         this.fieldData.year = newData.attributes.publicData.year;
         this.fieldData.composer = newData.attributes.publicData.composer;
         this.fieldData.ensemble = newData.attributes.publicData.ensemble;
-        this.fieldData.instrumentation =
-          newData.attributes.publicData.instrumentation;
+        this.fieldData.instrumentation = newData.attributes.publicData.instrumentation;
       } else {
         for (const field in this.fieldData) {
-          this.fieldData[field] = "";
+          this.fieldData[field] = '';
         }
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
