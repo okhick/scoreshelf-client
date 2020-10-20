@@ -6,7 +6,7 @@ $violet: #7a28cb;
 $redOrange: #ff521b;
 
 $primary: $silver;
-$link: $lime;
+$link: $violet;
 $info: $lime;
 // $success: $green;
 // $warning: $yellow;
@@ -14,8 +14,9 @@ $info: $lime;
 $dark: $oxford;
 // $text: $grey-dark;
 
-
 $background: $platinum;
 
-@import "bulma/bulma"
+@import "bulma/bulma";
+
+
 // https://coolors.co/eaeaea-000923-7a7978-ceff1a-7a28cb-ff521b

@@ -19,12 +19,7 @@
     <div class="field">
       <label class="label">Password</label>
       <div class="control">
-        <input
-          class="input"
-          type="password"
-          v-model="password"
-          v-on:keyup.enter="login_attempt"
-        />
+        <input class="input" type="password" v-model="password" v-on:keyup.enter="login_attempt" />
       </div>
     </div>
 
@@ -56,24 +51,24 @@
 </style>
 
 <script>
-import { mapState } from "vuex";
-import { sharetribe } from "../../mixins/sharetribe.js";
+import { mapState } from 'vuex';
+import { sharetribe } from '../../mixins/sharetribe.js';
 
 export default {
-  name: "LoginForm",
+  name: 'LoginForm',
   mixins: [sharetribe],
   data: function() {
     return {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
       login_error: false,
-      isLoading: false
+      isLoading: false,
     };
   },
   methods: {
     // TODO: This needs validation
     signUpActually: function() {
-      this.$router.push({ name: "SignUp" });
+      this.$router.push({ name: 'SignUp' });
     },
 
     login_attempt: async function() {
@@ -82,11 +77,11 @@ export default {
         // validate creds
         await this.SHARETRIBE.login({
           username: this.email,
-          password: this.password
+          password: this.password,
         });
         // update vuex with update login info
         await this.refreshLogin();
-        this.$router.push({ path: "/dashboard" });
+        this.$router.push({ path: '/dashboard' });
         this.isLoading = false;
       } catch (loginResError) {
         this.isLoading = false;
@@ -96,12 +91,12 @@ export default {
             this.login_error = true;
         }
       }
-    }
+    },
   },
   computed: {
     ...mapState({
-      SHARETRIBE: state => state.sharetribe.SHARETRIBE
-    })
-  }
+      SHARETRIBE: state => state.sharetribe.SHARETRIBE,
+    }),
+  },
 };
 </script>
