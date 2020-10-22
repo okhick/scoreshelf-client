@@ -15,6 +15,6 @@ export default {
   data: function() {
     return {};
   },
-  components: {}
+  components: {},
 };
 </script>

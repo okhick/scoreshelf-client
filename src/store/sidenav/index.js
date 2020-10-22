@@ -1,7 +1,7 @@
 export const sidenav = {
   namespaced: true,
   state: {
-    isOpen: false
+    isOpen: false,
   },
   mutations: {
     toggleSidenav: function(state) {
@@ -9,6 +9,6 @@ export const sidenav = {
     },
     closeSidenav: function(state) {
       state.isOpen = false;
-    }
-  }
+    },
+  },
 };

@@ -1,11 +1,11 @@
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations } from 'vuex';
 
 export const scoreshelf = {
   methods: {
-    ...mapMutations("dashboard", [
-      "addFileToFileList",
-      "addScoreshelfIdToFile",
-      "clearToBeRemoved"
+    ...mapMutations('dashboard', [
+      'addFileToFileList',
+      'addScoreshelfIdToFile',
+      'clearToBeRemoved',
     ]),
 
     processUpload: function() {
@@ -17,19 +17,22 @@ export const scoreshelf = {
       });
     },
 
-    submitUpload: async function() {
-      let res = {};
+    submitUpload: async function(uploadParams) {
+      const res = {};
+
       if (this.areNewFiles()) {
-        res.uploadRes = await this.uploadNewFiles();
+        res.uploadRes = await this.uploadNewFiles(uploadParams);
       }
 
       if (this.filesToBeRemoved.length > 0) {
         res.deleteRes = await this.removeUploads();
       }
+
+      res.updateMetadataRes = await this.updateAssetMetadata(uploadParams);
       return res;
     },
 
-    uploadNewFiles: async function() {
+    uploadNewFiles: async function(uploadParams) {
       const formData = new FormData();
 
       // create a 'unique key' for each file, push it into formdata
@@ -38,14 +41,16 @@ export const scoreshelf = {
           formData.append(`file_${index}`, file);
         }
       });
-      formData.append("sharetribe_user_id", this.user_id);
-      formData.append("sharetribe_listing_id", this.listing_id);
+
+      const assetMetadata = this.formatAssetMetadata(uploadParams, 'new');
+      // stringify this so we can stuff it in a form field
+      formData.append('assetMetadata', JSON.stringify(assetMetadata));
 
       // send off the files. returns the files uploaded
-      let res = await this.$axios.post("/uploadAsset", formData, {
+      let res = await this.$axios.post('/uploadAsset', formData, {
         headers: {
-          "Content-Type": "multipart/form-data"
-        }
+          'Content-Type': 'multipart/form-data',
+        },
       });
       this.addScoreshelfIdToFile(res.data);
       return res;
@@ -53,10 +58,10 @@ export const scoreshelf = {
 
     removeUploads: async function() {
       // call the server to delete db and asset
-      await this.$axios.delete("/deleteAsset", {
+      await this.$axios.delete('/deleteAsset', {
         data: {
-          filesToRemove: this.filesToBeRemoved
-        }
+          filesToRemove: this.filesToBeRemoved,
+        },
       });
 
       // finally, remove it from the store
@@ -64,11 +69,46 @@ export const scoreshelf = {
       return true;
     },
 
+    updateAssetMetadata: async function(uploadParams) {
+      const assetMetadata = this.formatAssetMetadata(uploadParams, 'existing');
+      const res = await this.$axios.post('/updateAssetMetadata', assetMetadata);
+      return res;
+    },
+
+    formatAssetMetadata: function(uploadParams, action) {
+      const formattedUploadParams = {};
+
+      formattedUploadParams.sharetribe_listing_id = this.listing_id;
+      formattedUploadParams.sharetribe_user_id = this.user_id;
+
+      const formattedThumbnailSettings = {};
+      switch (action) {
+        case 'new': {
+          let newFiles = this.fileList.filter(file => !file.isStored);
+          newFiles.forEach(file => {
+            formattedThumbnailSettings[file.asset_name] =
+              uploadParams.thumbnailSettings[file.asset_name];
+          });
+          break;
+        }
+        case 'existing': {
+          let existingFiles = this.fileList.filter(file => file.isStored);
+          existingFiles.forEach(file => {
+            formattedThumbnailSettings[file._id] = uploadParams.thumbnailSettings[file.asset_name];
+          });
+          break;
+        }
+      }
+
+      formattedUploadParams.thumbnailSettings = formattedThumbnailSettings;
+      return formattedUploadParams;
+    },
+
     hyrdateAssetData: async function(fileList, getLink) {
       const scoreshelf_ids = fileList.map(file => file.scoreshelf_id);
-      const hydratedAssets = await this.$axios.post("/getAssetdata", {
+      const hydratedAssets = await this.$axios.post('/getAssetdata', {
         scoreshelf_ids: scoreshelf_ids,
-        get_link: getLink
+        get_link: getLink,
       });
       return hydratedAssets;
     },
@@ -87,32 +127,32 @@ export const scoreshelf = {
 
     // ripped from stackoverflow
     calculateSize: function(file) {
-      const fSExt = ["Bytes", "KB", "MB", "GB"];
+      const fSExt = ['Bytes', 'KB', 'MB', 'GB'];
       let _size = file.size;
       let i = 0;
       while (_size > 900) {
         _size /= 1024;
         i++;
       }
-      const exactSize = Math.round(_size * 100) / 100 + " " + fSExt[i];
+      const exactSize = Math.round(_size * 100) / 100 + ' ' + fSExt[i];
       return exactSize;
     },
 
     testScoreshelf: async function() {
       try {
-        let res = await this.$axios.get("/test");
+        let res = await this.$axios.get('/test');
         console.log(res);
       } catch (e) {
         console.log(e);
       }
-    }
+    },
   },
   computed: {
     ...mapState({
       fileList: state => state.dashboard.fileList,
       user_id: state => state.sharetribe.currentUser.id.uuid,
       listing_id: state => state.dashboard.publishModalEditData.id.uuid,
-      filesToBeRemoved: state => state.dashboard.filesToBeRemoved
-    })
-  }
+      filesToBeRemoved: state => state.dashboard.filesToBeRemoved,
+    }),
+  },
 };

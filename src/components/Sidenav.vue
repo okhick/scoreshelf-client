@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="sidenav"
-    :class="{ showMenu: menuOpen }"
-    v-click-outside="clickOut"
-  >
+  <div class="sidenav" :class="{ showMenu: menuOpen }" v-click-outside="clickOut">
     <div class="menu-body">
       <!-- If user is not logged in -->
       <ul v-if="!isLoggedIn">
@@ -47,39 +43,39 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
-import { sharetribe } from "../mixins/sharetribe.js";
+import { mapState, mapMutations } from 'vuex';
+import { sharetribe } from '../mixins/sharetribe.js';
 
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faBars);
 
-import Vue from "vue";
-import vClickOutside from "v-click-outside";
+import Vue from 'vue';
+import vClickOutside from 'v-click-outside';
 Vue.use(vClickOutside);
 
 export default {
   components: {
-    FontAwesomeIcon
+    FontAwesomeIcon,
   },
   mixins: [sharetribe],
   computed: {
     ...mapState({
       SHARETRIBE: state => state.sharetribe.SHARETRIBE,
       isLoggedIn: state => state.sharetribe.isLoggedIn,
-      menuOpen: state => state.sidenav.isOpen
-    })
+      menuOpen: state => state.sidenav.isOpen,
+    }),
   },
   methods: {
-    ...mapMutations("sharetribe", ["updateIsLoggedIn"]),
-    ...mapMutations("sidenav", ["toggleSidenav", "closeSidenav"]),
+    ...mapMutations('sharetribe', ['updateIsLoggedIn']),
+    ...mapMutations('sidenav', ['toggleSidenav', 'closeSidenav']),
 
     logout: async function() {
       this.isLoading = true;
       await this.SHARETRIBE.logout();
       this.updateIsLoggedIn();
-      this.$router.push({ path: "/" });
+      this.$router.push({ path: '/' });
       this.toggleMenu();
       this.isLoading = false;
     },
@@ -88,8 +84,8 @@ export default {
       if (this.menuOpen) {
         this.closeSidenav();
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

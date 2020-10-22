@@ -1,9 +1,9 @@
 export const sharetribe = {
   namespaced: true,
   state: {
-    SHARETRIBE: "",
+    SHARETRIBE: '',
     isLoggedIn: false,
-    currentUser: Object
+    currentUser: Object,
   },
   mutations: {
     initSharetribe(state, payload) {
@@ -14,6 +14,6 @@ export const sharetribe = {
     },
     updateCurrentUser(state, payload) {
       state.currentUser = payload;
-    }
-  }
+    },
+  },
 };

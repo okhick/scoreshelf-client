@@ -1,13 +1,7 @@
 <template>
   <div>
-    <div
-      v-show="messages.success.profile"
-      class="notification is-success is-light"
-    >
-      <button
-        class="delete"
-        @click="closeMessage('success', 'profile')"
-      ></button>
+    <div v-show="messages.success.profile" class="notification is-success is-light">
+      <button class="delete" @click="closeMessage('success', 'profile')"></button>
       Your profile has been updated!
     </div>
     <h1 class="title">Edit your profile</h1>
@@ -15,12 +9,7 @@
     <label class="label">First Name</label>
     <div class="field has-addons">
       <div class="control">
-        <input
-          :disabled="firstName.disabled"
-          class="input"
-          type="text"
-          v-model="firstName.value"
-        />
+        <input :disabled="firstName.disabled" class="input" type="text" v-model="firstName.value" />
       </div>
       <div class="control">
         <a class="button is-primary" @click="toggleEnable('firstName')">
@@ -33,12 +22,7 @@
     <label class="label">Last Name</label>
     <div class="field has-addons">
       <div class="control">
-        <input
-          :disabled="lastName.disabled"
-          class="input"
-          type="text"
-          v-model="lastName.value"
-        />
+        <input :disabled="lastName.disabled" class="input" type="text" v-model="lastName.value" />
       </div>
       <div class="control">
         <a class="button is-primary" @click="toggleEnable('lastName')">
@@ -80,12 +64,7 @@
     <label class="label">Email</label>
     <div class="field has-addons">
       <div class="control">
-        <input
-          :disabled="email.disabled"
-          class="input"
-          type="text"
-          v-model="email.value"
-        />
+        <input :disabled="email.disabled" class="input" type="text" v-model="email.value" />
       </div>
       <div class="control">
         <a class="button is-primary">
@@ -99,42 +78,42 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { sharetribe } from "@/mixins/sharetribe.js";
+import { mapState } from 'vuex';
+import { sharetribe } from '@/mixins/sharetribe.js';
 
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faUnlock, faLock } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faUnlock, faLock } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faUnlock, faLock);
 
 export default {
   components: {
-    FontAwesomeIcon
+    FontAwesomeIcon,
   },
   data: function() {
     return {
       firstName: {
         disabled: true,
-        value: ""
+        value: '',
       },
       lastName: {
         disabled: true,
-        value: ""
+        value: '',
       },
       displayName: {
         disabled: true,
-        value: ""
+        value: '',
       },
       email: {
         disabled: true,
-        value: ""
+        value: '',
       },
       isLoading: false,
       messages: {
         success: {
-          profile: false
-        }
-      }
+          profile: false,
+        },
+      },
     };
   },
   mixins: [sharetribe],
@@ -150,13 +129,13 @@ export default {
       let res = await this.SHARETRIBE.currentUser.updateProfile({
         firstName: this.firstName.value,
         lastName: this.lastName.value,
-        displayName: this.displayName.value
+        displayName: this.displayName.value,
       });
       this.refreshLogin();
       console.log(res.data);
       this.messages.success.profile = true;
       this.isLoading = false;
-    }
+    },
   },
   async mounted() {
     await this.refreshLogin();
@@ -167,8 +146,8 @@ export default {
   },
   computed: {
     ...mapState({
-      currentUser: state => state.sharetribe.currentUser
-    })
-  }
+      currentUser: state => state.sharetribe.currentUser,
+    }),
+  },
 };
 </script>
