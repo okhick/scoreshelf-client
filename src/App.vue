@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <Sidenav />
-    <div class="main" :class="{shiftMain: menuOpen}">
+    <div class="main" :class="{ shiftMain: menuOpen }">
+      <SearchBar />
       <router-view />
     </div>
   </div>
@@ -9,22 +10,24 @@
 
 <script>
 // import Navbar from "@/components/Navbar.vue";
-import Sidenav from "@/components/Sidenav.vue";
-import { sharetribe } from "./mixins/sharetribe.js";
-import { mapState } from "vuex";
+import Sidenav from '@/components/Sidenav.vue';
+import SearchBar from '@/components/search/SearchBar.vue';
+import { sharetribe } from './mixins/sharetribe.js';
+import { mapState } from 'vuex';
 
 export default {
   components: {
-    Sidenav
+    Sidenav,
+    SearchBar,
   },
   mixins: [sharetribe],
   computed: {
-    ...mapState({ menuOpen: state => state.sidenav.isOpen })
+    ...mapState({ menuOpen: state => state.sidenav.isOpen }),
   },
   async created() {
     await this.initSharetribeSdk();
     await this.refreshLogin();
-  }
+  },
 };
 </script>
 
@@ -32,9 +35,10 @@ export default {
 <style lang="scss">
 html,
 body {
-  @import "./styles/index.scss";
+  @import './styles/index.scss';
+  @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@100;200;300;400;500;600;700&family=Ubuntu:wght@300;400;500;700&display=swap');
 
-  background: $background;
+  background: #fafafa;
 
   .title {
     color: $dark;

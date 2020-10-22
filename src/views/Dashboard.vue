@@ -14,20 +14,20 @@
 </template>
 
 <script>
-import Menu from "@/components/dashboard/Menu.vue";
+import Menu from '@/components/dashboard/Menu.vue';
 
 export default {
   components: {
-    Menu
-  }
+    Menu,
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/index.scss";
+@import '../styles/index.scss';
 
 .container {
-  padding-top: 6px;;
+  padding-top: 6px;
 }
 .columns {
   width: 100%;

@@ -1,13 +1,17 @@
 <template>
-  <div class="sidenav" :class="{showMenu: menuOpen}" v-click-outside="closeSidenav">
+  <div class="sidenav" :class="{ showMenu: menuOpen }" v-click-outside="clickOut">
     <div class="menu-body">
       <!-- If user is not logged in -->
       <ul v-if="!isLoggedIn">
         <li @click="toggleSidenav">
-          <router-link :to="{ name: 'Login' }"> <strong>Log in</strong> </router-link>
+          <router-link :to="{ name: 'Login' }">
+            <strong>Log in</strong>
+          </router-link>
         </li>
         <li @click="toggleSidenav">
-          <router-link :to="{ name: 'SignUp' }"> <strong>Sign up</strong> </router-link>
+          <router-link :to="{ name: 'SignUp' }">
+            <strong>Sign up</strong>
+          </router-link>
         </li>
       </ul>
 
@@ -17,31 +21,38 @@
           <a><strong>Log Out</strong></a>
         </li>
         <li @click="toggleSidenav">
-          <router-link :to="{ name: 'Dashboard' }"> <strong>Dashboard</strong> </router-link>
+          <router-link :to="{ name: 'Dashboard' }">
+            <strong>Dashboard</strong>
+          </router-link>
         </li>
       </ul>
     </div>
 
-    <div class=right-side>
+    <div class="right-side">
       <p>SCORESHELF</p>
       <span class="menu-container" @click="toggleSidenav">
-        <font-awesome-icon icon="bars" size="2x" class="burger" :class="{rotateBurger: menuOpen}"/>
+        <font-awesome-icon
+          icon="bars"
+          size="2x"
+          class="burger"
+          :class="{ rotateBurger: menuOpen }"
+        />
       </span>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
-import { sharetribe } from "../mixins/sharetribe.js";
+import { mapState, mapMutations } from 'vuex';
+import { sharetribe } from '../mixins/sharetribe.js';
 
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faBars);
 
-import Vue from "vue";
-import vClickOutside from "v-click-outside";
+import Vue from 'vue';
+import vClickOutside from 'v-click-outside';
 Vue.use(vClickOutside);
 
 export default {
@@ -53,23 +64,29 @@ export default {
     ...mapState({
       SHARETRIBE: state => state.sharetribe.SHARETRIBE,
       isLoggedIn: state => state.sharetribe.isLoggedIn,
-      menuOpen: state => state.sidenav.isOpen
-    })
+      menuOpen: state => state.sidenav.isOpen,
+    }),
   },
   methods: {
-    ...mapMutations("sharetribe", ["updateIsLoggedIn"]),
-    ...mapMutations("sidenav", ["toggleSidenav", "closeSidenav"]),
+    ...mapMutations('sharetribe', ['updateIsLoggedIn']),
+    ...mapMutations('sidenav', ['toggleSidenav', 'closeSidenav']),
 
     logout: async function() {
       this.isLoading = true;
       await this.SHARETRIBE.logout();
       this.updateIsLoggedIn();
-      this.$router.push({ path: "/" });
+      this.$router.push({ path: '/' });
       this.toggleMenu();
       this.isLoading = false;
-    }
-  }
-}
+    },
+
+    clickOut: function() {
+      if (this.menuOpen) {
+        this.closeSidenav();
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -118,5 +135,5 @@ export default {
 }
 .rotateBurger {
   transform: rotateZ(90deg);
-} 
+}
 </style>

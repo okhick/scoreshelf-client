@@ -1,88 +1,84 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import Home from '../views/Home.vue';
 
 Vue.use(VueRouter);
 // Vue.use(Vuex);
 
 const routes = [
   {
-    name: "Home",
-    path: "/",
-    component: Home
+    name: 'Home',
+    path: '/',
+    component: Home,
   },
   {
-    name: "About",
-    path: "/about",
+    name: 'About',
+    path: '/about',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
+    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
   },
   {
-    path: "/login",
-    component: () =>
-      import(/* webpackChunkName: "login" */ "../views/Login.vue"),
+    path: '/login',
+    component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue'),
     children: [
       {
-        name: "Login",
-        path: "",
+        name: 'Login',
+        path: '',
         component: () =>
-          import(
-            /* webpackChunkName: "login-login" */ "@/components/forms/LoginForm.vue"
-          )
+          import(/* webpackChunkName: "login-login" */ '@/components/forms/LoginForm.vue'),
       },
       {
-        name: "SignUp",
-        path: "signup",
+        name: 'SignUp',
+        path: 'signup',
         component: () =>
-          import(
-            /* webpackChunkName: "login-signup" */ "@/components/forms/SignUpForm.vue"
-          )
-      }
-    ]
+          import(/* webpackChunkName: "login-signup" */ '@/components/forms/SignUpForm.vue'),
+      },
+    ],
   },
   {
-    path: "/dashboard",
-    component: () =>
-      import(/* webpackChunkName: "dashboard" */ "../views/Dashboard.vue"),
+    path: '/dashboard',
+    component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue'),
     children: [
       {
-        name: "Dashboard",
-        path: "",
+        name: 'Dashboard',
+        path: '',
         component: () =>
           import(
-            /* webpackChunkName: "dashboard-home" */ "@/components/dashboard/DashboardHome.vue"
-          )
+            /* webpackChunkName: "dashboard-home" */ '@/components/dashboard/DashboardHome.vue'
+          ),
       },
 
       {
-        name: "EditProfile",
-        path: "edit-profile",
+        name: 'EditProfile',
+        path: 'edit-profile',
         component: () =>
           import(
-            /* webpackChunkName: "dashboard-edit-profile" */ "@/components/dashboard/EditProfile.vue"
-          )
+            /* webpackChunkName: "dashboard-edit-profile" */ '@/components/dashboard/EditProfile.vue'
+          ),
       },
       {
-        name: "Publish",
-        path: "publish",
+        name: 'Publish',
+        path: 'publish',
         component: () =>
-          import(
-            /* webpackChunkName: "dashboard-publish" */ "@/components/dashboard/Publish.vue"
-          )
-      }
-    ]
-  }
+          import(/* webpackChunkName: "dashboard-publish" */ '@/components/dashboard/Publish.vue'),
+      },
+    ],
+  },
+  {
+    name: 'Search',
+    path: '/search/:query',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Search.vue'),
+  },
 ];
 
 const router = new VueRouter({
-  routes
+  routes,
 });
 
 // router.beforeEach((to, from, next) => {
-//   if (to.name == "Dashboard" && !store.state.isLoggedIn) {
+//   if (to.name == "Dashboard" && !this.store.state.isLoggedIn) {
 //     next({ path: "login" });
 //   } else {
 //     next();

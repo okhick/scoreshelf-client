@@ -3,9 +3,7 @@
     <p class="menu-label">General</p>
     <ul class="menu-list">
       <li>
-        <router-link
-          :class="{ 'is-active': activeMenu == 'Dashboard' }"
-          :to="{ name: 'Dashboard' }"
+        <router-link :class="{ 'is-active': activeMenu == 'Dashboard' }" :to="{ name: 'Dashboard' }"
           >Dashboard</router-link
         >
       </li>
@@ -34,9 +32,7 @@
     <p class="menu-label">Publish</p>
     <ul class="menu-list">
       <li>
-        <router-link
-          :class="{ 'is-active': activeMenu == 'Publish' }"
-          :to="{ name: 'Publish' }"
+        <router-link :class="{ 'is-active': activeMenu == 'Publish' }" :to="{ name: 'Publish' }"
           >Publish Music</router-link
         >
       </li>
@@ -59,30 +55,30 @@
 
 <script>
 export default {
-  name: "Menu",
+  name: 'Menu',
   data: function() {
     return {
-      activeMenu: ""
+      activeMenu: '',
     };
   },
   methods: {
     link_editProfile: function() {
-      this.$router.push({ path: "edit-profile" });
+      this.$router.push({ path: 'edit-profile' });
     },
     link_dashboardHome: function() {
-      this.$router.push({ path: "dashboard" });
-    }
+      this.$router.push({ path: 'dashboard' });
+    },
   },
   watch: {
     $route(to) {
       this.activeMenu = to.name;
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/index.scss";
+@import '@/styles/index.scss';
 .menu.is-hidden-mobile {
   padding-top: 6px;
 }

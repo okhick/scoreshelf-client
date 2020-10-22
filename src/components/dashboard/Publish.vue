@@ -7,31 +7,31 @@
 </template>
 
 <script>
-import PublishedMusic from "@/components/dashboard/publish/PublishedMusic.vue";
-import PublishModal from "@/components/dashboard/publish/PublishModal.vue";
-import { sharetribe } from "@/mixins/sharetribe.js";
-import { mapState } from "vuex";
+import PublishedMusic from '@/components/dashboard/publish/PublishedMusic.vue';
+import PublishModal from '@/components/dashboard/publish/PublishModal.vue';
+import { sharetribe } from '@/mixins/sharetribe.js';
+import { mapState } from 'vuex';
 
 export default {
   mixins: [sharetribe],
   components: {
     PublishedMusic,
-    PublishModal
+    PublishModal,
   },
   data: function() {
     return {
-      currentUserLoaded: false
+      currentUserLoaded: false,
     };
   },
   methods: {},
   computed: {
     ...mapState({
-      currentUser: state => state.sharetribe.currentUser
-    })
+      currentUser: state => state.sharetribe.currentUser,
+    }),
   },
   async beforeMount() {
     await this.refreshLogin();
     this.currentUserLoaded = true;
-  }
+  },
 };
 </script>

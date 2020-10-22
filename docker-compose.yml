@@ -1,12 +1,13 @@
-version: "3"
+version: '3'
 services:
   node:
     container_name: vue
     image: vue
     tty: true
-    working_dir: "/var/www/"
-    ports: 
-      - "8080:8080"
-      - "8000:8000"
+    entrypoint: ['npm', 'run', 'serve']
+    working_dir: '/var/www/'
+    ports:
+      - '8080:8080'
+      - '8000:8000'
     volumes:
       - ./:/var/www

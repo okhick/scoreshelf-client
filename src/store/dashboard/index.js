@@ -42,6 +42,6 @@ export const dashboard = {
           file._id = scoreshelf_id;
         }
       });
-    }
-  }
+    },
+  },
 };

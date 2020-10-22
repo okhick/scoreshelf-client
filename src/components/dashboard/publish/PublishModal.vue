@@ -4,11 +4,7 @@
     <div class="modal-card">
       <header class="modal-card-head">
         <p class="modal-card-title">Publish Music</p>
-        <button
-          class="delete"
-          @click="cancelModal"
-          aria-label="close"
-        ></button>
+        <button class="delete" @click="cancelModal" aria-label="close"></button>
       </header>
 
       <PublishForm
@@ -37,26 +33,17 @@
                 >
                   <span>Publish</span>
                   <span class="icon is-small">
-                    <font-awesome-icon
-                      icon="angle-down"
-                      aria-hidden="true"
-                    ></font-awesome-icon>
+                    <font-awesome-icon icon="angle-down" aria-hidden="true"></font-awesome-icon>
                   </span>
                 </button>
               </div>
               <div class="dropdown-menu" id="dropdown-menu" role="menu">
                 <div class="dropdown-content">
                   <a class="dropdown-item" @click="publishDraft">Publish</a>
-                  <a
-                    class="dropdown-item"
-                    v-if="pieceStatus == 'draft'"
-                    @click="updatePublication"
+                  <a class="dropdown-item" v-if="pieceStatus == 'draft'" @click="updatePublication"
                     >Update Draft</a
                   >
-                  <a
-                    class="dropdown-item"
-                    v-if="isNewPiece"
-                    @click="updatePublication"
+                  <a class="dropdown-item" v-if="isNewPiece" @click="updatePublication"
                     >Create Draft</a
                   >
                 </div>
@@ -87,11 +74,7 @@
           </div>
           <!-- End class level-left -->
 
-          <button
-            v-if="!isNewPiece"
-            class="button level-right"
-            @click="deletePublication"
-          >
+          <button v-if="!isNewPiece" class="button level-right" @click="deletePublication">
             <font-awesome-icon icon="trash-alt" class="action-buttons" />
           </button>
         </div>
@@ -103,87 +86,96 @@
 </template>
 
 <script>
-import Vue from "vue";
-import { mapState, mapMutations } from "vuex";
-import { sharetribe } from "@/mixins/sharetribe.js";
-import { scoreshelf } from "@/mixins/scoreshelf.js";
-import PublishForm from "@/components/forms/PublishForm.vue";
+import Vue from 'vue';
+import { mapState, mapMutations } from 'vuex';
+import { sharetribe } from '@/mixins/sharetribe.js';
+import { scoreshelf } from '@/mixins/scoreshelf.js';
+import PublishForm from '@/components/forms/publish/PublishForm.vue';
 
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faTrashAlt, faAngleDown } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faTrashAlt, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faTrashAlt);
 library.add(faAngleDown);
 
-import vClickOutside from "v-click-outside";
+import vClickOutside from 'v-click-outside';
 Vue.use(vClickOutside);
 
 export default {
   components: {
     FontAwesomeIcon,
-    PublishForm
+    PublishForm,
   },
   mixins: [sharetribe, scoreshelf],
   data: function() {
     return {
       isLoading: false,
       isNewPiece: true,
-      pieceStatus: "",
+      pieceStatus: '',
       publishDropDown: {
-        isActive: false
-      }
+        isActive: false,
+      },
     };
   },
   methods: {
-    ...mapMutations("dashboard", [
-      "togglePublishModal",
-      "clearPublishModalEditData",
-      "editPublishModalEditData"
+    ...mapMutations('dashboard', [
+      'togglePublishModal',
+      'clearPublishModalEditData',
+      'editPublishModalEditData',
     ]),
     // =========================
     // CRUD Functions
     // =========================
     createDraft: async function() {
       this.isLoading = true;
-      await this.submitUpload();
+
+      const uploadParams = { thumbnailSettings: this.getThumbnailSettings() };
+      await this.submitUpload(uploadParams);
+
       await this.SHARETRIBE.ownListings.createDraft({
-        ...this.getFormattedArgs()
+        ...this.getFormattedArgs(),
       });
       this.closeEditModal();
       this.isLoading = false;
     },
     updatePublication: async function() {
       this.isLoading = true;
-      await this.submitUpload();
+
+      const uploadParams = { thumbnailSettings: this.getThumbnailSettings() };
+      await this.submitUpload(uploadParams);
+
       await this.SHARETRIBE.ownListings.update({
         id: this.publishModalEditData.id.uuid,
-        ...this.getFormattedArgs()
+        ...this.getFormattedArgs(),
       });
       this.closeEditModal();
       this.isLoading = false;
     },
     publishDraft: async function() {
       this.isLoading = true;
-      await this.submitUpload();
+
+      const uploadParams = { thumbnailSettings: this.getThumbnailSettings() };
+      await this.submitUpload(uploadParams);
+
       await this.SHARETRIBE.ownListings.update({
         id: this.publishModalEditData.id.uuid,
-        ...this.getFormattedArgs()
+        ...this.getFormattedArgs(),
       });
       await this.SHARETRIBE.ownListings.publishDraft({
-        id: this.publishModalEditData.id.uuid
+        id: this.publishModalEditData.id.uuid,
       });
       this.closeEditModal();
       this.isLoading = false;
     },
     deletePublication: async function() {
       this.isLoading = true;
-      if (this.publishModalEditData.attributes.state === "draft") {
+      if (this.publishModalEditData.attributes.state === 'draft') {
         await this.SHARETRIBE.ownListings.discardDraft({
-          id: this.publishModalEditData.id.uuid
+          id: this.publishModalEditData.id.uuid,
         });
-      } else if (this.publishModalEditData.attributes.state === "published") {
+      } else if (this.publishModalEditData.attributes.state === 'published') {
         await this.SHARETRIBE.ownListings.close({
-          id: this.publishModalEditData.id.uuid
+          id: this.publishModalEditData.id.uuid,
         });
       }
       this.closeEditModal();
@@ -191,15 +183,18 @@ export default {
     },
     republishPublication: async function() {
       this.isLoading = true;
-      await this.submitUpload();
+
+      const uploadParams = { thumbnailSettings: this.getThumbnailSettings() };
+      await this.submitUpload(uploadParams);
+
       // update just incase anyones changed anything
       await this.SHARETRIBE.ownListings.update({
         id: this.publishModalEditData.id.uuid,
-        ...this.getFormattedArgs()
+        ...this.getFormattedArgs(),
       });
       // now we can reopen
       await this.SHARETRIBE.ownListings.open({
-        id: this.publishModalEditData.id.uuid
+        id: this.publishModalEditData.id.uuid,
       });
       this.closeEditModal();
       this.isLoading = false;
@@ -208,7 +203,7 @@ export default {
       this.isLoading = true;
       if (this.publishModalEditData.isBlankDraft) {
         await this.SHARETRIBE.ownListings.discardDraft({
-          id: this.publishModalEditData.id.uuid
+          id: this.publishModalEditData.id.uuid,
         });
       }
       this.closeEditModal();
@@ -219,7 +214,7 @@ export default {
     // =========================
     closeEditModal: function() {
       this.clearPublishModalEditData();
-      this.pieceStatus = "";
+      this.pieceStatus = '';
       this.$refs.form.clearFormData();
       this.togglePublishModal();
     },
@@ -232,13 +227,17 @@ export default {
     closePublishDropdown: function() {
       this.publishDropDown.isActive = false;
     },
+    getThumbnailSettings: function() {
+      // reach deep to get this. seems icky but works for now...
+      return this.$refs.form.$refs.assets.thumbnailSettings;
+    },
   },
   computed: {
     ...mapState({
       publishModalOpen: state => state.dashboard.publishModalOpen,
       publishModalEditData: state => state.dashboard.publishModalEditData,
-      SHARETRIBE: state => state.sharetribe.SHARETRIBE
-    })
+      SHARETRIBE: state => state.sharetribe.SHARETRIBE,
+    }),
   },
   watch: {
     // PublishForm also watches this
@@ -250,8 +249,8 @@ export default {
       } else {
         this.isNewPiece = true;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
