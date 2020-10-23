@@ -83,22 +83,22 @@ export default {
   padding-top: 6px;
 }
 .menu-label {
-  color: #8f99a3;
+  color: $black;
   letter-spacing: 1.3;
-  font-weight: 700;
+  font-weight: 800;
 }
 .menu-list a {
-  color: $dark;
+  color: $black;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 400;
 }
 .menu-list a:hover {
-  background-color: $silver;
-  color: $lime;
+  background-color: $tan;
+  color: $maroon;
 }
 .menu-list a.is-active {
-  background-color: $silver;
-  color: $lime;
+  background-color: $tan;
+  color: $maroon;
   font-weight: 700;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="level">
-      <h2 class="subtitle is-3 level-left">Published Music</h2>
+      <!-- <h2 class="subtitle is-3 level-left">Published Music</h2> -->
       <button class="button level-right" @click="createNewDraft">
         Create new draft
       </button>
@@ -9,11 +9,11 @@
     <table class="table is-fullwidth is-hoverable">
       <thead>
         <tr>
-          <th>Title</th>
+          <th>TITLE</th>
           <th><!-- Status column --></th>
-          <th>Formats offered</th>
-          <th>Ensemble</th>
-          <th>Date Published</th>
+          <th>FORMATS</th>
+          <th>ENSEMBLE</th>
+          <th>DATE PUBLISHED</th>
           <th>
             <!-- Edit column -->
           </th>

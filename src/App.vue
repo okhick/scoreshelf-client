@@ -37,8 +37,9 @@ html,
 body {
   @import './styles/index.scss';
   @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@100;200;300;400;500;600;700&family=Ubuntu:wght@300;400;500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&family=Lora:wght@400;500;600;700&display=swap');
 
-  background: $background;
+  background: #fafafa;
 
   .title {
     color: $dark;
