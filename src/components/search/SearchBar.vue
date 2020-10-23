@@ -8,8 +8,8 @@
             <font-awesome-icon icon="search" />
           </span>
         </div>
-        <div class="control">
-          <div class="button is-dark" :class="{ 'is-loading': searchIsLoading }" @click="doSearch">
+        <div class="control submit">
+          <div class="button" :class="{ 'is-loading': searchIsLoading }" @click="doSearch">
             <font-awesome-icon icon="arrow-right" />
           </div>
         </div>
@@ -73,4 +73,14 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+@import '@/styles/index.scss';
+// .button {
+//   color: $off-white;
+//   background-color: $blue;
+// }
+// .button:hover {
+//   color: $off-white;
+//   // background-color: $tan;
+// }
+</style>

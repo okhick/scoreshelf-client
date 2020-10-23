@@ -8,26 +8,29 @@ $redOrange: #ff521b;
 $black: #000000;
 $blue: #413B89;
 $maroon: #953332;
-$tan: #E9D4C4;
+$tan: #DFD8C4;
 $off-white: #fafafa;
 $white: #ffffff;
 
-$family-primary: 'Fira Sans';
-$family-secondary: 'Ubuntu';
+// $family-primary: 'Fira Sans';
+$family-primary: 'Lato';
+// $family-secondary: 'Ubuntu';
 
-$primary: $silver;
+$primary: $maroon;
+$secondary: $blue;
 $link: $maroon;
 $info: $blue;
 // $success: $green;
 // $warning: $yellow;
 // $danger: $red;
-$dark: $oxford;
+$dark: $black;
 // $text: $grey-dark;
 
 
 
-$background: $platinum;
+$background: $off-white;
 
 @import 'bulma/bulma';
+@import './components.scss'
 
 // https://coolors.co/eaeaea-000923-7a7978-ceff1a-7a28cb-ff521b
