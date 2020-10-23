@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="title">Publish some music</h1>
+    <h1 class="title">Publish Music</h1>
     <PublishedMusic v-if="currentUserLoaded"></PublishedMusic>
     <PublishModal></PublishModal>
   </div>

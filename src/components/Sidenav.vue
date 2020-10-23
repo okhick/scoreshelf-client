@@ -29,7 +29,6 @@
     </div>
 
     <div class="right-side">
-      <p>SCORESHELF</p>
       <span class="menu-container" @click="toggleSidenav">
         <font-awesome-icon
           icon="bars"
@@ -38,6 +37,7 @@
           :class="{ rotateBurger: menuOpen }"
         />
       </span>
+      <p class="logo">SCORESHELF</p>
     </div>
   </div>
 </template>
@@ -89,18 +89,20 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import '../styles/index.scss';
 .sidenav {
   left: -180px;
   position: fixed;
   height: 100vh;
   width: 240px;
-  background-color: #fff;
+  background-color: $tan;
   display: grid;
   grid-template-columns: [menubar] 180px [sidebar] 60px;
   justify-items: center;
   transition: transform 0.25s ease-in-out;
   z-index: 2;
+  box-shadow: 0px 0px 17px 0px rgba(0, 0, 0, 0.1);
 }
 .showMenu {
   transform: translate3d(180px, 0, 0);
@@ -110,13 +112,13 @@ export default {
   grid-column: menubar;
   width: 120px;
   padding-top: 20px;
+  color: $black;
 }
 
 .right-side {
   grid-column: sidebar;
   display: grid;
-  grid-template-rows: [logo] 1fr [burger] 2fr [bottom] 1fr;
-  align-items: center;
+  grid-template-rows: [burger] 1fr [logo] 2fr [bottom] 1fr;
   justify-items: center;
 }
 /* the logo */
@@ -124,11 +126,19 @@ export default {
   transform: rotate(90deg);
   transform-origin: center;
   grid-row: logo;
+  font-family: 'lora';
+  font-weight: bold;
+  font-size: 22px;
+  align-self: center;
+  color: $black;
 }
 /* the hamburger */
 .burger {
   grid-row: burger;
+  color: $black;
+  align-self: start;
   transition: transform 0.25s ease-in-out;
+  margin-top: 12px;
 }
 .burger:hover {
   cursor: pointer;
