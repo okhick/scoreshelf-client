@@ -122,8 +122,8 @@ export default {
         }
         // loadup any settings that may alread exist
         if (file.thumbnail_settings) {
-          this.thumbnailSettings[file.asset_name].isThumbnail = file.thumbnail_settings.isThumbnail;
           this.thumbnailSettings[file.asset_name].page = file.thumbnail_settings.page;
+          this.thumbnailSettings[file.asset_name].isThumbnail = true;
         }
       });
     },

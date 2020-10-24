@@ -138,7 +138,10 @@ export default {
       const assetData = [];
 
       this.fileList.forEach(file => {
-        const thisFileData = { scoreshelf_id: file._id };
+        const thisFileData = {
+          scoreshelf_id: file._id,
+          thumbnail_id: file.thumbnail_id,
+        };
         assetData.push(thisFileData);
       });
 

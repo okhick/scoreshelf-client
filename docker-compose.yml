@@ -1,8 +1,8 @@
 version: '3'
 services:
   node:
-    container_name: vue
-    image: vue
+    container_name: scoreshelf_client
+    image: scoreshelf_client
     tty: true
     entrypoint: ['npm', 'run', 'serve']
     working_dir: '/var/www/'

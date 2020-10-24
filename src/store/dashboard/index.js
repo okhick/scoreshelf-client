@@ -34,12 +34,12 @@ export const dashboard = {
       state.filesToBeRemoved = [];
     },
     addScoreshelfIdToFile(state, payload) {
-      // find the file the id needs to go in
+      // find the file the id needs to go in. Probably could do this with a find()
       state.fileList.forEach(file => {
         let name = file.asset_name;
         if (payload[name]) {
-          let scoreshelf_id = payload[name]._id;
-          file._id = scoreshelf_id;
+          file._id = payload[name]._id;
+          if (payload[name].thumbnail_id) file.thumbnail_id = payload[name].thumbnail_id;
         }
       });
     },
