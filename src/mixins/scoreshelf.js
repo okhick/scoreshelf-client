@@ -47,7 +47,7 @@ export const scoreshelf = {
       formData.append('assetMetadata', JSON.stringify(assetMetadata));
 
       // send off the files. returns the files uploaded
-      let res = await this.$axios.post('/uploadAsset', formData, {
+      let res = await this.$axios.post('/uploadAssets', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -58,7 +58,7 @@ export const scoreshelf = {
 
     removeUploads: async function() {
       // call the server to delete db and asset
-      await this.$axios.delete('/deleteAsset', {
+      await this.$axios.delete('/deleteAssets', {
         data: {
           filesToRemove: this.filesToBeRemoved,
         },

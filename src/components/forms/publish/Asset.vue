@@ -42,7 +42,7 @@
                   class="input is-small"
                   type="text"
                   placeholder="Page No."
-                  v-model="thumbnailSettings[file.asset_name].page"
+                  v-model.number="thumbnailSettings[file.asset_name].page"
                 />
               </div>
             </div>
