@@ -124,6 +124,7 @@ export default {
         if (file.thumbnail_settings) {
           this.thumbnailSettings[file.asset_name].page = file.thumbnail_settings.page;
           this.thumbnailSettings[file.asset_name].isThumbnail = true;
+          this.thumbnailSettings[file.asset_name].thumbnail_id = file.thumbnail_settings._id;
         }
       });
     },

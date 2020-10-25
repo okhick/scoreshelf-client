@@ -42,7 +42,7 @@ export const scoreshelf = {
         }
       });
 
-      const assetMetadata = this.formatAssetMetadata(uploadParams, 'new');
+      const assetMetadata = this.formatNewAssetMetadata(uploadParams);
       // stringify this so we can stuff it in a form field
       formData.append('assetMetadata', JSON.stringify(assetMetadata));
 
@@ -70,37 +70,44 @@ export const scoreshelf = {
     },
 
     updateAssetMetadata: async function(uploadParams) {
-      const assetMetadata = this.formatAssetMetadata(uploadParams, 'existing');
+      const assetMetadata = this.formatUpdatedAssetMetadata(uploadParams);
       const res = await this.$axios.post('/updateAssetMetadata', assetMetadata);
       return res;
     },
 
-    formatAssetMetadata: function(uploadParams, action) {
+    formatNewAssetMetadata: function(uploadParams) {
       const formattedUploadParams = {};
 
       formattedUploadParams.sharetribe_listing_id = this.listing_id;
       formattedUploadParams.sharetribe_user_id = this.user_id;
+      formattedUploadParams.metadata = {};
 
-      const formattedThumbnailSettings = {};
-      switch (action) {
-        case 'new': {
-          let newFiles = this.fileList.filter(file => !file.isStored);
-          newFiles.forEach(file => {
-            formattedThumbnailSettings[file.asset_name] =
-              uploadParams.thumbnailSettings[file.asset_name];
-          });
-          break;
-        }
-        case 'existing': {
-          let existingFiles = this.fileList.filter(file => file.isStored);
-          existingFiles.forEach(file => {
-            formattedThumbnailSettings[file._id] = uploadParams.thumbnailSettings[file.asset_name];
-          });
-          break;
-        }
-      }
+      const newFiles = this.fileList.filter(file => !file.isStored);
+      newFiles.forEach(file => {
+        formattedUploadParams.metadata[file.asset_name] = {
+          thumbnailSettings: uploadParams.thumbnailSettings[file.asset_name],
+          // do more formatting here
+        };
+      });
 
-      formattedUploadParams.thumbnailSettings = formattedThumbnailSettings;
+      return formattedUploadParams;
+    },
+
+    formatUpdatedAssetMetadata: function(uploadParams) {
+      const formattedUploadParams = {};
+
+      formattedUploadParams.sharetribe_listing_id = this.listing_id;
+      formattedUploadParams.sharetribe_user_id = this.user_id;
+      formattedUploadParams.metadata = {};
+
+      const existingFiles = this.fileList.filter(file => file.isStored);
+      existingFiles.forEach(file => {
+        formattedUploadParams.metadata[file._id] = {
+          thumbnailSettings: uploadParams.thumbnailSettings[file.asset_name],
+          // do more formatting here
+        };
+      });
+      console.log(formattedUploadParams);
       return formattedUploadParams;
     },
 

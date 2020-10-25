@@ -229,6 +229,8 @@ export default {
     },
     getThumbnailSettings: function() {
       // reach deep to get this. seems icky but works for now...
+      const assetsData = this.$refs.form.$refs.assets;
+      const assetDataThumbnailSettings = this.$refs.form.$refs.assets.thumbnailSettings;
       return this.$refs.form.$refs.assets.thumbnailSettings;
     },
   },
