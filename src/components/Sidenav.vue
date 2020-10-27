@@ -1,5 +1,5 @@
 <template>
-  <div class="sidenav" :class="{ showMenu: menuOpen }" v-click-outside="clickOut">
+  <div class="sidenav" :class="{ showMenu: isOpen }" v-click-outside="clickOut">
     <div class="menu-body">
       <!-- If user is not logged in -->
       <ul v-if="!isLoggedIn">
@@ -30,12 +30,7 @@
 
     <div class="right-side">
       <span class="menu-container" @click="toggleSidenav">
-        <font-awesome-icon
-          icon="bars"
-          size="2x"
-          class="burger"
-          :class="{ rotateBurger: menuOpen }"
-        />
+        <font-awesome-icon icon="bars" size="2x" class="burger" :class="{ rotateBurger: isOpen }" />
       </span>
       <p class="logo">SCORESHELF</p>
     </div>
@@ -43,48 +38,62 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import Vue from 'vue';
+import { ref } from '@vue/composition-api';
 import { sharetribe } from '../mixins/sharetribe.js';
+
+import vClickOutside from 'v-click-outside';
+Vue.use(vClickOutside);
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faBars);
 
-import Vue from 'vue';
-import vClickOutside from 'v-click-outside';
-Vue.use(vClickOutside);
+import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
+const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
+const sidenavStore = createNamespacedHelpers('sidenav');
 
 export default {
   components: {
     FontAwesomeIcon,
   },
   mixins: [sharetribe],
-  computed: {
-    ...mapState({
-      SHARETRIBE: state => state.sharetribe.SHARETRIBE,
-      isLoggedIn: state => state.sharetribe.isLoggedIn,
-      menuOpen: state => state.sidenav.isOpen,
-    }),
-  },
-  methods: {
-    ...mapMutations('sharetribe', ['updateIsLoggedIn']),
-    ...mapMutations('sidenav', ['toggleSidenav', 'closeSidenav']),
+  setup(_, context) {
+    const router = context.root.$router;
 
-    logout: async function() {
-      this.isLoading = true;
-      await this.SHARETRIBE.logout();
-      this.updateIsLoggedIn();
-      this.$router.push({ path: '/' });
-      this.toggleMenu();
-      this.isLoading = false;
-    },
+    // setup vuex state mapping
+    const sidenavState = sidenavStore.useState(['isOpen']);
+    const sidenavMutations = sidenavStore.useMutations(['toggleSidenav', 'closeSidenav']);
 
-    clickOut: function() {
-      if (this.menuOpen) {
-        this.closeSidenav();
+    const { SHARETRIBE } = sharetribeStore.useState(['SHARETRIBE']);
+    const sharetribeMutations = sharetribeStore.useMutations(['updateIsLoggedIn']);
+
+    // general data
+    const isLoading = ref(false);
+
+    // methods
+    const clickOut = () => {
+      if (sidenavState.isOpen.value) {
+        sidenavMutations.closeSidenav();
       }
-    },
+    };
+
+    const logout = async () => {
+      isLoading.value = true;
+      await SHARETRIBE.value.logout();
+      sharetribeMutations.updateIsLoggedIn();
+      router.push({ path: '/' });
+      sidenavMutations.toggleSidenav();
+      isLoading.value = false;
+    };
+
+    return {
+      logout,
+      clickOut,
+      toggleSidenav: sidenavMutations.toggleSidenav,
+      isOpen: sidenavState.isOpen,
+    };
   },
 };
 </script>

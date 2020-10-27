@@ -62,7 +62,9 @@ const routes = [
         name: 'Publish',
         path: 'publish',
         component: () =>
-          import(/* webpackChunkName: "dashboard-publish" */ '@/components/dashboard/Publish.vue'),
+          import(
+            /* webpackChunkName: "dashboard-publish" */ '@/components/dashboard/publish/Publish.vue'
+          ),
       },
     ],
   },
