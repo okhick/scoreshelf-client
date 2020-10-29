@@ -58,13 +58,12 @@ export default {
   components: {
     FontAwesomeIcon,
   },
-  mixins: [sharetribe],
   setup(_, context) {
     // setup vuex state mapping
     const sidenavState = sidenavStore.useState(['isOpen']);
     const sidenavMutations = sidenavStore.useMutations(['toggleSidenav', 'closeSidenav']);
 
-    const { SHARETRIBE } = sharetribeStore.useState(['SHARETRIBE']);
+    const { SHARETRIBE, isLoggedIn } = sharetribeStore.useState(['SHARETRIBE']);
     const sharetribeMutations = sharetribeStore.useMutations(['updateIsLoggedIn']);
 
     // general data
@@ -91,6 +90,7 @@ export default {
       clickOut,
       toggleSidenav: sidenavMutations.toggleSidenav,
       isOpen: sidenavState.isOpen,
+      isLoggedIn,
     };
   },
 };

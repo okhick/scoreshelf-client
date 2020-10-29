@@ -9,11 +9,14 @@
 <script>
 import PublishedMusic from '@/components/dashboard/publish/PublishedMusic.vue';
 import PublishModal from '@/components/dashboard/publish/PublishModal.vue';
-import { sharetribe } from '@/mixins/sharetribe.js';
+import useSharetribe from '@/compositions/sharetribe';
 import { mapState } from 'vuex';
 
 export default {
-  mixins: [sharetribe],
+  setup() {
+    const { useRefreshLogin } = useSharetribe();
+    return { useRefreshLogin };
+  },
   components: {
     PublishedMusic,
     PublishModal,
@@ -30,7 +33,7 @@ export default {
     }),
   },
   async beforeMount() {
-    await this.refreshLogin();
+    await this.useRefreshLogin();
     this.currentUserLoaded = true;
   },
 };

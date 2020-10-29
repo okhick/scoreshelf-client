@@ -57,7 +57,6 @@
 
 <script>
 import { ref } from '@vue/composition-api';
-import useSharetribe from '@/compositions/sharetribe';
 
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
@@ -73,8 +72,6 @@ export default {
     const isLoading = ref(false);
     const { SHARETRIBE } = sharetribeStore.useState(['SHARETRIBE']);
 
-    const { useRefreshLogin } = useSharetribe();
-
     function signupActually() {
       context.root.$router.push({ name: 'SignUp' });
     }
@@ -88,8 +85,6 @@ export default {
           username: formData.value.email,
           password: formData.value.password,
         });
-        // update vuex with update login info
-        await useRefreshLogin();
         context.root.$router.push({ path: '/dashboard' });
         isLoading.value = false;
       } catch (loginResError) {

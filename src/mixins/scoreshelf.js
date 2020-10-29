@@ -107,7 +107,6 @@ export const scoreshelf = {
           // do more formatting here
         };
       });
-      console.log(formattedUploadParams);
       return formattedUploadParams;
     },
 

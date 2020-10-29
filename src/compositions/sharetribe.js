@@ -1,4 +1,4 @@
-import { ref } from '@vue/composition-api';
+import { toRefs, reactive } from '@vue/composition-api';
 
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
@@ -23,7 +23,7 @@ export default function useSharetribe() {
 
   //should be called whenever you need to double check logged in.
   //probably on every view
-  async function useRefreshLogin(test) {
+  async function useRefreshLogin() {
     //check that SHARETRIBE has been loaded.
     if (typeof sharetribeState.SHARETRIBE.value.authInfo === 'function') {
       let authInfo = await sharetribeState.SHARETRIBE.value.authInfo();
@@ -31,10 +31,6 @@ export default function useSharetribe() {
       if (authInfo && authInfo.isAnonymous === false) {
         sharetribeMutations.updateIsLoggedIn(true);
         console.log('User is logged in.');
-
-        // update currentUser store
-        const currentUser = await sharetribeState.SHARETRIBE.value.currentUser.show();
-        sharetribeMutations.updateCurrentUser(currentUser.data.data);
       } else {
         sharetribeMutations.updateIsLoggedIn(false);
         console.log('User is NOT logged in.');
@@ -42,6 +38,12 @@ export default function useSharetribe() {
       }
     }
     return;
+  }
+
+  async function useUpdateCurrentUser() {
+    const userData = await sharetribeState.SHARETRIBE.value.currentUser.show();
+    await sharetribeMutations.updateCurrentUser(userData.data.data);
+    return userData;
   }
 
   function convertToSharetribePrice(money) {
@@ -54,6 +56,7 @@ export default function useSharetribe() {
   return {
     useSharetribeSdk,
     useRefreshLogin,
+    useUpdateCurrentUser,
     convertToSharetribePrice,
     convertFromSharetribePrice,
   };

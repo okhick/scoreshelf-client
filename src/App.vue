@@ -22,17 +22,15 @@ export default {
     Sidenav,
     SearchBar,
   },
-  // mixins: [sharetribe],
   computed: {
     ...mapState({ menuOpen: state => state.sidenav.isOpen }),
   },
   setup() {
-    const { useRefreshLogin, useSharetribeSdk } = useSharetribe();
-    return { useRefreshLogin, useSharetribeSdk };
+    const { useSharetribeSdk } = useSharetribe();
+    return { useSharetribeSdk };
   },
   async mounted() {
     await this.useSharetribeSdk();
-    await this.useRefreshLogin();
   },
 };
 </script>

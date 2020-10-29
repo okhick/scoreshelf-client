@@ -79,19 +79,25 @@
 
 <script>
 import { mapState } from 'vuex';
-import { sharetribe } from '@/mixins/sharetribe.js';
+import useSharetribe from '@/compositions/sharetribe.js';
+
+import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
+const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUnlock, faLock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { onMounted, reactive, ref, toRefs } from '@vue/composition-api';
 library.add(faUnlock, faLock);
 
 export default {
   components: {
     FontAwesomeIcon,
   },
-  data: function() {
-    return {
+  setup() {
+    // Data
+    const { currentUser, SHARETRIBE } = sharetribeStore.useState(['currentUser', 'SHARETRIBE']);
+    const formData = reactive({
       firstName: {
         disabled: true,
         value: '',
@@ -108,46 +114,52 @@ export default {
         disabled: true,
         value: '',
       },
-      isLoading: false,
-      messages: {
-        success: {
-          profile: false,
-        },
+    });
+    const isLoading = ref(false);
+    const messages = reactive({
+      success: {
+        profile: false,
       },
-    };
-  },
-  mixins: [sharetribe],
-  methods: {
-    toggleEnable: function(element) {
-      this[element].disabled = !this[element].disabled;
-    },
-    closeMessage(passFail, message) {
-      this.messages[passFail][message] = !this.messages[passFail][message];
-    },
-    updateProfile: async function() {
-      this.isLoading = true;
-      let res = await this.SHARETRIBE.currentUser.updateProfile({
-        firstName: this.firstName.value,
-        lastName: this.lastName.value,
-        displayName: this.displayName.value,
+    });
+
+    onMounted(async () => {
+      await useRefreshLogin();
+      formData.firstName.value = currentUser.value.attributes.profile.firstName;
+      formData.lastName.value = currentUser.value.attributes.profile.lastName;
+      formData.displayName.value = currentUser.value.attributes.profile.displayName;
+      formData.email.value = currentUser.value.attributes.email;
+    });
+
+    // methods
+    const { useRefreshLogin } = useSharetribe();
+
+    function toggleEnable(element) {
+      formData[element].disabled = !formData[element].disabled;
+    }
+    function closeMessage(passFail, message) {
+      messages[passFail][message] = !messages[passFail][message];
+    }
+    async function updateProfile() {
+      isLoading.value = true;
+      const res = await SHARETRIBE.value.currentUser.updateProfile({
+        firstName: formData.firstName.value,
+        lastName: formData.lastName.value,
+        displayName: formData.displayName.value,
       });
-      this.refreshLogin();
+      await useRefreshLogin();
       console.log(res.data);
-      this.messages.success.profile = true;
-      this.isLoading = false;
-    },
-  },
-  async mounted() {
-    await this.refreshLogin();
-    this.firstName.value = this.currentUser.attributes.profile.firstName;
-    this.lastName.value = this.currentUser.attributes.profile.lastName;
-    this.displayName.value = this.currentUser.attributes.profile.displayName;
-    this.email.value = this.currentUser.attributes.email;
-  },
-  computed: {
-    ...mapState({
-      currentUser: state => state.sharetribe.currentUser,
-    }),
+      messages.success.profile = true;
+      isLoading.value = false;
+    }
+
+    return {
+      ...toRefs(formData),
+      messages,
+      isLoading,
+      currentUser,
+      updateProfile,
+      toggleEnable,
+    };
   },
 };
 </script>

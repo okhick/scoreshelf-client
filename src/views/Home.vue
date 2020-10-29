@@ -3,13 +3,16 @@
 </template>
 
 <script>
-import { sharetribe } from '../mixins/sharetribe.js';
+import useSharetribe from '@/compositions/sharetribe.js';
+import { onMounted } from '@vue/composition-api';
 
 export default {
   name: 'Home',
-  mixins: [sharetribe],
-  async mounted() {
-    this.refreshLogin();
+  setup() {
+    const { useRefreshLogin } = useSharetribe();
+    onMounted(async () => {
+      await useRefreshLogin();
+    });
   },
   components: {
     // Navbar

@@ -6,23 +6,28 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { onMounted, ref, computed, watch } from '@vue/composition-api';
+import useSharetribe from '@/compositions/sharetribe';
+import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
+const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
 
 export default {
-  data() {
+  setup() {
+    const displayName = ref('');
+    const { isLoggedIn, currentUser } = sharetribeStore.useState(['isLoggedIn', 'currentUser']);
+
+    const { useRefreshLogin, useUpdateCurrentUser } = useSharetribe();
+
+    onMounted(async () => {
+      await useRefreshLogin();
+      await useUpdateCurrentUser();
+      displayName.value = currentUser.value.attributes.profile.displayName;
+    });
+
     return {
-      displayName: '',
+      displayName,
+      isLoggedIn,
     };
-  },
-  async mounted() {
-    this.displayName = this.currentUser.attributes.profile.displayName;
-  },
-  computed: {
-    ...mapState({
-      SHARETRIBE: state => state.sharetribe.SHARETRIBE,
-      isLoggedIn: state => state.sharetribe.isLoggedIn,
-      currentUser: state => state.sharetribe.currentUser,
-    }),
   },
 };
 </script>

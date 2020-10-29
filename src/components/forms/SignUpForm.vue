@@ -73,6 +73,7 @@
 <script>
 import { ref } from '@vue/composition-api';
 import { mapState } from 'vuex';
+import useSharetribe from '@/compositions/sharetribe';
 
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
@@ -90,6 +91,7 @@ export default {
     });
     const isLoading = ref(false);
     const { SHARETRIBE } = sharetribeStore.useState(['SHARETRIBE']);
+    const { useRefreshLogin } = useSharetribe();
 
     function loginActually() {
       context.root.$router.push({ name: 'Login' });
