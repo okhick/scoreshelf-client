@@ -60,8 +60,6 @@ export default {
   },
   mixins: [sharetribe],
   setup(_, context) {
-    const router = context.root.$router;
-
     // setup vuex state mapping
     const sidenavState = sidenavStore.useState(['isOpen']);
     const sidenavMutations = sidenavStore.useMutations(['toggleSidenav', 'closeSidenav']);
@@ -83,7 +81,7 @@ export default {
       isLoading.value = true;
       await SHARETRIBE.value.logout();
       sharetribeMutations.updateIsLoggedIn();
-      router.push({ path: '/' });
+      context.root.$router.push({ path: '/' });
       sidenavMutations.toggleSidenav();
       isLoading.value = false;
     };

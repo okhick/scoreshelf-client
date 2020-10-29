@@ -12,6 +12,8 @@
 // import Navbar from "@/components/Navbar.vue";
 import Sidenav from '@/components/Sidenav.vue';
 import SearchBar from '@/components/search/SearchBar.vue';
+import useSharetribe from '@/compositions/sharetribe';
+
 import { sharetribe } from './mixins/sharetribe.js';
 import { mapState } from 'vuex';
 
@@ -20,13 +22,17 @@ export default {
     Sidenav,
     SearchBar,
   },
-  mixins: [sharetribe],
+  // mixins: [sharetribe],
   computed: {
     ...mapState({ menuOpen: state => state.sidenav.isOpen }),
   },
-  async created() {
-    await this.initSharetribeSdk();
-    await this.refreshLogin();
+  setup() {
+    const { useRefreshLogin, useSharetribeSdk } = useSharetribe();
+    return { useRefreshLogin, useSharetribeSdk };
+  },
+  async mounted() {
+    await this.useSharetribeSdk();
+    await this.useRefreshLogin();
   },
 };
 </script>

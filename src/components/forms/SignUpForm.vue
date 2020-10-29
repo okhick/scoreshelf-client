@@ -3,21 +3,21 @@
     <div class="field">
       <label class="label">First Name</label>
       <div class="control">
-        <input class="input" type="text" v-model="firstName" />
+        <input class="input" type="text" v-model="formData.firstName" />
       </div>
     </div>
 
     <div class="field">
       <label class="label">Last Name</label>
       <div class="control">
-        <input class="input" type="text" v-model="lastName" />
+        <input class="input" type="text" v-model="formData.lastName" />
       </div>
     </div>
 
     <div class="field">
       <label class="label">Display Name</label>
       <div class="control">
-        <input class="input" type="text" v-model="displayName" />
+        <input class="input" type="text" v-model="formData.displayName" />
       </div>
     </div>
 
@@ -26,21 +26,21 @@
     <div class="field">
       <label class="label">Email</label>
       <div class="control">
-        <input class="input" type="text" v-model="email" />
+        <input class="input" type="text" v-model="formData.email" />
       </div>
     </div>
 
     <div class="field">
       <label class="label">Password</label>
       <div class="control">
-        <input class="input" type="password" v-model="password" />
+        <input class="input" type="password" v-model="formData.password" />
       </div>
     </div>
 
     <div class="field">
       <label class="label">Password Again</label>
       <div class="control">
-        <input class="input" type="password" v-model="passwordAgain" />
+        <input class="input" type="password" v-model="formData.passwordAgain" />
       </div>
     </div>
 
@@ -49,7 +49,7 @@
         class="button is-dark level-left"
         :class="{ 'is-loading': isLoading }"
         type="submit"
-        @click="signup_attempt()"
+        @click="test()"
       >
         Sign Up
       </button>
@@ -71,52 +71,60 @@
 </style>
 
 <script>
+import { ref } from '@vue/composition-api';
 import { mapState } from 'vuex';
+
+import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
+const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
 
 export default {
   name: 'SignUpForm',
-  data: function() {
-    return {
+  setup(_, context) {
+    const formData = ref({
       email: '',
       password: '',
       passwordAgain: '',
       firstName: '',
       lastName: '',
       displayName: '',
-      isLoading: false,
-    };
-  },
-  methods: {
-    // TODO: This needs validation
-    loginActually: function() {
-      this.$router.push({ name: 'Login' });
-    },
-    signup_attempt: async function() {
+    });
+    const isLoading = ref(false);
+    const { SHARETRIBE } = sharetribeStore.useState(['SHARETRIBE']);
+
+    function loginActually() {
+      context.root.$router.push({ name: 'Login' });
+    }
+
+    async function signupAttempt() {
       try {
-        this.isLoading = true;
-        let signupRes = await this.SHARETRIBE.currentUser.create({
-          email: this.email,
-          password: this.password,
-          firstName: this.firstName,
-          lastName: this.lastName,
-          displayName: this.displayName,
+        isLoading.value = true;
+        const signupRes = await SHARETRIBE.value.currentUser.create({
+          email: formData.value.email,
+          password: formData.value.password,
+          firstName: formData.value.firstName,
+          lastName: formData.value.lastName,
+          displayName: formData.value.displayName,
         });
-        console.log(signupRes);
-        this.isLoading = false;
+
+        isLoading.value = false;
       } catch (signupResError) {
-        this.isLoading = false;
+        isLoading.value = false;
 
         switch (signupResError.status) {
           case 401:
           // do something with this error
         }
       }
-    },
-  },
-  computed: {
-    ...mapState({
-      SHARETRIBE: state => state.sharetribe.SHARETRIBE,
-    }),
+    }
+
+    return {
+      // data
+      formData,
+      isLoading,
+      // methods
+      signupAttempt,
+      loginActually,
+    };
   },
 };
 </script>
