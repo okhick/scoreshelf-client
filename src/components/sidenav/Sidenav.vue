@@ -99,7 +99,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '../styles/index.scss';
+@import '@/styles/index.scss';
 .sidenav {
   left: -180px;
   position: fixed;

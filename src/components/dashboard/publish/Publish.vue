@@ -1,40 +1,29 @@
 <template>
   <div>
     <h1 class="title">Publish Music</h1>
-    <PublishedMusic v-if="currentUserLoaded"></PublishedMusic>
-    <PublishModal></PublishModal>
+    <PublishTable />
+    <PublishModal />
   </div>
 </template>
 
 <script>
-import PublishedMusic from '@/components/dashboard/publish/PublishedMusic.vue';
+import PublishTable from '@/components/dashboard/publish/PublishTable.vue';
 import PublishModal from '@/components/dashboard/publish/PublishModal.vue';
 import useSharetribe from '@/compositions/sharetribe';
 import { mapState } from 'vuex';
 
+import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
+import { onMounted } from '@vue/composition-api';
+const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
+
 export default {
-  setup() {
-    const { useRefreshLogin } = useSharetribe();
-    return { useRefreshLogin };
-  },
   components: {
-    PublishedMusic,
+    PublishTable,
     PublishModal,
   },
-  data: function() {
-    return {
-      currentUserLoaded: false,
-    };
-  },
-  methods: {},
-  computed: {
-    ...mapState({
-      currentUser: state => state.sharetribe.currentUser,
-    }),
-  },
-  async beforeMount() {
-    await this.useRefreshLogin();
-    this.currentUserLoaded = true;
+  setup() {
+    const { useRefreshLogin } = useSharetribe();
+    onMounted(async () => await useRefreshLogin());
   },
 };
 </script>

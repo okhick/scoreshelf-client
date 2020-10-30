@@ -10,7 +10,7 @@
 
 <script>
 // import Navbar from "@/components/Navbar.vue";
-import Sidenav from '@/components/Sidenav.vue';
+import Sidenav from '@/components/sidenav/Sidenav.vue';
 import SearchBar from '@/components/search/SearchBar.vue';
 
 import { onMounted } from '@vue/composition-api';
@@ -25,7 +25,7 @@ export default {
     SearchBar,
   },
 
-  setup(_, { root }) {
+  setup() {
     const { useSharetribeSdk } = useSharetribe();
     const { isOpen } = sharetribeStore.useState(['isOpen']);
 
