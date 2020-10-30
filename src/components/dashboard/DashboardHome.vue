@@ -6,8 +6,9 @@
 </template>
 
 <script>
-import { onMounted, ref, computed, watch } from '@vue/composition-api';
+import { onMounted, ref } from '@vue/composition-api';
 import useSharetribe from '@/compositions/sharetribe';
+
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
 
@@ -18,6 +19,7 @@ export default {
 
     const { useRefreshLogin, useUpdateCurrentUser } = useSharetribe();
 
+    // this can be converted into a suspense thing in Vue 3
     onMounted(async () => {
       await useRefreshLogin();
       await useUpdateCurrentUser();
