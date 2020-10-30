@@ -3,21 +3,21 @@
     <div class="field">
       <label class="label">First Name</label>
       <div class="control">
-        <input class="input" type="text" v-model="formData.firstName" />
+        <input class="input" type="text" v-model="firstName" />
       </div>
     </div>
 
     <div class="field">
       <label class="label">Last Name</label>
       <div class="control">
-        <input class="input" type="text" v-model="formData.lastName" />
+        <input class="input" type="text" v-model="lastName" />
       </div>
     </div>
 
     <div class="field">
       <label class="label">Display Name</label>
       <div class="control">
-        <input class="input" type="text" v-model="formData.displayName" />
+        <input class="input" type="text" v-model="displayName" />
       </div>
     </div>
 
@@ -26,21 +26,21 @@
     <div class="field">
       <label class="label">Email</label>
       <div class="control">
-        <input class="input" type="text" v-model="formData.email" />
+        <input class="input" type="text" v-model="email" />
       </div>
     </div>
 
     <div class="field">
       <label class="label">Password</label>
       <div class="control">
-        <input class="input" type="password" v-model="formData.password" />
+        <input class="input" type="password" v-model="password" />
       </div>
     </div>
 
     <div class="field">
       <label class="label">Password Again</label>
       <div class="control">
-        <input class="input" type="password" v-model="formData.passwordAgain" />
+        <input class="input" type="password" v-model="passwordAgain" />
       </div>
     </div>
 
@@ -71,7 +71,7 @@
 </style>
 
 <script>
-import { ref } from '@vue/composition-api';
+import { reactive, ref, toRefs } from '@vue/composition-api';
 import { mapState } from 'vuex';
 import useSharetribe from '@/compositions/sharetribe';
 
@@ -81,7 +81,7 @@ const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific modul
 export default {
   name: 'SignUpForm',
   setup(_, context) {
-    const formData = ref({
+    const formData = reactive({
       email: '',
       password: '',
       passwordAgain: '',
@@ -101,11 +101,11 @@ export default {
       try {
         isLoading.value = true;
         const signupRes = await SHARETRIBE.value.currentUser.create({
-          email: formData.value.email,
-          password: formData.value.password,
-          firstName: formData.value.firstName,
-          lastName: formData.value.lastName,
-          displayName: formData.value.displayName,
+          email: formData.email,
+          password: formData.password,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          displayName: formData.displayName,
         });
 
         isLoading.value = false;
@@ -121,7 +121,7 @@ export default {
 
     return {
       // data
-      formData,
+      ...toRefs(formData),
       isLoading,
       // methods
       signupAttempt,

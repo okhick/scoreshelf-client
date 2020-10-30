@@ -147,7 +147,6 @@ export default {
         displayName: formData.displayName.value,
       });
       await useRefreshLogin();
-      console.log(res.data);
       messages.success.profile = true;
       isLoading.value = false;
     }

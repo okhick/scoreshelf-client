@@ -39,8 +39,12 @@ export default {
     const searchInput = ref('');
 
     // vuex state mapping
-    const sidenavState = searchStore.useState(['searchIsLoading']);
-    const sidenavMutations = searchStore.useMutations([
+    const { searchIsLoading } = searchStore.useState(['searchIsLoading']);
+    const {
+      toggleSearchIsLoading,
+      addSearchListingData,
+      addSearchResultsMeta,
+    } = searchStore.useMutations([
       'toggleSearchIsLoading',
       'addSearchListingData',
       'addSearchResultsMeta',
@@ -62,21 +66,21 @@ export default {
 
       // wait until the dom has reloaded to turn the toggle off
       context.root.$nextTick(() => {
-        sidenavMutations.toggleSearchIsLoading();
+        toggleSearchIsLoading();
       });
     }
 
     function processSearchResults(rawRes) {
       const listingData = rawRes.data.data;
       const resMeta = rawRes.data.meta;
-      sidenavMutations.addSearchListingData(listingData);
-      sidenavMutations.addSearchResultsMeta(resMeta);
+      addSearchListingData(listingData);
+      addSearchResultsMeta(resMeta);
     }
 
     return {
       searchInput,
       doSearch,
-      searchIsLoading: sidenavState.searchIsLoading,
+      searchIsLoading: searchIsLoading,
     };
   },
 };

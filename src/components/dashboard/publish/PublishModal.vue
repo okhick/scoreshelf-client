@@ -95,8 +95,7 @@ import PublishForm from '@/components/forms/publish/PublishForm.vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTrashAlt, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-library.add(faTrashAlt);
-library.add(faAngleDown);
+library.add(faTrashAlt, faAngleDown);
 
 import vClickOutside from 'v-click-outside';
 Vue.use(vClickOutside);

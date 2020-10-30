@@ -40,7 +40,6 @@
 <script>
 import Vue from 'vue';
 import { ref } from '@vue/composition-api';
-import { sharetribe } from '../mixins/sharetribe.js';
 
 import vClickOutside from 'v-click-outside';
 Vue.use(vClickOutside);
@@ -60,36 +59,39 @@ export default {
   },
   setup(_, context) {
     // setup vuex state mapping
-    const sidenavState = sidenavStore.useState(['isOpen']);
-    const sidenavMutations = sidenavStore.useMutations(['toggleSidenav', 'closeSidenav']);
+    const { isOpen } = sidenavStore.useState(['isOpen']);
+    const { toggleSidenav, closeSidenav } = sidenavStore.useMutations([
+      'toggleSidenav',
+      'closeSidenav',
+    ]);
 
     const { SHARETRIBE, isLoggedIn } = sharetribeStore.useState(['SHARETRIBE']);
-    const sharetribeMutations = sharetribeStore.useMutations(['updateIsLoggedIn']);
+    const { updateIsLoggedIn } = sharetribeStore.useMutations(['updateIsLoggedIn']);
 
     // general data
     const isLoading = ref(false);
 
     // methods
     const clickOut = () => {
-      if (sidenavState.isOpen.value) {
-        sidenavMutations.closeSidenav();
+      if (isOpen.value) {
+        closeSidenav();
       }
     };
 
     const logout = async () => {
       isLoading.value = true;
       await SHARETRIBE.value.logout();
-      sharetribeMutations.updateIsLoggedIn();
+      updateIsLoggedIn();
       context.root.$router.push({ path: '/' });
-      sidenavMutations.toggleSidenav();
+      toggleSidenav();
       isLoading.value = false;
     };
 
     return {
       logout,
       clickOut,
-      toggleSidenav: sidenavMutations.toggleSidenav,
-      isOpen: sidenavState.isOpen,
+      toggleSidenav,
+      isOpen,
       isLoggedIn,
     };
   },
