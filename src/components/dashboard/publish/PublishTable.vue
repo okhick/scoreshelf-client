@@ -63,9 +63,14 @@
 </template>
 
 <script>
+import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
+
+import { ref, onMounted, watch, computed } from '@vue/composition-api';
+import { createNamespacedHelpers } from 'vuex-composition-helpers';
+const DashboardStore = createNamespacedHelpers('dashboard');
+const SharetribeStore = createNamespacedHelpers('sharetribe');
+
 import Vue from 'vue';
-import { mapState, mapMutations } from 'vuex';
-import { scoreshelf } from '@/mixins/scoreshelf';
 Vue.use(require('vue-moment'));
 
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -77,79 +82,95 @@ export default {
   components: {
     FontAwesomeIcon,
   },
-  mixins: [scoreshelf],
-  data: function() {
-    return {
-      hasPublishedMusic: false,
-      reloadTable: 0,
-    };
-  },
-  methods: {
-    ...mapMutations('dashboard', [
+  setup() {
+    // |---------- Init Composables ----------|
+    const ScoreshelfPublisher = useScoreshelfPublisher();
+    const { hyrdateAssetData } = ScoreshelfPublisher.useScoreshelfAssetManagement;
+    const { addFileToFileList } = ScoreshelfPublisher.useScoreshelfUploadManagement;
+
+    // |---------- Data ----------|
+    const publishedMusic = ref(null);
+    const reloadTable = ref(0);
+    const hasPublishedMusic = computed(() => (publishedMusic !== null ? true : false));
+
+    const { publishModalOpen } = DashboardStore.useState(['publishModalOpen']);
+    const { togglePublishModal, editPublishModalEditData } = DashboardStore.useMutations([
       'togglePublishModal',
       'editPublishModalEditData',
-      'addFileToFileList',
-    ]),
-    createNewDraft: async function() {
-      // actually create a temp draft so we can have an uuid
-      // we need a uuid up front so save assets
-      let draft = await this.SHARETRIBE.ownListings.createDraft({
-        title: `new_draft_${this.currentUser.id.uuid}`,
-      });
-      draft.data.data.isBlankDraft = true;
-      this.editPublishModalEditData(draft.data.data);
-      this.togglePublishModal();
-    },
-    openEditModal: async function(pieceData) {
-      this.editPublishModalEditData(pieceData);
+    ]);
+    const { SHARETRIBE, currentUser } = SharetribeStore.useState(['SHARETRIBE', 'currentUser']);
+
+    // |---------- Hooks ----------|
+    onMounted(async () => {
+      await getPublishedMusic();
+    });
+
+    watch(publishModalOpen, async newModalState => {
+      if (newModalState == false) {
+        await getPublishedMusic();
+        reloadTable.value += 1;
+      }
+    });
+
+    // |---------- Methods ----------|
+    async function openEditModal(pieceData) {
+      editPublishModalEditData(pieceData);
       // get init data about the files
-      if (pieceData.attributes.privateData.assetData) {
-        const fileList = pieceData.attributes.privateData.assetData;
-        const hydratedFileListRes = await this.hyrdateAssetData(fileList, true);
+      const assetData = pieceData.attributes.privateData.assetData;
+      if (assetData && assetData.length > 0) {
+        const fileList = assetData;
+        const hydratedFileListRes = await hyrdateAssetData(fileList, true);
 
         // store the files
         hydratedFileListRes.data.forEach(file => {
           file.isStored = true;
-          this.addFileToFileList(file);
+          addFileToFileList(file);
         });
       }
-      this.togglePublishModal();
-    },
-    getPublishedMusic: async function() {
-      this.publishedMusicRes = await this.SHARETRIBE.ownListings.query({});
+      togglePublishModal();
+    }
 
-      if (this.publishedMusicRes.data.meta.totalItems > 0) {
-        this.hasPublishedMusic = true;
-        this.publishedMusic = this.publishedMusicRes.data.data;
+    async function createNewDraft() {
+      // actually create a temp draft so we can have an uuid
+      // we need a uuid up front so save assets
+      const draft = await SHARETRIBE.value.ownListings.createDraft({
+        title: `new_draft_${currentUser.value.id.uuid}`,
+      });
+      draft.data.data.isBlankDraft = true;
+      editPublishModalEditData(draft.data.data);
+      togglePublishModal();
+    }
+
+    async function getPublishedMusic() {
+      const publishedMusicRes = await SHARETRIBE.value.ownListings.query({});
+
+      if (publishedMusicRes.data.meta.totalItems > 0) {
+        publishedMusic.value = publishedMusicRes.data.data;
+        return;
       } else {
-        this.hasPublishedMusic = false;
+        hasPublishedMusic.value = false;
+        return;
       }
-    },
-    formatsAvailable: function(piece) {
+    }
+
+    function formatsAvailable(piece) {
       if (piece.attributes.publicData.formats) {
         const formatsAvailable = piece.attributes.publicData.formats.map(format => format.format);
         return formatsAvailable.join(', ');
       }
       return '';
-    },
-  },
-  async mounted() {
-    this.getPublishedMusic();
-  },
-  computed: {
-    ...mapState({
-      SHARETRIBE: state => state.sharetribe.SHARETRIBE,
-      currentUser: state => state.sharetribe.currentUser,
-      publishModalOpen: state => state.dashboard.publishModalOpen,
-    }),
-  },
-  watch: {
-    publishModalOpen: async function(newModalState) {
-      if (newModalState == false) {
-        await this.getPublishedMusic();
-        this.reloadTable += 1;
-      }
-    },
+    }
+
+    return {
+      // ---- Data ----
+      publishedMusic,
+      hasPublishedMusic,
+      reloadTable,
+      // ---- Methods ----
+      createNewDraft,
+      formatsAvailable,
+      openEditModal,
+    };
   },
 };
 </script>

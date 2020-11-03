@@ -19,8 +19,11 @@ export default {
     PublishModal,
   },
   setup() {
-    const { useRefreshLogin } = useSharetribe();
-    onMounted(async () => await useRefreshLogin());
+    const { useRefreshLogin, useUpdateCurrentUser } = useSharetribe();
+    onMounted(async () => {
+      await useRefreshLogin();
+      await useUpdateCurrentUser();
+    });
   },
 };
 </script>

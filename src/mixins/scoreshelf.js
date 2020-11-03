@@ -110,15 +110,6 @@ export const scoreshelf = {
       return formattedUploadParams;
     },
 
-    hyrdateAssetData: async function(fileList, getLink) {
-      const scoreshelf_ids = fileList.map(file => file.scoreshelf_id);
-      const hydratedAssets = await this.$axios.post('/getAssetdata', {
-        scoreshelf_ids: scoreshelf_ids,
-        get_link: getLink,
-      });
-      return hydratedAssets;
-    },
-
     // check if there are new files that need storing
     areNewFiles: function() {
       let areNewFiles = false;

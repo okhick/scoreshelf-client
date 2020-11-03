@@ -1,4 +1,4 @@
-import { reactive } from '@vue/composition-api';
+import { reactive, toRefs } from '@vue/composition-api';
 
 const FileState = reactive({
   fileList: [],
@@ -7,15 +7,21 @@ const FileState = reactive({
 
 export default function useScoreshelfPublisher() {
   // manage files/data uploaded to the browser
-  const useUploadManagement = useUploadManagement();
+  const useScoreshelfUploadManagement = ScoreshelfUploadManagement();
 
   // manage files/data upload to scoreshelf
-  const useScoreshelfAssetManagement = useScoreshelfAssetManagement();
+  const useScoreshelfAssetManagement = ScoreshelfAssetManagement();
 
-  const useScoreshelfHelpers = useScoreshelfHelpers();
+  const useScoreshelfHelpers = ScoreshelfHelpers();
+
+  return {
+    useScoreshelfUploadManagement,
+    useScoreshelfAssetManagement,
+    ...toRefs(FileState),
+  };
 }
 
-function useUploadManagement() {
+function ScoreshelfUploadManagement() {
   function useProcessUpload() {
     const newFiles = this.$refs.file.files;
     newFiles.forEach(file => {
@@ -66,3 +72,20 @@ function useUploadManagement() {
     addScoreshelfIdToFile,
   };
 }
+
+function ScoreshelfAssetManagement() {
+  async function hyrdateAssetData(fileList, getLink) {
+    const scoreshelf_ids = fileList.map(file => file.scoreshelf_id);
+    const hydratedAssets = await this.$axios.post('/getAssetdata', {
+      scoreshelf_ids: scoreshelf_ids,
+      get_link: getLink,
+    });
+    return hydratedAssets;
+  }
+
+  return {
+    hyrdateAssetData,
+  };
+}
+
+function ScoreshelfHelpers() {}
