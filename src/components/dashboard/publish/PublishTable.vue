@@ -85,27 +85,29 @@ export default {
   setup() {
     // |---------- Init Composables ----------|
     const ScoreshelfPublisher = useScoreshelfPublisher();
-    const { hyrdateAssetData } = ScoreshelfPublisher.useScoreshelfAssetManagement;
-    const { addFileToFileList } = ScoreshelfPublisher.useScoreshelfUploadManagement;
+    const ScoreshelfAssetManagement = ScoreshelfPublisher.useScoreshelfAssetManagement;
+    const ScoreshelfUploadManagement = ScoreshelfPublisher.useScoreshelfUploadManagement;
 
     // |---------- Data ----------|
     const publishedMusic = ref(null);
     const reloadTable = ref(0);
     const hasPublishedMusic = computed(() => (publishedMusic !== null ? true : false));
 
-    const { publishModalOpen } = DashboardStore.useState(['publishModalOpen']);
-    const { togglePublishModal, editPublishModalEditData } = DashboardStore.useMutations([
+    // I could descructure these if I wanted to, but these feel more self documenting?
+    const DashboardState = DashboardStore.useState(['publishModalOpen']);
+    const DashboardMutations = DashboardStore.useMutations([
       'togglePublishModal',
-      'editPublishModalEditData',
+      'setPublishModalEditData',
     ]);
-    const { SHARETRIBE, currentUser } = SharetribeStore.useState(['SHARETRIBE', 'currentUser']);
+    const SharetribeState = SharetribeStore.useState(['SHARETRIBE', 'currentUser']);
+    const SHARETRIBE = SharetribeState.SHARETRIBE;
 
     // |---------- Hooks ----------|
     onMounted(async () => {
       await getPublishedMusic();
     });
 
-    watch(publishModalOpen, async newModalState => {
+    watch(DashboardState.publishModalOpen, async newModalState => {
       if (newModalState == false) {
         await getPublishedMusic();
         reloadTable.value += 1;
@@ -114,20 +116,23 @@ export default {
 
     // |---------- Methods ----------|
     async function openEditModal(pieceData) {
-      editPublishModalEditData(pieceData);
+      DashboardMutations.setPublishModalEditData(pieceData);
       // get init data about the files
       const assetData = pieceData.attributes.privateData.assetData;
       if (assetData && assetData.length > 0) {
         const fileList = assetData;
-        const hydratedFileListRes = await hyrdateAssetData(fileList, true);
+        const hydratedFileListRes = await ScoreshelfAssetManagement.hyrdateAssetData(
+          fileList,
+          true
+        );
 
         // store the files
         hydratedFileListRes.data.forEach(file => {
           file.isStored = true;
-          addFileToFileList(file);
+          ScoreshelfUploadManagement.addFileToFileList(file);
         });
       }
-      togglePublishModal();
+      DashboardMutations.togglePublishModal();
     }
 
     async function createNewDraft() {
@@ -137,8 +142,8 @@ export default {
         title: `new_draft_${currentUser.value.id.uuid}`,
       });
       draft.data.data.isBlankDraft = true;
-      editPublishModalEditData(draft.data.data);
-      togglePublishModal();
+      DashboardMutations.setPublishModalEditData(draft.data.data);
+      DashboardMutations.togglePublishModal();
     }
 
     async function getPublishedMusic() {

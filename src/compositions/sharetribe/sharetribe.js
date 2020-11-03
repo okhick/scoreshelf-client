@@ -31,13 +31,14 @@ export default function useSharetribe() {
       if (authInfo && authInfo.isAnonymous === false) {
         sharetribeMutations.updateIsLoggedIn(true);
         console.log('User is logged in.');
+        return true;
       } else {
         sharetribeMutations.updateIsLoggedIn(false);
         console.log('User is NOT logged in.');
+        return false;
         // TODO do some actions to make sure logout etc...
       }
     }
-    return;
   }
 
   async function useUpdateCurrentUser() {

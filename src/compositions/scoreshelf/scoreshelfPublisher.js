@@ -1,9 +1,13 @@
 import { reactive, toRefs } from '@vue/composition-api';
 
+// ============================================================================
+
 const FileState = reactive({
   fileList: [],
   filesToBeRemoved: [],
 });
+
+// ============================================================================
 
 export default function useScoreshelfPublisher() {
   // manage files/data uploaded to the browser
@@ -21,8 +25,13 @@ export default function useScoreshelfPublisher() {
   };
 }
 
+// ============================================================================
+// ============================================================================
+// ============================================================================
+
 function ScoreshelfUploadManagement() {
   function useProcessUpload() {
+    // TODO: THIS IS NOT GOING TO WORK
     const newFiles = this.$refs.file.files;
     newFiles.forEach(file => {
       file.isStored = false;
@@ -73,6 +82,10 @@ function ScoreshelfUploadManagement() {
   };
 }
 
+// ============================================================================
+// ============================================================================
+// ============================================================================
+
 function ScoreshelfAssetManagement() {
   async function hyrdateAssetData(fileList, getLink) {
     const scoreshelf_ids = fileList.map(file => file.scoreshelf_id);
@@ -87,5 +100,9 @@ function ScoreshelfAssetManagement() {
     hyrdateAssetData,
   };
 }
+
+// ============================================================================
+// ============================================================================
+// ============================================================================
 
 function ScoreshelfHelpers() {}

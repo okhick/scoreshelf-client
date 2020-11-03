@@ -14,7 +14,7 @@ import Sidenav from '@/components/sidenav/Sidenav.vue';
 import SearchBar from '@/components/search/SearchBar.vue';
 
 import { onMounted } from '@vue/composition-api';
-import useSharetribe from '@/compositions/sharetribe';
+import useSharetribe from '@/compositions/sharetribe/sharetribe';
 
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name

@@ -9,7 +9,7 @@
 <script>
 import PublishTable from '@/components/dashboard/publish/PublishTable.vue';
 import PublishModal from '@/components/dashboard/publish/PublishModal.vue';
-import useSharetribe from '@/compositions/sharetribe';
+import useSharetribe from '@/compositions/sharetribe/sharetribe';
 
 import { onMounted } from '@vue/composition-api';
 
@@ -21,8 +21,8 @@ export default {
   setup() {
     const { useRefreshLogin, useUpdateCurrentUser } = useSharetribe();
     onMounted(async () => {
-      await useRefreshLogin();
-      await useUpdateCurrentUser();
+      const isLoggedIn = await useRefreshLogin();
+      if (isLoggedIn) await useUpdateCurrentUser();
     });
   },
 };

@@ -10,7 +10,7 @@ export const dashboard = {
     togglePublishModal(state) {
       state.publishModalOpen = !state.publishModalOpen;
     },
-    editPublishModalEditData(state, payload) {
+    setPublishModalEditData(state, payload) {
       state.publishModalEditData = payload;
     },
     clearPublishModalEditData(state) {

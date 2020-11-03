@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import useSharetribe from '@/compositions/sharetribe.js';
+import useSharetribe from '@/compositions/sharetribe/sharetribe';
 import { onMounted } from '@vue/composition-api';
 
 export default {

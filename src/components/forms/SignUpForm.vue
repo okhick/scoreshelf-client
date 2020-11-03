@@ -73,7 +73,7 @@
 <script>
 import { reactive, ref, toRefs } from '@vue/composition-api';
 import { mapState } from 'vuex';
-import useSharetribe from '@/compositions/sharetribe';
+import useSharetribe from '@/compositions/sharetribe/sharetribe';
 
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
