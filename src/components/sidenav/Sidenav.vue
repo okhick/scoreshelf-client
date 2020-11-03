@@ -50,49 +50,50 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faBars);
 
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
-const sidenavStore = createNamespacedHelpers('sidenav');
+const SharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
+const SidenavStore = createNamespacedHelpers('sidenav');
 
 export default {
   components: {
     FontAwesomeIcon,
   },
   setup(_, context) {
-    // setup vuex state mapping
-    const { isOpen } = sidenavStore.useState(['isOpen']);
-    const { toggleSidenav, closeSidenav } = sidenavStore.useMutations([
+    // |---------- Data ----------|
+    const { isOpen } = SidenavStore.useState(['isOpen']);
+    const { toggleSidenav, closeSidenav } = SidenavStore.useMutations([
       'toggleSidenav',
       'closeSidenav',
     ]);
 
-    const { SHARETRIBE, isLoggedIn } = sharetribeStore.useState(['SHARETRIBE']);
-    const { updateIsLoggedIn } = sharetribeStore.useMutations(['updateIsLoggedIn']);
+    const { SHARETRIBE, isLoggedIn } = SharetribeStore.useState(['SHARETRIBE']);
+    const { updateIsLoggedIn } = SharetribeStore.useMutations(['updateIsLoggedIn']);
 
-    // general data
     const isLoading = ref(false);
 
-    // methods
-    const clickOut = () => {
+    // |---------- Methods ----------|
+    function clickOut() {
       if (isOpen.value) {
         closeSidenav();
       }
-    };
+    }
 
-    const logout = async () => {
+    async function logout() {
       isLoading.value = true;
       await SHARETRIBE.value.logout();
       updateIsLoggedIn();
       context.root.$router.push({ path: '/' });
       toggleSidenav();
       isLoading.value = false;
-    };
+    }
 
     return {
+      // ---- Data ----
+      isOpen,
+      isLoggedIn,
+      // ---- Methods ----
       logout,
       clickOut,
       toggleSidenav,
-      isOpen,
-      isLoggedIn,
     };
   },
 };

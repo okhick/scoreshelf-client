@@ -17,7 +17,7 @@ import { onMounted } from '@vue/composition-api';
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
 
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
+const SidenavStore = createNamespacedHelpers('sidenav'); // specific module name
 
 export default {
   components: {
@@ -27,7 +27,7 @@ export default {
 
   setup() {
     const { useSharetribeSdk } = useSharetribe();
-    const { isOpen } = sharetribeStore.useState(['isOpen']);
+    const { isOpen } = SidenavStore.useState(['isOpen']);
 
     onMounted(async () => await useSharetribeSdk());
 
