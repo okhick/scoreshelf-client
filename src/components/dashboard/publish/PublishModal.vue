@@ -92,6 +92,12 @@ import { sharetribe } from '@/mixins/sharetribe.js';
 import { scoreshelf } from '@/mixins/scoreshelf.js';
 import PublishForm from './forms/PublishForm.vue';
 
+import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
+const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
+
+import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
+import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
+
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTrashAlt, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -116,6 +122,52 @@ export default {
       },
     };
   },
+  setup() {
+    const isLoading = ref(false);
+    const isNewPiece = ref(true);
+    const pieceStatus = ref(null);
+    const publishDropdownIsActive = ref(false);
+
+    const dashboardMutations = dashboardStore.useMutations([
+      'togglePublishModal',
+      'clearPublishModalEditData',
+      'editPublishModalEditData',
+    ]);
+
+    const { useSharetribePublisherListings } = useSharetribePublisher();
+    const { useScoreshelfUploadManagement } = useScoreshelfPublisher();
+
+    // ---- Methods ----
+    async function createDraft() {
+      isLoading.value = true;
+
+      const uploadParams = { thumbnailSettings: this.getThumbnailSettings() };
+      await useScoreshelfUploadManagement.submitUpload(uploadParams);
+      await useSharetribePublisherListings.createDraft();
+
+      closeEditModal();
+      isLoading.value = false;
+    }
+
+    function closeEditModal() {
+      dashboardMutations.clearPublishModalEditData();
+      pieceStatus.value = '';
+      // TODO: This won't work
+      this.$refs.form.clearFormData();
+
+      dashboardMutations.togglePublishModal();
+    }
+
+    return {
+      // ---- Data ----
+      isLoading,
+      isNewPiece,
+      pieceStatus,
+      publishDropdownIsActive,
+      // ---- Methods ----
+      closeEditModal,
+    };
+  },
   methods: {
     ...mapMutations('dashboard', [
       'togglePublishModal',
@@ -125,18 +177,18 @@ export default {
     // =========================
     // CRUD Functions
     // =========================
-    createDraft: async function() {
-      this.isLoading = true;
+    // createDraft: async function() {
+    //   this.isLoading = true;
 
-      const uploadParams = { thumbnailSettings: this.getThumbnailSettings() };
-      await this.submitUpload(uploadParams);
+    //   const uploadParams = { thumbnailSettings: this.getThumbnailSettings() };
+    //   await this.submitUpload(uploadParams);
 
-      await this.SHARETRIBE.ownListings.createDraft({
-        ...this.getFormattedArgs(),
-      });
-      this.closeEditModal();
-      this.isLoading = false;
-    },
+    //   await this.SHARETRIBE.ownListings.createDraft({
+    //     ...this.getFormattedArgs(),
+    //   });
+    //   this.closeEditModal();
+    //   this.isLoading = false;
+    // },
     updatePublication: async function() {
       this.isLoading = true;
 
