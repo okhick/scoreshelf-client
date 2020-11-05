@@ -120,7 +120,7 @@ export default {
     ]);
 
     const { useSharetribePublisherListings, useSharetribePublisherForm } = useSharetribePublisher();
-    const { useScoreshelfUploadManagement } = useScoreshelfPublisher();
+    const { useScoreshelfUploadManagement, useFileStateManagement } = useScoreshelfPublisher();
 
     const isNewPiece = ref(true);
     const pieceStatus = ref(null);
@@ -136,6 +136,8 @@ export default {
     });
 
     // ---------- Modal Control ----------
+    const publishDropdownIsActive = ref(false);
+
     async function cancelModal() {
       isLoading.value = true;
 
@@ -148,15 +150,14 @@ export default {
     }
 
     function closeEditModal() {
-      dashboardMutations.clearPublishModalEditData();
       pieceStatus.value = '';
-      // TODO: This won't work
+      dashboardMutations.clearPublishModalEditData();
+
       useSharetribePublisherForm.clearFormData();
+      useFileStateManagement.resetFileState();
 
       dashboardMutations.togglePublishModal();
     }
-
-    const publishDropdownIsActive = ref(false);
 
     function togglePublishDropdown() {
       publishDropdownIsActive.value = !publishDropdownIsActive.value;

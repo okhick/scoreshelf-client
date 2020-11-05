@@ -1,6 +1,10 @@
+import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
+
 import { reactive, toRefs } from '@vue/composition-api';
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
+
+// ============================================================================
 
 const PublishFormState = reactive({
   formData: {
@@ -13,29 +17,34 @@ const PublishFormState = reactive({
   },
 });
 
+// ============================================================================
+
 export default function useSharetribePublisher() {
-  const sharetribePublisherHelpers = SharetribePublisherHelpers();
   const useSharetribePublisherListings = SharetribePublisherListings();
   const useSharetribePublisherForm = SharetribePublisherForm();
+  const usesharetribePublisherHelpers = SharetribePublisherHelpers();
 
   return {
     ...toRefs(PublishFormState),
     useSharetribePublisherListings,
-    sharetribePublisherHelpers,
     useSharetribePublisherForm,
+    usesharetribePublisherHelpers,
   };
 }
 
+// ============================================================================
+// ============================================================================
+// ============================================================================
+
 function SharetribePublisherForm() {
+  const { fileList } = useScoreshelfPublisher();
+
   function clearFormData() {
     for (const field in PublishFormState.formData) {
       PublishFormState.formData[field] = '';
     }
     // TODO: This won't work
-    // this.fileList.forEach(file => this.removeFromFileList(file.asset_name));
     // this.$refs.formats.formats = null;
-
-    // this.$refs.assets.thumbnailSettings = {};
     // return true;
   }
 
@@ -43,9 +52,9 @@ function SharetribePublisherForm() {
     const cleanData = sanitizeFormData();
     return {
       ...cleanData,
-      // privateData: {
-      //   assetData: this.formatAssetData(),
-      // },
+      privateData: {
+        assetData: formatAssetData(),
+      },
     };
   }
 
@@ -68,20 +77,19 @@ function SharetribePublisherForm() {
     return cleanFormData;
   }
 
-  // TODO: THESE WILL NEED TO BE DONE
-  // formatAssetData: function() {
-  //   const assetData = [];
+  function formatAssetData() {
+    const assetData = [];
 
-  //   this.fileList.forEach(file => {
-  //     const thisFileData = {
-  //       scoreshelf_id: file._id,
-  //       thumbnail_id: file.thumbnail_id,
-  //     };
-  //     assetData.push(thisFileData);
-  //   });
+    fileList.forEach(file => {
+      const thisFileData = {
+        scoreshelf_id: file._id,
+        thumbnail_id: file.thumbnail_id,
+      };
+      assetData.push(thisFileData);
+    });
 
-  //   return assetData;
-  // },
+    return assetData;
+  }
   // formatFormatData: function() {
   //   const formats = this.$refs.formats.formats;
   //   formats.forEach(format => {
@@ -98,6 +106,10 @@ function SharetribePublisherForm() {
     clearFormData,
   };
 }
+
+// ============================================================================
+// ============================================================================
+// ============================================================================
 
 function SharetribePublisherListings() {
   const { SHARETRIBE, publishModalEditData } = sharetribeStore.useState([
@@ -164,6 +176,10 @@ function SharetribePublisherListings() {
   };
 }
 
+// ============================================================================
+// ============================================================================
+// ============================================================================
+
 function SharetribePublisherHelpers() {
   function getFormattedArgs() {
     const useSharetribePublisherForm = SharetribePublisherForm();
@@ -173,7 +189,6 @@ function SharetribePublisherHelpers() {
   function getThumbnailSettings() {
     // TODO: This won't work
     // reach deep to get this. seems icky but works for now...
-    const assetsData = this.$refs.form.$refs.assets;
     const assetDataThumbnailSettings = this.$refs.form.$refs.assets.thumbnailSettings;
     return this.$refs.form.$refs.assets.thumbnailSettings;
   }

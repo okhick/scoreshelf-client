@@ -5,6 +5,7 @@ import { reactive, toRefs } from '@vue/composition-api';
 const FileState = reactive({
   fileList: [],
   filesToBeRemoved: [],
+  thumbnailSettings: {},
 });
 
 // ============================================================================
@@ -19,10 +20,11 @@ export default function useScoreshelfPublisher() {
   const useScoreshelfHelpers = ScoreshelfHelpers();
 
   return {
+    ...toRefs(FileState),
     useScoreshelfUploadManagement,
     useScoreshelfAssetManagement,
     useFileStateManagement,
-    ...toRefs(FileState),
+    useScoreshelfHelpers,
   };
 }
 
@@ -31,8 +33,7 @@ export default function useScoreshelfPublisher() {
 // ============================================================================
 
 function FileStateManagement() {
-  function useProcessUpload() {
-    // TODO: THIS IS NOT GOING TO WORK
+  function processUpload() {
     const newFiles = this.$refs.file.files;
     newFiles.forEach(file => {
       file.isStored = false;
@@ -61,6 +62,12 @@ function FileStateManagement() {
     FileState.filesToBeRemoved = [];
   }
 
+  function resetFileState() {
+    FileState.fileList = [];
+    FileState.filesToBeRemoved = [];
+    FileState.thumbnailSettings = {};
+  }
+
   function addScoreshelfIdToFile(payload) {
     // find the file the id needs to go in. Probably could do this with a find()
     FileState.fileList.forEach(file => {
@@ -73,11 +80,12 @@ function FileStateManagement() {
   }
 
   return {
-    useProcessUpload,
+    processUpload,
     addFileToFileList,
     removeFileFromFileList,
     setFileToBeRemoved,
     clearToBeRemoved,
+    resetFileState,
     addScoreshelfIdToFile,
   };
 }

@@ -67,10 +67,6 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
-import { sharetribe } from '@/mixins/sharetribe.js';
-import { scoreshelf } from '@/mixins/scoreshelf.js';
-
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
 
