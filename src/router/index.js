@@ -45,9 +45,7 @@ const routes = [
         name: 'Dashboard',
         path: '',
         component: () =>
-          import(
-            /* webpackChunkName: "dashboard-home" */ '@/components/dashboard/DashboardHome.vue'
-          ),
+          import(/* webpackChunkName: "dashboard-home" */ '@/components/dashboard/Dashboard.vue'),
       },
 
       {
@@ -55,14 +53,16 @@ const routes = [
         path: 'edit-profile',
         component: () =>
           import(
-            /* webpackChunkName: "dashboard-edit-profile" */ '@/components/dashboard/EditProfile.vue'
+            /* webpackChunkName: "dashboard-edit-profile" */ '@/components/dashboard/editProfile/EditProfile.vue'
           ),
       },
       {
         name: 'Publish',
         path: 'publish',
         component: () =>
-          import(/* webpackChunkName: "dashboard-publish" */ '@/components/dashboard/Publish.vue'),
+          import(
+            /* webpackChunkName: "dashboard-publish" */ '@/components/dashboard/publish/Publish.vue'
+          ),
       },
     ],
   },

@@ -37,21 +37,27 @@
 </template>
 
 <script>
+import { ref, computed } from '@vue/composition-api';
+
 export default {
-  data() {
-    return {
-      hideInfo: false,
-      hideThumb: false,
-      publicPath: process.env.BASE_URL,
-    };
-  },
   props: { listing: Object },
-  computed: {
-    showEnsembleOrInstrumentation: function() {
-      return this.listing.attributes.publicData.ensemble
-        ? this.listing.attributes.publicData.ensemble
-        : this.listing.attributes.publicData.instrumentation;
-    },
+  setup({ listing }) {
+    const hideInfo = ref(false);
+    const hideThumb = ref(false);
+    const publicPath = process.env.BASE_URL;
+
+    const showEnsembleOrInstrumentation = computed(() => {
+      return listing.attributes.publicData.ensemble
+        ? listing.attributes.publicData.ensemble
+        : listing.attributes.publicData.instrumentation;
+    });
+
+    return {
+      hideInfo,
+      hideThumb,
+      publicPath,
+      showEnsembleOrInstrumentation,
+    };
   },
 };
 </script>

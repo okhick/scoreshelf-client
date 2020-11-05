@@ -1,5 +1,5 @@
 <template>
-  <div class="sidenav" :class="{ showMenu: menuOpen }" v-click-outside="clickOut">
+  <div class="sidenav" :class="{ showMenu: isOpen }" v-click-outside="clickOut">
     <div class="menu-body">
       <!-- If user is not logged in -->
       <ul v-if="!isLoggedIn">
@@ -30,12 +30,7 @@
 
     <div class="right-side">
       <span class="menu-container" @click="toggleSidenav">
-        <font-awesome-icon
-          icon="bars"
-          size="2x"
-          class="burger"
-          :class="{ rotateBurger: menuOpen }"
-        />
+        <font-awesome-icon icon="bars" size="2x" class="burger" :class="{ rotateBurger: isOpen }" />
       </span>
       <p class="logo">SCORESHELF</p>
     </div>
@@ -43,54 +38,69 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
-import { sharetribe } from '../mixins/sharetribe.js';
+import Vue from 'vue';
+import { ref } from '@vue/composition-api';
+
+import vClickOutside from 'v-click-outside';
+Vue.use(vClickOutside);
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faBars);
 
-import Vue from 'vue';
-import vClickOutside from 'v-click-outside';
-Vue.use(vClickOutside);
+import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
+const SharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
+const SidenavStore = createNamespacedHelpers('sidenav');
 
 export default {
   components: {
     FontAwesomeIcon,
   },
-  mixins: [sharetribe],
-  computed: {
-    ...mapState({
-      SHARETRIBE: state => state.sharetribe.SHARETRIBE,
-      isLoggedIn: state => state.sharetribe.isLoggedIn,
-      menuOpen: state => state.sidenav.isOpen,
-    }),
-  },
-  methods: {
-    ...mapMutations('sharetribe', ['updateIsLoggedIn']),
-    ...mapMutations('sidenav', ['toggleSidenav', 'closeSidenav']),
+  setup(_, context) {
+    // |---------- Data ----------|
+    const { isOpen } = SidenavStore.useState(['isOpen']);
+    const { toggleSidenav, closeSidenav } = SidenavStore.useMutations([
+      'toggleSidenav',
+      'closeSidenav',
+    ]);
 
-    logout: async function() {
-      this.isLoading = true;
-      await this.SHARETRIBE.logout();
-      this.updateIsLoggedIn();
-      this.$router.push({ path: '/' });
-      this.toggleMenu();
-      this.isLoading = false;
-    },
+    const { SHARETRIBE, isLoggedIn } = SharetribeStore.useState(['SHARETRIBE']);
+    const { updateIsLoggedIn } = SharetribeStore.useMutations(['updateIsLoggedIn']);
 
-    clickOut: function() {
-      if (this.menuOpen) {
-        this.closeSidenav();
+    const isLoading = ref(false);
+
+    // |---------- Methods ----------|
+    function clickOut() {
+      if (isOpen.value) {
+        closeSidenav();
       }
-    },
+    }
+
+    async function logout() {
+      isLoading.value = true;
+      await SHARETRIBE.value.logout();
+      updateIsLoggedIn();
+      context.root.$router.push({ path: '/' });
+      toggleSidenav();
+      isLoading.value = false;
+    }
+
+    return {
+      // ---- Data ----
+      isOpen,
+      isLoggedIn,
+      // ---- Methods ----
+      logout,
+      clickOut,
+      toggleSidenav,
+    };
   },
 };
 </script>
 
 <style scoped lang="scss">
-@import '../styles/index.scss';
+@import '@/styles/index.scss';
 .sidenav {
   left: -180px;
   position: fixed;

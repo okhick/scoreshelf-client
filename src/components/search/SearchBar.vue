@@ -19,56 +19,69 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { ref } from '@vue/composition-api';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSearch, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faSearch, faArrowRight);
 
+import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
+const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
+const searchStore = createNamespacedHelpers('search');
+
 export default {
   components: {
     FontAwesomeIcon,
   },
-  data() {
-    return {
-      searchInput: '',
-    };
-  },
-  computed: {
-    ...mapState({
-      SHARETRIBE: state => state.sharetribe.SHARETRIBE,
-      searchIsLoading: state => state.search.searchIsLoading,
-    }),
-  },
-  methods: {
-    ...mapMutations('search', [
+  setup(_, context) {
+    const router = context.root.$router;
+    const searchInput = ref('');
+
+    // vuex state mapping
+    const { searchIsLoading } = searchStore.useState(['searchIsLoading']);
+    const {
+      toggleSearchIsLoading,
+      addSearchListingData,
+      addSearchResultsMeta,
+    } = searchStore.useMutations([
       'toggleSearchIsLoading',
       'addSearchListingData',
       'addSearchResultsMeta',
-    ]),
-    doSearch: async function() {
-      this.toggleSearchIsLoading();
-      const res = await this.SHARETRIBE.listings.query({
-        keywords: this.searchInput,
+    ]);
+    const { SHARETRIBE } = sharetribeStore.useState(['SHARETRIBE']);
+
+    // methods
+    async function doSearch() {
+      sidenavMutations.toggleSearchIsLoading();
+
+      const res = await SHARETRIBE.value.listings.query({
+        keywords: searchInput.value,
       });
-      this.$router.push({
+      router.push({
         name: 'Search',
-        params: { query: encodeURIComponent(this.searchInput) },
+        params: { query: encodeURIComponent(searchInput.value) },
       });
-      this.processSearchResults(res);
+      processSearchResults(res);
 
       // wait until the dom has reloaded to turn the toggle off
-      this.$nextTick(() => {
-        this.toggleSearchIsLoading();
+      context.root.$nextTick(() => {
+        toggleSearchIsLoading();
       });
-    },
-    processSearchResults: function(rawRes) {
+    }
+
+    function processSearchResults(rawRes) {
       const listingData = rawRes.data.data;
       const resMeta = rawRes.data.meta;
-      this.addSearchListingData(listingData);
-      this.addSearchResultsMeta(resMeta);
-    },
+      addSearchListingData(listingData);
+      addSearchResultsMeta(resMeta);
+    }
+
+    return {
+      searchInput,
+      doSearch,
+      searchIsLoading: searchIsLoading,
+    };
   },
 };
 </script>

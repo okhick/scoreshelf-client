@@ -16,4 +16,9 @@ export const sharetribe = {
       state.currentUser = payload;
     },
   },
+  getters: {
+    getCurrentUserId(state) {
+      return state.currentUser.id.uuid;
+    },
+  },
 };

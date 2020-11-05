@@ -20,7 +20,7 @@
             <div
               class="dropdown level-item is-up"
               v-if="pieceStatus != 'published' && pieceStatus != 'closed'"
-              :class="{ 'is-active': publishDropDown.isActive }"
+              :class="{ 'is-active': publishDropdownIsActive }"
               @click="togglePublishDropdown"
               v-click-outside="closePublishDropdown"
             >
@@ -87,16 +87,20 @@
 
 <script>
 import Vue from 'vue';
-import { mapState, mapMutations } from 'vuex';
-import { sharetribe } from '@/mixins/sharetribe.js';
-import { scoreshelf } from '@/mixins/scoreshelf.js';
-import PublishForm from '@/components/forms/publish/PublishForm.vue';
+import PublishForm from './forms/PublishForm.vue';
+
+import { ref, watch } from '@vue/composition-api';
+
+import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
+const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
+
+import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
+import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTrashAlt, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-library.add(faTrashAlt);
-library.add(faAngleDown);
+library.add(faTrashAlt, faAngleDown);
 
 import vClickOutside from 'v-click-outside';
 Vue.use(vClickOutside);
@@ -106,152 +110,138 @@ export default {
     FontAwesomeIcon,
     PublishForm,
   },
-  mixins: [sharetribe, scoreshelf],
-  data: function() {
-    return {
-      isLoading: false,
-      isNewPiece: true,
-      pieceStatus: '',
-      publishDropDown: {
-        isActive: false,
-      },
-    };
-  },
-  methods: {
-    ...mapMutations('dashboard', [
+  setup() {
+    const isLoading = ref(false);
+    const dashboardState = dashboardStore.useState(['publishModalEditData', 'publishModalOpen']);
+    const dashboardMutations = dashboardStore.useMutations([
       'togglePublishModal',
       'clearPublishModalEditData',
       'editPublishModalEditData',
-    ]),
-    // =========================
-    // CRUD Functions
-    // =========================
-    createDraft: async function() {
-      this.isLoading = true;
+    ]);
 
-      const uploadParams = { thumbnailSettings: this.getThumbnailSettings() };
-      await this.submitUpload(uploadParams);
+    const { useSharetribePublisherListings, useSharetribePublisherForm } = useSharetribePublisher();
+    const { useScoreshelfUploadManagement, useFileStateManagement } = useScoreshelfPublisher();
 
-      await this.SHARETRIBE.ownListings.createDraft({
-        ...this.getFormattedArgs(),
-      });
-      this.closeEditModal();
-      this.isLoading = false;
-    },
-    updatePublication: async function() {
-      this.isLoading = true;
+    const isNewPiece = ref(true);
+    const pieceStatus = ref(null);
 
-      const uploadParams = { thumbnailSettings: this.getThumbnailSettings() };
-      await this.submitUpload(uploadParams);
-
-      await this.SHARETRIBE.ownListings.update({
-        id: this.publishModalEditData.id.uuid,
-        ...this.getFormattedArgs(),
-      });
-      this.closeEditModal();
-      this.isLoading = false;
-    },
-    publishDraft: async function() {
-      this.isLoading = true;
-
-      const uploadParams = { thumbnailSettings: this.getThumbnailSettings() };
-      await this.submitUpload(uploadParams);
-
-      await this.SHARETRIBE.ownListings.update({
-        id: this.publishModalEditData.id.uuid,
-        ...this.getFormattedArgs(),
-      });
-      await this.SHARETRIBE.ownListings.publishDraft({
-        id: this.publishModalEditData.id.uuid,
-      });
-      this.closeEditModal();
-      this.isLoading = false;
-    },
-    deletePublication: async function() {
-      this.isLoading = true;
-      if (this.publishModalEditData.attributes.state === 'draft') {
-        await this.SHARETRIBE.ownListings.discardDraft({
-          id: this.publishModalEditData.id.uuid,
-        });
-      } else if (this.publishModalEditData.attributes.state === 'published') {
-        await this.SHARETRIBE.ownListings.close({
-          id: this.publishModalEditData.id.uuid,
-        });
-      }
-      this.closeEditModal();
-      this.isLoading = false;
-    },
-    republishPublication: async function() {
-      this.isLoading = true;
-
-      const uploadParams = { thumbnailSettings: this.getThumbnailSettings() };
-      await this.submitUpload(uploadParams);
-
-      // update just incase anyones changed anything
-      await this.SHARETRIBE.ownListings.update({
-        id: this.publishModalEditData.id.uuid,
-        ...this.getFormattedArgs(),
-      });
-      // now we can reopen
-      await this.SHARETRIBE.ownListings.open({
-        id: this.publishModalEditData.id.uuid,
-      });
-      this.closeEditModal();
-      this.isLoading = false;
-    },
-    cancelModal: async function() {
-      this.isLoading = true;
-      if (this.publishModalEditData.isBlankDraft) {
-        await this.SHARETRIBE.ownListings.discardDraft({
-          id: this.publishModalEditData.id.uuid,
-        });
-      }
-      this.closeEditModal();
-      this.isLoading = false;
-    },
-    // =========================
-    // Helpers
-    // =========================
-    closeEditModal: function() {
-      this.clearPublishModalEditData();
-      this.pieceStatus = '';
-      this.$refs.form.clearFormData();
-      this.togglePublishModal();
-    },
-    getFormattedArgs: function() {
-      return this.$refs.form.formatArgs();
-    },
-    togglePublishDropdown: function() {
-      this.publishDropDown.isActive = !this.publishDropDown.isActive;
-    },
-    closePublishDropdown: function() {
-      this.publishDropDown.isActive = false;
-    },
-    getThumbnailSettings: function() {
-      // reach deep to get this. seems icky but works for now...
-      const assetsData = this.$refs.form.$refs.assets;
-      const assetDataThumbnailSettings = this.$refs.form.$refs.assets.thumbnailSettings;
-      return this.$refs.form.$refs.assets.thumbnailSettings;
-    },
-  },
-  computed: {
-    ...mapState({
-      publishModalOpen: state => state.dashboard.publishModalOpen,
-      publishModalEditData: state => state.dashboard.publishModalEditData,
-      SHARETRIBE: state => state.sharetribe.SHARETRIBE,
-    }),
-  },
-  watch: {
-    // PublishForm also watches this
-    publishModalEditData: async function(newData) {
+    watch(dashboardState.publishModalEditData, async newData => {
       // if newData.attributes is falsy, we're publishing from a blank
-      if (newData != null && newData.attributes) {
-        this.isNewPiece = false;
-        this.pieceStatus = newData.attributes.state;
+      if (newData != null && newData?.attributes) {
+        isNewPiece.value = false;
+        pieceStatus.value = newData.attributes.state;
       } else {
-        this.isNewPiece = true;
+        isNewPiece.value = true;
       }
-    },
+    });
+
+    // ---------- Modal Control ----------
+    const publishDropdownIsActive = ref(false);
+
+    async function cancelModal() {
+      isLoading.value = true;
+
+      if (dashboardState.publishModalEditData.value.isBlankDraft) {
+        await useSharetribePublisherListings.deletePublication();
+      }
+
+      closeEditModal();
+      isLoading.value = false;
+    }
+
+    function closeEditModal() {
+      pieceStatus.value = '';
+      dashboardMutations.clearPublishModalEditData();
+
+      useSharetribePublisherForm.clearFormData();
+      useFileStateManagement.resetFileState();
+
+      dashboardMutations.togglePublishModal();
+    }
+
+    function togglePublishDropdown() {
+      publishDropdownIsActive.value = !publishDropdownIsActive.value;
+    }
+
+    function closePublishDropdown() {
+      publishDropdownIsActive.value = false;
+    }
+
+    // ---------- Listing Control ----------
+    async function createDraft() {
+      isLoading.value = true;
+
+      await useScoreshelfUploadManagement.submitUpload();
+      await useSharetribePublisherListings.createDraft();
+
+      closeEditModal();
+      isLoading.value = false;
+    }
+
+    async function updatePublication() {
+      isLoading.value = true;
+
+      await useScoreshelfUploadManagement.submitUpload();
+      await useSharetribePublisherListings.updatePublication();
+
+      closeEditModal();
+      isLoading.value = false;
+    }
+
+    async function publishDraft() {
+      isLoading.value = true;
+
+      await useScoreshelfUploadManagement.submitUpload();
+      await useSharetribePublisherListings.updatePublication();
+      await useSharetribePublisherListings.publishDraft();
+
+      closeEditModal();
+      isLoading.value = false;
+    }
+
+    async function deletePublication() {
+      isLoading.value = true;
+
+      // TODO: deal with assets?
+      await useSharetribePublisherListings.deletePublication();
+
+      closeEditModal();
+      isLoading.value = false;
+    }
+
+    async function republishPublication() {
+      isLoading.value = true;
+
+      await useScoreshelfUploadManagement.submitUpload();
+      // update just incase anyone's changed anything
+      await useSharetribePublisherListings.updatePublication();
+      // now we can reopen
+      await useSharetribePublisherListings.reopenPublication();
+
+      closeEditModal();
+      isLoading.value = false;
+    }
+
+    return {
+      // ---- Data ----
+      isLoading,
+      isNewPiece,
+      pieceStatus,
+      publishDropdownIsActive,
+      publishModalOpen: dashboardState.publishModalOpen,
+      // ---- Methods ----
+      // -- Modal Control
+      cancelModal,
+      closeEditModal,
+      togglePublishDropdown,
+      closePublishDropdown,
+      // -- Listing Control
+      createDraft,
+      updatePublication,
+      publishDraft,
+      deletePublication,
+      republishPublication,
+    };
   },
 };
 </script>

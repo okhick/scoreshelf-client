@@ -10,7 +10,7 @@ export const dashboard = {
     togglePublishModal(state) {
       state.publishModalOpen = !state.publishModalOpen;
     },
-    editPublishModalEditData(state, payload) {
+    setPublishModalEditData(state, payload) {
       state.publishModalEditData = payload;
     },
     clearPublishModalEditData(state) {
@@ -42,6 +42,11 @@ export const dashboard = {
           if (payload[name].thumbnail_id) file.thumbnail_id = payload[name].thumbnail_id;
         }
       });
+    },
+  },
+  getters: {
+    getCurrentListingId(state) {
+      return state.publishModalEditData.id.uuid;
     },
   },
 };

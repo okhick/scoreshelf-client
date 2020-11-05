@@ -4,7 +4,7 @@
 
     <div class="file is-boxed is-centered">
       <label class="file-label">
-        <input class="file-input" type="file" ref="file" multiple @change="processUpload" />
+        <input class="file-input" type="file" ref="file" multiple @change="processUploadEvent" />
         <span class="file-cta">
           <span class="file-icon">
             <font-awesome-icon icon="upload" />
@@ -60,8 +60,9 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
-import { scoreshelf } from '@/mixins/scoreshelf.js';
+import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
+import { watch } from '@vue/composition-api';
+import Vue from 'vue';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUpload, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
@@ -72,62 +73,75 @@ export default {
   components: {
     FontAwesomeIcon,
   },
-  mixins: [scoreshelf],
-  data() {
-    return {
-      thumbnailSettings: {},
-    };
-  },
-  computed: {
-    ...mapState({
-      fileList: state => state.dashboard.fileList,
-    }),
-  },
-  methods: {
-    ...mapMutations('dashboard', ['removeFromFileList', 'setFileToBeRemoved']),
-    removeUpload: function(fileName) {
-      this.fileList.forEach(file => {
-        if (file.asset_name == fileName) {
-          if (file.isStored) {
-            this.setFileToBeRemoved(fileName);
-            this.removeFromFileList(fileName);
-          } else {
-            this.removeFromFileList(fileName);
-          }
-        }
-      });
-    },
-    newThumbSelected: function(event, checkedAsset) {
-      const isChecked = event.target.checked;
-      if (isChecked) {
-        for (let asset in this.thumbnailSettings) {
-          if (asset != checkedAsset) {
-            this.thumbnailSettings[asset] = this.makeBlankThumbnail();
-          }
-        }
-      }
-    },
-    makeBlankThumbnail: function() {
-      return { isThumbnail: false, page: null };
-    },
-  },
-  watch: {
-    fileList: function() {
-      this.fileList.forEach(file => {
-        if (this.thumbnailSettings[file.asset_name] === undefined) {
+  setup(_, context) {
+    const {
+      useFileStateManagement,
+      fileList,
+      thumbnailSettings,
+      useScoreshelfHelpers,
+    } = useScoreshelfPublisher();
+
+    watch(fileList, () => {
+      fileList.value.forEach(file => {
+        if (thumbnailSettings.value[file.asset_name] === undefined) {
           // because we're making these on the fly, we need to use $set to make them reactive
-          this.$set(this.thumbnailSettings, file.asset_name, {
-            ...this.makeBlankThumbnail(),
+          Vue.set(thumbnailSettings.value, file.asset_name, {
+            ...makeBlankThumbnail(),
           });
         }
         // loadup any settings that may alread exist
         if (file.thumbnail_settings) {
-          this.thumbnailSettings[file.asset_name].page = file.thumbnail_settings.page;
-          this.thumbnailSettings[file.asset_name].isThumbnail = true;
-          this.thumbnailSettings[file.asset_name].thumbnail_id = file.thumbnail_settings._id;
+          thumbnailSettings.value[file.asset_name].page = file.thumbnail_settings.page;
+          thumbnailSettings.value[file.asset_name].isThumbnail = true;
+          thumbnailSettings.value[file.asset_name].thumbnail_id = file.thumbnail_settings._id;
         }
       });
-    },
+    });
+
+    // ---------- Methods ----------
+    function processUploadEvent() {
+      const newFiles = context.refs.file.files;
+      useFileStateManagement.processUpload(newFiles);
+    }
+
+    function removeUpload(fileName) {
+      fileList.value.forEach(file => {
+        if (file.asset_name == fileName) {
+          if (file.isStored) {
+            useFileStateManagement.setFileToBeRemoved(fileName);
+            useFileStateManagement.removeFileFromFileList(fileName);
+          } else {
+            useFileStateManagement.removeFileFromFileList(fileName);
+          }
+        }
+      });
+    }
+
+    function newThumbSelected(event, checkedAsset) {
+      const isChecked = event.target.checked;
+      if (isChecked) {
+        for (let asset in thumbnailSettings.value) {
+          if (asset != checkedAsset) {
+            thumbnailSettings.value[asset] = makeBlankThumbnail();
+          }
+        }
+      }
+    }
+
+    function makeBlankThumbnail() {
+      return { isThumbnail: false, page: null };
+    }
+
+    return {
+      // ---- Data ----
+      fileList,
+      thumbnailSettings,
+      // ---- Methods ----
+      removeUpload,
+      newThumbSelected,
+      processUploadEvent,
+      calculateSize: useScoreshelfHelpers.calculateSize,
+    };
   },
 };
 </script>
