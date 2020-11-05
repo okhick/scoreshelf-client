@@ -213,10 +213,8 @@ export default {
       isLoading.value = true;
 
       await useScoreshelfUploadManagement.submitUpload();
-
       // update just incase anyone's changed anything
       await useSharetribePublisherListings.updatePublication();
-
       // now we can reopen
       await useSharetribePublisherListings.reopenPublication();
 

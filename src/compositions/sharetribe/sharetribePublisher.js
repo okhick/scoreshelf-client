@@ -78,7 +78,7 @@ function SharetribePublisherForm() {
   function formatAssetData() {
     const assetData = [];
 
-    fileList.forEach(file => {
+    fileList.value.forEach(file => {
       const thisFileData = {
         scoreshelf_id: file._id,
         thumbnail_id: file.thumbnail_id,
@@ -90,13 +90,13 @@ function SharetribePublisherForm() {
   }
 
   function formatFormatData() {
-    formats.forEach(format => {
+    formats.value.forEach(format => {
       format.assets = format.assets.map(asset => {
-        const thisFile = fileList.find(file => file.asset_name == asset);
+        const thisFile = fileList.value.find(file => file.asset_name == asset);
         return thisFile._id;
       });
     });
-    return formats;
+    return formats.value;
   }
 
   return {
@@ -115,9 +115,11 @@ function SharetribePublisherListings() {
 
   const { getCurrentListingId } = dashboardStore.useGetters(['getCurrentListingId']);
 
+  const usesharetribePublisherHelpers = SharetribePublisherHelpers();
+
   async function createDraft() {
     await SHARETRIBE.value.ownListings.createDraft({
-      ...sharetribePublisherHelpers.getFormattedArgs(),
+      ...usesharetribePublisherHelpers.getFormattedArgs(),
     });
     return;
   }
@@ -132,7 +134,7 @@ function SharetribePublisherListings() {
   async function updatePublication() {
     await SHARETRIBE.value.ownListings.update({
       id: getCurrentListingId.value,
-      ...this.getFormattedArgs(),
+      ...usesharetribePublisherHelpers.getFormattedArgs(),
     });
     return;
   }
@@ -177,23 +179,22 @@ function SharetribePublisherListings() {
 // ============================================================================
 // ============================================================================
 // ============================================================================
-// I don't think ant of this matters...
 
 function SharetribePublisherHelpers() {
   function getFormattedArgs() {
     const useSharetribePublisherForm = SharetribePublisherForm();
-    // TODO: This won't work
     return useSharetribePublisherForm.formatArgs();
   }
-  function getThumbnailSettings() {
-    // TODO: This won't work
-    // reach deep to get this. seems icky but works for now...
-    const assetDataThumbnailSettings = this.$refs.form.$refs.assets.thumbnailSettings;
-    return this.$refs.form.$refs.assets.thumbnailSettings;
-  }
+
+  // function getThumbnailSettings() {
+  //   // TODO: This won't work
+  //   // reach deep to get this. seems icky but works for now...
+  //   const assetDataThumbnailSettings = this.$refs.form.$refs.assets.thumbnailSettings;
+  //   return this.$refs.form.$refs.assets.thumbnailSettings;
+  // }
 
   return {
-    // getFormattedArgs,
+    getFormattedArgs,
     // getThumbnailSettings,
   };
 }

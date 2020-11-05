@@ -84,9 +84,7 @@ export default {
   },
   setup() {
     // |---------- Init Composables ----------|
-    const ScoreshelfPublisher = useScoreshelfPublisher();
-    const ScoreshelfAssetManagement = ScoreshelfPublisher.useScoreshelfAssetManagement;
-    const ScoreshelfUploadManagement = ScoreshelfPublisher.useScoreshelfUploadManagement;
+    const { useScoreshelfAssetManagement, useFileStateManagement } = useScoreshelfPublisher();
 
     // |---------- Data ----------|
     const publishedMusic = ref(null);
@@ -121,7 +119,7 @@ export default {
       const assetData = pieceData.attributes.privateData.assetData;
       if (assetData && assetData.length > 0) {
         const fileList = assetData;
-        const hydratedFileListRes = await ScoreshelfAssetManagement.hyrdateAssetData(
+        const hydratedFileListRes = await useScoreshelfAssetManagement.hyrdateAssetData(
           fileList,
           true
         );
@@ -129,7 +127,7 @@ export default {
         // store the files
         hydratedFileListRes.data.forEach(file => {
           file.isStored = true;
-          ScoreshelfUploadManagement.addFileToFileList(file);
+          useFileStateManagement.addFileToFileList(file);
         });
       }
       DashboardMutations.togglePublishModal();

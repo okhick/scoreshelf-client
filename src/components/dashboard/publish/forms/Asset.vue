@@ -89,7 +89,6 @@ export default {
             ...makeBlankThumbnail(),
           });
         }
-
         // loadup any settings that may alread exist
         if (file.thumbnail_settings) {
           thumbnailSettings.value[file.asset_name].page = file.thumbnail_settings.page;

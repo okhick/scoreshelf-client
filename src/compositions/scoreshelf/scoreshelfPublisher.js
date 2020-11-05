@@ -1,8 +1,17 @@
 import { reactive, toRefs } from '@vue/composition-api';
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 
-const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
-const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
+import axios from 'axios';
+const axiosConfig = {
+  baseURL: 'http://127.0.0.1:3000/',
+  timeout: 30000,
+};
+const SCORESHELF = axios.create(axiosConfig);
+
+import store from '@/store';
+
+const sharetribeStore = createNamespacedHelpers(store, 'sharetribe'); // specific module name
+const dashboardStore = createNamespacedHelpers(store, 'dashboard'); // specific module name
 
 // ============================================================================
 
@@ -16,19 +25,22 @@ const FileState = reactive({
 // ============================================================================
 
 export default function useScoreshelfPublisher() {
+  // manage the FileState
+  const useFileStateManagement = FileStateManagement();
+
   // manage files/data uploaded to the browser
   const useScoreshelfUploadManagement = ScoreshelfUploadManagement();
 
   // manage files/data upload to scoreshelf
   const useScoreshelfAssetManagement = ScoreshelfAssetManagement();
-  const useFileStateManagement = FileStateManagement();
+
   const useScoreshelfHelpers = ScoreshelfHelpers();
 
   return {
     ...toRefs(FileState),
+    useFileStateManagement,
     useScoreshelfUploadManagement,
     useScoreshelfAssetManagement,
-    useFileStateManagement,
     useScoreshelfHelpers,
   };
 }
@@ -137,7 +149,7 @@ function ScoreshelfUploadManagement() {
     formData.append('assetMetadata', JSON.stringify(assetMetadata));
 
     // send off the files. returns the files uploaded
-    let res = await this.$axios.post('/uploadAssets', formData, {
+    let res = await SCORESHELF.post('/uploadAssets', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -148,9 +160,9 @@ function ScoreshelfUploadManagement() {
 
   async function removeUploads() {
     // call the server to delete db and asset
-    await this.$axios.delete('/deleteAssets', {
+    await SCORESHELF.delete('/deleteAssets', {
       data: {
-        filesToRemove: this.filesToBeRemoved,
+        filesToRemove: FileState.filesToBeRemoved,
       },
     });
 
@@ -174,7 +186,7 @@ function ScoreshelfAssetManagement() {
 
   async function hyrdateAssetData(fileList, getLink) {
     const scoreshelf_ids = fileList.map(file => file.scoreshelf_id);
-    const hydratedAssets = await this.$axios.post('/getAssetdata', {
+    const hydratedAssets = await SCORESHELF.post('/getAssetdata', {
       scoreshelf_ids: scoreshelf_ids,
       get_link: getLink,
     });
@@ -183,7 +195,7 @@ function ScoreshelfAssetManagement() {
 
   async function updateAssetMetadata(uploadParams) {
     const assetMetadata = formatUpdatedAssetMetadata(uploadParams);
-    const res = await this.$axios.post('/updateAssetMetadata', assetMetadata);
+    const res = await SCORESHELF.post('/updateAssetMetadata', assetMetadata);
     return res;
   }
 
@@ -261,7 +273,7 @@ function ScoreshelfHelpers() {
 
   async function testScoreshelf() {
     try {
-      let res = await this.$axios.get('/test');
+      let res = await SCORESHELF.get('/test');
       console.log(res);
     } catch (e) {
       console.log(e);
