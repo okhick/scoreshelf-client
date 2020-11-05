@@ -6,21 +6,72 @@ export default function useSharetribePublisher() {
   const useSharetribePublisherListings = SharetribePublisherListings();
   return {
     useSharetribePublisherListings,
+    sharetribePublisherHelpers,
   };
 }
 
 function SharetribePublisherListings() {
-  const { SHARETRIBE } = sharetribeStore.useState(['SHARETRIBE']);
+  const { SHARETRIBE, publishModalEditData } = sharetribeStore.useState([
+    'SHARETRIBE',
+    'publishModalEditData',
+  ]);
 
   async function createDraft() {
     await SHARETRIBE.value.ownListings.createDraft({
       ...sharetribePublisherHelpers.getFormattedArgs(),
     });
+    return;
+  }
+
+  async function publishDraft() {
+    await SHARETRIBE.value.ownListings.publishDraft({
+      id: publishModalEditData.value.id.uuid,
+    });
+    return;
+  }
+
+  async function updatePublication() {
+    await SHARETRIBE.value.ownListings.update({
+      id: publishModalEditData.value.id.uuid,
+      ...this.getFormattedArgs(),
+    });
+    return;
+  }
+
+  async function deletePublication() {
+    const listingState = publishModalEditData.value.attributes.state;
+
+    switch (listingState) {
+      case 'draft':
+        await SHARETRIBE.value.ownListings.discardDraft({
+          id: publishModalEditData.value.id.uuid,
+        });
+        break;
+
+      case 'published':
+        await SHARETRIBE.value.ownListings.close({
+          id: publishModalEditData.value.id.uuid,
+        });
+        break;
+    }
+    return;
+  }
+
+  // for use when opening a publication after "deleting it"
+  async function reopenPublication() {
+    await SHARETRIBE.value.ownListings.open({
+      id: publishModalEditData.value.id.uuid,
+    });
 
     return;
   }
+
   return {
     createDraft,
+    publishDraft,
+    updatePublication,
+    deletePublication,
+    reopenPublication,
   };
 }
 
@@ -36,4 +87,9 @@ function SharetribePublisherHelpers() {
     const assetDataThumbnailSettings = this.$refs.form.$refs.assets.thumbnailSettings;
     return this.$refs.form.$refs.assets.thumbnailSettings;
   }
+
+  return {
+    getFormattedArgs,
+    getThumbnailSettings,
+  };
 }
