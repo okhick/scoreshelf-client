@@ -37,15 +37,12 @@ export default function useSharetribePublisher() {
 // ============================================================================
 
 function SharetribePublisherForm() {
-  const { fileList } = useScoreshelfPublisher();
+  const { fileList, formats } = useScoreshelfPublisher();
 
   function clearFormData() {
     for (const field in PublishFormState.formData) {
       PublishFormState.formData[field] = '';
     }
-    // TODO: This won't work
-    // this.$refs.formats.formats = null;
-    // return true;
   }
 
   function formatArgs() {
@@ -73,7 +70,7 @@ function SharetribePublisherForm() {
       }
     }
 
-    // cleanFormData.publicData.formats = this.formatFormatData();
+    cleanFormData.publicData.formats = formatFormatData();
     return cleanFormData;
   }
 
@@ -90,16 +87,16 @@ function SharetribePublisherForm() {
 
     return assetData;
   }
-  // formatFormatData: function() {
-  //   const formats = this.$refs.formats.formats;
-  //   formats.forEach(format => {
-  //     format.assets = format.assets.map(asset => {
-  //       const thisFile = this.fileList.find(file => file.asset_name == asset);
-  //       return thisFile._id;
-  //     });
-  //   });
-  //   return formats;
-  // },
+
+  function formatFormatData() {
+    formats.forEach(format => {
+      format.assets = format.assets.map(asset => {
+        const thisFile = fileList.find(file => file.asset_name == asset);
+        return thisFile._id;
+      });
+    });
+    return formats;
+  }
 
   return {
     formatArgs,
@@ -194,7 +191,7 @@ function SharetribePublisherHelpers() {
   }
 
   return {
-    getFormattedArgs,
-    getThumbnailSettings,
+    // getFormattedArgs,
+    // getThumbnailSettings,
   };
 }

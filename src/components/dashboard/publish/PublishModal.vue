@@ -171,8 +171,7 @@ export default {
     async function createDraft() {
       isLoading.value = true;
 
-      const uploadParams = { thumbnailSettings: this.getThumbnailSettings() };
-      await useScoreshelfUploadManagement.submitUpload(uploadParams);
+      await useScoreshelfUploadManagement.submitUpload();
       await useSharetribePublisherListings.createDraft();
 
       closeEditModal();
@@ -182,8 +181,7 @@ export default {
     async function updatePublication() {
       isLoading.value = true;
 
-      const uploadParams = { thumbnailSettings: this.getThumbnailSettings() };
-      await useScoreshelfUploadManagement.submitUpload(uploadParams);
+      await useScoreshelfUploadManagement.submitUpload();
       await useSharetribePublisherListings.updatePublication();
 
       closeEditModal();
@@ -193,9 +191,7 @@ export default {
     async function publishDraft() {
       isLoading.value = true;
 
-      const uploadParams = { thumbnailSettings: this.getThumbnailSettings() };
-
-      await useScoreshelfUploadManagement.submitUpload(uploadParams);
+      await useScoreshelfUploadManagement.submitUpload();
       await useSharetribePublisherListings.updatePublication();
       await useSharetribePublisherListings.publishDraft();
 
@@ -216,8 +212,7 @@ export default {
     async function republishPublication() {
       isLoading.value = true;
 
-      const uploadParams = { thumbnailSettings: this.getThumbnailSettings() };
-      await useScoreshelfUploadManagement.submitUpload(uploadParams);
+      await useScoreshelfUploadManagement.submitUpload();
 
       // update just incase anyone's changed anything
       await useSharetribePublisherListings.updatePublication();

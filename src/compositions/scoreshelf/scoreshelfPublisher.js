@@ -6,6 +6,7 @@ const FileState = reactive({
   fileList: [],
   filesToBeRemoved: [],
   thumbnailSettings: {},
+  formats: [],
 });
 
 // ============================================================================
@@ -66,6 +67,7 @@ function FileStateManagement() {
     FileState.fileList = [];
     FileState.filesToBeRemoved = [];
     FileState.thumbnailSettings = {};
+    FileState.formats = [];
   }
 
   function addScoreshelfIdToFile(payload) {
@@ -99,8 +101,11 @@ function ScoreshelfUploadManagement() {
   const scoreshelfFileStateManagement = FileStateManagement();
   const scoreshelfUploadHelpers = ScoreshelfHelpers();
 
-  async function submitUpload(uploadParams) {
+  async function submitUpload() {
     const res = {};
+    const uploadParams = {
+      thumbnailSettings: FileState.thumbnailSettings,
+    };
 
     if (scoreshelfUploadHelpers.areNewFiles()) {
       res.uploadRes = await uploadNewFiles(uploadParams);
