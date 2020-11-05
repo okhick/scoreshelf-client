@@ -68,12 +68,6 @@ export default {
   components: {
     FontAwesomeIcon,
   },
-  // mixins: [scoreshelf],
-  // data() {
-  //   return {
-  //     formats: null,
-  //   };
-  // },
   setup() {
     const { formats, fileList } = useScoreshelfPublisher();
     const dashboardState = dashboardStore.useState(['publishModalEditData']);
@@ -153,10 +147,13 @@ export default {
     });
 
     return {
+      // ---- Data ----
       formats,
       fileList,
+      // ---- Methods ----
       addFormat,
       removeFormat,
+      newAssetSelected,
       removeAsset,
     };
   },

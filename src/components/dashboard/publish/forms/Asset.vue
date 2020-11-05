@@ -4,7 +4,7 @@
 
     <div class="file is-boxed is-centered">
       <label class="file-label">
-        <input class="file-input" type="file" ref="file" multiple @change="processUpload" />
+        <input class="file-input" type="file" ref="file" multiple @change="processUploadEvent" />
         <span class="file-cta">
           <span class="file-icon">
             <font-awesome-icon icon="upload" />
@@ -89,6 +89,7 @@ export default {
             ...makeBlankThumbnail(),
           });
         }
+
         // loadup any settings that may alread exist
         if (file.thumbnail_settings) {
           thumbnailSettings.value[file.asset_name].page = file.thumbnail_settings.page;
@@ -99,6 +100,11 @@ export default {
     });
 
     // ---------- Methods ----------
+    function processUploadEvent() {
+      const newFiles = context.refs.file.files;
+      useFileStateManagement.processUpload(newFiles);
+    }
+
     function removeUpload(fileName) {
       fileList.value.forEach(file => {
         if (file.asset_name == fileName) {
@@ -134,7 +140,7 @@ export default {
       // ---- Methods ----
       removeUpload,
       newThumbSelected,
-      processUpload: useFileStateManagement.processUpload,
+      processUploadEvent,
       calculateSize: useScoreshelfHelpers.calculateSize,
     };
   },

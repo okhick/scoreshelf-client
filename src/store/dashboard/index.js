@@ -44,4 +44,9 @@ export const dashboard = {
       });
     },
   },
+  getters: {
+    getCurrentListingId(state) {
+      return state.publishModalEditData.id.uuid;
+    },
+  },
 };

@@ -1,4 +1,8 @@
 import { reactive, toRefs } from '@vue/composition-api';
+import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
+
+const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
+const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
 
 // ============================================================================
 
@@ -34,8 +38,7 @@ export default function useScoreshelfPublisher() {
 // ============================================================================
 
 function FileStateManagement() {
-  function processUpload() {
-    const newFiles = this.$refs.file.files;
+  function processUpload(newFiles) {
     newFiles.forEach(file => {
       file.isStored = false;
       file.asset_name = file.name; // we use asset name everywhere else, start from the beg
@@ -166,6 +169,9 @@ function ScoreshelfUploadManagement() {
 // ============================================================================
 
 function ScoreshelfAssetManagement() {
+  const { getCurrentUserId } = sharetribeStore.useGetters(['getCurrentUserId']);
+  const { getCurrentListingId } = dashboardStore.useGetters(['getCurrentListingId']);
+
   async function hyrdateAssetData(fileList, getLink) {
     const scoreshelf_ids = fileList.map(file => file.scoreshelf_id);
     const hydratedAssets = await this.$axios.post('/getAssetdata', {
@@ -184,8 +190,8 @@ function ScoreshelfAssetManagement() {
   function formatNewAssetMetadata(uploadParams) {
     const formattedUploadParams = {};
 
-    formattedUploadParams.sharetribe_listing_id = this.listing_id;
-    formattedUploadParams.sharetribe_user_id = this.user_id;
+    formattedUploadParams.sharetribe_listing_id = getCurrentListingId.value;
+    formattedUploadParams.sharetribe_user_id = getCurrentUserId.value;
     formattedUploadParams.metadata = {};
 
     const newFiles = FileState.fileList.filter(file => !file.isStored);
@@ -202,8 +208,8 @@ function ScoreshelfAssetManagement() {
   function formatUpdatedAssetMetadata(uploadParams) {
     const formattedUploadParams = {};
 
-    formattedUploadParams.sharetribe_listing_id = this.listing_id;
-    formattedUploadParams.sharetribe_user_id = this.user_id;
+    formattedUploadParams.sharetribe_listing_id = getCurrentListingId.value;
+    formattedUploadParams.sharetribe_user_id = getCurrentUserId.value;
     formattedUploadParams.metadata = {};
 
     const existingFiles = FileState.fileList.filter(file => file.isStored);

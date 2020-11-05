@@ -3,6 +3,7 @@ import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublishe
 import { reactive, toRefs } from '@vue/composition-api';
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
+const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
 
 // ============================================================================
 
@@ -109,10 +110,10 @@ function SharetribePublisherForm() {
 // ============================================================================
 
 function SharetribePublisherListings() {
-  const { SHARETRIBE, publishModalEditData } = sharetribeStore.useState([
-    'SHARETRIBE',
-    'publishModalEditData',
-  ]);
+  const { SHARETRIBE } = sharetribeStore.useState(['SHARETRIBE']);
+  const { publishModalEditData } = dashboardStore.useState(['publishModalEditData']);
+
+  const { getCurrentListingId } = dashboardStore.useGetters(['getCurrentListingId']);
 
   async function createDraft() {
     await SHARETRIBE.value.ownListings.createDraft({
@@ -123,14 +124,14 @@ function SharetribePublisherListings() {
 
   async function publishDraft() {
     await SHARETRIBE.value.ownListings.publishDraft({
-      id: publishModalEditData.value.id.uuid,
+      id: getCurrentListingId.value,
     });
     return;
   }
 
   async function updatePublication() {
     await SHARETRIBE.value.ownListings.update({
-      id: publishModalEditData.value.id.uuid,
+      id: getCurrentListingId.value,
       ...this.getFormattedArgs(),
     });
     return;
@@ -142,13 +143,13 @@ function SharetribePublisherListings() {
     switch (listingState) {
       case 'draft':
         await SHARETRIBE.value.ownListings.discardDraft({
-          id: publishModalEditData.value.id.uuid,
+          id: getCurrentListingId.value,
         });
         break;
 
       case 'published':
         await SHARETRIBE.value.ownListings.close({
-          id: publishModalEditData.value.id.uuid,
+          id: getCurrentListingId.value,
         });
         break;
     }
@@ -158,7 +159,7 @@ function SharetribePublisherListings() {
   // for use when opening a publication after "deleting it"
   async function reopenPublication() {
     await SHARETRIBE.value.ownListings.open({
-      id: publishModalEditData.value.id.uuid,
+      id: getCurrentListingId.value,
     });
 
     return;
@@ -176,6 +177,7 @@ function SharetribePublisherListings() {
 // ============================================================================
 // ============================================================================
 // ============================================================================
+// I don't think ant of this matters...
 
 function SharetribePublisherHelpers() {
   function getFormattedArgs() {
