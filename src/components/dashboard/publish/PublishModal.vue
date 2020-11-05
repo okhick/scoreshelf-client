@@ -119,7 +119,7 @@ export default {
       'editPublishModalEditData',
     ]);
 
-    const { useSharetribePublisherListings } = useSharetribePublisher();
+    const { useSharetribePublisherListings, useSharetribePublisherForm } = useSharetribePublisher();
     const { useScoreshelfUploadManagement } = useScoreshelfPublisher();
 
     const isNewPiece = ref(true);
@@ -127,9 +127,9 @@ export default {
 
     watch(dashboardState.publishModalEditData, async newData => {
       // if newData.attributes is falsy, we're publishing from a blank
-      if (newData != null && newData?.value?.attributes) {
+      if (newData != null && newData?.attributes) {
         isNewPiece.value = false;
-        pieceStatus.value = newData.value.attributes.state;
+        pieceStatus.value = newData.attributes.state;
       } else {
         isNewPiece.value = true;
       }
@@ -151,7 +151,7 @@ export default {
       dashboardMutations.clearPublishModalEditData();
       pieceStatus.value = '';
       // TODO: This won't work
-      this.$refs.form.clearFormData();
+      useSharetribePublisherForm.clearFormData();
 
       dashboardMutations.togglePublishModal();
     }
