@@ -95,8 +95,11 @@ function SharetribePublisherForm() {
       return '';
     } else {
       for (const asset in thumbnailSettings.value) {
-        return thumbnailSettings.value[asset].thumbnail_id;
+        if (thumbnailSettings.value[asset].isThumbnail) {
+          return thumbnailSettings.value[asset].thumbnail_id;
+        }
       }
+      return '';
     }
   }
 

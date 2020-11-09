@@ -106,7 +106,9 @@ function FileStateManagement() {
     } else {
       payload.forEach(asset => {
         const thumbnail = FileState.thumbnailSettings[asset.asset_name];
-        thumbnail.thumbnail_id = asset.thumbnail_settings._id;
+        if (thumbnail.isThumbnail) {
+          thumbnail.thumbnail_id = asset.thumbnail_settings._id;
+        }
       });
     }
   }

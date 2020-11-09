@@ -37,7 +37,10 @@
                   @click="newThumbSelected($event, file.asset_name)"
                 />
               </div>
-              <div class="field page-picker">
+              <div
+                class="field page-picker"
+                v-show="thumbnailSettings[file.asset_name].isThumbnail"
+              >
                 <input
                   class="input is-small"
                   type="text"
@@ -106,12 +109,14 @@ export default {
 
     function removeUpload(fileName) {
       fileList.value.forEach(file => {
-        if (file.asset_name == fileName) {
+        if (file.asset_name === fileName) {
           if (file.isStored) {
             useFileStateManagement.setFileToBeRemoved(fileName);
             useFileStateManagement.removeFileFromFileList(fileName);
+            thumbnailSettings[fileName] = makeBlankThumbnail();
           } else {
             useFileStateManagement.removeFileFromFileList(fileName);
+            thumbnailSettings[fileName] = makeBlankThumbnail();
           }
         }
       });
@@ -124,6 +129,10 @@ export default {
           if (asset != checkedAsset) {
             thumbnailSettings.value[asset] = makeBlankThumbnail();
           }
+        }
+      } else {
+        for (let asset in thumbnailSettings.value) {
+          thumbnailSettings.value[asset] = makeBlankThumbnail();
         }
       }
     }
