@@ -38,7 +38,7 @@ export default function useSharetribePublisher() {
 // ============================================================================
 
 function SharetribePublisherForm() {
-  const { fileList, formats } = useScoreshelfPublisher();
+  const { fileList, formats, thumbnailSettings } = useScoreshelfPublisher();
 
   function clearFormData() {
     for (const field in PublishFormState.formData) {
@@ -47,9 +47,8 @@ function SharetribePublisherForm() {
   }
 
   function formatArgs() {
-    const cleanData = sanitizeFormData();
     return {
-      ...cleanData,
+      ...sanitizeFormData(),
       privateData: {
         assetData: formatAssetData(),
       },
@@ -72,6 +71,7 @@ function SharetribePublisherForm() {
     }
 
     cleanFormData.publicData.formats = formatFormatData();
+    cleanFormData.publicData.thumbnail = formatThumbnailData();
     return cleanFormData;
   }
 
@@ -81,12 +81,23 @@ function SharetribePublisherForm() {
     fileList.value.forEach(file => {
       const thisFileData = {
         scoreshelf_id: file._id,
-        thumbnail_id: file.thumbnail_id,
       };
       assetData.push(thisFileData);
     });
 
     return assetData;
+  }
+
+  function formatThumbnailData() {
+    if (thumbnailSettings.value == null) {
+      // return null;
+      // null doesn't affect the string field on sharetribe
+      return '';
+    } else {
+      for (const asset in thumbnailSettings.value) {
+        return thumbnailSettings.value[asset].thumbnail_id;
+      }
+    }
   }
 
   function formatFormatData() {
@@ -115,11 +126,11 @@ function SharetribePublisherListings() {
 
   const { getCurrentListingId } = dashboardStore.useGetters(['getCurrentListingId']);
 
-  const usesharetribePublisherHelpers = SharetribePublisherHelpers();
+  const useSharetribePublisherForm = SharetribePublisherForm();
 
   async function createDraft() {
     await SHARETRIBE.value.ownListings.createDraft({
-      ...usesharetribePublisherHelpers.getFormattedArgs(),
+      ...useSharetribePublisherForm.formatArgs(),
     });
     return;
   }
@@ -134,7 +145,7 @@ function SharetribePublisherListings() {
   async function updatePublication() {
     await SHARETRIBE.value.ownListings.update({
       id: getCurrentListingId.value,
-      ...usesharetribePublisherHelpers.getFormattedArgs(),
+      ...useSharetribePublisherForm.formatArgs(),
     });
     return;
   }

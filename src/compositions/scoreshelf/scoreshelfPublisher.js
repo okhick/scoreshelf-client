@@ -86,14 +86,29 @@ function FileStateManagement() {
   }
 
   function addScoreshelfIdToFile(payload) {
-    // find the file the id needs to go in. Probably could do this with a find()
     FileState.fileList.forEach(file => {
-      let name = file.asset_name;
-      if (payload[name]) {
-        file._id = payload[name]._id;
-        if (payload[name].thumbnail_id) file.thumbnail_id = payload[name].thumbnail_id;
+      const name = file.asset_name;
+      const newDataFilter = payload.filter(asset => asset.asset_name === name);
+      // if an asset exists with that name,
+      if (newDataFilter.length === 1) {
+        const newData = newDataFilter[0];
+        file._id = newData._id;
+        file.isStored = true;
+      } else {
+        console.log('More than one asset with that name!', file.asset_name);
       }
     });
+  }
+
+  function updateThumbnailSettings(payload) {
+    if (payload.length === 0) {
+      FileState.thumbnailSettings = null;
+    } else {
+      payload.forEach(asset => {
+        const thumbnail = FileState.thumbnailSettings[asset.asset_name];
+        thumbnail.thumbnail_id = asset.thumbnail_settings._id;
+      });
+    }
   }
 
   return {
@@ -104,6 +119,7 @@ function FileStateManagement() {
     clearToBeRemoved,
     resetFileState,
     addScoreshelfIdToFile,
+    updateThumbnailSettings,
   };
 }
 
@@ -130,7 +146,8 @@ function ScoreshelfUploadManagement() {
       res.deleteRes = await removeUploads();
     }
 
-    res.updateMetadataRes = await scoreshelfAssetManagement.updateAssetMetadata(uploadParams);
+    await scoreshelfAssetManagement.updateAssetMetadata(uploadParams);
+
     return res;
   }
 
@@ -183,6 +200,7 @@ function ScoreshelfUploadManagement() {
 function ScoreshelfAssetManagement() {
   const { getCurrentUserId } = sharetribeStore.useGetters(['getCurrentUserId']);
   const { getCurrentListingId } = dashboardStore.useGetters(['getCurrentListingId']);
+  const scoreshelfFileStateManagement = FileStateManagement();
 
   async function hyrdateAssetData(fileList, getLink) {
     const scoreshelf_ids = fileList.map(file => file.scoreshelf_id);
@@ -196,6 +214,7 @@ function ScoreshelfAssetManagement() {
   async function updateAssetMetadata(uploadParams) {
     const assetMetadata = formatUpdatedAssetMetadata(uploadParams);
     const res = await SCORESHELF.post('/updateAssetMetadata', assetMetadata);
+    scoreshelfFileStateManagement.updateThumbnailSettings(res.data);
     return res;
   }
 
