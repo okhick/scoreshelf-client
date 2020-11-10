@@ -96,7 +96,6 @@ export default {
         if (file.thumbnail_settings) {
           thumbnailSettings.value[file.asset_name].page = file.thumbnail_settings.page;
           thumbnailSettings.value[file.asset_name].isThumbnail = true;
-          thumbnailSettings.value[file.asset_name].thumbnail_id = file.thumbnail_settings._id;
         }
       });
     });
