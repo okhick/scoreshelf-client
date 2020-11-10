@@ -64,6 +64,7 @@ function FileStateManagement() {
 
   function removeFileFromFileList(payload) {
     FileState.fileList = FileState.fileList.filter(file => file.asset_name !== payload);
+    delete FileState.thumbnailSettings[payload];
   }
 
   function setFileToBeRemoved(payload) {
@@ -85,17 +86,11 @@ function FileStateManagement() {
     FileState.formats = [];
   }
 
-  function addScoreshelfIdToFile(payload) {
-    FileState.fileList.forEach(file => {
-      const name = file.asset_name;
-      const newDataFilter = payload.filter(asset => asset.asset_name === name);
-      // if an asset exists with that name,
-      if (newDataFilter.length === 1) {
-        const newData = newDataFilter[0];
-        file._id = newData._id;
-        file.isStored = true;
-      } else {
-        console.log('More than one asset with that name!', file.asset_name);
+  function replaceFileWithScoreshelfAsset(payload) {
+    FileState.fileList.forEach((file, index) => {
+      const asset = payload.find(asset => asset.asset_name === file.asset_name);
+      if (asset) {
+        FileState.fileList[index] = asset;
       }
     });
   }
@@ -113,6 +108,10 @@ function FileStateManagement() {
     }
   }
 
+  function refreshFileListWithUpdatedAssets(payload) {
+    FileState.fileList = payload;
+  }
+
   return {
     processUpload,
     addFileToFileList,
@@ -120,8 +119,9 @@ function FileStateManagement() {
     setFileToBeRemoved,
     clearToBeRemoved,
     resetFileState,
-    addScoreshelfIdToFile,
+    replaceFileWithScoreshelfAsset,
     updateThumbnailSettings,
+    refreshFileListWithUpdatedAssets,
   };
 }
 
@@ -173,7 +173,7 @@ function ScoreshelfUploadManagement() {
         'Content-Type': 'multipart/form-data',
       },
     });
-    scoreshelfFileStateManagement.addScoreshelfIdToFile(res.data);
+    scoreshelfFileStateManagement.replaceFileWithScoreshelfAsset(res.data);
     return res;
   }
 
@@ -215,8 +215,11 @@ function ScoreshelfAssetManagement() {
 
   async function updateAssetMetadata(uploadParams) {
     const assetMetadata = formatUpdatedAssetMetadata(uploadParams);
+    // this return every asset
     const res = await SCORESHELF.post('/updateAssetMetadata', assetMetadata);
-    scoreshelfFileStateManagement.updateThumbnailSettings(res.data);
+    // scoreshelfFileStateManagement.updateThumbnailSettings(res.data);
+    scoreshelfFileStateManagement.refreshFileListWithUpdatedAssets(res.data);
+
     return res;
   }
 

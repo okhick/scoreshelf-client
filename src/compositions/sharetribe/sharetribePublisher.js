@@ -95,7 +95,7 @@ function SharetribePublisherForm() {
     if (thumbnailSettings.value == null) {
       // return null;
       // null doesn't affect the string field on sharetribe
-      return '';
+      return {};
     } else {
       for (const asset in thumbnailSettings.value) {
         if (thumbnailSettings.value[asset].isThumbnail) {

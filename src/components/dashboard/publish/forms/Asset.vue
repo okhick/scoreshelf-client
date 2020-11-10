@@ -113,10 +113,8 @@ export default {
           if (file.isStored) {
             useFileStateManagement.setFileToBeRemoved(fileName);
             useFileStateManagement.removeFileFromFileList(fileName);
-            thumbnailSettings[fileName] = makeBlankThumbnail();
           } else {
             useFileStateManagement.removeFileFromFileList(fileName);
-            thumbnailSettings[fileName] = makeBlankThumbnail();
           }
         }
       });
