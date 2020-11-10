@@ -53,7 +53,7 @@ export default {
 
     // methods
     async function doSearch() {
-      sidenavMutations.toggleSearchIsLoading();
+      toggleSearchIsLoading();
 
       const res = await SHARETRIBE.value.listings.query({
         keywords: searchInput.value,

@@ -79,10 +79,13 @@ function SharetribePublisherForm() {
     const assetData = [];
 
     fileList.value.forEach(file => {
-      const thisFileData = {
+      const thumbnail_id = thumbnailSettings.value[file.asset_name].isThumbnail
+        ? file.thumbnail_settings._id
+        : null;
+      assetData.push({
         scoreshelf_id: file._id,
-      };
-      assetData.push(thisFileData);
+        thumbnail_id: thumbnail_id,
+      });
     });
 
     return assetData;
@@ -96,7 +99,10 @@ function SharetribePublisherForm() {
     } else {
       for (const asset in thumbnailSettings.value) {
         if (thumbnailSettings.value[asset].isThumbnail) {
-          return thumbnailSettings.value[asset].thumbnail_id;
+          const file = fileList.value.find(file => file.asset_name === asset);
+          return {
+            asset_name: file.thumbnail_settings.asset_name,
+          };
         }
       }
       return '';
