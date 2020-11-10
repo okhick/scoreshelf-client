@@ -248,8 +248,7 @@ function ScoreshelfAssetManagement() {
     formattedUploadParams.sharetribe_user_id = getCurrentUserId.value;
     formattedUploadParams.metadata = {};
 
-    const existingFiles = FileState.fileList.filter(file => file.isStored);
-    existingFiles.forEach(file => {
+    FileState.fileList.forEach(file => {
       formattedUploadParams.metadata[file._id] = {
         thumbnailSettings: uploadParams.thumbnailSettings[file.asset_name],
         // do more formatting here
