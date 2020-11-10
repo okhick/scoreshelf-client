@@ -53,8 +53,11 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { scoreshelf } from '@/mixins/scoreshelf.js';
+import { watch } from '@vue/composition-api';
+import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
+
+import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
+const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faPlus, faTrash, faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -65,71 +68,70 @@ export default {
   components: {
     FontAwesomeIcon,
   },
-  mixins: [scoreshelf],
-  data() {
-    return {
-      formats: null,
-    };
-  },
-  methods: {
-    addFormat: function() {
-      this.formats.push(this.getBlankFormat());
-    },
-    getFormatId: function() {
-      return Date.now();
-    },
-    getBlankFormat: function() {
-      return { formatId: this.getFormatId(), format: '', price: '', assets: [] };
-    },
-    removeFormat: function(formatId) {
-      if (this.formats.length > 1) {
-        const remainingFormats = this.formats.filter(format => format.formatId != formatId);
-        this.formats = remainingFormats;
+  setup() {
+    const { formats, fileList } = useScoreshelfPublisher();
+    const dashboardState = dashboardStore.useState(['publishModalEditData']);
+
+    // ---------- Methods ----------
+    function addFormat() {
+      formats.value.push(getBlankFormat());
+    }
+
+    function removeFormat(formatId) {
+      if (formats.value.length > 1) {
+        const remainingFormats = formats.value.filter(format => format.formatId != formatId);
+        formats.value = remainingFormats;
       } else {
-        this.formats = [this.getBlankFormat()];
+        formats.value = [getBlankFormat()];
       }
-    },
-    newAssetSelected: function(event, formatId) {
+    }
+
+    function newAssetSelected(event, formatId) {
       const selectedAsset = event.target.value;
-      const thisFormat = this.formats.find(format => format.formatId == formatId);
+      const thisFormat = formats.value.find(format => format.formatId === formatId);
 
       // make sure it's not the blank option or an already chosen option
-      if (selectedAsset != '' && thisFormat.assets.indexOf(selectedAsset) == -1) {
+      if (selectedAsset !== '' && thisFormat.assets.indexOf(selectedAsset) === -1) {
         thisFormat.assets.push(selectedAsset);
       }
-    },
-    removeAsset: function(assetToRemove, formatId) {
-      const thisFormat = this.formats.find(format => format.formatId == formatId);
-      thisFormat.assets = thisFormat.assets.filter(asset => asset != assetToRemove);
-    },
-  },
-  computed: {
-    ...mapState({
-      publishModalEditData: state => state.dashboard.publishModalEditData,
-      fileList: state => state.dashboard.fileList,
-    }),
-  },
-  watch: {
-    publishModalEditData: function(newData) {
+    }
+
+    function removeAsset(assetToRemove, formatId) {
+      const thisFormat = formats.value.find(format => format.formatId === formatId);
+      thisFormat.assets = thisFormat.assets.filter(asset => asset !== assetToRemove);
+    }
+
+    // ---------- Helper Methods ----------
+    function getBlankFormat() {
+      return { formatId: getFormatId(), format: '', price: '', assets: [] };
+    }
+
+    function getFormatId() {
+      return Date.now();
+    }
+
+    // ---------- Watchers ----------
+    watch(dashboardState.publishModalEditData, newData => {
       if (newData?.attributes?.publicData?.formats) {
         // if we've opened an existing work
-        this.formats = newData.attributes.publicData.formats;
+        formats.value = newData.attributes.publicData.formats;
       } else if (newData == null) {
         // if we're closing the modal
-        this.formats = null;
+        formats.value = null;
       } else {
         // if it's a new work
-        this.formats = [this.getBlankFormat()];
+        formats.values = [getBlankFormat()];
       }
-    },
-    fileList: function(newData) {
-      if (this.formats != null) {
+    });
+
+    watch(fileList, newData => {
+      if (formats.value != null) {
         // first swapout the asset ids for the asset name, don't do anything if there's not match
         // this is used on modal open
-        this.formats.forEach(format => {
+        formats.value.forEach(format => {
           format.assets = format.assets.map(asset => {
-            const thisFile = this.fileList.find(file => file._id == asset);
-            if (thisFile !== undefined) {
+            const thisFile = fileList.value.find(file => file._id == asset);
+            if (thisFile != undefined) {
               return thisFile.asset_name;
             }
             return asset;
@@ -138,11 +140,22 @@ export default {
         // loop through the formats' assets and filter out anything that's not there
         // this is used when you delete an asset file
         const newFileList = newData.map(file => file.asset_name);
-        this.formats.forEach(format => {
+        formats.value.forEach(format => {
           format.assets = format.assets.filter(asset => !(newFileList.indexOf(asset) == -1));
         });
       }
-    },
+    });
+
+    return {
+      // ---- Data ----
+      formats,
+      fileList,
+      // ---- Methods ----
+      addFormat,
+      removeFormat,
+      newAssetSelected,
+      removeAsset,
+    };
   },
 };
 </script>

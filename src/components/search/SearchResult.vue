@@ -37,30 +37,37 @@
 </template>
 
 <script>
+import { ref, computed } from '@vue/composition-api';
+
 export default {
-  data() {
-    return {
-      hideInfo: false,
-      hideThumb: false,
-      publicPath: process.env.BASE_URL,
-    };
-  },
   props: { listing: Object },
-  computed: {
-    showEnsembleOrInstrumentation: function() {
-      return this.listing.attributes.publicData.ensemble
-        ? this.listing.attributes.publicData.ensemble
-        : this.listing.attributes.publicData.instrumentation;
-    },
+  setup({ listing }) {
+    const hideInfo = ref(false);
+    const hideThumb = ref(false);
+    const publicPath = process.env.BASE_URL;
+
+    const showEnsembleOrInstrumentation = computed(() => {
+      return listing.attributes.publicData.ensemble
+        ? listing.attributes.publicData.ensemble
+        : listing.attributes.publicData.instrumentation;
+    });
+
+    return {
+      hideInfo,
+      hideThumb,
+      publicPath,
+      showEnsembleOrInstrumentation,
+    };
   },
 };
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
+@import '@/styles/index.scss';
 .work-card {
   width: 360px;
   height: 380px;
-  background-color: #e9d4c4;
+  background-color: $tan;
   margin: 10px;
   overflow: hidden;
   border-radius: 6px;
@@ -72,11 +79,11 @@ export default {
 /* Stuff for the info */
 .info-wrapper {
   padding: 10px 20px 10px 20px;
-  font-family: 'Fira Sans';
+  // font-family: 'Fira Sans';
   font-weight: 200;
   font-size: 16px;
-  color: #fafafa;
-  background-color: #953332;
+  color: $off-white;
+  background-color: $maroon;
   border-radius: 4px 4px 21px 21px;
   transition: all 0.25s ease-in-out;
   height: 260px;
@@ -111,8 +118,8 @@ export default {
   height: 160px;
 }
 .secondary-info {
-  font-family: 'Ubuntu';
-  font-weight: 300;
+  // font-family: 'Ubuntu';
+  font-weight: 400;
 }
 .human {
   grid-row: human;
@@ -123,14 +130,14 @@ export default {
   align-self: center;
 }
 .result-title {
-  font-family: 'Fira Sans', sans-serif;
-  font-weight: 500;
+  // font-family: 'Lato', sans-serif;
+  font-weight: 600;
   font-size: 24px;
   line-height: 1em;
 }
 .result-subtitle {
   padding-top: 4px;
-  font-weight: 400;
+  font-weight: 500;
 }
 .ensemble {
   grid-row: ensemble;
