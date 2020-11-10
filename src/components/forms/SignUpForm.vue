@@ -49,7 +49,7 @@
         class="button is-dark level-left"
         :class="{ 'is-loading': isLoading }"
         type="submit"
-        @click="signup_attempt()"
+        @click="test()"
       >
         Sign Up
       </button>
@@ -71,40 +71,46 @@
 </style>
 
 <script>
-import { mapState } from "vuex";
+import { reactive, ref, toRefs } from '@vue/composition-api';
+import { mapState } from 'vuex';
+import useSharetribe from '@/compositions/sharetribe/sharetribe';
+
+import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
+const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
 
 export default {
-  name: "SignUpForm",
-  data: function() {
-    return {
-      email: "",
-      password: "",
-      passwordAgain: "",
-      firstName: "",
-      lastName: "",
-      displayName: "",
-      isLoading: false
-    };
-  },
-  methods: {
-    // TODO: This needs validation
-    loginActually: function() {
-      this.$router.push({ path: "login" });
-    },
-    signup_attempt: async function() {
+  name: 'SignUpForm',
+  setup(_, context) {
+    const formData = reactive({
+      email: '',
+      password: '',
+      passwordAgain: '',
+      firstName: '',
+      lastName: '',
+      displayName: '',
+    });
+    const isLoading = ref(false);
+    const { SHARETRIBE } = sharetribeStore.useState(['SHARETRIBE']);
+    const { useRefreshLogin } = useSharetribe();
+
+    function loginActually() {
+      context.root.$router.push({ name: 'Login' });
+    }
+
+    async function signupAttempt() {
       try {
-        this.isLoading = true;
-        let signupRes = await this.SHARETRIBE.currentUser.create({
-          email: this.email,
-          password: this.password,
-          firstName: this.firstName,
-          lastName: this.lastName,
-          displayName: this.displayName
+        isLoading.value = true;
+        const signupRes = await SHARETRIBE.value.currentUser.create({
+          email: formData.email,
+          password: formData.password,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          displayName: formData.displayName,
         });
-        console.log(signupRes);
-        this.isLoading = false;
+
+        isLoading.value = false;
       } catch (signupResError) {
-        this.isLoading = false;
+        isLoading.value = false;
 
         switch (signupResError.status) {
           case 401:
@@ -112,9 +118,15 @@ export default {
         }
       }
     }
+
+    return {
+      // data
+      ...toRefs(formData),
+      isLoading,
+      // methods
+      signupAttempt,
+      loginActually,
+    };
   },
-  computed: {
-    ...mapState(["SHARETRIBE"])
-  }
 };
 </script>

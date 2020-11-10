@@ -1,27 +1,37 @@
 <template>
-  <section class="section">
-    <div class="container">
-      <h1 class="title">Welcome {{ displayName }}!</h1>
-      <h2 class="subtitle">This is your dashboard. Do some stuff.</h2>
+  <div class="container">
+    <div class="columns">
+      <div class="column is-2">
+        <Menu />
+      </div>
+      <div class="column is-10">
+        <section class="is-info welcome is-small">
+          <router-view></router-view>
+        </section>
+      </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import Menu from '@/components/dashboard/menu/Menu.vue';
 
 export default {
-  data() {
-    return {
-      displayName: ""
-    };
+  components: {
+    Menu,
   },
-  async mounted() {
-    let currentUser = await this.SHARETRIBE.currentUser.show();
-    this.displayName = currentUser.data.data.attributes.profile.displayName;
-  },
-  computed: {
-    ...mapState(["SHARETRIBE"])
-  }
 };
 </script>
+
+<style lang="scss" scoped>
+@import '../styles/index.scss';
+
+.container {
+  padding-top: 6px;
+}
+.columns {
+  width: 100%;
+  height: 100%;
+  margin-left: 0;
+}
+</style>

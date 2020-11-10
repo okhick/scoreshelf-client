@@ -1,6 +1,6 @@
 <template>
   <div class="column container">
-    <article class="message is-warning" v-if="login_error">
+    <article class="message is-warning" v-if="loginError">
       <div class="message-header">
         <p>Warning</p>
       </div>
@@ -12,7 +12,7 @@
     <div class="field">
       <label class="label">Email</label>
       <div class="control">
-        <input class="input" type="text" v-model="email" />
+        <input class="input" type="text" v-model="formData.email" />
       </div>
     </div>
 
@@ -22,8 +22,8 @@
         <input
           class="input"
           type="password"
-          v-model="password"
-          v-on:keyup.enter="login_attempt"
+          v-model="formData.password"
+          v-on:keyup.enter="loginAttempt"
         />
       </div>
     </div>
@@ -33,13 +33,13 @@
         class="button is-dark level-left"
         :class="{ 'is-loading': isLoading }"
         type="submit"
-        @click="login_attempt"
+        @click="loginAttempt"
       >
-        Login
+        <strong> Login </strong>
       </button>
 
       <div class="level-right is-block has-text-right">
-        <div @click="signUpActually()">
+        <div @click="signupActually">
           <a>Actually, I need to sign up.</a>
         </div>
         <div>I forgot my password.</div>
@@ -56,50 +56,58 @@
 </style>
 
 <script>
-import { mapState } from "vuex";
-import { sharetribe } from "../../mixins/sharetribe.js";
+import { ref } from '@vue/composition-api';
+
+import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
+const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
 
 export default {
-  name: "LoginForm",
-  mixins: [sharetribe],
-  data: function() {
-    return {
-      email: "",
-      password: "",
-      login_error: false,
-      isLoading: false
-    };
-  },
-  methods: {
-    // TODO: This needs validation
-    signUpActually: function() {
-      this.$router.push({ path: "signup" });
-    },
+  name: 'LoginForm',
+  setup(_, context) {
+    const formData = ref({
+      email: '',
+      password: '',
+    });
+    const loginError = ref(false);
+    const isLoading = ref(false);
+    const { SHARETRIBE } = sharetribeStore.useState(['SHARETRIBE']);
 
-    login_attempt: async function() {
+    function signupActually() {
+      context.root.$router.push({ name: 'SignUp' });
+    }
+
+    async function loginAttempt() {
       try {
-        this.isLoading = true;
+        isLoading.value = true;
+
         // validate creds
-        await this.SHARETRIBE.login({
-          username: this.email,
-          password: this.password
+        await SHARETRIBE.value.login({
+          username: formData.value.email,
+          password: formData.value.password,
         });
-        // update vuex with update login info
-        await this.refreshLogin();
-        this.$router.push({ path: "/dashboard" });
-        this.isLoading = false;
+        context.root.$router.push({ path: '/dashboard' });
+        isLoading.value = false;
       } catch (loginResError) {
-        this.isLoading = false;
+        isLoading.value = false;
+        console.log(loginResError);
 
         switch (loginResError.status) {
           case 401:
-            this.login_error = true;
+            loginError.value = true;
         }
       }
     }
+
+    return {
+      // data
+      formData,
+      loginError,
+      isLoading,
+      // methods
+      signupActually,
+      loginAttempt,
+      // tester,
+    };
   },
-  computed: {
-    ...mapState(["SHARETRIBE"])
-  }
 };
 </script>
