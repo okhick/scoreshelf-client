@@ -101,7 +101,7 @@ function SharetribePublisherForm() {
         if (thumbnailSettings.value[asset].isThumbnail) {
           const file = fileList.value.find(file => file.asset_name === asset);
           return {
-            asset_name: file.thumbnail_settings.asset_name,
+            thumbnail_id: file.thumbnail_settings._id,
           };
         }
       }
