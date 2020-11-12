@@ -26,7 +26,7 @@
     </div>
     <div class="thumb">
       <img
-        :src="`${publicPath}brickwall.png`"
+        :src="pathToThumbnail"
         :class="{ 'hide-thumb': hideThumb }"
         alt=""
         @mouseover="hideInfo = true"
@@ -38,13 +38,14 @@
 
 <script>
 import { ref, computed } from '@vue/composition-api';
+import useScoreshelf from '@/compositions/scoreshelf/scoreshelf.js';
 
 export default {
   props: { listing: Object },
   setup({ listing }) {
     const hideInfo = ref(false);
     const hideThumb = ref(false);
-    const publicPath = process.env.BASE_URL;
+    const { THUMBNAIL_BASE_URL } = useScoreshelf();
 
     const showEnsembleOrInstrumentation = computed(() => {
       return listing.attributes.publicData.ensemble
@@ -52,11 +53,20 @@ export default {
         : listing.attributes.publicData.instrumentation;
     });
 
+    const pathToThumbnail = computed(() => {
+      if (listing.attributes.publicData.thumbnail) {
+        const thumbnail = listing.attributes.publicData.thumbnail;
+        return `${THUMBNAIL_BASE_URL}/${thumbnail.sharetribe_user_id}/${thumbnail.sharetribe_listing_id}/${thumbnail.asset_name}`;
+      } else {
+        return `${process.env.BASE_URL}brickwall.png`;
+      }
+    });
+
     return {
       hideInfo,
       hideThumb,
-      publicPath,
       showEnsembleOrInstrumentation,
+      pathToThumbnail,
     };
   },
 };

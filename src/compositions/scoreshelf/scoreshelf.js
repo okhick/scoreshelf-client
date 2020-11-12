@@ -7,8 +7,10 @@ export default function useScoreshelf() {
     timeout: 30000,
   };
   const SCORESHELF = ref(axios.create(axiosConfig));
+  const THUMBNAIL_BASE_URL = 'https://scoreshelf.nyc3.digitaloceanspaces.com/generated';
 
   return {
     SCORESHELF,
+    THUMBNAIL_BASE_URL,
   };
 }

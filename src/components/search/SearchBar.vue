@@ -107,13 +107,6 @@ export default {
       return listingData;
     }
 
-    function processSearchResults(rawRes) {
-      const listingData = rawRes.data.data;
-      const resMeta = rawRes.data.meta;
-      addSearchListingData(listingData);
-      addSearchResultsMeta(resMeta);
-    }
-
     return {
       // ---- Data ----
       searchIsLoading: searchIsLoading,
