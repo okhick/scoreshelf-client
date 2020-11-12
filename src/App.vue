@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Sidenav />
-    <div class="main" :class="{ shiftMain: menuOpen }">
+    <div class="main" :class="{ shiftMain: isOpen }">
       <SearchBar />
       <router-view />
     </div>
@@ -10,23 +10,28 @@
 
 <script>
 // import Navbar from "@/components/Navbar.vue";
-import Sidenav from '@/components/Sidenav.vue';
+import Sidenav from '@/components/sidenav/Sidenav.vue';
 import SearchBar from '@/components/search/SearchBar.vue';
-import { sharetribe } from './mixins/sharetribe.js';
-import { mapState } from 'vuex';
+
+import { onMounted } from '@vue/composition-api';
+import useSharetribe from '@/compositions/sharetribe/sharetribe';
+
+import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
+const SidenavStore = createNamespacedHelpers('sidenav'); // specific module name
 
 export default {
   components: {
     Sidenav,
     SearchBar,
   },
-  mixins: [sharetribe],
-  computed: {
-    ...mapState({ menuOpen: state => state.sidenav.isOpen }),
-  },
-  async created() {
-    await this.initSharetribeSdk();
-    await this.refreshLogin();
+
+  setup() {
+    const { useSharetribeSdk } = useSharetribe();
+    const { isOpen } = SidenavStore.useState(['isOpen']);
+
+    onMounted(async () => await useSharetribeSdk());
+
+    return { isOpen };
   },
 };
 </script>

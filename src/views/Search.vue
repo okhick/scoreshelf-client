@@ -26,26 +26,26 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { sharetribe } from '../mixins/sharetribe';
 import SearchResult from '../components/search/SearchResult';
 
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 
+import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
+const searchStore = createNamespacedHelpers('search'); // specific module name
+
 export default {
-  mixins: [sharetribe],
   components: {
     Loading,
     SearchResult,
   },
-  computed: {
-    ...mapState({
-      // SHARETRIBE: state => state.sharetribe.SHARETRIBE,
-      searchIsLoading: state => state.search.searchIsLoading,
-      searchListingData: state => state.search.searchListingData,
-      searchResultsMeta: state => state.search.searchResultsMeta,
-    }),
+  setup() {
+    const { searchIsLoading, searchListingData, searchResultsMeta } = searchStore.useState([
+      'searchIsLoading',
+      'searchListingData',
+      'searchResultsMeta',
+    ]);
+    return { searchIsLoading, searchListingData, searchResultsMeta };
   },
 };
 </script>
