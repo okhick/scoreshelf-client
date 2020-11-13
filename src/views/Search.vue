@@ -26,7 +26,10 @@
 </template>
 
 <script>
+import { onMounted } from '@vue/composition-api';
 import SearchResult from '../components/search/SearchResult';
+
+import useSearch from '@/compositions/search/search.js';
 
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
@@ -39,12 +42,24 @@ export default {
     Loading,
     SearchResult,
   },
-  setup() {
+  setup(_, context) {
     const { searchIsLoading, searchListingData, searchResultsMeta } = searchStore.useState([
       'searchIsLoading',
       'searchListingData',
       'searchResultsMeta',
     ]);
+
+    const { executeSearch, searchInput } = useSearch(context);
+
+    onMounted(() => {
+      // check if we're at a query route but there hasn't been a query
+      const query = context.root.$route.params.query;
+      if (query && Object.keys(searchResultsMeta.value).length === 0) {
+        searchInput.value = query;
+        executeSearch();
+      }
+    });
+
     return { searchIsLoading, searchListingData, searchResultsMeta };
   },
 };
