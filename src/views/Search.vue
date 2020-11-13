@@ -39,12 +39,17 @@ export default {
     Loading,
     SearchResult,
   },
-  setup() {
+  setup(_, context) {
     const { searchIsLoading, searchListingData, searchResultsMeta } = searchStore.useState([
       'searchIsLoading',
       'searchListingData',
       'searchResultsMeta',
     ]);
+
+    // const query = context.root.$route.route.params.query;
+    // if (query) {
+    // }
+
     return { searchIsLoading, searchListingData, searchResultsMeta };
   },
 };
