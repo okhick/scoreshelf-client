@@ -41,6 +41,8 @@
 import { ref, computed } from '@vue/composition-api';
 import useScoreshelf from '@/compositions/scoreshelf/scoreshelf.js';
 
+import debounce from 'lodash.debounce';
+
 export default {
   props: { listing: Object },
   setup({ listing }) {
@@ -102,19 +104,26 @@ export default {
     const hideInfo = ref(false);
     const moreInfo = ref(false);
     function showThumbnail() {
-      hideInfo.value = true;
-      moreInfo.value = false;
-      transformThumbnailAction.value = 'show';
+      debounce(() => {
+        hideInfo.value = true;
+        moreInfo.value = false;
+        transformThumbnailAction.value = 'show';
+      }, 25)();
     }
     function peekThumbnail() {
-      hideInfo.value = false;
-      moreInfo.value = false;
-      transformThumbnailAction.value = 'peek';
+      debounce(() => {
+        hideInfo.value = false;
+        moreInfo.value = false;
+        transformThumbnailAction.value = 'peek';
+      }, 50)();
     }
     function hideThumbnail() {
       hideInfo.value = false;
       moreInfo.value = true;
       transformThumbnailAction.value = 'hide';
+    }
+    function test() {
+      console.log('ERHERERE');
     }
 
     return {
