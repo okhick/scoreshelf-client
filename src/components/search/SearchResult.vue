@@ -2,9 +2,9 @@
   <div class="work-card">
     <div
       class="info-wrapper"
-      :class="{ 'hide-info': hideInfo, 'more-info': hideThumb }"
-      @mouseover="hideThumb = true"
-      @mouseleave="hideThumb = false"
+      :class="{ 'hide-info': hideInfo, 'more-info': moreInfo }"
+      @mouseover="hideThumbnail"
+      @mouseleave="peekThumbnail"
     >
       <div class="secondary-info hidden-info">
         <p>42:00</p>
@@ -26,11 +26,12 @@
     </div>
     <div class="thumb">
       <img
-        :src="`${publicPath}brickwall.png`"
-        :class="{ 'hide-thumb': hideThumb }"
+        :src="pathToThumbnail"
+        :style="transformThumbnail[transformThumbnailAction]"
         alt=""
-        @mouseover="hideInfo = true"
-        @mouseleave="hideInfo = false"
+        @mouseover="showThumbnail"
+        @mouseleave="peekThumbnail"
+        @load="calculateTransfrorm"
       />
     </div>
   </div>
@@ -38,25 +39,107 @@
 
 <script>
 import { ref, computed } from '@vue/composition-api';
+import useScoreshelf from '@/compositions/scoreshelf/scoreshelf.js';
+
+import debounce from 'lodash.debounce';
 
 export default {
   props: { listing: Object },
   setup({ listing }) {
-    const hideInfo = ref(false);
-    const hideThumb = ref(false);
-    const publicPath = process.env.BASE_URL;
-
     const showEnsembleOrInstrumentation = computed(() => {
       return listing.attributes.publicData.ensemble
         ? listing.attributes.publicData.ensemble
         : listing.attributes.publicData.instrumentation;
     });
 
+    // ========== Get thumbnail link ==========
+    const pathToThumbnail = computed(() => {
+      const { THUMBNAIL_BASE_URL } = useScoreshelf();
+      if (listing.attributes.publicData.thumbnail) {
+        const thumbnail = listing.attributes.publicData.thumbnail;
+        return `${THUMBNAIL_BASE_URL}/${thumbnail.sharetribe_user_id}/${thumbnail.sharetribe_listing_id}/${thumbnail.asset_name}`;
+      } else {
+        // TODO: this should just be a default thumbnail
+        return `${process.env.BASE_URL}brickwall.png`;
+      }
+    });
+
+    // ========== Scale and transform thumbnail ==========
+    const transformThumbnailAction = ref('peek');
+    const transformThumbnail = ref({
+      show: '',
+      peek: 'transform: scale(1) translateY(0px);',
+      hide: 'transform: translateY(80px);',
+    });
+    function calculateTransfrorm(event) {
+      // These constants are also set in the CSS below
+      const CARD_HEIGHT = 380; // .work-card
+      const TOP_BUFFER = 20; //   .thumb
+      const PEEK_HEIGHT = 142; // CARD_HEIGHT - .thumb:top
+
+      const PEEK_POS = CARD_HEIGHT - PEEK_HEIGHT; // 238
+      const NEEDED_PORTRAIT_IMG_HEIGHT = CARD_HEIGHT - TOP_BUFFER * 2; //340
+
+      const height = event.target.height;
+      const width = event.target.width;
+
+      if (height >= width) {
+        /* 
+        1. Scale the image to fit the height of card
+        2. Calculate the top position of the showing thumbnail
+        3. Find the distance between current and ending, invert because we're going up 
+        */
+        const scale = NEEDED_PORTRAIT_IMG_HEIGHT / event.target.height;
+        const showPos = (CARD_HEIGHT - NEEDED_PORTRAIT_IMG_HEIGHT) / 2;
+        const translate = (PEEK_POS - showPos + TOP_BUFFER) * -1;
+        transformThumbnail.value.show = `transform: translateY(${translate}px) scale(${scale});`;
+      } else {
+        const showPos = (CARD_HEIGHT - height) / 2;
+        const translate = (PEEK_POS - showPos + TOP_BUFFER) * -1;
+        transformThumbnail.value.show = `transform: translateY(${translate}px);`;
+      }
+    }
+
+    // ========== Handle hover events ==========
+    const hideInfo = ref(false);
+    const moreInfo = ref(false);
+    function showThumbnail() {
+      debounce(() => {
+        hideInfo.value = true;
+        moreInfo.value = false;
+        transformThumbnailAction.value = 'show';
+      }, 25)();
+    }
+    function peekThumbnail() {
+      debounce(() => {
+        hideInfo.value = false;
+        moreInfo.value = false;
+        transformThumbnailAction.value = 'peek';
+      }, 50)();
+    }
+    function hideThumbnail() {
+      hideInfo.value = false;
+      moreInfo.value = true;
+      transformThumbnailAction.value = 'hide';
+    }
+    function test() {
+      console.log('ERHERERE');
+    }
+
     return {
+      // ---- Data ----
       hideInfo,
-      hideThumb,
-      publicPath,
+      moreInfo,
+      transformThumbnailAction,
+      transformThumbnail,
+      // ---- Computed ----
       showEnsembleOrInstrumentation,
+      pathToThumbnail,
+      // ---- Methods ----
+      showThumbnail,
+      peekThumbnail,
+      hideThumbnail,
+      calculateTransfrorm,
     };
   },
 };
@@ -156,11 +239,6 @@ export default {
   max-height: 100%;
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
   transition: all 0.25s ease-in-out;
-}
-.thumb img:hover {
-  transform: scale(0.78) translateY(-362px);
-}
-.hide-thumb {
-  transform: translateY(80px);
+  transform-origin: center top;
 }
 </style>

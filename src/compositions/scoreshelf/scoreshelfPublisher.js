@@ -1,12 +1,13 @@
 import { reactive, toRefs } from '@vue/composition-api';
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 
-import axios from 'axios';
-const axiosConfig = {
-  baseURL: 'http://127.0.0.1:3000/',
-  timeout: 30000,
-};
-const SCORESHELF = axios.create(axiosConfig);
+// import axios from 'axios';
+// const axiosConfig = {
+//   baseURL: 'http://127.0.0.1:3000/',
+//   timeout: 30000,
+// };
+// const SCORESHELF = axios.create(axiosConfig);
+import useScoreshelf from '@/compositions/scoreshelf/scoreshelf.js';
 
 import store from '@/store';
 
@@ -64,6 +65,7 @@ function FileStateManagement() {
 
   function removeFileFromFileList(payload) {
     FileState.fileList = FileState.fileList.filter(file => file.asset_name !== payload);
+    delete FileState.thumbnailSettings[payload];
   }
 
   function setFileToBeRemoved(payload) {
@@ -85,17 +87,11 @@ function FileStateManagement() {
     FileState.formats = [];
   }
 
-  function addScoreshelfIdToFile(payload) {
-    FileState.fileList.forEach(file => {
-      const name = file.asset_name;
-      const newDataFilter = payload.filter(asset => asset.asset_name === name);
-      // if an asset exists with that name,
-      if (newDataFilter.length === 1) {
-        const newData = newDataFilter[0];
-        file._id = newData._id;
-        file.isStored = true;
-      } else {
-        console.log('More than one asset with that name!', file.asset_name);
+  function replaceFileWithScoreshelfAsset(payload) {
+    FileState.fileList.forEach((file, index) => {
+      const asset = payload.find(asset => asset.asset_name === file.asset_name);
+      if (asset) {
+        FileState.fileList[index] = asset;
       }
     });
   }
@@ -113,6 +109,10 @@ function FileStateManagement() {
     }
   }
 
+  function refreshFileListWithUpdatedAssets(payload) {
+    FileState.fileList = payload;
+  }
+
   return {
     processUpload,
     addFileToFileList,
@@ -120,8 +120,9 @@ function FileStateManagement() {
     setFileToBeRemoved,
     clearToBeRemoved,
     resetFileState,
-    addScoreshelfIdToFile,
+    replaceFileWithScoreshelfAsset,
     updateThumbnailSettings,
+    refreshFileListWithUpdatedAssets,
   };
 }
 
@@ -155,6 +156,7 @@ function ScoreshelfUploadManagement() {
 
   async function uploadNewFiles(uploadParams) {
     const formData = new FormData();
+    const { SCORESHELF } = useScoreshelf();
 
     // create a 'unique key' for each file, push it into formdata
     FileState.fileList.forEach((file, index) => {
@@ -168,18 +170,19 @@ function ScoreshelfUploadManagement() {
     formData.append('assetMetadata', JSON.stringify(assetMetadata));
 
     // send off the files. returns the files uploaded
-    let res = await SCORESHELF.post('/uploadAssets', formData, {
+    let res = await SCORESHELF.value.post('/uploadAssets', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
-    scoreshelfFileStateManagement.addScoreshelfIdToFile(res.data);
+    scoreshelfFileStateManagement.replaceFileWithScoreshelfAsset(res.data);
     return res;
   }
 
   async function removeUploads() {
+    const { SCORESHELF } = useScoreshelf();
     // call the server to delete db and asset
-    await SCORESHELF.delete('/deleteAssets', {
+    await SCORESHELF.value.delete('/deleteAssets', {
       data: {
         filesToRemove: FileState.filesToBeRemoved,
       },
@@ -200,13 +203,15 @@ function ScoreshelfUploadManagement() {
 // ============================================================================
 
 function ScoreshelfAssetManagement() {
+  const { SCORESHELF } = useScoreshelf();
+
   const { getCurrentUserId } = sharetribeStore.useGetters(['getCurrentUserId']);
   const { getCurrentListingId } = dashboardStore.useGetters(['getCurrentListingId']);
   const scoreshelfFileStateManagement = FileStateManagement();
 
   async function hyrdateAssetData(fileList, getLink) {
     const scoreshelf_ids = fileList.map(file => file.scoreshelf_id);
-    const hydratedAssets = await SCORESHELF.post('/getAssetdata', {
+    const hydratedAssets = await SCORESHELF.value.post('/getAssetdata', {
       scoreshelf_ids: scoreshelf_ids,
       get_link: getLink,
     });
@@ -214,9 +219,13 @@ function ScoreshelfAssetManagement() {
   }
 
   async function updateAssetMetadata(uploadParams) {
+    const { SCORESHELF } = useScoreshelf();
     const assetMetadata = formatUpdatedAssetMetadata(uploadParams);
-    const res = await SCORESHELF.post('/updateAssetMetadata', assetMetadata);
-    scoreshelfFileStateManagement.updateThumbnailSettings(res.data);
+    // this return every asset
+    const res = await SCORESHELF.value.post('/updateAssetMetadata', assetMetadata);
+    // scoreshelfFileStateManagement.updateThumbnailSettings(res.data);
+    scoreshelfFileStateManagement.refreshFileListWithUpdatedAssets(res.data);
+
     return res;
   }
 
@@ -245,8 +254,7 @@ function ScoreshelfAssetManagement() {
     formattedUploadParams.sharetribe_user_id = getCurrentUserId.value;
     formattedUploadParams.metadata = {};
 
-    const existingFiles = FileState.fileList.filter(file => file.isStored);
-    existingFiles.forEach(file => {
+    FileState.fileList.forEach(file => {
       formattedUploadParams.metadata[file._id] = {
         thumbnailSettings: uploadParams.thumbnailSettings[file.asset_name],
         // do more formatting here
@@ -293,8 +301,9 @@ function ScoreshelfHelpers() {
   }
 
   async function testScoreshelf() {
+    const { SCORESHELF } = useScoreshelf();
     try {
-      let res = await SCORESHELF.get('/test');
+      let res = await SCORESHELF.value.get('/test');
       console.log(res);
     } catch (e) {
       console.log(e);
