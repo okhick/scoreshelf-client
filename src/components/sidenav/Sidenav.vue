@@ -49,6 +49,9 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faBars);
 
+import useSharetribe from '@/compositions/sharetribe/sharetribe';
+import { onMounted } from '@vue/composition-api';
+
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 const SharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
 const SidenavStore = createNamespacedHelpers('sidenav');
@@ -58,6 +61,8 @@ export default {
     FontAwesomeIcon,
   },
   setup(_, context) {
+    const { useRefreshLogin, useSharetribeSdk } = useSharetribe();
+
     // |---------- Data ----------|
     const { isOpen } = SidenavStore.useState(['isOpen']);
     const { toggleSidenav, closeSidenav } = SidenavStore.useMutations([
@@ -65,10 +70,13 @@ export default {
       'closeSidenav',
     ]);
 
-    const { SHARETRIBE, isLoggedIn } = SharetribeStore.useState(['SHARETRIBE']);
+    const { SHARETRIBE, isLoggedIn } = SharetribeStore.useState(['SHARETRIBE', 'isLoggedIn']);
     const { updateIsLoggedIn } = SharetribeStore.useMutations(['updateIsLoggedIn']);
 
-    const isLoading = ref(false);
+    onMounted(async () => {
+      await useSharetribeSdk();
+      await useRefreshLogin();
+    });
 
     // |---------- Methods ----------|
     function clickOut() {
@@ -78,12 +86,10 @@ export default {
     }
 
     async function logout() {
-      isLoading.value = true;
       await SHARETRIBE.value.logout();
       updateIsLoggedIn();
       context.root.$router.push({ path: '/' });
       toggleSidenav();
-      isLoading.value = false;
     }
 
     return {
