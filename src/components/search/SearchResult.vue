@@ -2,9 +2,9 @@
   <div class="work-card">
     <div
       class="info-wrapper"
-      :class="{ 'hide-info': hideInfo, 'more-info': hideThumb }"
-      @mouseover="hideThumb = true"
-      @mouseleave="hideThumb = false"
+      :class="{ 'hide-info': hideInfo, 'more-info': moreInfo }"
+      @mouseover="hideThumbnail"
+      @mouseleave="peekThumbnail"
     >
       <div class="secondary-info hidden-info">
         <p>42:00</p>
@@ -27,10 +27,11 @@
     <div class="thumb">
       <img
         :src="pathToThumbnail"
-        :class="{ 'hide-thumb': hideThumb }"
+        :style="transformThumbnail[transformThumbnailAction]"
         alt=""
-        @mouseover="hideInfo = true"
-        @mouseleave="hideInfo = false"
+        @mouseover="showThumbnail"
+        @mouseleave="peekThumbnail"
+        @load="calculateTransfrorm"
       />
     </div>
   </div>
@@ -44,7 +45,15 @@ export default {
   props: { listing: Object },
   setup({ listing }) {
     const hideInfo = ref(false);
-    const hideThumb = ref(false);
+    const moreInfo = ref(false);
+    // const transformThumbnail = ref('transform: scale(1) translateY(0px);');
+    const transformThumbnailAction = ref('peek');
+    const transformThumbnail = ref({
+      show: '',
+      peek: 'transform: scale(1) translateY(0px);',
+      hide: 'transform: translateY(80px);',
+    });
+
     const { THUMBNAIL_BASE_URL } = useScoreshelf();
 
     const showEnsembleOrInstrumentation = computed(() => {
@@ -58,15 +67,52 @@ export default {
         const thumbnail = listing.attributes.publicData.thumbnail;
         return `${THUMBNAIL_BASE_URL}/${thumbnail.sharetribe_user_id}/${thumbnail.sharetribe_listing_id}/${thumbnail.asset_name}`;
       } else {
+        // TODO: this should just be a default thumbnail
         return `${process.env.BASE_URL}brickwall.png`;
       }
     });
 
+    function calculateTransfrorm(event) {
+      const CARD_HEIGHT = 380;
+      const PEEK_HEIGHT = 142;
+      const NEEDED_IMG_HEIGHT = 332;
+
+      const scale = NEEDED_IMG_HEIGHT / event.target.height;
+      const translate = (CARD_HEIGHT - PEEK_HEIGHT - 4) * -1; // -234 I don't know why I need the -4
+
+      transformThumbnail.value.show = `transform: translateY(${translate}px) scale(${scale});`;
+    }
+
+    function showThumbnail() {
+      hideInfo.value = true;
+      moreInfo.value = false;
+      transformThumbnailAction.value = 'show';
+    }
+    function peekThumbnail() {
+      hideInfo.value = false;
+      moreInfo.value = false;
+      transformThumbnailAction.value = 'peek';
+    }
+    function hideThumbnail() {
+      hideInfo.value = false;
+      moreInfo.value = true;
+      transformThumbnailAction.value = 'hide';
+    }
+
     return {
+      // ---- Data ----
       hideInfo,
-      hideThumb,
+      moreInfo,
+      transformThumbnailAction,
+      transformThumbnail,
+      // ---- Computed ----
       showEnsembleOrInstrumentation,
       pathToThumbnail,
+      // ---- Methods ----
+      showThumbnail,
+      peekThumbnail,
+      hideThumbnail,
+      calculateTransfrorm,
     };
   },
 };
@@ -166,11 +212,12 @@ export default {
   max-height: 100%;
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
   transition: all 0.25s ease-in-out;
+  transform-origin: center top;
 }
-.thumb img:hover {
-  transform: scale(0.78) translateY(-362px);
-}
-.hide-thumb {
-  transform: translateY(80px);
-}
+// .thumb img:hover {
+//   transform: scale(0.78) translateY(-362px);
+// }
+// .hide-thumb {
+//   transform: translateY(80px);
+// }
 </style>
