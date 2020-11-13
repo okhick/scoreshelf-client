@@ -17,13 +17,6 @@
     <hr />
 
     <div class="field">
-      <label class="label">Year of Completion</label>
-      <div class="control">
-        <input class="input" type="text" v-model="formData.year" placeholder="2020" />
-      </div>
-    </div>
-
-    <div class="field">
       <label class="label">Composer(s)</label>
       <div class="control">
         <input
@@ -32,6 +25,27 @@
           v-model="formData.composer"
           placeholder="Person 1, Person 2"
         />
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Year of Completion</label>
+      <div class="control">
+        <input class="input" type="text" v-model="formData.year" placeholder="2020" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Duration</label>
+      <div class="control">
+        <input class="input" type="text" v-model="formData.duration" placeholder="6:20" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Commission or Dedication</label>
+      <div class="control">
+        <input class="input" type="text" v-model="formData.commission" placeholder="to Mother" />
       </div>
     </div>
 
@@ -90,8 +104,10 @@ export default {
       if (newData != null && newData?.attributes) {
         formData.value.title = newData.attributes.title;
         formData.value.subtitle = newData.attributes.publicData.subtitle;
-        formData.value.year = newData.attributes.publicData.year;
         formData.value.composer = newData.attributes.publicData.composer;
+        formData.value.commission = newData.attributes.publicData.commission;
+        formData.value.duration = newData.attributes.publicData.duration;
+        formData.value.year = newData.attributes.publicData.year;
         formData.value.ensemble = newData.attributes.publicData.ensemble;
         formData.value.instrumentation = newData.attributes.publicData.instrumentation;
       } else {
