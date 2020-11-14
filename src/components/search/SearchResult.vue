@@ -7,14 +7,16 @@
       @mouseleave="peekThumbnail"
     >
       <div class="secondary-info hidden-info">
-        <p>42:00</p>
-        <p>Commissioned by some Utah Ensemble</p>
+        <p>{{ listing.attributes.publicData.duration }}</p>
+        <p>{{ listing.attributes.publicData.commission }}</p>
       </div>
       <div class="info-spacer"></div>
       <div class="info">
-        <div class="human secondary-info">{{ listing.attributes.publicData.composer }} (1990)</div>
+        <div class="human secondary-info">{{ listing.attributes.publicData.composer }}</div>
         <div class="result-titles">
-          <div class="result-title">{{ listing.attributes.title }}</div>
+          <div class="result-title">
+            {{ listing.attributes.title }} <span class="result-year">{{ showYear }}</span>
+          </div>
           <div class="result-subtitle">
             {{ listing.attributes.publicData.subtitle }}
           </div>
@@ -50,6 +52,10 @@ export default {
       return listing.attributes.publicData.ensemble
         ? listing.attributes.publicData.ensemble
         : listing.attributes.publicData.instrumentation;
+    });
+
+    const showYear = computed(() => {
+      return listing.attributes.publicData.year ? `(${listing.attributes.publicData.year})` : '';
     });
 
     // ========== Get thumbnail link ==========
@@ -137,6 +143,7 @@ export default {
       pathToThumbnail,
       // ---- Methods ----
       showThumbnail,
+      showYear,
       peekThumbnail,
       hideThumbnail,
       calculateTransfrorm,
@@ -221,6 +228,9 @@ export default {
 .result-subtitle {
   padding-top: 4px;
   font-weight: 500;
+}
+.result-year {
+  font-weight: 300;
 }
 .ensemble {
   grid-row: ensemble;

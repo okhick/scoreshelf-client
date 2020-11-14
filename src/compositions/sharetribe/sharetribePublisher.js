@@ -11,8 +11,10 @@ const PublishFormState = reactive({
   formData: {
     title: '',
     subtitle: '',
-    year: '',
     composer: '',
+    year: '',
+    duration: '',
+    commission: '',
     ensemble: '',
     instrumentation: '',
   },
