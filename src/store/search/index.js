@@ -15,5 +15,9 @@ export const search = {
     addSearchResultsMeta(state, payload) {
       state.searchResultsMeta = payload;
     },
+    resetSearchStore(state) {
+      state.searchListingData = [];
+      state.searchResultsMeta = {};
+    },
   },
 };

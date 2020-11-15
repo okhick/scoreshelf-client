@@ -11,7 +11,7 @@
         <p>{{ listing.attributes.publicData.commission }}</p>
       </div>
       <div class="info-spacer"></div>
-      <div class="info">
+      <div class="info" @click="goToListing">
         <div class="human secondary-info">{{ listing.attributes.publicData.composer }}</div>
         <div class="result-titles">
           <div class="result-title">
@@ -47,7 +47,7 @@ import debounce from 'lodash.debounce';
 
 export default {
   props: { listing: Object },
-  setup({ listing }) {
+  setup({ listing }, context) {
     const showEnsembleOrInstrumentation = computed(() => {
       return listing.attributes.publicData.ensemble
         ? listing.attributes.publicData.ensemble
@@ -128,8 +128,12 @@ export default {
       moreInfo.value = true;
       transformThumbnailAction.value = 'hide';
     }
-    function test() {
-      console.log('ERHERERE');
+
+    function goToListing() {
+      context.root.$router.push({
+        name: 'Listing',
+        params: { id: encodeURIComponent(listing.id.uuid) },
+      });
     }
 
     return {
@@ -147,6 +151,7 @@ export default {
       peekThumbnail,
       hideThumbnail,
       calculateTransfrorm,
+      goToListing,
     };
   },
 };
