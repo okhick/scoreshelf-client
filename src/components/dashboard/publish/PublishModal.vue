@@ -7,11 +7,7 @@
         <button class="delete" @click="cancelModal" aria-label="close"></button>
       </header>
 
-      <PublishForm
-        v-bind:isNewPiece="isNewPiece"
-        v-bind:pieceStatus="pieceStatus"
-        ref="form"
-      ></PublishForm>
+      <publish-form v-bind:isNewPiece="isNewPiece" v-bind:pieceStatus="pieceStatus" ref="form" />
 
       <footer class="modal-card-foot">
         <div class="level">
@@ -68,9 +64,7 @@
               Re-publish
             </button>
 
-            <button class="button level-item" @click="cancelModal">
-              Cancel
-            </button>
+            <button class="button level-item" @click="cancelModal">Cancel</button>
           </div>
           <!-- End class level-left -->
 
@@ -87,7 +81,7 @@
 
 <script>
 import Vue from 'vue';
-import PublishForm from './forms/PublishForm.vue';
+import PublishForm from './PublishForm.vue';
 
 import { ref, watch } from '@vue/composition-api';
 
@@ -125,7 +119,7 @@ export default {
     const isNewPiece = ref(true);
     const pieceStatus = ref(null);
 
-    watch(dashboardState.publishModalEditData, async newData => {
+    watch(dashboardState.publishModalEditData, async (newData) => {
       // if newData.attributes is falsy, we're publishing from a blank
       if (newData != null && newData?.attributes) {
         isNewPiece.value = false;

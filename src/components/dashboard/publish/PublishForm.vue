@@ -72,11 +72,11 @@
 
     <hr />
 
-    <format ref="formats" />
+    <publish-form-format ref="formats" />
 
     <hr />
 
-    <asset ref="assets" />
+    <publish-form-asset ref="assets" />
   </section>
 </template>
 
@@ -84,8 +84,8 @@
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
 
-import Format from './Format';
-import Asset from './Asset';
+import PublishFormFormat from './PublishFormFormat';
+import PublishFormAsset from './PublishFormAsset';
 
 import { watch } from '@vue/composition-api';
 
@@ -93,14 +93,14 @@ import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublishe
 
 export default {
   components: {
-    Format,
-    Asset,
+    PublishFormFormat,
+    PublishFormAsset,
   },
   setup() {
     const { formData } = useSharetribePublisher();
     const dashboardState = dashboardStore.useState(['publishModalEditData']);
 
-    watch(dashboardState.publishModalEditData, newData => {
+    watch(dashboardState.publishModalEditData, (newData) => {
       if (newData != null && newData?.attributes) {
         formData.value.title = newData.attributes.title;
         formData.value.subtitle = newData.attributes.publicData.subtitle;

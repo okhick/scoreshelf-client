@@ -6,7 +6,7 @@
     </h3>
     <h4 class="title is-4 publication-composer">{{ listing.attributes.publicData.composer }}</h4>
 
-    <formats></formats>
+    <listing-formats />
 
     <div class="info-table">
       <table>
@@ -39,11 +39,11 @@
 import useListing from '@/compositions/listing/listing.js';
 import { watch, ref } from '@vue/composition-api';
 
-import formats from '@/components/listing/formats.vue';
+import ListingFormats from '@/components/listing/ListingFormats.vue';
 
 export default {
   components: {
-    formats,
+    ListingFormats,
   },
   setup() {
     const { listingData } = useListing();

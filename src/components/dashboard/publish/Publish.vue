@@ -1,8 +1,8 @@
 <template>
   <div>
     <h1 class="title">Publish Music</h1>
-    <PublishTable />
-    <PublishModal />
+    <publish-table />
+    <publish-modal />
   </div>
 </template>
 

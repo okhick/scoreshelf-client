@@ -11,7 +11,7 @@ const ListingState = reactive({
   listingData: {},
 });
 
-// ============================================å
+// ============================================
 
 export default function useListing(listingId) {
   const { SHARETRIBE } = sharetribeStore.useState(['SHARETRIBE']);

@@ -2,7 +2,7 @@
   <div class="columns">
     <div :class="['column', previewSize[previewSize.select]]">{{ previewSize.select }}</div>
     <div class="column is-half">
-      <mainInfo v-if="gotListingData"></mainInfo>
+      <listing-main v-if="gotListingData" />
     </div>
     <div class="column is-one-quarter"></div>
   </div>
@@ -12,11 +12,11 @@
 import { onMounted, ref, reactive, toRefs, watch } from '@vue/composition-api';
 import useListing from '@/compositions/listing/listing.js';
 
-import mainInfo from '@/components/listing/mainInfo.vue';
+import ListingMain from '@/components/listing/ListingMain.vue';
 
 export default {
   components: {
-    mainInfo,
+    ListingMain,
   },
   setup(_, context) {
     const listingId = context.root.$route.params.id;
