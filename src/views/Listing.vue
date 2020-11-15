@@ -2,17 +2,17 @@
   <div class="columns">
     <div :class="['column', previewSize[previewSize.select]]">{{ previewSize.select }}</div>
     <div class="column is-half">
-      <mainInfo v-bind:listing="listingData"></mainInfo>
+      <mainInfo v-if="gotListingData"></mainInfo>
     </div>
     <div class="column is-one-quarter"></div>
   </div>
 </template>
 
 <script>
-import { onMounted, ref, reactive, toRefs } from '@vue/composition-api';
+import { onMounted, ref, reactive, toRefs, watch } from '@vue/composition-api';
 import useListing from '@/compositions/listing/listing.js';
 
-import mainInfo from '@/components/listing/main.vue';
+import mainInfo from '@/components/listing/mainInfo.vue';
 
 export default {
   components: {
@@ -20,13 +20,13 @@ export default {
   },
   setup(_, context) {
     const listingId = context.root.$route.params.id;
-    const { getSearchListing } = useListing(listingId);
-
-    const listingData = ref(null);
+    const { getSearchListing, listingData } = useListing(listingId);
 
     // ========== Get the needed data ==========
+    const gotListingData = ref(false);
     onMounted(async () => {
-      listingData.value = await getSearchListing();
+      await getSearchListing();
+      gotListingData.value = true;
     });
 
     // ========== Control the size of the preview ==========
@@ -36,7 +36,10 @@ export default {
       isLarge: 'is-half',
     });
 
-    return { previewSize, listingData };
+    return {
+      previewSize,
+      gotListingData,
+    };
   },
 };
 </script>

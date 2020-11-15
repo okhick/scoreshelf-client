@@ -1,9 +1,17 @@
-import { onMounted, ref, reactive, toRefs } from '@vue/composition-api';
+import { reactive, toRefs } from '@vue/composition-api';
 
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 import store from '@/store/index.js';
 const searchStore = createNamespacedHelpers(store, 'search'); // specific module name
 const sharetribeStore = createNamespacedHelpers(store, 'sharetribe'); // specific module name
+
+// ============================================
+
+const ListingState = reactive({
+  listingData: {},
+});
+
+// ============================================å
 
 export default function useListing(listingId) {
   const { SHARETRIBE } = sharetribeStore.useState(['SHARETRIBE']);
@@ -14,17 +22,20 @@ export default function useListing(listingId) {
     const searchListingStore = searchListingData.value.find(
       (listing) => listing.id.uuid === listingId
     );
+
     if (searchListingStore !== undefined) {
-      return searchListingStore;
+      ListingState.listingData = searchListingStore;
     } else {
       const listingRes = await SHARETRIBE.value.listings.show({
         id: listingId,
       });
-      return listingRes.data.data;
+      ListingState.listingData = listingRes.data.data;
     }
+    return true;
   }
 
   return {
+    ...toRefs(ListingState),
     getSearchListing,
   };
 }
