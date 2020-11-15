@@ -72,6 +72,11 @@ h4.title.is-4.publication-composer {
   margin-bottom: 40px;
 }
 
+.info-table {
+  margin: 27px 0 27px 0;
+  color: #282828;
+}
+
 .info-table td:first-child {
   font-weight: bold;
   text-align: right;
