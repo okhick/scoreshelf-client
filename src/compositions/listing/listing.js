@@ -9,6 +9,7 @@ const sharetribeStore = createNamespacedHelpers(store, 'sharetribe'); // specifi
 
 const ListingState = reactive({
   listingData: {},
+  selectedFormat: '',
 });
 
 // ============================================

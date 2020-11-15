@@ -5,7 +5,7 @@
       v-for="format in formats"
       :key="format.formatId"
       :class="['formats', { selected: format.formatId === selectedFormat }]"
-      @click="selectFormat((selectedFormat = format.formatId))"
+      @click="selectedFormat = format.formatId"
     >
       <div class="format">{{ format.format }}</div>
       <div class="price">${{ format.price }}</div>
@@ -19,9 +19,8 @@ import { ref } from '@vue/composition-api';
 
 export default {
   setup() {
-    const { listingData } = useListing();
+    const { listingData, selectedFormat } = useListing();
     const formats = listingData.value.attributes.publicData.formats;
-    const selectedFormat = ref('');
 
     return {
       formats,
@@ -41,7 +40,7 @@ export default {
   border-radius: 4px;
   padding: 13px;
   line-height: 1.1;
-  margin: 11px;
+  margin-right: 11px;
   cursor: pointer;
 }
 .price {

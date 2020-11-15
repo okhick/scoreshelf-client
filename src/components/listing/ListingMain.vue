@@ -8,6 +8,8 @@
 
     <listing-formats />
 
+    <div class="add-to-cart" @click="addToCart"><p>Add to cart</p></div>
+
     <div class="info-table">
       <table>
         <tr v-if="listing.attributes.publicData.instrumentation">
@@ -46,10 +48,15 @@ export default {
     ListingFormats,
   },
   setup() {
-    const { listingData } = useListing();
+    const { listingData, selectedFormat } = useListing();
+
+    function addToCart() {
+      console.log(selectedFormat);
+    }
 
     return {
       listing: listingData,
+      addToCart,
     };
   },
 };
@@ -70,6 +77,19 @@ h4.title.is-4 {
 h4.title.is-4.publication-composer {
   margin-top: 40px;
   margin-bottom: 40px;
+}
+
+.add-to-cart {
+  height: 38px;
+  width: 166px;
+  background-color: #953332;
+  color: #fafafa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  margin-top: 11px;
+  cursor: pointer;
 }
 
 .info-table {
