@@ -15,6 +15,7 @@ const PublishFormState = reactive({
     year: '',
     duration: '',
     commission: '',
+    programNotes: '',
     ensemble: '',
     instrumentation: '',
   },
@@ -80,7 +81,7 @@ function SharetribePublisherForm() {
   function formatAssetData() {
     const assetData = [];
 
-    fileList.value.forEach(file => {
+    fileList.value.forEach((file) => {
       const thumbnail_id = thumbnailSettings.value[file.asset_name].isThumbnail
         ? file.thumbnail_settings._id
         : null;
@@ -101,7 +102,7 @@ function SharetribePublisherForm() {
     } else {
       for (const asset in thumbnailSettings.value) {
         if (thumbnailSettings.value[asset].isThumbnail) {
-          const file = fileList.value.find(file => file.asset_name === asset);
+          const file = fileList.value.find((file) => file.asset_name === asset);
           return {
             thumbnail_id: file.thumbnail_settings._id,
           };
@@ -112,9 +113,9 @@ function SharetribePublisherForm() {
   }
 
   function formatFormatData() {
-    formats.value.forEach(format => {
-      format.assets = format.assets.map(asset => {
-        const thisFile = fileList.value.find(file => file.asset_name == asset);
+    formats.value.forEach((format) => {
+      format.assets = format.assets.map((asset) => {
+        const thisFile = fileList.value.find((file) => file.asset_name == asset);
         return thisFile._id;
       });
     });

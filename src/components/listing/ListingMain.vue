@@ -51,7 +51,7 @@ export default {
     const { listingData, selectedFormat } = useListing();
 
     function addToCart() {
-      console.log(selectedFormat);
+      console.log(selectedFormat.value, 'has been selected for cart');
     }
 
     return {

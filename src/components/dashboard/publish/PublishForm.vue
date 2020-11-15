@@ -49,6 +49,13 @@
       </div>
     </div>
 
+    <div class="field">
+      <label class="label">Program Notes</label>
+      <div class="control">
+        <textarea class="textarea" v-model="formData.programNotes" />
+      </div>
+    </div>
+
     <hr />
 
     <div class="field">
@@ -107,9 +114,11 @@ export default {
         formData.value.composer = newData.attributes.publicData.composer;
         formData.value.commission = newData.attributes.publicData.commission;
         formData.value.duration = newData.attributes.publicData.duration;
+        formData.value.programNotes = newData.attributes.publicData.programNotes;
         formData.value.year = newData.attributes.publicData.year;
         formData.value.ensemble = newData.attributes.publicData.ensemble;
         formData.value.instrumentation = newData.attributes.publicData.instrumentation;
+        console.log(formData);
       } else {
         for (const field in formData.value) {
           formData.value[field] = '';
