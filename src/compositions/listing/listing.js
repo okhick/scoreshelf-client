@@ -10,23 +10,21 @@ export default function useListing(listingId) {
   const { searchListingData } = searchStore.useState(['searchListingData']);
 
   // ========== Get the listing data ==========
-  const listingData = ref(undefined);
   async function getSearchListing() {
     const searchListingStore = searchListingData.value.find(
       (listing) => listing.id.uuid === listingId
     );
-    if (searchListingStore) {
-      searchListingStore.value = searchListing;
+    if (searchListingStore !== undefined) {
+      return searchListingStore;
     } else {
       const listingRes = await SHARETRIBE.value.listings.show({
         id: listingId,
       });
-      listingData.value = listingRes.data.data;
+      return listingRes.data.data;
     }
   }
 
   return {
-    listingData,
     getSearchListing,
   };
 }
