@@ -7,7 +7,13 @@
         <button class="delete" @click="cancelModal" aria-label="close"></button>
       </header>
 
-      <publish-form v-bind:isNewPiece="isNewPiece" v-bind:pieceStatus="pieceStatus" ref="form" />
+      <!-- Doing this on v-if stops things from trying to load before the data exists -->
+      <publish-form
+        v-if="publishModalOpen"
+        v-bind:isNewPiece="isNewPiece"
+        v-bind:pieceStatus="pieceStatus"
+        ref="form"
+      />
 
       <footer class="modal-card-foot">
         <div class="level">

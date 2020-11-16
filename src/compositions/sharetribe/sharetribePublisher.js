@@ -41,7 +41,7 @@ export default function useSharetribePublisher() {
 // ============================================================================
 
 function SharetribePublisherForm() {
-  const { fileList, formats, thumbnailSettings } = useScoreshelfPublisher();
+  const { fileList, formats, thumbnailSettings, previewSettings } = useScoreshelfPublisher();
 
   function clearFormData() {
     for (const field in PublishFormState.formData) {
@@ -75,6 +75,7 @@ function SharetribePublisherForm() {
 
     cleanFormData.publicData.formats = formatFormatData();
     cleanFormData.publicData.thumbnail = formatThumbnailData();
+    cleanFormData.publicData.preview = formatPreviewData();
     return cleanFormData;
   }
 
@@ -96,8 +97,6 @@ function SharetribePublisherForm() {
 
   function formatThumbnailData() {
     if (thumbnailSettings.value == null) {
-      // return null;
-      // null doesn't affect the string field on sharetribe
       return {};
     } else {
       for (const asset in thumbnailSettings.value) {
@@ -110,6 +109,22 @@ function SharetribePublisherForm() {
       }
       return '';
     }
+  }
+
+  function formatPreviewData() {
+    if (previewSettings.value == null) {
+      return {};
+    } else {
+      for (const asset in previewSettings.value) {
+        if (previewSettings.value[asset].isPreview) {
+          const file = fileList.value.find((file) => file.asset_name === asset);
+          return {
+            asset_id: file._id,
+          };
+        }
+      }
+    }
+    return '';
   }
 
   function formatFormatData() {

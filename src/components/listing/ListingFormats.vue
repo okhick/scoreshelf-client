@@ -48,6 +48,7 @@ export default {
   font-weight: 500;
 }
 .format {
+  font-size: 16px;
   font-weight: 400;
 }
 .selected {

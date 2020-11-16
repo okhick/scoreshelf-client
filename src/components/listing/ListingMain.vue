@@ -1,10 +1,10 @@
 <template>
-  <div>
-    <h2 class="title is-2 publication-title">{{ listing.attributes.title }}</h2>
-    <h3 v-if="listing.attributes.publicData.subtitle" class="title is-3 publication-subtitle">
+  <div class="publication">
+    <h2 class="title is-2 title">{{ listing.attributes.title }}</h2>
+    <h3 v-if="listing.attributes.publicData.subtitle" class="title is-3 subtitle">
       {{ listing.attributes.publicData.subtitle }}
     </h3>
-    <h4 class="title is-4 publication-composer">{{ listing.attributes.publicData.composer }}</h4>
+    <h4 class="title is-4 composer">{{ listing.attributes.publicData.composer }}</h4>
 
     <listing-formats />
 
@@ -33,6 +33,11 @@
           <td>{{ listing.attributes.publicData.commission }}</td>
         </tr>
       </table>
+    </div>
+
+    <div class="program-notes">
+      <h5>Program Notes:</h5>
+      <p>{{ listing.attributes.publicData.programNotes }}</p>
     </div>
   </div>
 </template>
@@ -63,20 +68,33 @@ export default {
 </script>
 
 <style scoped>
-h2.title.is-2.publication-title {
-  margin-top: 40px;
-  margin-bottom: 5px;
+.publication {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* screen height - search bar height - bulma padding on columns */
+  min-height: calc(100vh - 64px - 12px);
+}
+h2.title.is-2.title {
+  margin-bottom: 12px;
   font-weight: bold;
+  font-size: 48px;
+}
+
+h3.subtitle {
+  font-size: 36px;
+  margin: 0;
 }
 
 h3.title.is-3,
 h4.title.is-4 {
-  font-weight: medium;
+  font-weight: 500;
 }
 
-h4.title.is-4.publication-composer {
+h4.title.is-4.composer {
   margin-top: 40px;
   margin-bottom: 40px;
+  font-size: 28px;
 }
 
 .add-to-cart {
@@ -90,11 +108,13 @@ h4.title.is-4.publication-composer {
   border-radius: 4px;
   margin-top: 11px;
   cursor: pointer;
+  font-size: 20px;
 }
 
 .info-table {
   margin: 27px 0 27px 0;
   color: #282828;
+  font-size: 16px;
 }
 
 .info-table td:first-child {
@@ -104,6 +124,18 @@ h4.title.is-4.publication-composer {
 .info-table th,
 .info-table td {
   padding: 0 3px 0 3px;
+}
+
+.program-notes {
+  color: #282828;
+}
+.program-notes h5 {
+  font-size: 20px;
+  font-family: 'lato';
+  font-weight: bold;
+}
+.program-notes p {
+  font-size: 16px;
 }
 </style>
 

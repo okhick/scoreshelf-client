@@ -17,6 +17,7 @@
     <table class="table is-fullwidth is-narrow" v-show="fileList.length > 0">
       <thead>
         <th>Filename</th>
+        <th>Preview?</th>
         <th>Thumbnail?</th>
         <th>Size</th>
         <th></th>
@@ -26,6 +27,20 @@
           <a :href="file.link">{{ file.asset_name }}</a>
         </td>
         <td v-else valign="middle">{{ file.asset_name }}</td>
+
+        <td>
+          <div class="field is-horizontal">
+            <div class="field-body">
+              <div class="field">
+                <input
+                  type="checkbox"
+                  v-model="previewSettings[file.asset_name].isPreview"
+                  @click="newPreviewSelected($event, file.asset_name)"
+                />
+              </div>
+            </div>
+          </div>
+        </td>
 
         <td>
           <div class="field is-horizontal">
@@ -64,8 +79,11 @@
 
 <script>
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
-import { watch } from '@vue/composition-api';
+import { onMounted, watch } from '@vue/composition-api';
 import Vue from 'vue';
+
+import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
+const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUpload, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
@@ -78,36 +96,28 @@ export default {
   },
   setup(_, context) {
     const {
-      useFileStateManagement,
+      // States
       fileList,
       thumbnailSettings,
+      previewSettings,
+      // Methods
+      useFileStateManagement,
       useScoreshelfHelpers,
     } = useScoreshelfPublisher();
 
-    watch(fileList, () => {
-      fileList.value.forEach(file => {
-        if (thumbnailSettings.value[file.asset_name] === undefined) {
-          // because we're making these on the fly, we need to use $set to make them reactive
-          Vue.set(thumbnailSettings.value, file.asset_name, {
-            ...makeBlankThumbnail(),
-          });
-        }
-        // loadup any settings that may alread exist
-        if (file.thumbnail_settings) {
-          thumbnailSettings.value[file.asset_name].page = file.thumbnail_settings.page;
-          thumbnailSettings.value[file.asset_name].isThumbnail = true;
-        }
-      });
-    });
+    const { publishModalEditData } = dashboardStore.useState(['publishModalEditData']);
+
+    useFileStateManagement.initAssetData();
 
     // ---------- Methods ----------
+
     function processUploadEvent() {
       const newFiles = context.refs.file.files;
       useFileStateManagement.processUpload(newFiles);
     }
 
     function removeUpload(fileName) {
-      fileList.value.forEach(file => {
+      fileList.value.forEach((file) => {
         if (file.asset_name === fileName) {
           if (file.isStored) {
             useFileStateManagement.setFileToBeRemoved(fileName);
@@ -134,18 +144,32 @@ export default {
       }
     }
 
-    function makeBlankThumbnail() {
-      return { isThumbnail: false, page: null };
+    function newPreviewSelected(event, checkedAsset) {
+      const isChecked = event.target.checked;
+      if (isChecked) {
+        for (let asset in previewSettings.value) {
+          if (asset != checkedAsset) {
+            previewSettings.value[asset].isPreview = false;
+          }
+        }
+      } else {
+        for (let asset in previewSettings.value) {
+          console.log(previewSettings.value[asset]);
+          previewSettings.value[asset].isPreview = false;
+        }
+      }
     }
 
     return {
       // ---- Data ----
       fileList,
       thumbnailSettings,
+      previewSettings,
       // ---- Methods ----
       removeUpload,
       newThumbSelected,
       processUploadEvent,
+      newPreviewSelected,
       calculateSize: useScoreshelfHelpers.calculateSize,
     };
   },
