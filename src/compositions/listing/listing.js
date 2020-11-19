@@ -1,4 +1,5 @@
 import { reactive, toRefs } from '@vue/composition-api';
+import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
 
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 import store from '@/store/index.js';
@@ -9,12 +10,14 @@ const sharetribeStore = createNamespacedHelpers(store, 'sharetribe'); // specifi
 
 const ListingState = reactive({
   listingData: {},
+  previewBuffer: {},
   selectedFormat: '',
 });
 
 // ============================================
 
 export default function useListing(listingId) {
+  const { SCORESHELF } = useScoreshelf();
   const { SHARETRIBE } = sharetribeStore.useState(['SHARETRIBE']);
   const { searchListingData } = searchStore.useState(['searchListingData']);
 
@@ -35,8 +38,18 @@ export default function useListing(listingId) {
     return true;
   }
 
+  async function getPreviewBuffer() {
+    const previewRes = await SCORESHELF.value.get('/getAssetBin', {
+      params: { scoreshelf_id: '5fad977542a88501a2cccef0' },
+      responseType: 'arraybuffer', //defining the response type is EXTREMELY important here
+    });
+    const previewBuffer = new Uint8Array(previewRes.data);
+    ListingState.previewBuffer = previewBuffer;
+  }
+
   return {
     ...toRefs(ListingState),
     getSearchListing,
+    getPreviewBuffer,
   };
 }
