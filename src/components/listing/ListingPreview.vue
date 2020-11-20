@@ -1,14 +1,14 @@
 <template>
   <div class="preview-wrapper" @click="$emit('toggle-preview-size')">
     <span class="toggle-size">
-      <!-- {{ toggleWords }} -->
       <font-awesome-icon
-        :icon="toggleWords"
+        :icon="toggleSettings.icon"
         :class="{ right: currentSize === 'isSmall', left: currentSize === 'isLarge' }"
         size="lg"
       />
     </span>
-    <pdf v-for="i in numPages" :key="i" :src="loadingTask" :page="i" class="pdf-page"></pdf>
+    <p class="toggle-size-text">{{ toggleSettings.text }}</p>
+    <pdf v-for="i in numPages" :key="i" :src="loadingTask" :page="i" class="pdf-page" />
   </div>
 </template>
 
@@ -34,6 +34,7 @@ export default {
     const { getPreviewBuffer, previewBuffer, listingData } = useListing();
     const loadingTask = ref();
     const numPages = ref();
+    const progress = ref();
 
     onMounted(async () => {
       if (listingData.value.attributes.publicData?.preview?.asset_id) {
@@ -44,19 +45,25 @@ export default {
       }
     });
 
-    const toggleWords = computed(() => {
+    const toggleSettings = computed(() => {
       switch (props.currentSize) {
         case 'isSmall':
-          return 'angle-double-right';
+          return {
+            icon: 'angle-double-right',
+            text: 'CLICK TO EXPAND',
+          };
           break;
         case 'isLarge':
-          return 'angle-double-left';
+          return {
+            icon: 'angle-double-left',
+            text: 'CLICK TO COLLAPSE',
+          };
           break;
       }
     });
 
     return {
-      toggleWords,
+      toggleSettings,
       loadingTask,
       numPages,
     };
@@ -79,16 +86,21 @@ export default {
   z-index: 2;
 }
 .toggle-size {
-  color: #fafafa;
   padding: 6px 8px 6px 8px;
-  font-weight: bold;
-  font-size: 16px;
   position: sticky;
   top: 0;
+  background-color: rgba(149, 51, 50, 0.4);
+  z-index: 2;
 }
 .toggle-size svg {
   transition: all 0.25s ease-in-out;
   color: #fafafa;
+}
+.toggle-size-text {
+  text-align: center;
+  color: #fafafa;
+  font-size: 13px;
+  padding: 0px 8px 6px 8px;
 }
 .right {
   position: relative;
