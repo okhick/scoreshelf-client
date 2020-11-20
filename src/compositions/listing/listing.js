@@ -40,7 +40,7 @@ export default function useListing(listingId) {
 
   async function getPreviewBuffer() {
     const previewRes = await SCORESHELF.value.get('/getAssetBin', {
-      params: { scoreshelf_id: '5fad977542a88501a2cccef0' },
+      params: { scoreshelf_id: ListingState.listingData.attributes.publicData.preview.asset_id },
       responseType: 'arraybuffer', //defining the response type is EXTREMELY important here
     });
     const previewBuffer = new Uint8Array(previewRes.data);

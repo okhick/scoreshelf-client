@@ -31,15 +31,17 @@ export default {
     currentSize: String,
   },
   setup(props) {
-    const { getPreviewBuffer, previewBuffer } = useListing();
+    const { getPreviewBuffer, previewBuffer, listingData } = useListing();
     const loadingTask = ref();
     const numPages = ref();
 
     onMounted(async () => {
-      await getPreviewBuffer();
-      loadingTask.value = pdf.createLoadingTask(previewBuffer.value);
-      const loadPdf = await loadingTask.value.promise;
-      numPages.value = loadPdf.numPages;
+      if (listingData.value.attributes.publicData?.preview?.asset_id) {
+        await getPreviewBuffer();
+        loadingTask.value = pdf.createLoadingTask(previewBuffer.value);
+        const loadPdf = await loadingTask.value.promise;
+        numPages.value = loadPdf.numPages;
+      }
     });
 
     const toggleWords = computed(() => {
