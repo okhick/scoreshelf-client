@@ -136,6 +136,7 @@ export default {
   display: grid;
   grid-template-rows: [burger] 1fr [logo] 2fr [bottom] 1fr;
   justify-items: center;
+  z-index: 1;
 }
 /* the logo */
 .sidenav p {

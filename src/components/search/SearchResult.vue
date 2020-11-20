@@ -180,12 +180,12 @@ export default {
   color: $off-white;
   background-color: $maroon;
   border-radius: 4px 4px 21px 21px;
-  transition: all 0.25s ease-in-out;
   height: 260px;
   top: -80px;
   position: relative;
   display: grid;
   grid-template-rows: [hidden-data] auto [gap] 1fr [main-data] auto;
+  transition: all 0.25s ease-in-out;
 }
 
 /* the top hidden stuff */
