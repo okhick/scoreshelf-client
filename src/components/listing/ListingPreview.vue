@@ -1,15 +1,28 @@
 <template>
   <div class="preview-wrapper" @click="$emit('toggle-preview-size')">
     <span class="toggle-size">
+      <progress
+        class="progress"
+        v-show="loadAmount !== 100"
+        :value="loadAmount ? loadAmount : 0"
+        max="100"
+      ></progress>
       <font-awesome-icon
+        v-show="loadAmount === 100"
         :icon="toggleSettings.icon"
         :class="{ right: currentSize === 'isSmall', left: currentSize === 'isLarge' }"
         size="lg"
       />
     </span>
     <p class="toggle-size-text">{{ toggleSettings.text }}</p>
-    <div class="progress-dope progress">TEST</div>
-    <pdf v-for="i in numPages" :key="i" :src="loadingTask" :page="i" class="pdf-page" />
+    <pdf
+      v-for="i in numPages"
+      :key="i"
+      :src="loadingTask"
+      :page="i"
+      class="pdf-page"
+      @page-loaded="pageLoaded = $event"
+    />
   </div>
 </template>
 
@@ -35,6 +48,7 @@ export default {
     const { getPreviewBuffer, previewBuffer, listingData } = useListing();
     const loadingTask = ref();
     const numPages = ref();
+    const pageLoaded = ref();
     const progress = ref();
 
     onMounted(async () => {
@@ -63,16 +77,20 @@ export default {
       }
     });
 
+    const loadAmount = computed(() => Math.floor((pageLoaded.value / numPages.value) * 100));
+
     return {
       toggleSettings,
       loadingTask,
       numPages,
+      pageLoaded,
+      loadAmount,
     };
   },
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .preview-wrapper {
   background-color: #953332;
   width: 90%;
@@ -114,7 +132,9 @@ export default {
 .pdf-page {
   padding: 0 10% 5% 10%;
 }
-.toggle-size .progress {
-  height: 10px !important;
+
+.preview-wrapper .progress {
+  flex-shrink: 0;
+  border-bottom-color: #fafafa;
 }
 </style>
