@@ -7,11 +7,13 @@
         <button class="delete" @click="cancelModal" aria-label="close"></button>
       </header>
 
-      <PublishForm
+      <!-- Doing this on v-if stops things from trying to load before the data exists -->
+      <publish-form
+        v-if="publishModalOpen"
         v-bind:isNewPiece="isNewPiece"
         v-bind:pieceStatus="pieceStatus"
         ref="form"
-      ></PublishForm>
+      />
 
       <footer class="modal-card-foot">
         <div class="level">
@@ -68,9 +70,7 @@
               Re-publish
             </button>
 
-            <button class="button level-item" @click="cancelModal">
-              Cancel
-            </button>
+            <button class="button level-item" @click="cancelModal">Cancel</button>
           </div>
           <!-- End class level-left -->
 
@@ -87,7 +87,7 @@
 
 <script>
 import Vue from 'vue';
-import PublishForm from './forms/PublishForm.vue';
+import PublishForm from './PublishForm.vue';
 
 import { ref, watch } from '@vue/composition-api';
 
@@ -125,7 +125,7 @@ export default {
     const isNewPiece = ref(true);
     const pieceStatus = ref(null);
 
-    watch(dashboardState.publishModalEditData, async newData => {
+    watch(dashboardState.publishModalEditData, async (newData) => {
       // if newData.attributes is falsy, we're publishing from a blank
       if (newData != null && newData?.attributes) {
         isNewPiece.value = false;
