@@ -43,11 +43,12 @@ export default {
     SearchResult,
   },
   setup(_, context) {
-    const { searchIsLoading, searchListingData, searchResultsMeta } = searchStore.useState([
-      'searchIsLoading',
-      'searchListingData',
-      'searchResultsMeta',
-    ]);
+    const {
+      searchIsLoading,
+      searchListingData,
+      searchResultsMeta,
+      resetSearchStore,
+    } = searchStore.useState(['searchIsLoading', 'searchListingData', 'searchResultsMeta']);
 
     const { executeSearch, searchInput } = useSearch(context);
 

@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <Sidenav />
+    <sidenav-bar />
     <div class="main" :class="{ shiftMain: isOpen }">
-      <SearchBar />
+      <search-bar />
       <router-view />
     </div>
   </div>
@@ -10,7 +10,7 @@
 
 <script>
 // import Navbar from "@/components/Navbar.vue";
-import Sidenav from '@/components/sidenav/Sidenav.vue';
+import SidenavBar from '@/components/sidenav/SidenavBar.vue';
 import SearchBar from '@/components/search/SearchBar.vue';
 
 import { onMounted } from '@vue/composition-api';
@@ -21,7 +21,7 @@ const SidenavStore = createNamespacedHelpers('sidenav'); // specific module name
 
 export default {
   components: {
-    Sidenav,
+    SidenavBar,
     SearchBar,
   },
 

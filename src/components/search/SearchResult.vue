@@ -7,14 +7,16 @@
       @mouseleave="peekThumbnail"
     >
       <div class="secondary-info hidden-info">
-        <p>42:00</p>
-        <p>Commissioned by some Utah Ensemble</p>
+        <p>{{ listing.attributes.publicData.duration }}</p>
+        <p>{{ listing.attributes.publicData.commission }}</p>
       </div>
       <div class="info-spacer"></div>
-      <div class="info">
-        <div class="human secondary-info">{{ listing.attributes.publicData.composer }} (1990)</div>
+      <div class="info" @click="goToListing">
+        <div class="human secondary-info">{{ listing.attributes.publicData.composer }}</div>
         <div class="result-titles">
-          <div class="result-title">{{ listing.attributes.title }}</div>
+          <div class="result-title">
+            {{ listing.attributes.title }} <span class="result-year">{{ showYear }}</span>
+          </div>
           <div class="result-subtitle">
             {{ listing.attributes.publicData.subtitle }}
           </div>
@@ -45,11 +47,15 @@ import debounce from 'lodash.debounce';
 
 export default {
   props: { listing: Object },
-  setup({ listing }) {
+  setup({ listing }, context) {
     const showEnsembleOrInstrumentation = computed(() => {
       return listing.attributes.publicData.ensemble
         ? listing.attributes.publicData.ensemble
         : listing.attributes.publicData.instrumentation;
+    });
+
+    const showYear = computed(() => {
+      return listing.attributes.publicData.year ? `(${listing.attributes.publicData.year})` : '';
     });
 
     // ========== Get thumbnail link ==========
@@ -122,8 +128,12 @@ export default {
       moreInfo.value = true;
       transformThumbnailAction.value = 'hide';
     }
-    function test() {
-      console.log('ERHERERE');
+
+    function goToListing() {
+      context.root.$router.push({
+        name: 'Listing',
+        params: { id: encodeURIComponent(listing.id.uuid) },
+      });
     }
 
     return {
@@ -137,9 +147,11 @@ export default {
       pathToThumbnail,
       // ---- Methods ----
       showThumbnail,
+      showYear,
       peekThumbnail,
       hideThumbnail,
       calculateTransfrorm,
+      goToListing,
     };
   },
 };
@@ -168,12 +180,12 @@ export default {
   color: $off-white;
   background-color: $maroon;
   border-radius: 4px 4px 21px 21px;
-  transition: all 0.25s ease-in-out;
   height: 260px;
   top: -80px;
   position: relative;
   display: grid;
   grid-template-rows: [hidden-data] auto [gap] 1fr [main-data] auto;
+  transition: all 0.25s ease-in-out;
 }
 
 /* the top hidden stuff */
@@ -221,6 +233,9 @@ export default {
 .result-subtitle {
   padding-top: 4px;
   font-weight: 500;
+}
+.result-year {
+  font-weight: 300;
 }
 .ensemble {
   grid-row: ensemble;

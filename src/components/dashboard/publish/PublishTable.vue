@@ -2,9 +2,7 @@
   <div>
     <div class="level">
       <!-- <h2 class="subtitle is-3 level-left">Published Music</h2> -->
-      <button class="button level-right" @click="createNewDraft">
-        Create new draft
-      </button>
+      <button class="button level-right" @click="createNewDraft">Create new draft</button>
     </div>
     <table class="table is-fullwidth is-hoverable">
       <thead>
@@ -105,7 +103,7 @@ export default {
       await getPublishedMusic();
     });
 
-    watch(DashboardState.publishModalOpen, async newModalState => {
+    watch(DashboardState.publishModalOpen, async (newModalState) => {
       if (newModalState == false) {
         await getPublishedMusic();
         reloadTable.value += 1;
@@ -125,7 +123,7 @@ export default {
         );
 
         // store the files
-        hydratedFileListRes.data.forEach(file => {
+        hydratedFileListRes.data.forEach((file) => {
           file.isStored = true;
           useFileStateManagement.addFileToFileList(file);
         });
@@ -158,7 +156,7 @@ export default {
 
     function formatsAvailable(piece) {
       if (piece.attributes.publicData.formats) {
-        const formatsAvailable = piece.attributes.publicData.formats.map(format => format.format);
+        const formatsAvailable = piece.attributes.publicData.formats.map((format) => format.format);
         return formatsAvailable.join(', ');
       }
       return '';
