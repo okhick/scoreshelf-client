@@ -8,6 +8,7 @@
       />
     </span>
     <p class="toggle-size-text">{{ toggleSettings.text }}</p>
+    <div class="progress-dope progress">TEST</div>
     <pdf v-for="i in numPages" :key="i" :src="loadingTask" :page="i" class="pdf-page" />
   </div>
 </template>
@@ -96,12 +97,6 @@ export default {
   transition: all 0.25s ease-in-out;
   color: #fafafa;
 }
-.toggle-size-text {
-  text-align: center;
-  color: #fafafa;
-  font-size: 13px;
-  padding: 0px 8px 6px 8px;
-}
 .right {
   position: relative;
   left: 94%;
@@ -110,7 +105,16 @@ export default {
   position: relative;
   left: 0;
 }
+.toggle-size-text {
+  text-align: center;
+  color: #fafafa;
+  font-size: 13px;
+  padding: 0px 8px 6px 8px;
+}
 .pdf-page {
   padding: 0 10% 5% 10%;
+}
+.toggle-size .progress {
+  height: 10px !important;
 }
 </style>
