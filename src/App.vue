@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <sidenav-bar />
+    <search-bar />
     <div class="main" :class="{ shiftMain: isOpen }">
-      <search-bar />
       <router-view />
     </div>
   </div>

@@ -29,8 +29,20 @@
     </div>
 
     <div class="right-side">
-      <span class="menu-container" @click="toggleSidenav">
-        <font-awesome-icon icon="bars" size="2x" class="burger" :class="{ rotateBurger: isOpen }" />
+      <span class="menu-container">
+        <font-awesome-icon
+          icon="bars"
+          size="2x"
+          @click="toggleSidenav"
+          class="burger"
+          :class="{ rotateBurger: isOpen }"
+        />
+        <font-awesome-icon
+          icon="search"
+          size="2x"
+          :class="['search', { 'hide-search': !searchbarIsShowing }]"
+          @click="toggleSearchbarIsShowing"
+        />
       </span>
       <p class="logo">SCORESHELF</p>
     </div>
@@ -45,9 +57,9 @@ import vClickOutside from 'v-click-outside';
 Vue.use(vClickOutside);
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-library.add(faBars);
+library.add(faBars, faSearch);
 
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
 import { onMounted } from '@vue/composition-api';
@@ -55,6 +67,7 @@ import { onMounted } from '@vue/composition-api';
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 const SharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
 const SidenavStore = createNamespacedHelpers('sidenav');
+const SearchStore = createNamespacedHelpers('search');
 
 export default {
   components: {
@@ -72,6 +85,8 @@ export default {
 
     const { SHARETRIBE, isLoggedIn } = SharetribeStore.useState(['SHARETRIBE', 'isLoggedIn']);
     const { updateIsLoggedIn } = SharetribeStore.useMutations(['updateIsLoggedIn']);
+    const { searchbarIsShowing } = SearchStore.useState(['searchbarIsShowing']);
+    const { toggleSearchbarIsShowing } = SearchStore.useMutations(['toggleSearchbarIsShowing']);
 
     onMounted(async () => {
       await useSharetribeSdk();
@@ -96,10 +111,12 @@ export default {
       // ---- Data ----
       isOpen,
       isLoggedIn,
+      searchbarIsShowing,
       // ---- Methods ----
       logout,
       clickOut,
       toggleSidenav,
+      toggleSearchbarIsShowing,
     };
   },
 };
@@ -149,18 +166,35 @@ export default {
   align-self: center;
   color: $black;
 }
+
+.menu-container {
+  display: flex;
+  flex-flow: column;
+  transform: scale(0.8);
+  align-items: center;
+}
+
+// the search
+.search {
+  color: $black;
+  margin-top: 12px;
+  cursor: pointer;
+  transition: transform 0.25s ease-in-out;
+}
+.hide-search {
+  transform: rotate(90deg);
+}
+
 /* the hamburger */
 .burger {
   grid-row: burger;
   color: $black;
   align-self: start;
   transition: transform 0.25s ease-in-out;
-  margin-top: 12px;
-}
-.burger:hover {
   cursor: pointer;
 }
+
 .rotateBurger {
-  transform: rotateZ(90deg);
+  transform: rotate(90deg);
 }
 </style>

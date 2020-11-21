@@ -5,6 +5,7 @@
       :class="{ 'hide-info': hideInfo, 'more-info': moreInfo }"
       @mouseover="hideThumbnail"
       @mouseleave="peekThumbnail"
+      @click="goToListing"
     >
       <div class="secondary-info hidden-info">
         <p>{{ listing.attributes.publicData.duration }}</p>
@@ -34,6 +35,7 @@
         @mouseover="showThumbnail"
         @mouseleave="peekThumbnail"
         @load="calculateTransfrorm"
+        @click="goToListing"
       />
     </div>
   </div>
@@ -186,6 +188,7 @@ export default {
   display: grid;
   grid-template-rows: [hidden-data] auto [gap] 1fr [main-data] auto;
   transition: all 0.25s ease-in-out;
+  cursor: pointer;
 }
 
 /* the top hidden stuff */
@@ -255,5 +258,6 @@ export default {
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
   transition: all 0.25s ease-in-out;
   transform-origin: center top;
+  cursor: pointer;
 }
 </style>
