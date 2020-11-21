@@ -37,7 +37,12 @@
           class="burger"
           :class="{ rotateBurger: isOpen }"
         />
-        <font-awesome-icon icon="search" size="2x" class="search" />
+        <font-awesome-icon
+          icon="search"
+          size="2x"
+          :class="['search', { 'hide-search': !searchbarIsShowing }]"
+          @click="toggleSearchbarIsShowing"
+        />
       </span>
       <p class="logo">SCORESHELF</p>
     </div>
@@ -62,6 +67,7 @@ import { onMounted } from '@vue/composition-api';
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 const SharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
 const SidenavStore = createNamespacedHelpers('sidenav');
+const SearchStore = createNamespacedHelpers('search');
 
 export default {
   components: {
@@ -79,6 +85,8 @@ export default {
 
     const { SHARETRIBE, isLoggedIn } = SharetribeStore.useState(['SHARETRIBE', 'isLoggedIn']);
     const { updateIsLoggedIn } = SharetribeStore.useMutations(['updateIsLoggedIn']);
+    const { searchbarIsShowing } = SearchStore.useState(['searchbarIsShowing']);
+    const { toggleSearchbarIsShowing } = SearchStore.useMutations(['toggleSearchbarIsShowing']);
 
     onMounted(async () => {
       await useSharetribeSdk();
@@ -103,10 +111,12 @@ export default {
       // ---- Data ----
       isOpen,
       isLoggedIn,
+      searchbarIsShowing,
       // ---- Methods ----
       logout,
       clickOut,
       toggleSidenav,
+      toggleSearchbarIsShowing,
     };
   },
 };
@@ -163,10 +173,16 @@ export default {
   transform: scale(0.8);
   align-items: center;
 }
+
+// the search
 .search {
   color: $black;
   margin-top: 12px;
   cursor: pointer;
+  transition: transform 0.25s ease-in-out;
+}
+.hide-search {
+  transform: rotate(90deg);
 }
 
 /* the hamburger */
@@ -175,11 +191,10 @@ export default {
   color: $black;
   align-self: start;
   transition: transform 0.25s ease-in-out;
-}
-.burger:hover {
   cursor: pointer;
 }
+
 .rotateBurger {
-  transform: rotateZ(90deg);
+  transform: rotate(90deg);
 }
 </style>
