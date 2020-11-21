@@ -54,5 +54,6 @@ export default {
 .selected {
   border: 2px solid #953332;
   background-color: rgba(149, 51, 50, 0.1);
+  box-shadow: 0px 0px 17px 0px rgba(0, 0, 0, 0.17);
 }
 </style>
