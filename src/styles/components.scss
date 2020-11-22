@@ -1,3 +1,4 @@
+// ========== Text styles ==========
 h1,
 h2,
 h3,
@@ -5,10 +6,31 @@ h4 {
   font-family: 'Lora';
 }
 
+$link: $maroon;
+$link-hover: $maroon;
+a:hover {
+  text-decoration: underline;
+}
+
+// ========== Button styles ==========
 .button {
   color: $off-white;
+  font-weight: 600;
 }
 .button:hover {
   color: $off-white;
   // background-color: $tan;
 }
+
+// ========== Progress bar ==========
+$progress-value-background-color: $tan;
+$progress-border-radius: 4px;
+
+// ========== Form inputs ==========
+$label-color: $black;
+$label-weight: 400;
+// ---- Input bar ----
+$input-border-color: $black-transp;
+$input-focus-border-color: $black;
+$input-hover-border-color: none;
+$input-focus-box-shadow-color: none;

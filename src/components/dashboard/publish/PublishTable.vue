@@ -189,7 +189,7 @@ export default {
   padding-right: 6px;
 }
 .tag.is-redorange {
-  background-color: $redOrange;
+  background-color: $maroon;
 }
 .hover-pointer:hover {
   cursor: pointer;

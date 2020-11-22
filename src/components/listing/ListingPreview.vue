@@ -130,8 +130,9 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/index';
+
 .preview-wrapper {
-  background-color: #953332;
+  background-color: $maroon;
   width: 90%;
   margin-left: 14px;
   overflow-y: scroll;
@@ -151,12 +152,12 @@ export default {
   padding: 6px 8px 6px 8px;
   position: sticky;
   top: 0;
-  background-color: rgba(149, 51, 50, 0.4);
+  background-color: $maroon-transp-dark;
   z-index: 2;
   display: flex;
 }
 .toggle-size svg {
-  color: #fafafa;
+  color: $off-white;
 }
 .right {
   justify-content: right;
@@ -166,7 +167,7 @@ export default {
 }
 .toggle-size-text {
   text-align: center;
-  color: #fafafa;
+  color: $off-white;
   font-size: 13px;
   padding: 0px 8px 6px 8px;
 }

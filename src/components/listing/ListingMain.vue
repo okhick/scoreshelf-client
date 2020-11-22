@@ -67,7 +67,9 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '@/styles/index.scss';
+
 .publication {
   display: flex;
   flex-direction: column;
@@ -83,6 +85,7 @@ h2.title.is-2.title {
 }
 
 h3.subtitle {
+  color: $black;
   font-size: 36px;
   margin: 0;
 }
@@ -101,8 +104,8 @@ h4.title.is-4.composer {
 .add-to-cart {
   height: 38px;
   width: 166px;
-  background-color: #953332;
-  color: #fafafa;
+  background-color: $maroon;
+  color: $off-white;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -114,7 +117,7 @@ h4.title.is-4.composer {
 
 .info-table {
   margin: 27px 0 27px 0;
-  color: #282828;
+  color: $black;
   font-size: 16px;
 }
 
@@ -128,7 +131,7 @@ h4.title.is-4.composer {
 }
 
 .program-notes {
-  color: #282828;
+  color: $black;
 }
 .program-notes h5 {
   font-size: 20px;

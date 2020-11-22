@@ -59,7 +59,7 @@ export default {
 }
 
 .searchbar-wrapper {
-  background-color: rgba(223, 216, 196, 0.3);
+  background-color: $tan-transp;
   height: 70px;
   display: flex;
   justify-content: center;
@@ -79,20 +79,20 @@ export default {
 }
 .searchbox input {
   box-shadow: 0px 0px 17px rgba(0, 0, 0, 0.25);
-  border: 1.5px solid #953332;
+  border: 1.5px solid $maroon;
 }
 .searchbox input:hover,
 .searchbox input:focus {
-  border: 2px solid #953332;
+  border: 2px solid $maroon;
 }
 .search-spacer {
   min-width: 5%;
 }
 .button.is-info {
   box-shadow: 0px 0px 17px rgba(0, 0, 0, 0.25);
-  background-color: #953332;
+  background-color: $maroon;
 }
 .button.is-info:hover {
-  background-color: #953332;
+  background-color: $maroon;
 }
 </style>
