@@ -13,14 +13,19 @@ a:hover {
 }
 
 // ========== Button styles ==========
-.button {
-  color: $off-white;
-  font-weight: 600;
-}
+// .button {
+//   color: $off-white;
+//   background-color: $black;
+//   font-weight: 600;
+// }
 .button:hover {
-  color: $off-white;
-  // background-color: $tan;
+  // color: $off-white;
+  background-color: $black-transp;
 }
+$button-color: $off-white;
+$button-hover-color: $off-white;
+$button-background-color: $black;
+$button-text-hover-background-color: $maroon;
 
 // ========== Progress bar ==========
 $progress-value-background-color: $tan;
@@ -34,3 +39,10 @@ $input-border-color: $black-transp;
 $input-focus-border-color: $black;
 $input-hover-border-color: none;
 $input-focus-box-shadow-color: none;
+
+// ========== Table ==========
+$table-color: $black;
+$table-background-color: $off-white;
+$table-cell-heading-color: $black;
+$border: $tan-transp;
+$table-row-hover-background-color: $tan;

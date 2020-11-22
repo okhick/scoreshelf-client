@@ -5,21 +5,22 @@
       <button class="button level-right" @click="createNewDraft">Create new draft</button>
     </div>
     <table class="table is-fullwidth is-hoverable">
-      <thead>
-        <tr>
-          <th>TITLE</th>
-          <th><!-- Status column --></th>
-          <th>FORMATS</th>
-          <th>ENSEMBLE</th>
-          <th>DATE PUBLISHED</th>
-          <th>
-            <!-- Edit column -->
-          </th>
-        </tr>
-      </thead>
+      <tr>
+        <th>TITLE</th>
+        <th><!-- Status column --></th>
+        <th>FORMATS</th>
+        <th>ENSEMBLE</th>
+        <th>DATE PUBLISHED</th>
+      </tr>
+
       <!-- if there is music to be published -->
       <tbody v-if="hasPublishedMusic" :key="reloadTable">
-        <tr v-for="piece in publishedMusic" :key="piece.id.uuid">
+        <tr
+          v-for="piece in publishedMusic"
+          :key="piece.id.uuid"
+          class="hover-pointer"
+          @click="openEditModal(piece)"
+        >
           <td>{{ piece.attributes.title }}</td>
           <td>
             <div class="field is-grouped">
@@ -47,9 +48,6 @@
           <td>
             {{ piece.attributes.createdAt | moment('MMMM Do YYYY, h:mm a') }}
           </td>
-          <td class="hover-pointer">
-            <font-awesome-icon icon="edit" class="action-buttons" @click="openEditModal(piece)" />
-          </td>
         </tr>
       </tbody>
     </table>
@@ -71,14 +69,14 @@ const SharetribeStore = createNamespacedHelpers('sharetribe');
 import Vue from 'vue';
 Vue.use(require('vue-moment'));
 
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-library.add(faEdit, faTrashAlt);
+// import { library } from '@fortawesome/fontawesome-svg-core';
+// import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+// library.add(faEdit, faTrashAlt);
 
 export default {
   components: {
-    FontAwesomeIcon,
+    // FontAwesomeIcon,
   },
   setup() {
     // |---------- Init Composables ----------|
