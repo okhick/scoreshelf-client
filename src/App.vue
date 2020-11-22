@@ -1,8 +1,16 @@
 <template>
   <div id="app">
     <sidenav-bar />
-    <search-bar />
-    <div class="main" :class="{ shiftMain: isOpen }">
+    <search-bar :class="{ 'menu-shift': menuIsShowing }" />
+    <div
+      :class="[
+        'main',
+        {
+          'menu-shift': menuIsShowing,
+          'search-bar-shift': !searchbarIsShowing,
+        },
+      ]"
+    >
       <router-view />
     </div>
   </div>
@@ -18,6 +26,7 @@ import useSharetribe from '@/compositions/sharetribe/sharetribe';
 
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 const SidenavStore = createNamespacedHelpers('sidenav'); // specific module name
+const searchStore = createNamespacedHelpers('search'); // specific module name
 
 export default {
   components: {
@@ -28,10 +37,12 @@ export default {
   setup() {
     const { useSharetribeSdk } = useSharetribe();
     const { isOpen } = SidenavStore.useState(['isOpen']);
+    const { searchbarIsShowing } = searchStore.useState(['searchbarIsShowing']);
+    console.log(searchbarIsShowing);
 
     onMounted(async () => await useSharetribeSdk());
 
-    return { isOpen };
+    return { menuIsShowing: isOpen, searchbarIsShowing: searchbarIsShowing };
   },
 };
 </script>
@@ -54,8 +65,14 @@ body {
     transition: transform 0.25s ease-in-out;
     margin-left: 60px;
   }
-  .shiftMain {
-    transform: translate3d(180px, 0, 0);
+  .menu-shift {
+    transform: translateX(180px);
+  }
+  .search-bar-shift {
+    transform: translateY(-75px);
+  }
+  .menu-shift.search-bar-shift {
+    transform: translate(180px, -75px);
   }
 }
 </style>
