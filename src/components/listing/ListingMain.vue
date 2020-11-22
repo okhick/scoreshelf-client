@@ -44,7 +44,7 @@
 
 <script>
 import useListing from '@/compositions/listing/listing.js';
-import { watch, ref } from '@vue/composition-api';
+import { watch, ref, computed } from '@vue/composition-api';
 
 import ListingFormats from '@/components/listing/ListingFormats.vue';
 
@@ -53,7 +53,7 @@ export default {
     ListingFormats,
   },
   setup() {
-    const { listingData, selectedFormat } = useListing();
+    const { listingData, selectedFormat, scrollPos } = useListing();
 
     function addToCart() {
       console.log(selectedFormat.value, 'has been selected for cart');
@@ -71,9 +71,10 @@ export default {
 .publication {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
   /* screen height - search bar height - bulma padding on columns */
-  min-height: calc(100vh - 64px - 12px);
+  /* min-height: calc(100vh - 64px - 12px); */
+  margin-top: 32px;
 }
 h2.title.is-2.title {
   margin-bottom: 12px;

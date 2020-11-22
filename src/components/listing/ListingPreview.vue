@@ -1,5 +1,5 @@
 <template>
-  <div class="preview-wrapper" @click="$emit('toggle-preview-size')">
+  <div class="preview-wrapper" :style="previewHeight" @click="$emit('toggle-preview-size')">
     <span :class="['toggle-size', toggleSettings.iconJustify]">
       <progress
         class="progress"
@@ -40,7 +40,7 @@ export default {
     currentSize: String,
   },
   setup(props) {
-    const { getPreviewBuffer, previewBuffer, listingData } = useListing();
+    const { getPreviewBuffer, previewBuffer, listingData, scrollPos } = useListing();
 
     // ========== Data for PDF renderer ==========
     const loadingTask = ref();
@@ -92,9 +92,31 @@ export default {
       numPages.value = loadPdf.numPages;
     }
 
+    // ======== Resize preview on vertical scroll ==========
+    const previewHeight = ref('');
+
+    watch(scrollPos, (newPos) => {
+      previewHeight.value = stretchyPreview(newPos);
+    });
+    function stretchyPreview(newPos) {
+      const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+
+      /* screen height - search bar height - bulma padding on columns */
+      const startingHeight = vh - 108 - 12;
+      const height = startingHeight + newPos;
+      const heightStr = height < vh - 24 ? `height: ${height}px` : `height: ${vh - 24}px`;
+
+      // searchbar height - needed 'padding' on top
+      const topStop = 108 - 8 - newPos;
+      const topStopStr = topStop < 12 ? 'top: 12px' : `top: ${topStop}px;`;
+
+      return `${heightStr}; ${topStopStr};`;
+    }
+
     return {
       // ---- data ----
       toggleSettings,
+      previewHeight,
       // ---- for pdf render ----
       loadingTask,
       numPages,
@@ -115,13 +137,15 @@ export default {
   overflow-y: scroll;
   display: flex;
   flex-flow: column;
-  /* screen height - search bar height - bulma padding on columns */
-  height: calc(100vh - 64px - 12px);
   cursor: pointer;
   position: relative;
   z-index: 2;
   box-shadow: 0px 0px 17px 0px rgba(0, 0, 0, 0.4);
   border-radius: 4px;
+  /* screen height - search bar height - bulma padding on columns */
+  height: calc(100vh - 108px - 12px);
+  position: sticky;
+  top: calc(108px - 8px);
 }
 .toggle-size {
   padding: 6px 8px 6px 8px;
