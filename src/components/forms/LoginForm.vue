@@ -35,14 +35,14 @@
         type="submit"
         @click="loginAttempt"
       >
-        <strong> Login </strong>
+        Login
       </button>
 
       <div class="level-right is-block has-text-right">
         <div @click="signupActually">
           <a>Actually, I need to sign up.</a>
         </div>
-        <div>I forgot my password.</div>
+        <div><a>I forgot my password.</a></div>
       </div>
     </div>
   </div>
