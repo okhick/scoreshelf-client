@@ -15,6 +15,7 @@ const PublishFormState = reactive({
     year: '',
     duration: '',
     commission: '',
+    programNotes: '',
     ensemble: '',
     instrumentation: '',
   },
@@ -40,7 +41,7 @@ export default function useSharetribePublisher() {
 // ============================================================================
 
 function SharetribePublisherForm() {
-  const { fileList, formats, thumbnailSettings } = useScoreshelfPublisher();
+  const { fileList, formats, thumbnailSettings, previewSettings } = useScoreshelfPublisher();
 
   function clearFormData() {
     for (const field in PublishFormState.formData) {
@@ -74,13 +75,14 @@ function SharetribePublisherForm() {
 
     cleanFormData.publicData.formats = formatFormatData();
     cleanFormData.publicData.thumbnail = formatThumbnailData();
+    cleanFormData.publicData.preview = formatPreviewData();
     return cleanFormData;
   }
 
   function formatAssetData() {
     const assetData = [];
 
-    fileList.value.forEach(file => {
+    fileList.value.forEach((file) => {
       const thumbnail_id = thumbnailSettings.value[file.asset_name].isThumbnail
         ? file.thumbnail_settings._id
         : null;
@@ -95,13 +97,11 @@ function SharetribePublisherForm() {
 
   function formatThumbnailData() {
     if (thumbnailSettings.value == null) {
-      // return null;
-      // null doesn't affect the string field on sharetribe
       return {};
     } else {
       for (const asset in thumbnailSettings.value) {
         if (thumbnailSettings.value[asset].isThumbnail) {
-          const file = fileList.value.find(file => file.asset_name === asset);
+          const file = fileList.value.find((file) => file.asset_name === asset);
           return {
             thumbnail_id: file.thumbnail_settings._id,
           };
@@ -111,10 +111,26 @@ function SharetribePublisherForm() {
     }
   }
 
+  function formatPreviewData() {
+    if (previewSettings.value == null) {
+      return {};
+    } else {
+      for (const asset in previewSettings.value) {
+        if (previewSettings.value[asset].isPreview) {
+          const file = fileList.value.find((file) => file.asset_name === asset);
+          return {
+            asset_id: file._id,
+          };
+        }
+      }
+    }
+    return '';
+  }
+
   function formatFormatData() {
-    formats.value.forEach(format => {
-      format.assets = format.assets.map(asset => {
-        const thisFile = fileList.value.find(file => file.asset_name == asset);
+    formats.value.forEach((format) => {
+      format.assets = format.assets.map((asset) => {
+        const thisFile = fileList.value.find((file) => file.asset_name == asset);
         return thisFile._id;
       });
     });

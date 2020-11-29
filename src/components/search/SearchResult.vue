@@ -5,13 +5,14 @@
       :class="{ 'hide-info': hideInfo, 'more-info': moreInfo }"
       @mouseover="hideThumbnail"
       @mouseleave="peekThumbnail"
+      @click="goToListing"
     >
       <div class="secondary-info hidden-info">
         <p>{{ listing.attributes.publicData.duration }}</p>
         <p>{{ listing.attributes.publicData.commission }}</p>
       </div>
       <div class="info-spacer"></div>
-      <div class="info">
+      <div class="info" @click="goToListing">
         <div class="human secondary-info">{{ listing.attributes.publicData.composer }}</div>
         <div class="result-titles">
           <div class="result-title">
@@ -34,6 +35,7 @@
         @mouseover="showThumbnail"
         @mouseleave="peekThumbnail"
         @load="calculateTransfrorm"
+        @click="goToListing"
       />
     </div>
   </div>
@@ -47,7 +49,7 @@ import debounce from 'lodash.debounce';
 
 export default {
   props: { listing: Object },
-  setup({ listing }) {
+  setup({ listing }, context) {
     const showEnsembleOrInstrumentation = computed(() => {
       return listing.attributes.publicData.ensemble
         ? listing.attributes.publicData.ensemble
@@ -128,8 +130,12 @@ export default {
       moreInfo.value = true;
       transformThumbnailAction.value = 'hide';
     }
-    function test() {
-      console.log('ERHERERE');
+
+    function goToListing() {
+      context.root.$router.push({
+        name: 'Listing',
+        params: { id: encodeURIComponent(listing.id.uuid) },
+      });
     }
 
     return {
@@ -147,6 +153,7 @@ export default {
       peekThumbnail,
       hideThumbnail,
       calculateTransfrorm,
+      goToListing,
     };
   },
 };
@@ -175,12 +182,13 @@ export default {
   color: $off-white;
   background-color: $maroon;
   border-radius: 4px 4px 21px 21px;
-  transition: all 0.25s ease-in-out;
   height: 260px;
   top: -80px;
   position: relative;
   display: grid;
   grid-template-rows: [hidden-data] auto [gap] 1fr [main-data] auto;
+  transition: all 0.25s ease-in-out;
+  cursor: pointer;
 }
 
 /* the top hidden stuff */
@@ -250,5 +258,6 @@ export default {
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
   transition: all 0.25s ease-in-out;
   transform-origin: center top;
+  cursor: pointer;
 }
 </style>

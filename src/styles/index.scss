@@ -1,36 +1,40 @@
-$platinum: #eaeaea;
-$oxford: rgb(0, 9, 35);
-$silver: #7a7978;
-$lime: #ceff1a;
-$violet: #7a28cb;
-$redOrange: #ff521b;
+// ========== Colors ==========
 
-$black: #000000;
-$blue: #413B89;
+$black: #282828;
+$black-transp: rgba(40, 40, 40, 0.4);
+
 $maroon: #953332;
-$tan: #DFD8C4;
+$maroon-transp: rgba(149, 51, 50, 0.1);
+$maroon-transp-dark: rgba(149, 51, 50, 0.4);
+
+$tan: #dfd8c4;
+$tan-transp: rgba(223, 216, 196, 0.3);
+
 $off-white: #fafafa;
 $white: #ffffff;
 
-// $family-primary: 'Fira Sans';
+// ========== Accent colors ==========
+$purple: #85456f;
+$blue: #076678;
+$green: #427b58;
+$orange: #d65d0e;
+
 $family-primary: 'Lato';
-// $family-secondary: 'Ubuntu';
+$text: $black;
 
 $primary: $maroon;
-$secondary: $blue;
-$link: $maroon;
-$info: $blue;
+$secondary: $black;
+
+// $info: $blue;
 // $success: $green;
 // $warning: $yellow;
 // $danger: $red;
 $dark: $black;
 // $text: $grey-dark;
 
-
-
 $background: $off-white;
 
-@import 'bulma/bulma';
-@import './components.scss'
+@import './components.scss';
 
-// https://coolors.co/eaeaea-000923-7a7978-ceff1a-7a28cb-ff521b
+// ========== Load bulma last! ==========
+@import 'bulma/bulma';

@@ -1,12 +1,47 @@
-h1, h2, h3 {
-  font-family: "Lora";
+// ========== Text styles ==========
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'Lora';
 }
 
-.button {
-  color: $off-white;
-  background-color: $blue;
+$link: $maroon;
+$link-hover: $maroon;
+a:hover {
+  text-decoration: underline;
 }
+
+// ========== Button styles ==========
+// .button {
+//   color: $off-white;
+//   background-color: $black;
+//   font-weight: 600;
+// }
 .button:hover {
-  color: $off-white;
-  // background-color: $tan;
+  // color: $off-white;
+  background-color: $black-transp;
 }
+$button-color: $off-white;
+$button-hover-color: $off-white;
+$button-background-color: $black;
+
+// ========== Progress bar ==========
+$progress-value-background-color: $tan;
+$progress-border-radius: 4px;
+
+// ========== Form inputs ==========
+$label-color: $black;
+$label-weight: 400;
+// ---- Input bar ----
+$input-border-color: $black-transp;
+$input-focus-border-color: $black;
+$input-hover-border-color: none;
+$input-focus-box-shadow-color: none;
+
+// ========== Table ==========
+$table-color: $black;
+$table-background-color: $off-white;
+$table-cell-heading-color: $black;
+$border: $tan-transp;
+$table-row-hover-background-color: $tan;

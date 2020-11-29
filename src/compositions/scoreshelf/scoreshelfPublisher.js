@@ -1,14 +1,11 @@
 import { reactive, toRefs } from '@vue/composition-api';
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 
-// import axios from 'axios';
-// const axiosConfig = {
-//   baseURL: 'http://127.0.0.1:3000/',
-//   timeout: 30000,
-// };
-// const SCORESHELF = axios.create(axiosConfig);
+import { stringify } from 'qs';
+
 import useScoreshelf from '@/compositions/scoreshelf/scoreshelf.js';
 
+import Vue from 'vue';
 import store from '@/store';
 
 const sharetribeStore = createNamespacedHelpers(store, 'sharetribe'); // specific module name
@@ -20,6 +17,7 @@ const FileState = reactive({
   fileList: [],
   filesToBeRemoved: [],
   thumbnailSettings: {},
+  previewSettings: {},
   formats: [],
 });
 
@@ -52,10 +50,12 @@ export default function useScoreshelfPublisher() {
 
 function FileStateManagement() {
   function processUpload(newFiles) {
-    newFiles.forEach(file => {
+    newFiles.forEach((file) => {
       file.isStored = false;
       file.asset_name = file.name; // we use asset name everywhere else, start from the beg
       addFileToFileList(file);
+      initThumbnail(file);
+      initPreview(file);
     });
   }
 
@@ -64,12 +64,13 @@ function FileStateManagement() {
   }
 
   function removeFileFromFileList(payload) {
-    FileState.fileList = FileState.fileList.filter(file => file.asset_name !== payload);
+    FileState.fileList = FileState.fileList.filter((file) => file.asset_name !== payload);
     delete FileState.thumbnailSettings[payload];
+    delete FileState.previewSettings[payload];
   }
 
   function setFileToBeRemoved(payload) {
-    FileState.fileList.forEach(file => {
+    FileState.fileList.forEach((file) => {
       if (file.asset_name == payload) {
         FileState.filesToBeRemoved.push(file);
       }
@@ -84,33 +85,62 @@ function FileStateManagement() {
     FileState.fileList = [];
     FileState.filesToBeRemoved = [];
     FileState.thumbnailSettings = {};
+    FileState.previewSettings = {};
     FileState.formats = [];
   }
 
   function replaceFileWithScoreshelfAsset(payload) {
     FileState.fileList.forEach((file, index) => {
-      const asset = payload.find(asset => asset.asset_name === file.asset_name);
+      const asset = payload.find((asset) => asset.asset_name === file.asset_name);
       if (asset) {
         FileState.fileList[index] = asset;
       }
     });
   }
 
-  function updateThumbnailSettings(payload) {
-    if (payload.length === 0) {
-      FileState.thumbnailSettings = null;
-    } else {
-      payload.forEach(asset => {
-        const thumbnail = FileState.thumbnailSettings[asset.asset_name];
-        if (thumbnail.isThumbnail) {
-          thumbnail.thumbnail_id = asset.thumbnail_settings._id;
-        }
-      });
-    }
-  }
-
   function refreshFileListWithUpdatedAssets(payload) {
     FileState.fileList = payload;
+  }
+
+  function initAssetData() {
+    const { publishModalEditData } = dashboardStore.useState(['publishModalEditData']);
+    FileState.fileList.forEach((file) => {
+      // first make reactive refs for everything
+      if (FileState.thumbnailSettings[file.asset_name] === undefined) {
+        initThumbnail(file);
+      }
+      if (FileState.previewSettings[file.asset_name] === undefined) {
+        initPreview(file);
+      }
+
+      // then loadup any settings that may already exist
+      if (file.thumbnail_settings) {
+        FileState.thumbnailSettings[file.asset_name].page = file.thumbnail_settings.page;
+        FileState.thumbnailSettings[file.asset_name].isThumbnail = true;
+      }
+      if (publishModalEditData.value.attributes.publicData?.preview) {
+        const previewAsset = publishModalEditData.value.attributes.publicData.preview.asset_id;
+        if (file._id === previewAsset) {
+          FileState.previewSettings[file.asset_name].isPreview = true;
+        }
+      }
+    });
+  }
+
+  function initThumbnail(file) {
+    Vue.set(FileState.thumbnailSettings, file.asset_name, {
+      ...makeBlankThumbnail(),
+    });
+  }
+
+  function initPreview(file) {
+    Vue.set(FileState.previewSettings, file.asset_name, {
+      isPreview: false,
+    });
+  }
+
+  function makeBlankThumbnail() {
+    return { isThumbnail: false, page: null };
   }
 
   return {
@@ -121,8 +151,8 @@ function FileStateManagement() {
     clearToBeRemoved,
     resetFileState,
     replaceFileWithScoreshelfAsset,
-    updateThumbnailSettings,
     refreshFileListWithUpdatedAssets,
+    initAssetData,
   };
 }
 
@@ -210,10 +240,15 @@ function ScoreshelfAssetManagement() {
   const scoreshelfFileStateManagement = FileStateManagement();
 
   async function hyrdateAssetData(fileList, getLink) {
-    const scoreshelf_ids = fileList.map(file => file.scoreshelf_id);
-    const hydratedAssets = await SCORESHELF.value.post('/getAssetdata', {
-      scoreshelf_ids: scoreshelf_ids,
-      get_link: getLink,
+    const scoreshelf_ids = fileList.map((file) => file.scoreshelf_id);
+    const hydratedAssets = await SCORESHELF.value.get('/getAssetdata', {
+      params: {
+        scoreshelf_ids: scoreshelf_ids,
+        get_link: getLink,
+      },
+      paramsSerializer: (params) => {
+        return stringify(params);
+      },
     });
     return hydratedAssets;
   }
@@ -223,7 +258,6 @@ function ScoreshelfAssetManagement() {
     const assetMetadata = formatUpdatedAssetMetadata(uploadParams);
     // this return every asset
     const res = await SCORESHELF.value.post('/updateAssetMetadata', assetMetadata);
-    // scoreshelfFileStateManagement.updateThumbnailSettings(res.data);
     scoreshelfFileStateManagement.refreshFileListWithUpdatedAssets(res.data);
 
     return res;
@@ -236,8 +270,8 @@ function ScoreshelfAssetManagement() {
     formattedUploadParams.sharetribe_user_id = getCurrentUserId.value;
     formattedUploadParams.metadata = {};
 
-    const newFiles = FileState.fileList.filter(file => !file.isStored);
-    newFiles.forEach(file => {
+    const newFiles = FileState.fileList.filter((file) => !file.isStored);
+    newFiles.forEach((file) => {
       formattedUploadParams.metadata[file.asset_name] = {
         thumbnailSettings: uploadParams.thumbnailSettings[file.asset_name],
         // do more formatting here
@@ -254,7 +288,7 @@ function ScoreshelfAssetManagement() {
     formattedUploadParams.sharetribe_user_id = getCurrentUserId.value;
     formattedUploadParams.metadata = {};
 
-    FileState.fileList.forEach(file => {
+    FileState.fileList.forEach((file) => {
       formattedUploadParams.metadata[file._id] = {
         thumbnailSettings: uploadParams.thumbnailSettings[file.asset_name],
         // do more formatting here

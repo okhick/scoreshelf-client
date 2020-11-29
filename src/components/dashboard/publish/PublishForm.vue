@@ -49,6 +49,13 @@
       </div>
     </div>
 
+    <div class="field">
+      <label class="label">Program Notes</label>
+      <div class="control">
+        <textarea class="textarea" v-model="formData.programNotes" />
+      </div>
+    </div>
+
     <hr />
 
     <div class="field">
@@ -72,11 +79,11 @@
 
     <hr />
 
-    <format ref="formats" />
+    <publish-form-format ref="formats" />
 
     <hr />
 
-    <asset ref="assets" />
+    <publish-form-asset ref="assets" />
   </section>
 </template>
 
@@ -84,38 +91,42 @@
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
 
-import Format from './Format';
-import Asset from './Asset';
+import PublishFormFormat from './PublishFormFormat';
+import PublishFormAsset from './PublishFormAsset';
 
-import { watch } from '@vue/composition-api';
+import { watch, onBeforeMount } from '@vue/composition-api';
 
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 
 export default {
   components: {
-    Format,
-    Asset,
+    PublishFormFormat,
+    PublishFormAsset,
   },
   setup() {
     const { formData } = useSharetribePublisher();
-    const dashboardState = dashboardStore.useState(['publishModalEditData']);
+    const { publishModalEditData } = dashboardStore.useState(['publishModalEditData']);
+    initFormData();
 
-    watch(dashboardState.publishModalEditData, newData => {
-      if (newData != null && newData?.attributes) {
-        formData.value.title = newData.attributes.title;
-        formData.value.subtitle = newData.attributes.publicData.subtitle;
-        formData.value.composer = newData.attributes.publicData.composer;
-        formData.value.commission = newData.attributes.publicData.commission;
-        formData.value.duration = newData.attributes.publicData.duration;
-        formData.value.year = newData.attributes.publicData.year;
-        formData.value.ensemble = newData.attributes.publicData.ensemble;
-        formData.value.instrumentation = newData.attributes.publicData.instrumentation;
+    // ========== Methods ==========
+    function initFormData() {
+      if (publishModalEditData.value != null && publishModalEditData.value?.attributes) {
+        formData.value.title = publishModalEditData.value.attributes.title;
+        formData.value.subtitle = publishModalEditData.value.attributes.publicData.subtitle;
+        formData.value.composer = publishModalEditData.value.attributes.publicData.composer;
+        formData.value.commission = publishModalEditData.value.attributes.publicData.commission;
+        formData.value.duration = publishModalEditData.value.attributes.publicData.duration;
+        formData.value.programNotes = publishModalEditData.value.attributes.publicData.programNotes;
+        formData.value.year = publishModalEditData.value.attributes.publicData.year;
+        formData.value.ensemble = publishModalEditData.value.attributes.publicData.ensemble;
+        formData.value.instrumentation =
+          publishModalEditData.value.attributes.publicData.instrumentation;
       } else {
         for (const field in formData.value) {
           formData.value[field] = '';
         }
       }
-    });
+    }
 
     return {
       formData,

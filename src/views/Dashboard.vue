@@ -15,10 +15,17 @@
 
 <script>
 import Menu from '@/components/dashboard/menu/Menu.vue';
+import { onMounted } from '@vue/composition-api';
+import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
+const searchStore = createNamespacedHelpers('search'); // specific module name
 
 export default {
   components: {
     Menu,
+  },
+  setup() {
+    const { hideSearchbar } = searchStore.useMutations(['hideSearchbar']);
+    onMounted(() => hideSearchbar());
   },
 };
 </script>
