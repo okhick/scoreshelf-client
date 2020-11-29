@@ -5,6 +5,8 @@ import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
 const searchStore = createNamespacedHelpers('search');
 
+import { stringify } from 'qs';
+
 // This feels like a bug. Why do I have to call this here when it's already called in main.js?
 // Might be fixed in Vue3: https://stackoverflow.com/questions/61885716/uncaught-error-vue-composition-api-must-call-vue-useplugin-before-using-any/61907559#61907559
 import Vue from 'vue';
@@ -69,8 +71,13 @@ export default function useSearch(context) {
     });
 
     // hydrate the data
-    const thumbnailData = await SCORESHELF.value.post('getThumbnailData', {
-      scoreshelf_ids: thumbnails,
+    const thumbnailData = await SCORESHELF.value.get('getThumbnailData', {
+      params: {
+        scoreshelf_ids: thumbnails,
+      },
+      paramsSerializer: (params) => {
+        return stringify(params);
+      },
     });
 
     // update the listing with hydrated data
