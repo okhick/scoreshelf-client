@@ -90,6 +90,6 @@ class ScoreshelfAuth {
     return Vue.$cookies.isKey(this.cookieName);
   }
   getAccessTokenCookie() {
-    return Vue.$cookies.get(this.cookieName).token;
+    return Vue.$cookies.get(this.cookieName).access_token;
   }
 }
