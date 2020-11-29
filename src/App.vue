@@ -23,6 +23,7 @@ import SearchBar from '@/components/search/SearchBar.vue';
 
 import { onMounted } from '@vue/composition-api';
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
+import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
 
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 const SidenavStore = createNamespacedHelpers('sidenav'); // specific module name
@@ -36,11 +37,12 @@ export default {
 
   setup() {
     const { useSharetribeSdk } = useSharetribe();
+    const { useAuthorizeScoreshelf } = useScoreshelf();
     const { isOpen } = SidenavStore.useState(['isOpen']);
     const { searchbarIsShowing } = searchStore.useState(['searchbarIsShowing']);
-    console.log(searchbarIsShowing);
 
     onMounted(async () => await useSharetribeSdk());
+    onMounted(async () => await useAuthorizeScoreshelf());
 
     return { menuIsShowing: isOpen, searchbarIsShowing: searchbarIsShowing };
   },
