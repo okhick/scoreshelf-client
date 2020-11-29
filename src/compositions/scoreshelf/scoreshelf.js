@@ -12,7 +12,6 @@ const SCORESHELF = ref();
 
 export default function useScoreshelf() {
   const THUMBNAIL_BASE_URL = process.env.VUE_APP_THUMBNAIL_BASE_URL;
-
   const useAuthorizeScoreshelf = async () => await authorizeScoreshelf();
 
   return {
@@ -29,7 +28,7 @@ async function authorizeScoreshelf() {
     baseURL: process.env.VUE_APP_SCORESHELF_URL,
     timeout: 30000,
     headers: {
-      authorization: `Bearer ${accessToken.accessToken.token}`,
+      authorization: `Bearer ${accessToken}`,
     },
   });
 

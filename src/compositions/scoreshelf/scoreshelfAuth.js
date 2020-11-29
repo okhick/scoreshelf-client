@@ -1,9 +1,15 @@
 import axios from 'axios';
 import cryptoRandomString from 'crypto-random-string';
 import forge from 'node-forge';
+import Vue from 'vue';
 
 export async function authorizeScoreshelfApi() {
   const newAuth = new ScoreshelfAuth();
+
+  const tokenIsSet = newAuth.accessTokenIsSet();
+  if (tokenIsSet) {
+    return newAuth.getAccessTokenCookie();
+  }
 
   const authCode = await newAuth.getAuthCode();
   if (!authCode.status) {
@@ -17,9 +23,9 @@ export async function authorizeScoreshelfApi() {
     return;
   }
 
-  return {
-    accessToken,
-  };
+  newAuth.storeAccessToken(accessToken);
+
+  return accessToken.token.token;
 }
 
 class ScoreshelfAuth {
@@ -29,6 +35,7 @@ class ScoreshelfAuth {
       timeout: 30000,
     });
     this.codes = this.createCodes();
+    this.cookieName = `ss-${process.env.VUE_APP_SCORESHELF_CLIENT_ID}-token`;
   }
 
   createCodes() {
@@ -65,5 +72,24 @@ class ScoreshelfAuth {
     );
 
     return accessTokenRes.data;
+  }
+
+  // ========== Access token cookie storage ==========
+
+  storeAccessToken(accessToken) {
+    const cookieValue = {
+      access_token: accessToken.token.token,
+      token_type: 'bearer',
+      expires_at: accessToken.token.expires_at,
+    };
+
+    // 4 hour expiration, samesite=none
+    Vue.$cookies.set(this.cookieName, cookieValue, '4h', '', '', '', 'none');
+  }
+  accessTokenIsSet() {
+    return Vue.$cookies.isKey(this.cookieName);
+  }
+  getAccessTokenCookie() {
+    return Vue.$cookies.get(this.cookieName).token;
   }
 }
