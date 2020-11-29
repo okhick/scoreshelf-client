@@ -64,6 +64,7 @@ function FileStateManagement() {
   function removeFileFromFileList(payload) {
     FileState.fileList = FileState.fileList.filter((file) => file.asset_name !== payload);
     delete FileState.thumbnailSettings[payload];
+    delete FileState.previewSettings[payload];
   }
 
   function setFileToBeRemoved(payload) {

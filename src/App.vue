@@ -38,6 +38,7 @@ export default {
   setup() {
     const { useSharetribeSdk } = useSharetribe();
     const { useAuthorizeScoreshelf } = useScoreshelf();
+
     const { isOpen } = SidenavStore.useState(['isOpen']);
     const { searchbarIsShowing } = searchStore.useState(['searchbarIsShowing']);
 
