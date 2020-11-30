@@ -2,6 +2,8 @@
   <div id="app">
     <sidenav-bar />
     <search-bar :class="{ 'menu-shift': menuIsShowing }" />
+    <!-- this can be converted to a real vue teleport in vue3 -->
+    <v-teleport-location />
     <div
       :class="[
         'main',
@@ -21,6 +23,8 @@
 import SidenavBar from '@/components/sidenav/SidenavBar.vue';
 import SearchBar from '@/components/search/SearchBar.vue';
 
+import { vTeleportLocation } from '@desislavsd/vue-teleport';
+
 import { onMounted } from '@vue/composition-api';
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
 import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
@@ -33,6 +37,7 @@ export default {
   components: {
     SidenavBar,
     SearchBar,
+    vTeleportLocation,
   },
 
   setup() {
