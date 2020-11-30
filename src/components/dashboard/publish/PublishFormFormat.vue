@@ -78,10 +78,22 @@ export default {
       if (publishModalEditData.value?.attributes?.publicData?.formats) {
         // if we've opened an existing work
         formats.value = publishModalEditData.value.attributes.publicData.formats;
+        lookupFormatAssets();
       } else {
         // if it's a new work
         formats.values = [getBlankFormat()];
       }
+    }
+
+    // swap out scoreshelf_ids for asset_names
+    function lookupFormatAssets() {
+      formats.value.forEach((format) => {
+        const assetNames = format.assets.map((assetId) => {
+          const asset = fileList.value.find((file) => file._id === assetId);
+          return asset.asset_name;
+        });
+        format.assets = assetNames;
+      });
     }
 
     function addFormat() {
