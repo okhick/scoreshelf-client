@@ -152,7 +152,7 @@ export default {
   padding: 6px 8px 6px 8px;
   position: sticky;
   top: 0;
-  background-color: $maroon-transp-dark;
+  background-color: $maroon-transp;
   z-index: 2;
   display: flex;
 }

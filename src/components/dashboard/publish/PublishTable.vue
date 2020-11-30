@@ -93,8 +93,8 @@ export default {
       'togglePublishModal',
       'setPublishModalEditData',
     ]);
-    const SharetribeState = SharetribeStore.useState(['SHARETRIBE', 'currentUser']);
-    const SHARETRIBE = SharetribeState.SHARETRIBE;
+    const { SHARETRIBE, currentUser } = SharetribeStore.useState(['SHARETRIBE', 'currentUser']);
+    // const SHARETRIBE = SharetribeState.SHARETRIBE;
 
     // |---------- Hooks ----------|
     onMounted(async () => {

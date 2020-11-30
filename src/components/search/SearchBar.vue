@@ -59,7 +59,7 @@ export default {
 }
 
 .searchbar-wrapper {
-  background-color: $tan-transp;
+  background-color: $tan-light;
   height: 70px;
   display: flex;
   justify-content: center;

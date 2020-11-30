@@ -70,7 +70,7 @@
         <td valign="middle">{{ calculateSize(file) }}</td>
 
         <td align="right" class="hover-pointer">
-          <font-awesome-icon icon="trash-alt" @click="removeUpload(file.asset_name)" />
+          <font-awesome-icon icon="times" @click="removeUpload(file.asset_name)" />
         </td>
       </tr>
     </table>
@@ -86,9 +86,9 @@ import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faUpload, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faUpload, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-library.add(faUpload, faTrashAlt);
+library.add(faUpload, faTimes);
 
 export default {
   components: {

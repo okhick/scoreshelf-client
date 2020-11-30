@@ -1,14 +1,15 @@
 // ========== Colors ==========
 
 $black: #282828;
-$black-transp: rgba(40, 40, 40, 0.4);
+$black-light: #d0d0d0;
 
 $maroon: #953332;
-$maroon-transp: rgba(149, 51, 50, 0.1);
-$maroon-transp-dark: rgba(149, 51, 50, 0.4);
+$maroon-light: #f0e6e6;
+$maroon-transp: rgba(149, 51, 50, 0.4);
 
 $tan: #dfd8c4;
-$tan-transp: rgba(223, 216, 196, 0.3);
+// $tan-transp: rgba(223, 216, 196, 0.3);
+$tan-light: #f2f0ea;
 
 $off-white: #fafafa;
 $white: #ffffff;
@@ -32,6 +33,9 @@ $secondary: $black;
 $dark: $black;
 // $text: $grey-dark;
 
+// ========== Other global vars ==========
+
+$border: $tan-light;
 $background: $off-white;
 
 @import './components.scss';

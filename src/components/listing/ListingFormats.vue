@@ -38,7 +38,7 @@ export default {
   color: $black;
   height: 70px;
   width: 166px;
-  border: 1px solid $black-transp;
+  border: 1px solid $black-light;
   border-radius: 4px;
   padding: 13px;
   line-height: 1.1;
@@ -55,7 +55,7 @@ export default {
 }
 .selected {
   border: 2px solid $maroon;
-  background-color: $maroon-transp;
+  background-color: $maroon-light;
   box-shadow: 0px 0px 17px 0px rgba(0, 0, 0, 0.17);
 }
 </style>

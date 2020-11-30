@@ -13,18 +13,34 @@ a:hover {
 }
 
 // ========== Button styles ==========
-// .button {
-//   color: $off-white;
-//   background-color: $black;
-//   font-weight: 600;
-// }
-.button:hover {
-  // color: $off-white;
-  background-color: $black-transp;
-}
+// ---- Standard button ----
 $button-color: $off-white;
-$button-hover-color: $off-white;
 $button-background-color: $black;
+$button-hover-color: $black;
+$button-hover-border-color: $black;
+.button:hover {
+  background-color: $tan-light;
+}
+// ---- Maroon button ----
+.button.is-maroon {
+  background-color: $maroon;
+  color: $off-white;
+}
+.button.is-maroon:hover {
+  background-color: $tan-light;
+  color: $maroon;
+  border: 1px solid $maroon;
+}
+// ---- Static button ----
+$button-static-color: $black;
+$button-static-background-color: $tan-light;
+$button-static-border-color: $black-light;
+// ---- Upload button ----
+$file-cta-color: $black;
+$file-cta-background-color: $tan-light;
+.file-label:hover .file-cta {
+  background-color: $tan !important;
+}
 
 // ========== Progress bar ==========
 $progress-value-background-color: $tan;
@@ -34,14 +50,30 @@ $progress-border-radius: 4px;
 $label-color: $black;
 $label-weight: 400;
 // ---- Input bar ----
-$input-border-color: $black-transp;
+$input-background-color: $off-white;
+$input-border-color: $black-light;
 $input-focus-border-color: $black;
 $input-hover-border-color: none;
 $input-focus-box-shadow-color: none;
+.input:focus {
+  background-color: $white;
+}
+// ---- Select dropdown ----
+$input-arrow: $black;
+.select:hover:after {
+  border-color: $maroon !important;
+}
 
 // ========== Table ==========
 $table-color: $black;
 $table-background-color: $off-white;
 $table-cell-heading-color: $black;
-$border: $tan-transp;
-$table-row-hover-background-color: $tan;
+$table-row-hover-background-color: $tan-light;
+
+// ========== Modal ==========
+$modal-card-head-background-color: $tan-light;
+$modal-card-title-color: $black;
+$modal-card-body-background-color: $off-white;
+
+// ========== Misc ==========
+$hr-background-color: $border;
