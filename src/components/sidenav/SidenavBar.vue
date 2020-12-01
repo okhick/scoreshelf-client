@@ -44,7 +44,7 @@
           @click="toggleSearchbarIsShowing"
         />
       </span>
-      <p class="logo">SCORESHELF</p>
+      <p class="logo"><router-link :to="{ name: 'Home' }">SCORESHELF</router-link></p>
     </div>
   </div>
 </template>
@@ -156,7 +156,7 @@ export default {
   z-index: 1;
 }
 /* the logo */
-.sidenav p {
+.sidenav .logo {
   transform: rotate(90deg);
   transform-origin: center;
   grid-row: logo;
@@ -164,7 +164,11 @@ export default {
   font-weight: bold;
   font-size: 22px;
   align-self: center;
+}
+
+.sidenav .logo a {
   color: $black;
+  text-decoration: none;
 }
 
 .menu-container {
