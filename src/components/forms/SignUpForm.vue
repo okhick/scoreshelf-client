@@ -49,7 +49,7 @@
         class="button is-dark level-left"
         :class="{ 'is-loading': isLoading }"
         type="submit"
-        @click="test()"
+        @click="signupAttempt()"
       >
         Sign Up
       </button>
@@ -130,3 +130,7 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+@import '@/styles/index';
+</style>

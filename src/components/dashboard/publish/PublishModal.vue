@@ -74,7 +74,11 @@
           </div>
           <!-- End class level-left -->
 
-          <button v-if="!isNewPiece" class="button level-right" @click="deletePublication">
+          <button
+            v-if="!isNewPiece"
+            class="button level-right is-maroon"
+            @click="deletePublication"
+          >
             <font-awesome-icon icon="trash-alt" class="action-buttons" />
           </button>
         </div>

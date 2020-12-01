@@ -10,6 +10,9 @@ export const search = {
     toggleSearchbarIsShowing(state) {
       state.searchbarIsShowing = !state.searchbarIsShowing;
     },
+    hideSearchbar(state) {
+      state.searchbarIsShowing = false;
+    },
     toggleSearchIsLoading(state) {
       state.searchIsLoading = !state.searchIsLoading;
     },

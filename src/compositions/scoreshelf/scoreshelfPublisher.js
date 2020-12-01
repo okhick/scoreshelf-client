@@ -1,6 +1,8 @@
 import { reactive, toRefs } from '@vue/composition-api';
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 
+import { stringify } from 'qs';
+
 import useScoreshelf from '@/compositions/scoreshelf/scoreshelf.js';
 
 import Vue from 'vue';
@@ -64,6 +66,7 @@ function FileStateManagement() {
   function removeFileFromFileList(payload) {
     FileState.fileList = FileState.fileList.filter((file) => file.asset_name !== payload);
     delete FileState.thumbnailSettings[payload];
+    delete FileState.previewSettings[payload];
   }
 
   function setFileToBeRemoved(payload) {
@@ -238,9 +241,14 @@ function ScoreshelfAssetManagement() {
 
   async function hyrdateAssetData(fileList, getLink) {
     const scoreshelf_ids = fileList.map((file) => file.scoreshelf_id);
-    const hydratedAssets = await SCORESHELF.value.post('/getAssetdata', {
-      scoreshelf_ids: scoreshelf_ids,
-      get_link: getLink,
+    const hydratedAssets = await SCORESHELF.value.get('/getAssetdata', {
+      params: {
+        scoreshelf_ids: scoreshelf_ids,
+        get_link: getLink,
+      },
+      paramsSerializer: (params) => {
+        return stringify(params);
+      },
     });
     return hydratedAssets;
   }

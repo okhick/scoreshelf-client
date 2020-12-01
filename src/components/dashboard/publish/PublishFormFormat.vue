@@ -16,8 +16,8 @@
           </div>
         </div>
 
-        <button class="button" @click="removeFormat(format.formatId)">
-          <font-awesome-icon icon="trash-alt" />
+        <button class="button is-maroon" @click="removeFormat(format.formatId)">
+          <font-awesome-icon icon="times" />
         </button>
       </div>
 
@@ -34,7 +34,7 @@
 
       <div v-show="fileList.length > 0">
         <label class="label">Add file(s) to format</label>
-        <div class="select is-primary">
+        <div class="select">
           <select @change="newAssetSelected($event, format.formatId)">
             <option value=""></option>
             <option v-for="file in fileList" :key="file.asset_name" :value="file.asset_name">
@@ -60,9 +60,9 @@ import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faPlus, faTrash, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-library.add(faPlus, faTrash, faTimes);
+library.add(faPlus, faTimes);
 
 export default {
   components: {
@@ -78,10 +78,22 @@ export default {
       if (publishModalEditData.value?.attributes?.publicData?.formats) {
         // if we've opened an existing work
         formats.value = publishModalEditData.value.attributes.publicData.formats;
+        lookupFormatAssets();
       } else {
         // if it's a new work
         formats.values = [getBlankFormat()];
       }
+    }
+
+    // swap out scoreshelf_ids for asset_names
+    function lookupFormatAssets() {
+      formats.value.forEach((format) => {
+        const assetNames = format.assets.map((assetId) => {
+          const asset = fileList.value.find((file) => file._id === assetId);
+          return asset.asset_name;
+        });
+        format.assets = assetNames;
+      });
     }
 
     function addFormat() {

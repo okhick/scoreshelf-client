@@ -1,4 +1,4 @@
-import { reactive, toRefs } from '@vue/composition-api';
+import { reactive, toRefs, ref, onMounted } from '@vue/composition-api';
 import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
 
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
@@ -12,6 +12,7 @@ const ListingState = reactive({
   listingData: {},
   previewBuffer: {},
   selectedFormat: '',
+  scrollPos: 0,
 });
 
 // ============================================
@@ -46,6 +47,18 @@ export default function useListing(listingId) {
     const previewBuffer = new Uint8Array(previewRes.data);
     ListingState.previewBuffer = previewBuffer;
   }
+
+  // ========== Add listener get get scroll pos ==========
+  onMounted(() => {
+    ListingState.scrollPos = window.pageYOffset;
+    window.addEventListener(
+      'scroll',
+      (event) => {
+        ListingState.scrollPos = window.pageYOffset;
+      },
+      false
+    );
+  });
 
   return {
     ...toRefs(ListingState),
