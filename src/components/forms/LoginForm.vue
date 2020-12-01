@@ -30,7 +30,7 @@
 
     <div class="level">
       <button
-        class="button is-dark level-left"
+        class="button level-left"
         :class="{ 'is-loading': isLoading }"
         type="submit"
         @click="loginAttempt"
