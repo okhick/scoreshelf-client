@@ -70,6 +70,9 @@ export default function useSearch(context) {
       }
     });
 
+    // if there are no thumbnails, just return now.
+    if (thumbnails.length === 0) return listingData;
+
     // hydrate the data
     const thumbnailData = await SCORESHELF.value.get('getThumbnailData', {
       params: {
