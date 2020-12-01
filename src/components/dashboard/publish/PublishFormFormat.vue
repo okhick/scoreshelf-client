@@ -81,7 +81,7 @@ export default {
         lookupFormatAssets();
       } else {
         // if it's a new work
-        formats.values = [getBlankFormat()];
+        formats.value = [getBlankFormat()];
       }
     }
 
