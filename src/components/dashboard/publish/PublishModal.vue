@@ -70,7 +70,7 @@
               Re-publish
             </button>
 
-            <button class="button level-item" @click="cancelModal">Cancel</button>
+            <button class="button level-item is-tan" @click="cancelModal">Cancel</button>
           </div>
           <!-- End class level-left -->
 
