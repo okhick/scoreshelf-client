@@ -1,5 +1,26 @@
 <template>
   <section class="modal-card-body">
+    <ul class="steps">
+      <li
+        v-for="(step, key) in formStep"
+        :key="key"
+        @click="gotoStep(key)"
+        :class="[
+          'steps-segment hover-pointer',
+          {
+            'is-active': formStep[key].active,
+            'has-gaps is-hollow': formStep[key].active || !formStep[key].completed,
+          },
+        ]"
+      >
+        <span class="steps-marker"></span>
+        <div class="steps-content">
+          <p class="menu-label">{{ step.label }}</p>
+          <p>{{ step.description }}</p>
+        </div>
+      </li>
+    </ul>
+
     <div class="field">
       <label class="label">Title</label>
       <div class="control">
@@ -94,7 +115,7 @@ const dashboardStore = createNamespacedHelpers('dashboard'); // specific module 
 import PublishFormFormat from './PublishFormFormat';
 import PublishFormAsset from './PublishFormAsset';
 
-import { watch, onBeforeMount } from '@vue/composition-api';
+import { computed, ref } from '@vue/composition-api';
 
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 
@@ -107,6 +128,43 @@ export default {
     const { formData } = useSharetribePublisher();
     const { publishModalEditData } = dashboardStore.useState(['publishModalEditData']);
     initFormData();
+
+    const formStep = ref({
+      info: {
+        active: true,
+        completed: false,
+        label: 'Info',
+        description: 'General information about the publication',
+      },
+      assets: {
+        active: false,
+        completed: false,
+        label: 'Assets',
+        description: 'Upload files for the publication',
+      },
+      formats: {
+        active: false,
+        completed: false,
+        label: 'Formats',
+        description: 'Create products based on this publication',
+      },
+      review: {
+        active: false,
+        completed: false,
+        label: '',
+        description: '',
+      },
+    });
+
+    function gotoStep(stepSelected) {
+      for (const step in formStep.value) {
+        if (step === stepSelected) {
+          formStep.value[step].active = true;
+        } else {
+          formStep.value[step].active = false;
+        }
+      }
+    }
 
     // ========== Methods ==========
     function initFormData() {
@@ -130,12 +188,28 @@ export default {
 
     return {
       formData,
+      formStep,
+      gotoStep,
     };
   },
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '@/styles/index.scss';
+
+$steps-default-color: $tan;
+$steps-completed-color: $black;
+$steps-active-color: $black;
+@import 'bulma-o-steps/bulma-steps.scss';
+
+.steps-content p.menu-label {
+  margin-bottom: 0;
+}
+.steps-content p.menu-label + p {
+  font-size: 0.8em;
+}
+
 .bottom-margin {
   margin-bottom: 24px;
 }

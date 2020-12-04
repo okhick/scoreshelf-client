@@ -56,16 +56,16 @@
 <script>
 export default {
   name: 'Menu',
-  data: function() {
+  data: function () {
     return {
       activeMenu: '',
     };
   },
   methods: {
-    link_editProfile: function() {
+    link_editProfile: function () {
       this.$router.push({ path: 'edit-profile' });
     },
-    link_dashboardHome: function() {
+    link_dashboardHome: function () {
       this.$router.push({ path: 'dashboard' });
     },
   },
@@ -81,11 +81,6 @@ export default {
 @import '@/styles/index.scss';
 .menu.is-hidden-mobile {
   padding-top: 6px;
-}
-.menu-label {
-  color: $black;
-  letter-spacing: 1.3;
-  font-weight: 800;
 }
 .menu-list a {
   color: $black;
