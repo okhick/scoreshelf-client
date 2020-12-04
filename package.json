@@ -10,6 +10,7 @@
   "dependencies": {
     "@desislavsd/vue-teleport": "^0.1.2",
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-regular-svg-icons": "^5.15.1",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/vue-fontawesome": "^0.1.10",
     "@vue/composition-api": "^1.0.0-beta.19",
