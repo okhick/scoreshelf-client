@@ -11,6 +11,12 @@ $link-hover: $maroon;
 a:hover {
   text-decoration: underline;
 }
+// ---- Menus ----
+p.menu-label {
+  color: $black;
+  letter-spacing: 1.3;
+  font-weight: 800;
+}
 
 // ========== Button styles ==========
 // ---- Standard/tan button ----
@@ -40,6 +46,15 @@ $button-hover-border-color: $black;
   background-color: $tan-light;
   color: $black;
   border: 1px solid $black;
+}
+
+.button.is-tan.is-inverted {
+  background-color: $tan-light;
+  color: $black;
+  border: 1px solid $black;
+}
+.button.is-tan.is-inverted:hover {
+  background-color: $tan;
 }
 // ---- Static button ----
 $button-static-color: $black;

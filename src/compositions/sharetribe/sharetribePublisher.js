@@ -178,7 +178,6 @@ function SharetribePublisherListings() {
   }
 
   async function deletePublication() {
-    console.log(publishModalEditData);
     const listingState = publishModalEditData.value.isBlankDraft
       ? 'draft'
       : publishModalEditData.value.attributes.state;
