@@ -123,6 +123,7 @@ const dashboardStore = createNamespacedHelpers('dashboard'); // specific module 
 
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
+import usePublishForm from '@/compositions/form/publishForm.js';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTrashAlt, faAngleDown } from '@fortawesome/free-solid-svg-icons';
@@ -143,11 +144,9 @@ export default {
     ]);
 
     const { useSharetribePublisherListings, useSharetribePublisherForm } = useSharetribePublisher();
-    const {
-      useScoreshelfUploadManagement,
-      useFileStateManagement,
-      useScoreshelfPublishFormNavigation,
-    } = useScoreshelfPublisher();
+    const { useScoreshelfUploadManagement, useFileStateManagement } = useScoreshelfPublisher();
+
+    const { usePublishFormNavigation } = usePublishForm();
 
     const isNewPiece = ref(true);
     const pieceStatus = ref(null);
@@ -157,7 +156,7 @@ export default {
       if (newData != null && newData?.attributes) {
         isNewPiece.value = false;
         pieceStatus.value = newData.attributes.state;
-        useScoreshelfPublishFormNavigation.gotoStep('review');
+        usePublishFormNavigation.gotoStep('review');
       } else {
         isNewPiece.value = true;
       }
@@ -192,7 +191,7 @@ export default {
 
       useSharetribePublisherForm.clearFormData();
       useFileStateManagement.resetFileState();
-      useScoreshelfPublishFormNavigation.gotoStep('info');
+      usePublishFormNavigation.gotoStep('info');
 
       dashboardMutations.togglePublishModal();
     }
