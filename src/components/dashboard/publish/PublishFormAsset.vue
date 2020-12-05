@@ -130,16 +130,14 @@ export default {
     });
 
     // ---------- Methods ----------
-
+    // ---- Actions for the asset table ----
     function formatDate(dateString) {
       return dateString ? DateTime.fromISO(dateString).toFormat('DDD') : '';
     }
-
     function processUploadEvent() {
       const newFiles = context.refs.file.files;
       useFileStateManagement.processUpload(newFiles);
     }
-
     function removeUpload(fileName) {
       fileList.value.forEach((file) => {
         if (file.asset_name === fileName) {
@@ -153,9 +151,9 @@ export default {
       });
     }
 
+    // ---- Actions for the selectors below ----
     const thumbAsset = ref();
     const thumbPage = ref();
-
     function initThumbSelector() {
       if (thumbnailSettings.value) {
         for (let asset in thumbnailSettings.value) {
@@ -166,7 +164,6 @@ export default {
         }
       }
     }
-
     function newThumbSelected() {
       for (let asset in thumbnailSettings.value) {
         if (asset === thumbAsset.value) {
@@ -178,7 +175,6 @@ export default {
         }
       }
     }
-
     function newThumbPage() {
       for (let asset in thumbnailSettings.value) {
         if (thumbnailSettings.value[asset].isThumbnail) {
@@ -190,7 +186,6 @@ export default {
     }
 
     const previewAsset = ref();
-
     function initPreviewSelector() {
       if (previewSettings.value) {
         for (let asset in previewSettings.value) {
@@ -200,7 +195,6 @@ export default {
         }
       }
     }
-
     function newPreviewSelected() {
       const selectedPreview = event.target.value;
       for (let asset in previewSettings.value) {
