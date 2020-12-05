@@ -1,6 +1,6 @@
 <template>
   <div class="bottom-margin">
-    <div class="file is-boxed is-centered">
+    <div class="bottom-margin file is-boxed is-centered">
       <label class="file-label">
         <input class="file-input" type="file" ref="file" multiple @change="processUploadEvent" />
         <span class="file-cta">
@@ -15,8 +15,7 @@
     <table class="table is-fullwidth is-narrow" v-show="fileList.length > 0">
       <thead>
         <th>Filename</th>
-        <th>Preview?</th>
-        <th>Thumbnail?</th>
+        <th>Date Added</th>
         <th>Size</th>
         <th></th>
       </thead>
@@ -26,44 +25,7 @@
         </td>
         <td v-else valign="middle">{{ file.asset_name }}</td>
 
-        <td>
-          <div class="field is-horizontal">
-            <div class="field-body">
-              <div class="field">
-                <input
-                  type="checkbox"
-                  v-model="previewSettings[file.asset_name].isPreview"
-                  @click="newPreviewSelected($event, file.asset_name)"
-                />
-              </div>
-            </div>
-          </div>
-        </td>
-
-        <td>
-          <div class="field is-horizontal">
-            <div class="field-body">
-              <div class="field">
-                <input
-                  type="checkbox"
-                  v-model="thumbnailSettings[file.asset_name].isThumbnail"
-                  @click="newThumbSelected($event, file.asset_name)"
-                />
-              </div>
-              <div
-                class="field page-picker"
-                v-show="thumbnailSettings[file.asset_name].isThumbnail"
-              >
-                <input
-                  class="input is-small"
-                  type="text"
-                  placeholder="Page No."
-                  v-model.number="thumbnailSettings[file.asset_name].page"
-                />
-              </div>
-            </div>
-          </div>
-        </td>
+        <td valign="middle">{{ formatDate(file.date_added) }}</td>
 
         <td valign="middle">{{ calculateSize(file) }}</td>
 
@@ -79,10 +41,10 @@
         <div class="field">
           <div class="control">
             <div class="select is-fullwidth">
-              <select>
+              <select @change="newPreviewSelected" v-model="previewAsset">
                 <option></option>
-                <option v-for="file in fileList" :key="file.asset_name">
-                  {{ file.asset_name }}
+                <option v-for="file in Object.keys(previewSettings)" :key="file">
+                  {{ file }}
                 </option>
               </select>
             </div>
@@ -98,10 +60,10 @@
         <div class="field">
           <div class="control is-expanded">
             <div class="select is-fullwidth">
-              <select>
+              <select @change="newThumbSelected" v-model="thumbAsset">
                 <option></option>
-                <option v-for="file in fileList" :key="file.asset_name">
-                  {{ file.asset_name }}
+                <option v-for="file in Object.keys(thumbnailSettings)" :key="file">
+                  {{ file }}
                 </option>
               </select>
             </div>
@@ -115,7 +77,13 @@
       <div class="column is-narrow label"><label>Page No.:</label></div>
       <div class="column is-2">
         <div class="field">
-          <input class="input" type="text" placeholder="Page" />
+          <input
+            class="input"
+            v-model="thumbPage"
+            @change="newThumbPage"
+            type="text"
+            placeholder="Page"
+          />
         </div>
       </div>
     </div>
@@ -124,8 +92,10 @@
 
 <script>
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
-import { onMounted, watch } from '@vue/composition-api';
+import { onMounted, ref } from '@vue/composition-api';
 import Vue from 'vue';
+
+import { DateTime } from 'luxon';
 
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
@@ -154,7 +124,16 @@ export default {
 
     useFileStateManagement.initAssetData();
 
+    onMounted(() => {
+      initPreviewSelector();
+      initThumbSelector();
+    });
+
     // ---------- Methods ----------
+
+    function formatDate(dateString) {
+      return dateString ? DateTime.fromISO(dateString).toFormat('DDD') : '';
+    }
 
     function processUploadEvent() {
       const newFiles = context.refs.file.files;
@@ -174,32 +153,60 @@ export default {
       });
     }
 
-    function newThumbSelected(event, checkedAsset) {
-      const isChecked = event.target.checked;
-      if (isChecked) {
+    const thumbAsset = ref();
+    const thumbPage = ref();
+
+    function initThumbSelector() {
+      if (thumbnailSettings.value) {
         for (let asset in thumbnailSettings.value) {
-          if (asset != checkedAsset) {
-            thumbnailSettings.value[asset] = makeBlankThumbnail();
+          if (thumbnailSettings.value[asset].isThumbnail) {
+            thumbAsset.value = asset;
+            thumbPage.value = thumbnailSettings.value[asset].page;
           }
-        }
-      } else {
-        for (let asset in thumbnailSettings.value) {
-          thumbnailSettings.value[asset] = makeBlankThumbnail();
         }
       }
     }
 
-    function newPreviewSelected(event, checkedAsset) {
-      const isChecked = event.target.checked;
-      if (isChecked) {
+    function newThumbSelected() {
+      for (let asset in thumbnailSettings.value) {
+        if (asset === thumbAsset.value) {
+          thumbnailSettings.value[asset].isThumbnail = true;
+          thumbnailSettings.value[asset].page = parseInt(thumbPage.value);
+        } else {
+          thumbnailSettings.value[asset].isThumbnail = false;
+          thumbnailSettings.value[asset].page = null;
+        }
+      }
+    }
+
+    function newThumbPage() {
+      for (let asset in thumbnailSettings.value) {
+        if (thumbnailSettings.value[asset].isThumbnail) {
+          thumbnailSettings.value[asset].page = parseInt(thumbPage.value);
+        } else {
+          thumbnailSettings.value[asset].page = null;
+        }
+      }
+    }
+
+    const previewAsset = ref();
+
+    function initPreviewSelector() {
+      if (previewSettings.value) {
         for (let asset in previewSettings.value) {
-          if (asset != checkedAsset) {
-            previewSettings.value[asset].isPreview = false;
+          if (previewSettings.value[asset].isPreview) {
+            previewAsset.value = asset;
           }
         }
-      } else {
-        for (let asset in previewSettings.value) {
-          console.log(previewSettings.value[asset]);
+      }
+    }
+
+    function newPreviewSelected() {
+      const selectedPreview = event.target.value;
+      for (let asset in previewSettings.value) {
+        if (asset === previewAsset.value) {
+          previewSettings.value[asset].isPreview = true;
+        } else {
           previewSettings.value[asset].isPreview = false;
         }
       }
@@ -208,11 +215,16 @@ export default {
     return {
       // ---- Data ----
       fileList,
-      thumbnailSettings,
       previewSettings,
+      previewAsset,
+      thumbnailSettings,
+      thumbAsset,
+      thumbPage,
       // ---- Methods ----
+      formatDate,
       removeUpload,
       newThumbSelected,
+      newThumbPage,
       processUploadEvent,
       newPreviewSelected,
       calculateSize: useScoreshelfHelpers.calculateSize,
