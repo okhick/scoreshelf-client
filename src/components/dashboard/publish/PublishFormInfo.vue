@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="info-wrapper">
     <div class="field">
       <label class="label">Title</label>
       <div class="control">
@@ -110,32 +110,13 @@ export default {
       }
     });
 
-    // function initFormData() {
-    //   if (publishModalEditData.value != null && publishModalEditData.value?.attributes) {
-    //     formData.value.title = publishModalEditData.value.attributes.title;
-    //     formData.value.subtitle = publishModalEditData.value.attributes.publicData.subtitle;
-    //     formData.value.composer = publishModalEditData.value.attributes.publicData.composer;
-    //     formData.value.commission = publishModalEditData.value.attributes.publicData.commission;
-    //     formData.value.duration = publishModalEditData.value.attributes.publicData.duration;
-    //     formData.value.programNotes = publishModalEditData.value.attributes.publicData.programNotes;
-    //     formData.value.year = publishModalEditData.value.attributes.publicData.year;
-    //     formData.value.ensemble = publishModalEditData.value.attributes.publicData.ensemble;
-    //     formData.value.instrumentation =
-    //       publishModalEditData.value.attributes.publicData.instrumentation;
-    //   } else {
-    //     for (const field in formData.value) {
-    //       formData.value[field] = '';
-    //     }
-    //   }
-    // }
-
     return { formData };
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.bottom-margin {
+.info-wrapper {
   margin-bottom: 24px;
 }
 .hover-pointer:hover {

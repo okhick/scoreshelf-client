@@ -3,7 +3,7 @@
     <li
       v-for="(step, key) in formStep"
       :key="key"
-      @click="gotoStep(key)"
+      @click="gotoStep(key), $emit('new-step-selected', key)"
       :class="[
         'steps-segment hover-pointer',
         {

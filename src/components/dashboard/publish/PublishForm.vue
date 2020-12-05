@@ -1,16 +1,14 @@
 <template>
   <section class="modal-card-body">
-    <publish-form-stepper />
-
-    <publish-form-info ref="info" />
+    <publish-form-stepper ref="stepper" @new-step-selected="changeStep" />
 
     <hr />
 
-    <publish-form-format ref="formats" />
+    <publish-form-info v-show="activeStep === 'info'" />
 
-    <hr />
+    <publish-form-format v-show="activeStep === 'formats'" />
 
-    <publish-form-asset ref="assets" />
+    <publish-form-asset v-show="activeStep === 'assets'" />
   </section>
 </template>
 
@@ -29,7 +27,15 @@ export default {
     PublishFormAsset,
     PublishFormFormat,
   },
-  setup() {},
+  setup(_, context) {
+    const activeStep = ref('info');
+
+    function changeStep(newStep) {
+      activeStep.value = newStep;
+    }
+
+    return { activeStep, changeStep };
+  },
 };
 </script>
 

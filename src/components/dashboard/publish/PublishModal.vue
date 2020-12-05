@@ -253,6 +253,7 @@ export default {
 <style lang="scss" scoped>
 .modal-card {
   overflow: visible;
+  height: calc(100vh - 40px);
 }
 .dropdown {
   margin-right: 8px;
