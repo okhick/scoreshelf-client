@@ -43,7 +43,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faAngleLeft, faAngleRight);
 
 import { ref } from '@vue/composition-api';
-import useSharetribePublisher from '@/compositions/scoreshelf/scoreshelfPublisher.js';
+import usePublishForm from '@/compositions/form/publishForm.js';
 
 export default {
   components: {
@@ -55,11 +55,11 @@ export default {
     FontAwesomeIcon,
   },
   setup(_, context) {
-    const { useScoreshelfPublishFormNavigation, activeStep } = useSharetribePublisher();
+    const { usePublishFormNavigation, activeStep } = usePublishForm();
 
     return {
       activeStep: activeStep,
-      oneStep: useScoreshelfPublishFormNavigation.oneStep,
+      oneStep: usePublishFormNavigation.oneStep,
     };
   },
 };

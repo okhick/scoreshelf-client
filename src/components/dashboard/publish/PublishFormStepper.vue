@@ -1,5 +1,5 @@
 <template>
-  <ul class="steps">
+  <ul class="steps has-content-centered">
     <li
       v-for="(step, key) in steps"
       :key="key"
@@ -15,7 +15,7 @@
       <span :class="['steps-marker', { 'is-hollow': !steps[key].completed }]"></span>
       <div class="steps-content">
         <p class="menu-label">{{ step.label }}</p>
-        <p>{{ step.description }}</p>
+        <!-- <p>{{ step.description }}</p> -->
       </div>
     </li>
   </ul>
@@ -23,15 +23,15 @@
 
 <script>
 import { ref } from '@vue/composition-api';
-import useSharetribePublisher from '@/compositions/scoreshelf/scoreshelfPublisher.js';
+import usePublishForm from '@/compositions/form/publishForm.js';
 
 export default {
   setup() {
-    const { useScoreshelfPublishFormNavigation, steps } = useSharetribePublisher();
+    const { usePublishFormNavigation, steps } = usePublishForm();
 
     return {
       steps,
-      gotoStep: useScoreshelfPublishFormNavigation.gotoStep,
+      gotoStep: usePublishFormNavigation.gotoStep,
     };
   },
 };

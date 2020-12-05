@@ -1,7 +1,5 @@
 <template>
-  <div class="field bottom-margin">
-    <label class="label">Upload</label>
-
+  <div class="bottom-margin">
     <div class="file is-boxed is-centered">
       <label class="file-label">
         <input class="file-input" type="file" ref="file" multiple @change="processUploadEvent" />
@@ -74,6 +72,53 @@
         </td>
       </tr>
     </table>
+
+    <div class="columns">
+      <div class="column is-2 label"><label>Preview:</label></div>
+      <div class="column">
+        <div class="field">
+          <div class="control">
+            <div class="select is-fullwidth">
+              <select>
+                <option></option>
+                <option v-for="file in fileList" :key="file.asset_name">
+                  {{ file.asset_name }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <p class="help">Choose a document to be shown as the preview on the publication page.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column is-2 label"><label>Thumbnail:</label></div>
+      <div class="column">
+        <div class="field">
+          <div class="control is-expanded">
+            <div class="select is-fullwidth">
+              <select>
+                <option></option>
+                <option v-for="file in fileList" :key="file.asset_name">
+                  {{ file.asset_name }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <p class="help">
+            Pick a document and a page and we'll generate a thumbnail image for you.
+          </p>
+        </div>
+      </div>
+
+      <div class="column is-narrow label"><label>Page No.:</label></div>
+      <div class="column is-2">
+        <div class="field">
+          <input class="input" type="text" placeholder="Page" />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -182,5 +227,13 @@ export default {
 }
 .page-picker {
   width: 15px;
+}
+.bottom-margin {
+  margin-bottom: 25px;
+}
+
+.column.label {
+  text-align: right;
+  padding-top: 18px;
 }
 </style>
