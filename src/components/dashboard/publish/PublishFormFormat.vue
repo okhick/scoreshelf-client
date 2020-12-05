@@ -172,6 +172,9 @@ export default {
 </script>
 
 <style scoped>
+.format {
+  margin-bottom: 25px;
+}
 .format-input {
   margin-right: 10px;
 }

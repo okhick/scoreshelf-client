@@ -124,7 +124,11 @@ export default {
     ]);
 
     const { useSharetribePublisherListings, useSharetribePublisherForm } = useSharetribePublisher();
-    const { useScoreshelfUploadManagement, useFileStateManagement } = useScoreshelfPublisher();
+    const {
+      useScoreshelfUploadManagement,
+      useFileStateManagement,
+      useScoreshelfPublishFormNavigation,
+    } = useScoreshelfPublisher();
 
     const isNewPiece = ref(true);
     const pieceStatus = ref(null);
@@ -159,6 +163,7 @@ export default {
 
       useSharetribePublisherForm.clearFormData();
       useFileStateManagement.resetFileState();
+      useScoreshelfPublishFormNavigation.gotoStep('info');
 
       dashboardMutations.togglePublishModal();
     }

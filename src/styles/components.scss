@@ -47,6 +47,15 @@ $button-hover-border-color: $black;
   color: $black;
   border: 1px solid $black;
 }
+
+.button.is-tan.is-inverted {
+  background-color: $tan-light;
+  color: $black;
+  border: 1px solid $black;
+}
+.button.is-tan.is-inverted:hover {
+  background-color: $tan;
+}
 // ---- Static button ----
 $button-static-color: $black;
 $button-static-background-color: $tan-light;

@@ -1,18 +1,18 @@
 <template>
   <ul class="steps">
     <li
-      v-for="(step, key) in formStep"
+      v-for="(step, key) in steps"
       :key="key"
       @click="gotoStep(key), $emit('new-step-selected', key)"
       :class="[
         'steps-segment hover-pointer',
         {
-          'is-active': formStep[key].active,
-          'has-gaps': formStep[key].active || !formStep[key].completed,
+          'is-active': steps[key].active,
+          'has-gaps': steps[key].active || !steps[key].completed,
         },
       ]"
     >
-      <span :class="['steps-marker', { 'is-hollow': !formStep[key].completed }]"></span>
+      <span :class="['steps-marker', { 'is-hollow': !steps[key].completed }]"></span>
       <div class="steps-content">
         <p class="menu-label">{{ step.label }}</p>
         <p>{{ step.description }}</p>
@@ -23,49 +23,15 @@
 
 <script>
 import { ref } from '@vue/composition-api';
+import useSharetribePublisher from '@/compositions/scoreshelf/scoreshelfPublisher.js';
 
 export default {
   setup() {
-    const formStep = ref({
-      info: {
-        active: true,
-        completed: false,
-        label: 'Info',
-        description: 'General information about the publication',
-      },
-      assets: {
-        active: false,
-        completed: false,
-        label: 'Assets',
-        description: 'Upload files for the publication',
-      },
-      formats: {
-        active: false,
-        completed: false,
-        label: 'Formats',
-        description: 'Create products based on this publication',
-      },
-      review: {
-        active: false,
-        completed: false,
-        label: '',
-        description: '',
-      },
-    });
-
-    function gotoStep(stepSelected) {
-      for (const step in formStep.value) {
-        if (step === stepSelected) {
-          formStep.value[step].active = true;
-        } else {
-          formStep.value[step].active = false;
-        }
-      }
-    }
+    const { useScoreshelfPublishFormNavigation, steps } = useSharetribePublisher();
 
     return {
-      formStep,
-      gotoStep,
+      steps,
+      gotoStep: useScoreshelfPublishFormNavigation.gotoStep,
     };
   },
 };
