@@ -138,6 +138,7 @@ export default {
       if (newData != null && newData?.attributes) {
         isNewPiece.value = false;
         pieceStatus.value = newData.attributes.state;
+        useScoreshelfPublishFormNavigation.gotoStep('review');
       } else {
         isNewPiece.value = true;
       }

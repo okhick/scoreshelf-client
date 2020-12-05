@@ -5,10 +5,9 @@
     <hr />
 
     <publish-form-info v-show="activeStep === 'info'" />
-
     <publish-form-format v-show="activeStep === 'formats'" />
-
     <publish-form-asset v-show="activeStep === 'assets'" />
+    <publish-form-review v-show="activeStep === 'review'" />
 
     <div class="level form-nav">
       <button
@@ -36,6 +35,7 @@ import PublishFormStepper from './PublishFormStepper';
 import PublishFormInfo from './PublishFormInfo';
 import PublishFormAsset from './PublishFormAsset';
 import PublishFormFormat from './PublishFormFormat';
+import PublishFormReview from './PublishFormReview';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
@@ -51,6 +51,7 @@ export default {
     PublishFormInfo,
     PublishFormAsset,
     PublishFormFormat,
+    PublishFormReview,
     FontAwesomeIcon,
   },
   setup(_, context) {
