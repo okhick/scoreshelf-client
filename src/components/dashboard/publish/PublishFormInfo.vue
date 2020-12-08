@@ -56,6 +56,8 @@
       </div>
     </div>
 
+    <trix-editor-component />
+
     <hr />
 
     <div class="field">
@@ -86,7 +88,12 @@ const dashboardStore = createNamespacedHelpers('dashboard'); // specific module 
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 import { onMounted } from '@vue/composition-api';
 
+import TrixEditorComponent from '@/components/forms/TrixEditor';
+
 export default {
+  components: {
+    TrixEditorComponent,
+  },
   setup() {
     const { formData } = useSharetribePublisher();
     const { publishModalEditData } = dashboardStore.useState(['publishModalEditData']);
