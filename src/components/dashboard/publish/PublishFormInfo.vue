@@ -49,12 +49,12 @@
       </div>
     </div>
 
-    <div class="field">
+    <!-- <div class="field">
       <label class="label">Program Notes</label>
       <div class="control">
         <textarea class="textarea" v-model="formData.programNotes" />
       </div>
-    </div>
+    </div> -->
 
     <hr />
 
@@ -76,6 +76,13 @@
         />
       </div>
     </div>
+
+    <hr />
+    <label class="label">Other notes, movements, program notes, whatever</label>
+    <trix-editor-component
+      @trix-editor-change="handleNewContent"
+      v-bind:init-content="formData.otherNotes"
+    />
   </div>
 </template>
 
@@ -86,7 +93,12 @@ const dashboardStore = createNamespacedHelpers('dashboard'); // specific module 
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 import { onMounted } from '@vue/composition-api';
 
+import TrixEditorComponent from '@/components/forms/TrixEditor';
+
 export default {
+  components: {
+    TrixEditorComponent,
+  },
   setup() {
     const { formData } = useSharetribePublisher();
     const { publishModalEditData } = dashboardStore.useState(['publishModalEditData']);
@@ -98,19 +110,24 @@ export default {
         formData.value.composer = publishModalEditData.value.attributes.publicData.composer;
         formData.value.commission = publishModalEditData.value.attributes.publicData.commission;
         formData.value.duration = publishModalEditData.value.attributes.publicData.duration;
-        formData.value.programNotes = publishModalEditData.value.attributes.publicData.programNotes;
         formData.value.year = publishModalEditData.value.attributes.publicData.year;
         formData.value.ensemble = publishModalEditData.value.attributes.publicData.ensemble;
         formData.value.instrumentation =
           publishModalEditData.value.attributes.publicData.instrumentation;
+        formData.value.otherNotes = publishModalEditData.value.attributes.publicData.otherNotes;
       } else {
         for (const field in formData.value) {
           formData.value[field] = '';
         }
       }
+      console.log(formData.value.otherNotes);
     });
 
-    return { formData };
+    function handleNewContent(event) {
+      formData.value.otherNotes = event;
+    }
+
+    return { formData, handleNewContent };
   },
 };
 </script>
