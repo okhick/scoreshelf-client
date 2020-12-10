@@ -35,9 +35,9 @@
       </table>
     </div>
 
-    <div class="program-notes">
-      <h5>Program Notes:</h5>
-      <p>{{ listing.attributes.publicData.programNotes }}</p>
+    <div class="other-notes">
+      <!-- <h5>Program Notes:</h5> -->
+      <p v-html="listing.attributes.publicData.otherNotes"></p>
     </div>
   </div>
 </template>
@@ -130,16 +130,15 @@ h4.title.is-4.composer {
   padding: 0 3px 0 3px;
 }
 
-.program-notes {
+.other-notes {
   color: $black;
 }
-.program-notes h5 {
+.other-notes h5 {
   font-size: 20px;
   font-family: 'lato';
   font-weight: bold;
 }
-.program-notes p {
+.other-notes p {
   font-size: 16px;
 }
 </style>
-
