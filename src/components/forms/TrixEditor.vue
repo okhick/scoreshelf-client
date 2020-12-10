@@ -2,19 +2,46 @@
   <div>
     <input id="trix-input" type="hidden" :value="trixContent" />
     <trix-editor
+      v-if="trixInit"
       input="trix-input"
-      @trix-change="handleNewContent"
       class="trix-editor"
+      @trix-change="handleNewContent"
     ></trix-editor>
   </div>
 </template>
 
 <script>
+import Vue from 'vue';
 import Trix from 'trix';
 import 'trix/dist/trix.css';
 
+import { onMounted, ref, watch, computed } from '@vue/composition-api';
+
 export default {
-  setup() {},
+  props: {
+    initContent: String,
+  },
+  setup(props, context) {
+    const trixContent = ref('');
+    const trixInit = ref(false);
+
+    // wait until the props are passed before loading Trix
+    const initValue = computed(() => props.initContent);
+    watch(initValue, (newValue) => {
+      trixContent.value = newValue;
+      trixInit.value = true;
+    });
+
+    function handleNewContent(event) {
+      context.emit('trix-editor-change', event.target.value);
+    }
+
+    return {
+      trixContent,
+      trixInit,
+      handleNewContent,
+    };
+  },
 };
 </script>
 
