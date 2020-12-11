@@ -57,11 +57,27 @@ const routes = [
           ),
       },
       {
-        name: 'Publish',
-        path: 'publish',
+        name: 'Publications',
+        path: 'publications',
         component: () =>
           import(
             /* webpackChunkName: "dashboard-publish" */ '@/components/dashboard/publish/Publish.vue'
+          ),
+      },
+      {
+        name: 'Purchases',
+        path: 'purchases',
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard-publish" */ '@/components/dashboard/purchases/Purchases.vue'
+          ),
+      },
+      {
+        name: 'Sales',
+        path: 'sales',
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard-publish" */ '@/components/dashboard/sales/Sales.vue'
           ),
       },
     ],

@@ -1,9 +1,5 @@
 <template>
   <div>
-    <div class="level">
-      <!-- <h2 class="subtitle is-3 level-left">Published Music</h2> -->
-      <button class="button level-right" @click="createNewDraft">Create new draft</button>
-    </div>
     <table class="table is-fullwidth is-hoverable">
       <tr>
         <th>TITLE</th>
@@ -129,17 +125,6 @@ export default {
       DashboardMutations.togglePublishModal();
     }
 
-    async function createNewDraft() {
-      // actually create a temp draft so we can have an uuid
-      // we need a uuid up front so save assets
-      const draft = await SHARETRIBE.value.ownListings.createDraft({
-        title: `new_draft_${currentUser.value.id.uuid}`,
-      });
-      draft.data.data.isBlankDraft = true;
-      DashboardMutations.setPublishModalEditData(draft.data.data);
-      DashboardMutations.togglePublishModal();
-    }
-
     async function getPublishedMusic() {
       const publishedMusicRes = await SHARETRIBE.value.ownListings.query({});
 
@@ -166,7 +151,6 @@ export default {
       hasPublishedMusic,
       reloadTable,
       // ---- Methods ----
-      createNewDraft,
       formatsAvailable,
       openEditModal,
     };

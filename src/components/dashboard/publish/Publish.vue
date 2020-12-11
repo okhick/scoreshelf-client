@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1 class="title">Publish Music</h1>
     <publish-table />
     <!-- this can be converted to a real vue teleport in vue3 -->
     <v-teleport><publish-modal /></v-teleport>

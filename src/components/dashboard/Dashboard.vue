@@ -1,7 +1,6 @@
 <template>
   <div>
-    <h1 class="title">Hello, {{ displayName }}</h1>
-    <h2 class="subtitle">I hope you are having a great day!</h2>
+    <h2 class="subtitle">This page will probably not exist someday but for now it's here</h2>
   </div>
 </template>
 

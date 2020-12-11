@@ -120,7 +120,6 @@ export default {
           formData.value[field] = '';
         }
       }
-      console.log(formData.value.otherNotes);
     });
 
     function handleNewContent(event) {

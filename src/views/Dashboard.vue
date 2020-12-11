@@ -16,16 +16,17 @@
 </template>
 
 <script>
-import { onMounted, ref } from '@vue/composition-api';
+import { onMounted, ref, watch, computed } from '@vue/composition-api';
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 const searchStore = createNamespacedHelpers('search'); // specific module name
 const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
+const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
 
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
 
 import Menu from '@/components/dashboard/menu/Menu.vue';
-import DashboardHeader from '@/components/dashboard/DashboardHeader.vue';
-import DashboardSubHeader from '@/components/dashboard/DashboardSubHeader.vue';
+import DashboardHeader from '@/components/dashboard/headers/DashboardHeader.vue';
+import DashboardSubHeader from '@/components/dashboard/headers/DashboardSubHeader.vue';
 
 export default {
   components: {
@@ -33,7 +34,7 @@ export default {
     DashboardHeader,
     DashboardSubHeader,
   },
-  setup() {
+  setup(_, context) {
     // hide the searchbar is needed
     const { hideSearchbar } = searchStore.useMutations(['hideSearchbar']);
     onMounted(() => hideSearchbar());
@@ -48,6 +49,12 @@ export default {
       await useUpdateCurrentUser();
       displayName.value = currentUser.value.attributes.profile.displayName;
     });
+
+    // get the active view and save it in the store
+    const { setDashboardView } = dashboardStore.useMutations(['setDashboardView']);
+    const dashboardRouterName = computed(() => context.root.$route.name);
+    onMounted(() => setDashboardView(dashboardRouterName.value));
+    watch(dashboardRouterName, (newValue) => setDashboardView(newValue));
 
     return {
       displayName,
