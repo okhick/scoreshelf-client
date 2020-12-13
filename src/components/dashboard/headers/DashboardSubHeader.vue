@@ -4,16 +4,16 @@
       <div class="level-item">
         <div class="level-item">
           <h1 :class="['title', { 'is-active': activeDashboardView === 'Purchases' }]">
-            <router-link to="purchases">Purchases</router-link>
+            <router-link to="/dashboard/purchases">Purchases</router-link>
           </h1>
         </div>
         <h1 :class="['title', { 'is-active': activeDashboardView === 'Publications' }]">
-          <router-link to="publications">Publications</router-link>
+          <router-link to="/dashboard/publications">Publications</router-link>
         </h1>
       </div>
       <div class="level-item">
         <h1 :class="['title', { 'is-active': activeDashboardView === 'Sales' }]">
-          <router-link to="sales">Sales</router-link>
+          <router-link to="/dashboard/sales">Sales</router-link>
         </h1>
       </div>
     </div>

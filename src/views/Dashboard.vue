@@ -2,16 +2,16 @@
   <div class="container">
     <dashboard-header :display-name="displayName" />
     <dashboard-sub-header />
-    <div class="columns">
-      <!-- <div class="column is-2"> -->
-      <!-- <Menu /> -->
-      <!-- </div> -->
-      <!-- <div class="column is-10"> -->
-      <section class="is-info welcome is-small">
-        <router-view></router-view>
-      </section>
-      <!-- </div> -->
-    </div>
+    <!-- <div class="columns"> -->
+    <!-- <div class="column is-2"> -->
+    <!-- <Menu /> -->
+    <!-- </div> -->
+    <!-- <div class="column is-10"> -->
+    <!-- <section class="is-info welcome is-small"> -->
+    <router-view></router-view>
+    <!-- </section> -->
+    <!-- </div> -->
+    <!-- </div> -->
   </div>
 </template>
 

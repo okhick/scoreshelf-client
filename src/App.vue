@@ -64,11 +64,10 @@ body {
   @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&family=Lora:wght@400;500;600;700&display=swap');
 
   background: $off-white;
-
+  height: 100%;
   .title {
     color: $dark;
   }
-
   .main {
     transition: transform 0.25s ease-in-out;
     margin-left: 60px;
