@@ -65,7 +65,9 @@
       </div>
     </div>
 
-    <div class="field">
+    <publish-form-instrumentation />
+
+    <!-- <div class="field">
       <label class="label">Instrumentation</label>
       <div class="control">
         <input
@@ -75,7 +77,7 @@
           placeholder="Violin 1, Violin 2, Viola, Cello"
         />
       </div>
-    </div>
+    </div> -->
 
     <hr />
     <label class="label">Other notes, movements, program notes, whatever</label>
@@ -93,11 +95,14 @@ const dashboardStore = createNamespacedHelpers('dashboard'); // specific module 
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 import { onMounted } from '@vue/composition-api';
 
+import PublishFormInstrumentation from './PublishFormInstrumentation';
+
 import TrixEditorComponent from '@/components/forms/TrixEditor';
 
 export default {
   components: {
     TrixEditorComponent,
+    PublishFormInstrumentation,
   },
   setup() {
     const { formData } = useSharetribePublisher();
