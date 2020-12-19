@@ -43,7 +43,7 @@
     </div>
 
     <div class="field is-grouped is-grouped-multiline">
-      <div class="control" v-for="(instrument, index) in selectedInstruments" :key="index">
+      <div class="control" v-for="(instrument, index) in formData.instrumentation" :key="index">
         <div class="tags has-addons">
           <div class="tag is-tan">{{ instrument }}</div>
           <div class="tag is-delete" @click="removeInstrument(index)"></div>
@@ -55,10 +55,14 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { onMounted, ref } from '@vue/composition-api';
+import { onMounted, ref, computed } from '@vue/composition-api';
 import Autocomplete from '@trevoreyre/autocomplete-vue';
 import startcase from 'lodash.startcase';
 import fullList from '@/store/listReduced.json';
+import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
+
+import { createNamespacedHelpers } from 'vuex-composition-helpers';
+const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
 
 export default Vue.extend({
   components: {
@@ -82,18 +86,30 @@ export default Vue.extend({
       return matches;
     }
 
-    // save a selected instrument
-    const selectedInstruments = ref<string[]>([]);
+    // ========== Handle instrument selection and display ==========
     const inputValue = ref<string>();
+    const { formData } = useSharetribePublisher();
+    const { publishModalEditData } = dashboardStore.useState(['publishModalEditData']);
+
+    onMounted(() => {
+      if (publishModalEditData.value.attributes) {
+        formData.value.instrumentation =
+          publishModalEditData.value.attributes.publicData.instrumentation;
+      }
+    });
+
     function saveSelectedInstrument(result: string): void {
-      selectedInstruments.value.push(result);
+      if (formData.value.instrumentation == undefined) {
+        formData.value.instrumentation = [];
+      }
+      formData.value.instrumentation.push(result); /* This will go away once properly typed */
       inputValue.value = undefined;
     }
     function removeInstrument(index: number): void {
-      selectedInstruments.value.splice(index, 1);
+      formData.value.instrumentation.splice(index, 1);
     }
 
-    // Handle highlight on arrow keys.
+    // ========== Handle highlight on arrow keys. ==========
     const selectedIndex = ref(-1);
     function setSelectedIndex(results: any[], selectedIndexInput: number): void {
       selectedIndex.value = selectedIndexInput;
@@ -102,7 +118,7 @@ export default Vue.extend({
     return {
       // ---- Data ----
       selectedIndex,
-      selectedInstruments,
+      formData /* this loses reactivity when you do formdata.value.instrumentation */,
       inputValue,
       // ---- Methods ----
       search,

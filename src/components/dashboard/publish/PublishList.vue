@@ -29,11 +29,7 @@
         </div>
         <div class="column list-item-data is-3">{{ formatsAvailable(piece) }}</div>
         <div class="column list-item-data is-2">
-          {{
-            piece.attributes.publicData.ensemble
-              ? piece.attributes.publicData.ensemble
-              : piece.attributes.publicData.instrumentation
-          }}
+          {{ ensembleOrInstrumentation(piece) }}
         </div>
         <div class="column list-item-data is-3">
           {{ piece.attributes.createdAt | moment('MMMM Do YYYY, h:mm a') }}
@@ -104,6 +100,15 @@ export default {
       return '';
     }
 
+    function ensembleOrInstrumentation(piece) {
+      const publicData = piece.attributes.publicData;
+      if (publicData.ensemble) {
+        return publicData.ensemble;
+      } else if (publicData.instrumentation) {
+        return publicData.instrumentation.join(', ');
+      }
+    }
+
     async function openEditModal(pieceData) {
       DashboardMutations.setPublishModalEditData(pieceData);
       // get init data about the files
@@ -131,6 +136,7 @@ export default {
       reloadTable,
       // ---- Functions ----
       formatsAvailable,
+      ensembleOrInstrumentation,
       openEditModal,
     };
   },

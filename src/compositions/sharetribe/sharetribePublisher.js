@@ -15,10 +15,9 @@ const PublishFormState = reactive({
     year: '',
     duration: '',
     commission: '',
-    // Trix field needs to not be an empty string to register an init
-    otherNotes: '__INIT_TRIX__',
+    otherNotes: '__INIT_TRIX__' /* Trix field needs to not be empty string to register an init */,
     ensemble: '',
-    instrumentation: '',
+    instrumentation: [],
   },
 });
 
@@ -49,6 +48,9 @@ function SharetribePublisherForm() {
       switch (field) {
         case 'otherNotes':
           PublishFormState.formData[field] = '__INIT-TRIX__';
+          break;
+        case 'instrumentation':
+          PublishFormState.formData[field] = [];
           break;
         default:
           PublishFormState.formData[field] = '';
