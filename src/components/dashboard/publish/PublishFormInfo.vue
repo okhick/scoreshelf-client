@@ -49,13 +49,6 @@
       </div>
     </div>
 
-    <!-- <div class="field">
-      <label class="label">Program Notes</label>
-      <div class="control">
-        <textarea class="textarea" v-model="formData.programNotes" />
-      </div>
-    </div> -->
-
     <hr />
 
     <div class="field">
@@ -67,19 +60,8 @@
 
     <publish-form-instrumentation />
 
-    <!-- <div class="field">
-      <label class="label">Instrumentation</label>
-      <div class="control">
-        <input
-          class="input"
-          type="text"
-          v-model="formData.instrumentation"
-          placeholder="Violin 1, Violin 2, Viola, Cello"
-        />
-      </div>
-    </div> -->
-
     <hr />
+
     <label class="label">Other notes, movements, program notes, whatever</label>
     <trix-editor-component
       @trix-editor-change="handleNewContent"
@@ -105,7 +87,7 @@ export default {
     PublishFormInstrumentation,
   },
   setup() {
-    const { formData } = useSharetribePublisher();
+    const { formData, useSharetribePublisherForm } = useSharetribePublisher();
     const { publishModalEditData } = dashboardStore.useState(['publishModalEditData']);
 
     onMounted(() => {
@@ -117,13 +99,9 @@ export default {
         formData.value.duration = publishModalEditData.value.attributes.publicData.duration;
         formData.value.year = publishModalEditData.value.attributes.publicData.year;
         formData.value.ensemble = publishModalEditData.value.attributes.publicData.ensemble;
-        formData.value.instrumentation =
-          publishModalEditData.value.attributes.publicData.instrumentation;
         formData.value.otherNotes = publishModalEditData.value.attributes.publicData.otherNotes;
       } else {
-        for (const field in formData.value) {
-          formData.value[field] = '';
-        }
+        useSharetribePublisherForm.clearFormData();
       }
     });
 
