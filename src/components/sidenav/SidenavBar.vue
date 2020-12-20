@@ -64,9 +64,10 @@ library.add(faBars, faSearch);
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
 import { onMounted } from '@vue/composition-api';
 
+import useSidenav from '@/compositions/sidenav/sidenav';
+
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 const SharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
-const SidenavStore = createNamespacedHelpers('sidenav');
 const SearchStore = createNamespacedHelpers('search');
 
 export default {
@@ -75,14 +76,9 @@ export default {
   },
   setup(_, context) {
     const { useRefreshLogin, useSharetribeSdk } = useSharetribe();
+    const { isOpen, toggleSidenav, closeSidenav } = useSidenav();
 
     // |---------- Data ----------|
-    const { isOpen } = SidenavStore.useState(['isOpen']);
-    const { toggleSidenav, closeSidenav } = SidenavStore.useMutations([
-      'toggleSidenav',
-      'closeSidenav',
-    ]);
-
     const { SHARETRIBE, isLoggedIn } = SharetribeStore.useState(['SHARETRIBE', 'isLoggedIn']);
     const { updateIsLoggedIn } = SharetribeStore.useMutations(['updateIsLoggedIn']);
     const { searchbarIsShowing } = SearchStore.useState(['searchbarIsShowing']);

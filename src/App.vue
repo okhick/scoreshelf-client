@@ -19,7 +19,6 @@
 </template>
 
 <script>
-// import Navbar from "@/components/Navbar.vue";
 import SidenavBar from '@/components/sidenav/SidenavBar.vue';
 import SearchBar from '@/components/search/SearchBar.vue';
 
@@ -30,8 +29,9 @@ import useSharetribe from '@/compositions/sharetribe/sharetribe';
 import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
 
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const SidenavStore = createNamespacedHelpers('sidenav'); // specific module name
 const searchStore = createNamespacedHelpers('search'); // specific module name
+
+import useSidenav from '@/compositions/sidenav/sidenav';
 
 export default {
   components: {
@@ -43,8 +43,8 @@ export default {
   setup() {
     const { useSharetribeSdk } = useSharetribe();
     const { useAuthorizeScoreshelf } = useScoreshelf();
+    const { isOpen } = useSidenav();
 
-    const { isOpen } = SidenavStore.useState(['isOpen']);
     const { searchbarIsShowing } = searchStore.useState(['searchbarIsShowing']);
 
     onMounted(async () => await useSharetribeSdk());
