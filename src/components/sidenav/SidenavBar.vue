@@ -61,14 +61,14 @@ import { faBars, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faBars, faSearch);
 
-import useSharetribe from '@/compositions/sharetribe/sharetribe';
 import { onMounted } from '@vue/composition-api';
 
+import useSharetribe from '@/compositions/sharetribe/sharetribe';
 import useSidenav from '@/compositions/sidenav/sidenav';
+import useSearch from '@/compositions/search/search';
 
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 const SharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
-const SearchStore = createNamespacedHelpers('search');
 
 export default {
   components: {
@@ -77,12 +77,11 @@ export default {
   setup(_, context) {
     const { useRefreshLogin, useSharetribeSdk } = useSharetribe();
     const { isOpen, toggleSidenav, closeSidenav } = useSidenav();
+    const { searchbarIsShowing, useSearchStateManagement } = useSearch();
 
     // |---------- Data ----------|
     const { SHARETRIBE, isLoggedIn } = SharetribeStore.useState(['SHARETRIBE', 'isLoggedIn']);
     const { updateIsLoggedIn } = SharetribeStore.useMutations(['updateIsLoggedIn']);
-    const { searchbarIsShowing } = SearchStore.useState(['searchbarIsShowing']);
-    const { toggleSearchbarIsShowing } = SearchStore.useMutations(['toggleSearchbarIsShowing']);
 
     onMounted(async () => {
       await useSharetribeSdk();
@@ -112,7 +111,7 @@ export default {
       logout,
       clickOut,
       toggleSidenav,
-      toggleSearchbarIsShowing,
+      toggleSearchbarIsShowing: useSearchStateManagement.toggleSearchbarIsShowing,
     };
   },
 };

@@ -3,7 +3,6 @@ import useScoreshelf from '@/compositions/scoreshelf/scoreshelf.js';
 
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
-const searchStore = createNamespacedHelpers('search');
 
 import { stringify } from 'qs';
 
@@ -15,27 +14,23 @@ Vue.use(VueCompositionAPI);
 // ========== Search State ==========
 // TODO: Migrate Vuex to here...
 const searchInput = ref('');
+const searchbarIsShowing = ref(true);
+const searchIsLoading = ref(false);
+const searchListingData = ref([]);
+const searchResultsMeta = ref({});
 
 // ==================================
 
 export default function useSearch(context) {
   const { SCORESHELF } = useScoreshelf();
+  const useSearchStateManagement = searchStateManagement();
 
   //---------- vuex state mapping ----------
-  const {
-    toggleSearchIsLoading,
-    addSearchListingData,
-    addSearchResultsMeta,
-  } = searchStore.useMutations([
-    'toggleSearchIsLoading',
-    'addSearchListingData',
-    'addSearchResultsMeta',
-  ]);
   const { SHARETRIBE } = sharetribeStore.useState(['SHARETRIBE']);
 
   //---------- methods ----------
   async function executeSearch() {
-    toggleSearchIsLoading();
+    useSearchStateManagement.toggleSearchIsLoading();
 
     const res = await SHARETRIBE.value.listings.query({
       keywords: searchInput.value,
@@ -48,12 +43,12 @@ export default function useSearch(context) {
     const listingData = res.data.data;
     const hydratedThumbnailListingData = await hydrateThumbnailData(listingData);
 
-    addSearchListingData(hydratedThumbnailListingData);
-    addSearchResultsMeta(res.data.meta);
+    useSearchStateManagement.addSearchListingData(hydratedThumbnailListingData);
+    useSearchStateManagement.addSearchResultsMeta(res.data.meta);
 
     // wait until the dom has reloaded to turn the toggle off
     context.root.$nextTick(() => {
-      toggleSearchIsLoading();
+      useSearchStateManagement.toggleSearchIsLoading();
     });
   }
 
@@ -95,7 +90,45 @@ export default function useSearch(context) {
   }
 
   return {
+    // ---- data ----
     searchInput,
+    searchbarIsShowing,
+    searchIsLoading,
+    searchListingData,
+    searchResultsMeta,
+    // ---- functions ----
     executeSearch,
+    useSearchStateManagement,
+  };
+}
+
+function searchStateManagement() {
+  function toggleSearchIsLoading() {
+    searchIsLoading.value = !searchIsLoading.value;
+  }
+  function addSearchListingData(payload) {
+    searchListingData.value = payload;
+  }
+  function addSearchResultsMeta(payload) {
+    searchResultsMeta.value = payload;
+  }
+  function toggleSearchbarIsShowing() {
+    searchbarIsShowing.value = !searchbarIsShowing.value;
+  }
+  function hideSearchbar() {
+    searchbarIsShowing.value = false;
+  }
+  function resetSearchStore() {
+    searchListingData.value = [];
+    searchResultsMeta.value = {};
+  }
+
+  return {
+    toggleSearchIsLoading,
+    addSearchListingData,
+    addSearchResultsMeta,
+    toggleSearchbarIsShowing,
+    hideSearchbar,
+    resetSearchStore,
   };
 }

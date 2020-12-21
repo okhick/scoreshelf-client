@@ -27,10 +27,7 @@ import { vTeleportLocation } from '@desislavsd/vue-teleport';
 import { onMounted } from '@vue/composition-api';
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
 import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
-
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const searchStore = createNamespacedHelpers('search'); // specific module name
-
+import useSearch from '@/compositions/search/search';
 import useSidenav from '@/compositions/sidenav/sidenav';
 
 export default {
@@ -45,12 +42,15 @@ export default {
     const { useAuthorizeScoreshelf } = useScoreshelf();
     const { isOpen } = useSidenav();
 
-    const { searchbarIsShowing } = searchStore.useState(['searchbarIsShowing']);
+    const { searchbarIsShowing } = useSearch();
 
     onMounted(async () => await useSharetribeSdk());
     onMounted(async () => await useAuthorizeScoreshelf());
 
-    return { menuIsShowing: isOpen, searchbarIsShowing: searchbarIsShowing };
+    return {
+      menuIsShowing: isOpen,
+      searchbarIsShowing,
+    };
   },
 };
 </script>

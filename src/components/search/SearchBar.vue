@@ -27,18 +27,14 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faArrowRight);
 
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const searchStore = createNamespacedHelpers('search');
-
-import useSearch from '@/compositions/search/search.js';
+import useSearch from '@/compositions/search/search';
 
 export default {
   components: {
     FontAwesomeIcon,
   },
   setup(_, context) {
-    const { executeSearch, searchInput } = useSearch(context);
-    const { searchbarIsShowing } = searchStore.useState(['searchbarIsShowing']);
+    const { executeSearch, searchInput, searchbarIsShowing } = useSearch(context);
 
     return {
       // ---- Data ----
