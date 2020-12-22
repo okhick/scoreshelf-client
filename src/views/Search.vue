@@ -29,7 +29,7 @@
 import { onMounted } from '@vue/composition-api';
 import SearchResult from '../components/search/SearchResult';
 
-import useSearch from '@/compositions/search/search.js';
+import useSearch from '@/compositions/search/search';
 
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';

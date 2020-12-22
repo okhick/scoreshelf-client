@@ -1,7 +1,7 @@
-import VueCompositionAPI, { ref } from '@vue/composition-api';
+import VueCompositionAPI, { ref, SetupContext } from '@vue/composition-api';
 import useScoreshelf from '@/compositions/scoreshelf/scoreshelf.js';
 
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
+import { createNamespacedHelpers } from 'vuex-composition-helpers';
 const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
 
 import { stringify } from 'qs';
@@ -12,7 +12,6 @@ import Vue from 'vue';
 Vue.use(VueCompositionAPI);
 
 // ========== Search State ==========
-// TODO: Migrate Vuex to here...
 const searchInput = ref('');
 const searchbarIsShowing = ref(true);
 const searchIsLoading = ref(false);
@@ -21,7 +20,12 @@ const searchResultsMeta = ref({});
 
 // ==================================
 
-export default function useSearch(context) {
+interface ThumbnailRef {
+  index: number;
+  thumbnail_id: string;
+}
+
+export default function useSearch(context: SetupContext) {
   const { SCORESHELF } = useScoreshelf();
   const useSearchStateManagement = searchStateManagement();
 
@@ -52,12 +56,13 @@ export default function useSearch(context) {
     });
   }
 
-  async function hydrateThumbnailData(listingData) {
-    const thumbnailRefs = []; // {index, thumbnail_id}
-    const thumbnails = []; // [thumbnail_id, ...]
+  // TODO: actually type this.
+  async function hydrateThumbnailData(listingData: any) {
+    const thumbnailRefs: ThumbnailRef[] = []; // {index, thumbnail_id}
+    const thumbnails: string[] = []; // [thumbnail_id, ...]
 
     // format the query and make a sorting refrence to match up easier later
-    listingData.forEach((listing, index) => {
+    listingData.forEach((listing: any, index: number) => {
       if (listing.attributes.publicData.thumbnail) {
         const thumbnail_id = listing.attributes.publicData.thumbnail.thumbnail_id;
         thumbnails.push(thumbnail_id);
@@ -73,17 +78,20 @@ export default function useSearch(context) {
       params: {
         scoreshelf_ids: thumbnails,
       },
-      paramsSerializer: (params) => {
+      paramsSerializer: (params: { scoreshelf_ids: string[] }) => {
         return stringify(params);
       },
     });
 
+    // TODO: type thumbnails
     // update the listing with hydrated data
-    thumbnailData.data.forEach((thumbnail) => {
+    thumbnailData.data.forEach((thumbnail: any) => {
       const listingRef = thumbnailRefs.find(
         (thumbnailRef) => thumbnail._id === thumbnailRef.thumbnail_id
       );
-      listingData[listingRef.index].attributes.publicData.thumbnail = thumbnail;
+      if (listingRef) {
+        listingData[listingRef.index].attributes.publicData.thumbnail = thumbnail;
+      }
     });
 
     return listingData;
@@ -106,10 +114,11 @@ function searchStateManagement() {
   function toggleSearchIsLoading() {
     searchIsLoading.value = !searchIsLoading.value;
   }
-  function addSearchListingData(payload) {
+  // TODO: Type these payloads
+  function addSearchListingData(payload: any) {
     searchListingData.value = payload;
   }
-  function addSearchResultsMeta(payload) {
+  function addSearchResultsMeta(payload: any) {
     searchResultsMeta.value = payload;
   }
   function toggleSearchbarIsShowing() {
