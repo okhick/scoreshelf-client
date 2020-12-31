@@ -35,9 +35,7 @@
     "vue-loading-overlay": "^3.4.2",
     "vue-moment": "^4.1.0",
     "vue-pdf": "^4.2.0",
-    "vue-router": "^3.4.9",
-    "vuex": "^3.5.1",
-    "vuex-composition-helpers": "^1.0.21"
+    "vue-router": "^3.4.9"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.10.0",
