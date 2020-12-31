@@ -1,5 +1,11 @@
 <template>
   <div class="format">
+    <table class="table">
+      <tr v-for="format in formats" :key="format.formatId">
+        <td>{{ format.format }}</td>
+        <td>${{ format.price }}</td>
+      </tr>
+    </table>
     <label class="label">Format and Price</label>
     <div v-for="format in formats" :key="format.formatId">
       <div class="field is-horizontal">
