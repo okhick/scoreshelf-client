@@ -67,21 +67,17 @@ import useSharetribe from '@/compositions/sharetribe/sharetribe';
 import useSidenav from '@/compositions/sidenav/sidenav';
 import useSearch from '@/compositions/search/search';
 
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const SharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
-
 export default {
   components: {
     FontAwesomeIcon,
   },
   setup(_, context) {
-    const { useRefreshLogin, useSharetribeSdk } = useSharetribe();
+    const { useRefreshLogin, useSharetribeSdk, useSharetribeState } = useSharetribe();
     const { isOpen, toggleSidenav, closeSidenav } = useSidenav();
     const { searchbarIsShowing, useSearchStateManagement } = useSearch();
 
     // |---------- Data ----------|
-    const { SHARETRIBE, isLoggedIn } = SharetribeStore.useState(['SHARETRIBE', 'isLoggedIn']);
-    const { updateIsLoggedIn } = SharetribeStore.useMutations(['updateIsLoggedIn']);
+    const { SHARETRIBE, isLoggedIn, updateIsLoggedIn } = useSharetribeState;
 
     onMounted(async () => {
       await useSharetribeSdk();

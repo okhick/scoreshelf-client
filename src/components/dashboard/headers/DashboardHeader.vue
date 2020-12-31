@@ -22,15 +22,18 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex-composition-helpers';
-const SharetribeStore = createNamespacedHelpers('sharetribe');
 const DashboardStore = createNamespacedHelpers('dashboard');
+
+import useSharetribe from '@/compositions/sharetribe/sharetribe';
 
 export default {
   props: {
     displayName: String,
   },
   setup(_, context) {
-    const { SHARETRIBE, currentUser } = SharetribeStore.useState(['SHARETRIBE', 'currentUser']);
+    const { useSharetribeState } = useSharetribe();
+    const { SHARETRIBE, currentUser } = useSharetribeState;
+
     const DashboardMutations = DashboardStore.useMutations([
       'togglePublishModal',
       'setPublishModalEditData',

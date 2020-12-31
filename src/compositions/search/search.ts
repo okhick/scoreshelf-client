@@ -1,8 +1,8 @@
 import VueCompositionAPI, { ref, SetupContext } from '@vue/composition-api';
+// @ts-ignore
 import useScoreshelf from '@/compositions/scoreshelf/scoreshelf.js';
-
-import { createNamespacedHelpers } from 'vuex-composition-helpers';
-const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
+// @ts-ignore
+import useSharetribe from '@/compositions/sharetribe/sharetribe.js';
 
 import { stringify } from 'qs';
 
@@ -18,6 +18,38 @@ const searchIsLoading = ref(false);
 const searchListingData = ref([]);
 const searchResultsMeta = ref({});
 
+function searchStateManagement() {
+  function toggleSearchIsLoading() {
+    searchIsLoading.value = !searchIsLoading.value;
+  }
+  // TODO: Type these payloads
+  function addSearchListingData(payload: any) {
+    searchListingData.value = payload;
+  }
+  function addSearchResultsMeta(payload: any) {
+    searchResultsMeta.value = payload;
+  }
+  function toggleSearchbarIsShowing() {
+    searchbarIsShowing.value = !searchbarIsShowing.value;
+  }
+  function hideSearchbar() {
+    searchbarIsShowing.value = false;
+  }
+  function resetSearchStore() {
+    searchListingData.value = [];
+    searchResultsMeta.value = {};
+  }
+
+  return {
+    toggleSearchIsLoading,
+    addSearchListingData,
+    addSearchResultsMeta,
+    toggleSearchbarIsShowing,
+    hideSearchbar,
+    resetSearchStore,
+  };
+}
+
 // ==================================
 
 interface ThumbnailRef {
@@ -26,13 +58,12 @@ interface ThumbnailRef {
 }
 
 export default function useSearch(context: SetupContext) {
+  const { useSharetribeState } = useSharetribe();
   const { SCORESHELF } = useScoreshelf();
+
+  const { SHARETRIBE } = useSharetribeState;
   const useSearchStateManagement = searchStateManagement();
 
-  //---------- vuex state mapping ----------
-  const { SHARETRIBE } = sharetribeStore.useState(['SHARETRIBE']);
-
-  //---------- methods ----------
   async function executeSearch() {
     useSearchStateManagement.toggleSearchIsLoading();
 
@@ -107,37 +138,5 @@ export default function useSearch(context: SetupContext) {
     // ---- functions ----
     executeSearch,
     useSearchStateManagement,
-  };
-}
-
-function searchStateManagement() {
-  function toggleSearchIsLoading() {
-    searchIsLoading.value = !searchIsLoading.value;
-  }
-  // TODO: Type these payloads
-  function addSearchListingData(payload: any) {
-    searchListingData.value = payload;
-  }
-  function addSearchResultsMeta(payload: any) {
-    searchResultsMeta.value = payload;
-  }
-  function toggleSearchbarIsShowing() {
-    searchbarIsShowing.value = !searchbarIsShowing.value;
-  }
-  function hideSearchbar() {
-    searchbarIsShowing.value = false;
-  }
-  function resetSearchStore() {
-    searchListingData.value = [];
-    searchResultsMeta.value = {};
-  }
-
-  return {
-    toggleSearchIsLoading,
-    addSearchListingData,
-    addSearchResultsMeta,
-    toggleSearchbarIsShowing,
-    hideSearchbar,
-    resetSearchStore,
   };
 }

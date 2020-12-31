@@ -2,8 +2,9 @@ import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublishe
 
 import { reactive, toRefs } from '@vue/composition-api';
 import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
 const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
+
+import useSharetribe from '@/compositions/sharetribe/sharetribe';
 
 // ============================================================================
 
@@ -158,9 +159,10 @@ function SharetribePublisherForm() {
 // ============================================================================
 
 function SharetribePublisherListings() {
-  const { SHARETRIBE } = sharetribeStore.useState(['SHARETRIBE']);
-  const { publishModalEditData } = dashboardStore.useState(['publishModalEditData']);
+  const { useSharetribeState } = useSharetribe();
+  const { SHARETRIBE } = useSharetribeState;
 
+  const { publishModalEditData } = dashboardStore.useState(['publishModalEditData']);
   const { getCurrentListingId } = dashboardStore.useGetters(['getCurrentListingId']);
 
   const useSharetribePublisherForm = SharetribePublisherForm();

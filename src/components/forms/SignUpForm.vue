@@ -72,11 +72,7 @@
 
 <script>
 import { reactive, ref, toRefs } from '@vue/composition-api';
-import { mapState } from 'vuex';
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
-
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
 
 export default {
   name: 'SignUpForm',
@@ -90,8 +86,8 @@ export default {
       displayName: '',
     });
     const isLoading = ref(false);
-    const { SHARETRIBE } = sharetribeStore.useState(['SHARETRIBE']);
-    const { useRefreshLogin } = useSharetribe();
+    const { useRefreshLogin, useSharetribeState } = useSharetribe();
+    const { SHARETRIBE } = useSharetribeState;
 
     function loginActually() {
       context.root.$router.push({ name: 'Login' });

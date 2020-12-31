@@ -41,11 +41,11 @@
 
 <script>
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
+import useSharetribe from '@/compositions/sharetribe/sharetribe';
 
 import { ref, onMounted, watch, computed } from '@vue/composition-api';
 import { createNamespacedHelpers } from 'vuex-composition-helpers';
 const DashboardStore = createNamespacedHelpers('dashboard');
-const SharetribeStore = createNamespacedHelpers('sharetribe');
 
 import Vue from 'vue';
 Vue.use(require('vue-moment'));
@@ -66,7 +66,8 @@ export default {
       'togglePublishModal',
       'setPublishModalEditData',
     ]);
-    const { SHARETRIBE, currentUser } = SharetribeStore.useState(['SHARETRIBE', 'currentUser']);
+    const { useSharetribeState } = useSharetribe();
+    const { SHARETRIBE, currentUser } = useSharetribeState;
 
     // Load published works
     onMounted(async () => {

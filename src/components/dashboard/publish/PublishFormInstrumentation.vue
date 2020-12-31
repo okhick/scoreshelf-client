@@ -59,6 +59,7 @@ import { onMounted, ref, computed } from '@vue/composition-api';
 import Autocomplete from '@trevoreyre/autocomplete-vue';
 import startcase from 'lodash.startcase';
 import fullList from '@/store/listReduced.json';
+// @ts-ignore
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 
 import { createNamespacedHelpers } from 'vuex-composition-helpers';

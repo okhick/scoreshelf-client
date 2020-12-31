@@ -1,23 +1,55 @@
-import { toRefs, reactive } from '@vue/composition-api';
-
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
+import Vue from 'vue';
+import VueCompositionAPI, { ref } from '@vue/composition-api';
+Vue.use(VueCompositionAPI);
 
 const sharetribeSdk = require('sharetribe-flex-sdk');
 
+// ========================================================
+// ===================Sharetribe State=====================
+// ========================================================
+
+const SHARETRIBE = ref();
+const isLoggedIn = ref(false);
+const currentUser = ref();
+
+function SharetribeState() {
+  function initSharetribe(payload) {
+    SHARETRIBE.value = payload;
+  }
+
+  function updateIsLoggedIn(payload) {
+    isLoggedIn.value = payload;
+  }
+
+  function updateCurrentUser(payload) {
+    currentUser.value = payload;
+  }
+
+  function getCurrentUserId() {
+    return currentUser.value.id.uuid;
+  }
+
+  return {
+    initSharetribe,
+    updateIsLoggedIn,
+    updateCurrentUser,
+    getCurrentUserId,
+    SHARETRIBE,
+    isLoggedIn,
+    currentUser,
+  };
+}
+
+// ========================================================
+
 export default function useSharetribe() {
-  const sharetribeState = sharetribeStore.useState(['isLoggedIn', 'SHARETRIBE']);
-  const sharetribeMutations = sharetribeStore.useMutations([
-    'initSharetribe',
-    'updateIsLoggedIn',
-    'updateCurrentUser',
-  ]);
+  const useSharetribeState = SharetribeState();
 
   async function useSharetribeSdk() {
-    let sharetribe = await sharetribeSdk.createInstance({
+    const sharetribeInstance = await sharetribeSdk.createInstance({
       clientId: process.env.VUE_APP_SHARETRIBE_CLIENT_ID,
     });
-    sharetribeMutations.initSharetribe(sharetribe);
+    useSharetribeState.initSharetribe(sharetribeInstance);
     return;
   }
 
@@ -25,15 +57,15 @@ export default function useSharetribe() {
   //probably on every view
   async function useRefreshLogin() {
     //check that SHARETRIBE has been loaded.
-    if (typeof sharetribeState.SHARETRIBE.value.authInfo === 'function') {
-      let authInfo = await sharetribeState.SHARETRIBE.value.authInfo();
+    if (typeof SHARETRIBE.value.authInfo === 'function') {
+      let authInfo = await SHARETRIBE.value.authInfo();
 
       if (authInfo && authInfo.isAnonymous === false) {
-        sharetribeMutations.updateIsLoggedIn(true);
+        useSharetribeState.updateIsLoggedIn(true);
         console.log('User is logged in.');
         return true;
       } else {
-        sharetribeMutations.updateIsLoggedIn(false);
+        useSharetribeState.updateIsLoggedIn(false);
         console.log('User is NOT logged in.');
         return false;
         // TODO do some actions to make sure logout etc...
@@ -42,8 +74,8 @@ export default function useSharetribe() {
   }
 
   async function useUpdateCurrentUser() {
-    const userData = await sharetribeState.SHARETRIBE.value.currentUser.show();
-    await sharetribeMutations.updateCurrentUser(userData.data.data);
+    const userData = await SHARETRIBE.value.currentUser.show();
+    useSharetribeState.updateCurrentUser(userData.data.data);
     return userData;
   }
 
@@ -55,6 +87,7 @@ export default function useSharetribe() {
   }
 
   return {
+    useSharetribeState,
     useSharetribeSdk,
     useRefreshLogin,
     useUpdateCurrentUser,
