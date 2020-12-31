@@ -71,7 +71,7 @@ export default {
   margin-bottom: 0px;
 }
 h2 {
-  font-weight: 600;
+  // font-weight: 600;
   padding: 12px;
   font-family: $family-primary;
 }

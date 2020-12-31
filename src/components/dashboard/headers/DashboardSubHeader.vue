@@ -1,22 +1,22 @@
 <template>
-  <div class="level sub-header">
-    <div class="level-right">
-      <div class="level-item">
-        <div class="level-item">
-          <h1 :class="['title', { 'is-active': activeDashboardView === 'Purchases' }]">
-            <router-link to="/dashboard/purchases">Purchases</router-link>
-          </h1>
-        </div>
-        <h1 :class="['title', { 'is-active': activeDashboardView === 'Publications' }]">
+  <div class="tabs is-boxed">
+    <ul>
+      <li :class="[{ 'is-active': activeDashboardView === 'Purchases' }]">
+        <h1 class="title">
+          <router-link to="/dashboard/purchases">Purchases</router-link>
+        </h1>
+      </li>
+      <li :class="[{ 'is-active': activeDashboardView === 'Publications' }]">
+        <h1 class="title">
           <router-link to="/dashboard/publications">Publications</router-link>
         </h1>
-      </div>
-      <div class="level-item">
-        <h1 :class="['title', { 'is-active': activeDashboardView === 'Sales' }]">
+      </li>
+      <li :class="[{ 'is-active': activeDashboardView === 'Sales' }]">
+        <h1 class="title">
           <router-link to="/dashboard/sales">Sales</router-link>
         </h1>
-      </div>
-    </div>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -38,23 +38,20 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles/index.scss';
 
-.sub-header {
-  border-bottom: solid 1px $black-light;
-  padding-bottom: 24px;
-}
+.tabs {
+  ul {
+    justify-content: start;
+  }
 
-.sub-header .level-item {
-  padding-right: 96px;
-}
+  h1.title a {
+    font-family: $family-primary;
+    font-weight: 400;
+    color: $black;
+    text-decoration: none;
+  }
 
-.level.sub-header h1.title a {
-  font-family: $family-primary;
-  font-weight: 400;
-  color: $black;
-  text-decoration: none;
-}
-
-.level.sub-header h1.title.is-active a {
-  font-weight: 800;
+  .is-active h1.title a {
+    color: $maroon;
+  }
 }
 </style>
