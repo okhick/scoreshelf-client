@@ -1,49 +1,46 @@
-import Vue from 'vue';
-import VueCompositionAPI, { ref } from '@vue/composition-api';
-Vue.use(VueCompositionAPI);
-
 const sharetribeSdk = require('sharetribe-flex-sdk');
-
+import SharetribeState from './sharetribeState';
 // ========================================================
 // ===================Sharetribe State=====================
 // ========================================================
 
-const SHARETRIBE = ref();
-const isLoggedIn = ref(false);
-const currentUser = ref();
+// const SHARETRIBE = ref();
+// const isLoggedIn = ref(false);
+// const currentUser = ref();
 
-function SharetribeState() {
-  function initSharetribe(payload) {
-    SHARETRIBE.value = payload;
-  }
+// function SharetribeState() {
+//   function initSharetribe(payload) {
+//     SHARETRIBE.value = payload;
+//   }
 
-  function updateIsLoggedIn(payload) {
-    isLoggedIn.value = payload;
-  }
+//   function updateIsLoggedIn(payload) {
+//     isLoggedIn.value = payload;
+//   }
 
-  function updateCurrentUser(payload) {
-    currentUser.value = payload;
-  }
+//   function updateCurrentUser(payload) {
+//     currentUser.value = payload;
+//   }
 
-  function getCurrentUserId() {
-    return currentUser.value.id.uuid;
-  }
+//   function getCurrentUserId() {
+//     return currentUser.value.id.uuid;
+//   }
 
-  return {
-    initSharetribe,
-    updateIsLoggedIn,
-    updateCurrentUser,
-    getCurrentUserId,
-    SHARETRIBE,
-    isLoggedIn,
-    currentUser,
-  };
-}
+//   return {
+//     initSharetribe,
+//     updateIsLoggedIn,
+//     updateCurrentUser,
+//     getCurrentUserId,
+//     SHARETRIBE,
+//     isLoggedIn,
+//     currentUser,
+//   };
+// }
 
 // ========================================================
 
 export default function useSharetribe() {
   const useSharetribeState = SharetribeState();
+  const { SHARETRIBE } = useSharetribeState;
 
   async function useSharetribeSdk() {
     const sharetribeInstance = await sharetribeSdk.createInstance({

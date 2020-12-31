@@ -43,7 +43,7 @@ export default {
 $steps-default-color: $tan;
 $steps-completed-color: $black;
 $steps-active-color: $black;
-@import 'bulma-o-steps/bulma-steps.scss';
+@import 'bulma-o-steps/bulma-steps.sass';
 
 .steps-content p.menu-label {
   margin-bottom: 0;
