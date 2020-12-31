@@ -1,15 +1,13 @@
 import { reactive, toRefs } from '@vue/composition-api';
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
 
 import { stringify } from 'qs';
 
 import useScoreshelf from '@/compositions/scoreshelf/scoreshelf.js';
 
 import Vue from 'vue';
-import store from '@/store';
 
-const sharetribeStore = createNamespacedHelpers(store, 'sharetribe'); // specific module name
-const dashboardStore = createNamespacedHelpers(store, 'dashboard'); // specific module name
+import useSharetribe from '@/compositions/sharetribe/sharetribe';
+import useDashboard from '@/compositions/dashboard/dashboard';
 
 // ============================================================================
 
@@ -103,7 +101,9 @@ function FileStateManagement() {
   }
 
   function initAssetData() {
-    const { publishModalEditData } = dashboardStore.useState(['publishModalEditData']);
+    const { useDashboardState } = useDashboard();
+    const { publishModalEditData } = useDashboardState;
+
     FileState.fileList.forEach((file) => {
       // first make reactive refs for everything
       if (FileState.thumbnailSettings[file.asset_name] === undefined) {
@@ -235,8 +235,12 @@ function ScoreshelfUploadManagement() {
 function ScoreshelfAssetManagement() {
   const { SCORESHELF } = useScoreshelf();
 
-  const { getCurrentUserId } = sharetribeStore.useGetters(['getCurrentUserId']);
-  const { getCurrentListingId } = dashboardStore.useGetters(['getCurrentListingId']);
+  const { useDashboardState } = useDashboard();
+  const { getCurrentListingId } = useDashboardState;
+
+  const { useSharetribeState } = useSharetribe();
+  const { getCurrentUserId } = useSharetribeState;
+
   const scoreshelfFileStateManagement = FileStateManagement();
 
   async function hyrdateAssetData(fileList, getLink) {

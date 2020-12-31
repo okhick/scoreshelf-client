@@ -118,8 +118,7 @@ import PublishForm from './PublishForm.vue';
 
 import { ref, watch } from '@vue/composition-api';
 
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
+import useDashboard from '@/compositions/dashboard/dashboard';
 
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
@@ -136,12 +135,14 @@ export default {
     PublishForm,
   },
   setup() {
-    const dashboardState = dashboardStore.useState(['publishModalEditData', 'publishModalOpen']);
-    const dashboardMutations = dashboardStore.useMutations([
-      'togglePublishModal',
-      'clearPublishModalEditData',
-      'editPublishModalEditData',
-    ]);
+    const { useDashboardState } = useDashboard();
+    const {
+      publishModalEditData,
+      publishModalOpen,
+      togglePublishModal,
+      clearPublishModalEditData,
+      editPublishModalEditData,
+    } = useDashboardState;
 
     const { useSharetribePublisherListings, useSharetribePublisherForm } = useSharetribePublisher();
     const { useScoreshelfUploadManagement, useFileStateManagement } = useScoreshelfPublisher();
@@ -151,7 +152,7 @@ export default {
     const isNewPiece = ref(true);
     const pieceStatus = ref(null);
 
-    watch(dashboardState.publishModalEditData, async (newData) => {
+    watch(publishModalEditData, async (newData) => {
       // if newData.attributes is falsy, we're publishing from a blank
       if (newData != null && newData?.attributes) {
         isNewPiece.value = false;
@@ -177,7 +178,7 @@ export default {
     async function cancelModal() {
       setIsLoading('cancel');
 
-      if (dashboardState.publishModalEditData.value.isBlankDraft) {
+      if (publishModalEditData.value.isBlankDraft) {
         await useSharetribePublisherListings.deletePublication();
       }
 
@@ -187,13 +188,13 @@ export default {
 
     function closeEditModal() {
       pieceStatus.value = '';
-      dashboardMutations.clearPublishModalEditData();
+      clearPublishModalEditData();
 
       useSharetribePublisherForm.clearFormData();
       useFileStateManagement.resetFileState();
       usePublishFormNavigation.gotoStep('info');
 
-      dashboardMutations.togglePublishModal();
+      togglePublishModal();
     }
 
     function togglePublishDropdown() {
@@ -266,7 +267,7 @@ export default {
       isLoading,
       isNewPiece,
       pieceStatus,
-      publishModalOpen: dashboardState.publishModalOpen,
+      publishModalOpen,
       // ---- Methods ----
       // -- Modal Control
       cancelModal,

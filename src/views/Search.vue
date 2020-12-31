@@ -34,9 +34,6 @@ import useSearch from '@/compositions/search/search';
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 
-// import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-// const searchStore = createNamespacedHelpers('search'); // specific module name
-
 export default {
   components: {
     Loading,

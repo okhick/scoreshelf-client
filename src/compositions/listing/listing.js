@@ -1,10 +1,7 @@
 import { reactive, toRefs, ref, onMounted } from '@vue/composition-api';
 import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
 import useSearch from '@/compositions/search/search';
-
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-import store from '@/store/index.js';
-const sharetribeStore = createNamespacedHelpers(store, 'sharetribe'); // specific module name
+import useSharetribe from '@/compositions/sharetribe/sharetribe';
 
 // ============================================
 
@@ -19,8 +16,9 @@ const ListingState = reactive({
 
 export default function useListing(listingId) {
   const { SCORESHELF } = useScoreshelf();
-  const { SHARETRIBE } = sharetribeStore.useState(['SHARETRIBE']);
   const { searchListingData } = useSearch();
+  const { useSharetribeState } = useSharetribe();
+  const { SHARETRIBE } = useSharetribeState;
 
   // ========== Get the listing data ==========
   async function getSearchListing() {

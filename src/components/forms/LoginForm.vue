@@ -58,8 +58,6 @@
 <script>
 import { ref } from '@vue/composition-api';
 
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
 
 export default {

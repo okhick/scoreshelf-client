@@ -8,8 +8,7 @@
 
 <script>
 import { onMounted, ref, watch, computed } from '@vue/composition-api';
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
+import useDashboard from '@/compositions/dashboard/dashboard';
 
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
 import useSearch from '@/compositions/search/search';
@@ -44,7 +43,8 @@ export default {
     });
 
     // get the active view and save it in the store
-    const { setDashboardView } = dashboardStore.useMutations(['setDashboardView']);
+    const { useDashboardState } = useDashboard();
+    const { setDashboardView } = useDashboardState;
     const dashboardRouterName = computed(() => context.root.$route.name);
     onMounted(() => setDashboardView(dashboardRouterName.value));
     watch(dashboardRouterName, (newValue) => setDashboardView(newValue));

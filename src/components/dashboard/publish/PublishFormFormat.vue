@@ -62,8 +62,7 @@
 import { watch } from '@vue/composition-api';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
 
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
+import useDashboard from '@/compositions/dashboard/dashboard';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -76,7 +75,8 @@ export default {
   },
   setup() {
     const { formats, fileList } = useScoreshelfPublisher();
-    const { publishModalEditData } = dashboardStore.useState(['publishModalEditData']);
+    const { useDashboardState } = useDashboard();
+    const { publishModalEditData } = useDashboardState;
     initFormatData();
 
     // ---------- Methods ----------

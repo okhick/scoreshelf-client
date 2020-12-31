@@ -21,9 +21,7 @@
 </template>
 
 <script>
-import { createNamespacedHelpers } from 'vuex-composition-helpers';
-const DashboardStore = createNamespacedHelpers('dashboard');
-
+import useDashboard from '@/compositions/dashboard/dashboard';
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
 
 export default {
@@ -34,11 +32,8 @@ export default {
     const { useSharetribeState } = useSharetribe();
     const { SHARETRIBE, currentUser } = useSharetribeState;
 
-    const DashboardMutations = DashboardStore.useMutations([
-      'togglePublishModal',
-      'setPublishModalEditData',
-    ]);
-    const { activeDashboardView } = DashboardStore.useState(['activeDashboardView']);
+    const { useDashboardState } = useDashboard();
+    const { togglePublishModal, setPublishModalEditData, activeDashboardView } = useDashboardState;
 
     async function createNewDraft() {
       if (activeDashboardView.value !== 'Publications') {
@@ -50,8 +45,8 @@ export default {
         title: `new_draft_${currentUser.value.id.uuid}`,
       });
       draft.data.data.isBlankDraft = true;
-      DashboardMutations.setPublishModalEditData(draft.data.data);
-      DashboardMutations.togglePublishModal();
+      setPublishModalEditData(draft.data.data);
+      togglePublishModal();
     }
 
     return {

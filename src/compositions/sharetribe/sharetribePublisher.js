@@ -1,8 +1,8 @@
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
 
 import { reactive, toRefs } from '@vue/composition-api';
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
+
+import useDashboard from '@/compositions/dashboard/dashboard';
 
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
 
@@ -162,8 +162,8 @@ function SharetribePublisherListings() {
   const { useSharetribeState } = useSharetribe();
   const { SHARETRIBE } = useSharetribeState;
 
-  const { publishModalEditData } = dashboardStore.useState(['publishModalEditData']);
-  const { getCurrentListingId } = dashboardStore.useGetters(['getCurrentListingId']);
+  const { useDashboardState } = useDashboard();
+  const { publishModalEditData, getCurrentListingId } = useDashboardState;
 
   const useSharetribePublisherForm = SharetribePublisherForm();
 
@@ -176,14 +176,14 @@ function SharetribePublisherListings() {
 
   async function publishDraft() {
     await SHARETRIBE.value.ownListings.publishDraft({
-      id: getCurrentListingId.value,
+      id: getCurrentListingId(),
     });
     return;
   }
 
   async function updatePublication() {
     await SHARETRIBE.value.ownListings.update({
-      id: getCurrentListingId.value,
+      id: getCurrentListingId(),
       ...useSharetribePublisherForm.formatArgs(),
     });
     return;
@@ -197,13 +197,13 @@ function SharetribePublisherListings() {
     switch (listingState) {
       case 'draft':
         await SHARETRIBE.value.ownListings.discardDraft({
-          id: getCurrentListingId.value,
+          id: getCurrentListingId(),
         });
         break;
 
       case 'published':
         await SHARETRIBE.value.ownListings.close({
-          id: getCurrentListingId.value,
+          id: getCurrentListingId(),
         });
         break;
     }

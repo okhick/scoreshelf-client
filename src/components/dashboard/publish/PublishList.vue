@@ -44,8 +44,8 @@ import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublishe
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
 
 import { ref, onMounted, watch, computed } from '@vue/composition-api';
-import { createNamespacedHelpers } from 'vuex-composition-helpers';
-const DashboardStore = createNamespacedHelpers('dashboard');
+
+import useDashboard from '@/compositions/dashboard/dashboard';
 
 import Vue from 'vue';
 Vue.use(require('vue-moment'));
@@ -60,12 +60,8 @@ export default {
     const reloadTable = ref(0);
     const hasPublishedMusic = computed(() => (publishedMusic !== null ? true : false));
 
-    // I could descructure these if I wanted to, but these feel more self documenting?
-    const DashboardState = DashboardStore.useState(['publishModalOpen']);
-    const DashboardMutations = DashboardStore.useMutations([
-      'togglePublishModal',
-      'setPublishModalEditData',
-    ]);
+    const { useDashboardState } = useDashboard();
+    const { publishModalOpen, togglePublishModal, setPublishModalEditData } = useDashboardState;
     const { useSharetribeState } = useSharetribe();
     const { SHARETRIBE, currentUser } = useSharetribeState;
 
@@ -74,7 +70,7 @@ export default {
       await getPublishedMusic();
     });
 
-    watch(DashboardState.publishModalOpen, async (newModalState) => {
+    watch(publishModalOpen, async (newModalState) => {
       if (newModalState == false) {
         await getPublishedMusic();
         reloadTable.value += 1;
@@ -111,7 +107,7 @@ export default {
     }
 
     async function openEditModal(pieceData) {
-      DashboardMutations.setPublishModalEditData(pieceData);
+      setPublishModalEditData(pieceData);
       // get init data about the files
       const assetData = pieceData.attributes.privateData.assetData;
       if (assetData && assetData.length > 0) {
@@ -127,7 +123,7 @@ export default {
           useFileStateManagement.addFileToFileList(file);
         });
       }
-      DashboardMutations.togglePublishModal();
+      togglePublishModal();
     }
 
     return {

@@ -71,8 +71,7 @@
 </template>
 
 <script>
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
+import useDashboard from '@/compositions/dashboard/dashboard';
 
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 import { onMounted } from '@vue/composition-api';
@@ -88,7 +87,8 @@ export default {
   },
   setup() {
     const { formData, useSharetribePublisherForm } = useSharetribePublisher();
-    const { publishModalEditData } = dashboardStore.useState(['publishModalEditData']);
+    const { useDashboardState } = useDashboard();
+    const { publishModalEditData } = useDashboardState;
 
     onMounted(() => {
       if (publishModalEditData.value != null && publishModalEditData.value?.attributes) {

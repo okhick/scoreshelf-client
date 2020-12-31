@@ -97,9 +97,6 @@ import Vue from 'vue';
 
 import { DateTime } from 'luxon';
 
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
-
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUpload, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -119,8 +116,6 @@ export default {
       useFileStateManagement,
       useScoreshelfHelpers,
     } = useScoreshelfPublisher();
-
-    const { publishModalEditData } = dashboardStore.useState(['publishModalEditData']);
 
     useFileStateManagement.initAssetData();
 

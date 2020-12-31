@@ -62,8 +62,7 @@ import fullList from '@/store/listReduced.json';
 // @ts-ignore
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 
-import { createNamespacedHelpers } from 'vuex-composition-helpers';
-const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
+import useDashboard from '@/compositions/dashboard/dashboard';
 
 export default Vue.extend({
   components: {
@@ -90,12 +89,13 @@ export default Vue.extend({
     // ========== Handle instrument selection and display ==========
     const inputValue = ref<string>();
     const { formData } = useSharetribePublisher();
-    const { publishModalEditData } = dashboardStore.useState(['publishModalEditData']);
+    const { useDashboardState } = useDashboard();
+    const { publishModalEditData } = useDashboardState;
 
     onMounted(() => {
       if (publishModalEditData.value.attributes) {
         formData.value.instrumentation =
-          publishModalEditData.value.attributes.publicData.instrumentation;
+          publishModalEditData?.value.attributes.publicData.instrumentation;
       }
     });
 
