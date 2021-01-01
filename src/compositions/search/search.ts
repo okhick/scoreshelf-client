@@ -6,13 +6,8 @@ import useSharetribe from '@/compositions/sharetribe/sharetribe.js';
 
 import { stringify } from 'qs';
 
-import {
-  SearchResultsMeta,
-  Listing,
-  ListingSearchRes,
-  ListingThumbnailHydrated,
-  ListingThumbnailHydratedRes,
-} from '@/@types';
+import { AxiosResponse } from 'axios';
+import { SearchResultsMeta, Listing, ListingSearch, ListingThumbnailHydrated } from '@/@types';
 
 // This feels like a bug. Why do I have to call this here when it's already called in main.js?
 // Might be fixed in Vue3: https://stackoverflow.com/questions/61885716/uncaught-error-vue-composition-api-must-call-vue-useplugin-before-using-any/61907559#61907559
@@ -75,7 +70,7 @@ export default function useSearch(context: SetupContext) {
   async function executeSearch() {
     useSearchStateManagement.toggleSearchIsLoading();
 
-    const res: ListingSearchRes = await SHARETRIBE.value.listings.query({
+    const res: AxiosResponse<ListingSearch> = await SHARETRIBE.value.listings.query({
       keywords: searchInput.value,
     });
     context.root.$router.push({
@@ -112,7 +107,7 @@ export default function useSearch(context: SetupContext) {
     if (thumbnails.length === 0) return listingData;
 
     // hydrate the data
-    const thumbnailData: ListingThumbnailHydratedRes = await SCORESHELF.value.get(
+    const thumbnailData: AxiosResponse<ListingThumbnailHydrated[]> = await SCORESHELF.value.get(
       'getThumbnailData',
       {
         params: {

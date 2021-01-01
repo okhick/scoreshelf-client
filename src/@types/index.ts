@@ -1,14 +1,26 @@
+import { AxiosResponse } from 'axios';
+
 export interface Listing {
   id: { uuid: string };
   type: 'listing';
   attributes: ListingAttributes;
 }
 
-export interface ListingSearchRes {
-  data: {
-    data: Listing[];
-    meta: SearchResultsMeta;
-  };
+export interface ListingSearch {
+  data: Listing[];
+  meta: SearchResultsMeta;
+}
+
+export interface ListingQuery {
+  data: Listing;
+  meta: SearchResultsMeta;
+}
+
+export interface SearchResultsMeta {
+  page: number;
+  prePage: number;
+  totalItems: number;
+  totalPages: number;
 }
 
 export interface ListingAttributes {
@@ -43,11 +55,6 @@ export interface ListingPreview {
   asset_id: string;
 }
 
-export interface ListingThumbnailHydratedRes {
-  status: number;
-  data: ListingThumbnailHydrated[];
-}
-
 export interface ListingThumbnailHydrated {
   _id: string;
   asset_name: string;
@@ -57,11 +64,4 @@ export interface ListingThumbnailHydrated {
   width: number;
   height: number;
   page: number;
-}
-
-export interface SearchResultsMeta {
-  page: number;
-  prePage: number;
-  totalItems: number;
-  totalPages: number;
 }

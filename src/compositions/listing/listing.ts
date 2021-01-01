@@ -5,11 +5,21 @@ import useSearch from '@/compositions/search/search';
 // @ts-ignore
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
 
+import { AxiosResponse } from 'axios';
+import { Listing, ListingQuery } from '@/@types';
+
 // ============================================
 
-const ListingState = reactive({
-  listingData: {},
-  previewBuffer: {},
+interface IListingState {
+  listingData: Listing | undefined;
+  previewBuffer: ArrayBuffer | undefined;
+  selectedFormat: string;
+  scrollPos: number;
+}
+
+const ListingState = reactive<IListingState>({
+  listingData: undefined,
+  previewBuffer: undefined,
   selectedFormat: '',
   scrollPos: 0,
 });
@@ -31,7 +41,7 @@ export default function useListing(listingId: string, context: SetupContext) {
     if (searchListingStore !== undefined) {
       ListingState.listingData = searchListingStore;
     } else {
-      const listingRes = await SHARETRIBE.value.listings.show({
+      const listingRes: AxiosResponse<ListingQuery> = await SHARETRIBE.value.listings.show({
         id: listingId,
       });
       ListingState.listingData = listingRes.data.data;
@@ -40,13 +50,14 @@ export default function useListing(listingId: string, context: SetupContext) {
   }
 
   async function getPreviewBuffer(): Promise<void> {
-    const previewRes = await SCORESHELF.value.get('/getAssetBin', {
-      // @ts-ignore
-      params: { scoreshelf_id: ListingState.listingData.attributes.publicData.preview.asset_id },
-      responseType: 'arraybuffer', //defining the response type is EXTREMELY important here
-    });
-    const previewBuffer = new Uint8Array(previewRes.data);
-    ListingState.previewBuffer = previewBuffer;
+    if (ListingState.listingData) {
+      const previewRes: AxiosResponse<ArrayBuffer> = await SCORESHELF.value.get('/getAssetBin', {
+        params: { scoreshelf_id: ListingState.listingData.attributes.publicData.preview.asset_id },
+        responseType: 'arraybuffer', //defining the response type is EXTREMELY important here
+      });
+      const previewBuffer = new Uint8Array(previewRes.data);
+      ListingState.previewBuffer = previewBuffer;
+    }
     return;
   }
 
