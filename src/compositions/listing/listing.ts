@@ -1,6 +1,8 @@
-import { reactive, toRefs, ref, onMounted } from '@vue/composition-api';
+import { reactive, toRefs, ref, onMounted, SetupContext } from '@vue/composition-api';
+// @ts-ignore
 import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
 import useSearch from '@/compositions/search/search';
+// @ts-ignore
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
 
 // ============================================
@@ -14,14 +16,14 @@ const ListingState = reactive({
 
 // ============================================
 
-export default function useListing(listingId) {
+export default function useListing(listingId: string, context: SetupContext) {
   const { SCORESHELF } = useScoreshelf();
-  const { searchListingData } = useSearch();
+  const { searchListingData } = useSearch(context);
   const { useSharetribeState } = useSharetribe();
   const { SHARETRIBE } = useSharetribeState;
 
   // ========== Get the listing data ==========
-  async function getSearchListing() {
+  async function getSearchListing(): Promise<void> {
     const searchListingStore = searchListingData.value.find(
       (listing) => listing.id.uuid === listingId
     );
@@ -34,16 +36,18 @@ export default function useListing(listingId) {
       });
       ListingState.listingData = listingRes.data.data;
     }
-    return true;
+    return;
   }
 
-  async function getPreviewBuffer() {
+  async function getPreviewBuffer(): Promise<void> {
     const previewRes = await SCORESHELF.value.get('/getAssetBin', {
+      // @ts-ignore
       params: { scoreshelf_id: ListingState.listingData.attributes.publicData.preview.asset_id },
       responseType: 'arraybuffer', //defining the response type is EXTREMELY important here
     });
     const previewBuffer = new Uint8Array(previewRes.data);
     ListingState.previewBuffer = previewBuffer;
+    return;
   }
 
   // ========== Add listener get get scroll pos ==========

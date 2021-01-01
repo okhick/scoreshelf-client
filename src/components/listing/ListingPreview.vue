@@ -24,7 +24,7 @@
 <script>
 import { onMounted, ref, computed, watch } from '@vue/composition-api';
 import pdf from 'vue-pdf';
-import useListing from '@/compositions/listing/listing.js';
+import useListing from '@/compositions/listing/listing';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faAngleDoubleRight, faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons';

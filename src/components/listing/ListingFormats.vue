@@ -14,11 +14,11 @@
 </template>
 
 <script>
-import useListing from '@/compositions/listing/listing.js';
+import useListing from '@/compositions/listing/listing';
 import { ref } from '@vue/composition-api';
 
 export default {
-  setup() {
+  setup(_, context) {
     const { listingData, selectedFormat } = useListing();
     const formats = listingData.value.attributes.publicData.formats;
 
