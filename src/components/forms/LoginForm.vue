@@ -55,7 +55,7 @@
 }
 </style>
 
-<script>
+<script type="ts">
 import { ref } from '@vue/composition-api';
 
 import useSharetribe from '@/compositions/sharetribe/sharetribe';

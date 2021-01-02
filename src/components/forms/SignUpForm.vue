@@ -70,7 +70,7 @@
 }
 </style>
 
-<script>
+<script lang="ts">
 import { reactive, ref, toRefs } from '@vue/composition-api';
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
 
@@ -96,6 +96,7 @@ export default {
     async function signupAttempt() {
       try {
         isLoading.value = true;
+        // TODO: Type this when you actually need error handling here.
         const signupRes = await SHARETRIBE.value.currentUser.create({
           email: formData.email,
           password: formData.password,
