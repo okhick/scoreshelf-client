@@ -23,7 +23,7 @@
 
 <script>
 import { ref } from '@vue/composition-api';
-import usePublishForm from '@/compositions/form/publishForm.js';
+import usePublishForm from '@/compositions/form/publishForm';
 
 export default {
   setup() {

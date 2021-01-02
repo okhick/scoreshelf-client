@@ -122,7 +122,7 @@ import useDashboard from '@/compositions/dashboard/dashboard';
 
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
-import usePublishForm from '@/compositions/form/publishForm.js';
+import usePublishForm from '@/compositions/form/publishForm';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTrashAlt, faAngleDown } from '@fortawesome/free-solid-svg-icons';

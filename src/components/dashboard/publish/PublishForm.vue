@@ -43,7 +43,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faAngleLeft, faAngleRight);
 
 import { ref } from '@vue/composition-api';
-import usePublishForm from '@/compositions/form/publishForm.js';
+import usePublishForm from '@/compositions/form/publishForm';
 
 export default {
   components: {
