@@ -96,7 +96,10 @@ export default function useSearch(context: SetupContext) {
 
     // format the query and make a sorting refrence to match up easier later
     listingData.forEach((listing, index: number) => {
-      if ('thumbnail_id' in listing.attributes.publicData.thumbnail) {
+      if (
+        listing.attributes.publicData.thumbnail &&
+        'thumbnail_id' in listing.attributes.publicData.thumbnail
+      ) {
         const thumbnail_id = listing.attributes.publicData.thumbnail.thumbnail_id;
         thumbnails.push(thumbnail_id);
         thumbnailRefs.push({ index: index, thumbnail_id: thumbnail_id });

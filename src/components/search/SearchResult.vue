@@ -41,14 +41,21 @@
   </div>
 </template>
 
-<script>
-import { ref, computed } from '@vue/composition-api';
+<script lang="ts">
+import { ref, computed, PropType, defineComponent } from '@vue/composition-api';
 import useScoreshelf from '@/compositions/scoreshelf/scoreshelf.js';
-
 import debounce from 'lodash.debounce';
 
-export default {
-  props: { listing: Object },
+import { Listing } from '@/@types';
+
+// using defineComponent is key to getting the props working here
+export default defineComponent({
+  props: {
+    listing: {
+      required: true,
+      type: Object as PropType<Listing>,
+    },
+  },
   setup({ listing }, context) {
     const showEnsembleOrInstrumentation = computed(() => {
       return listing.attributes.publicData.ensemble
@@ -63,7 +70,7 @@ export default {
     // ========== Get thumbnail link ==========
     const pathToThumbnail = computed(() => {
       const { THUMBNAIL_BASE_URL } = useScoreshelf();
-      if (listing.attributes.publicData.thumbnail) {
+      if ('_id' in listing.attributes.publicData.thumbnail) {
         const thumbnail = listing.attributes.publicData.thumbnail;
         return `${THUMBNAIL_BASE_URL}/${thumbnail.sharetribe_user_id}/${thumbnail.sharetribe_listing_id}/${thumbnail.asset_name}`;
       } else {
@@ -79,7 +86,14 @@ export default {
       peek: 'transform: scale(1) translateY(0px);',
       hide: 'transform: translateY(80px);',
     });
-    function calculateTransfrorm(event) {
+
+    interface SizedEvent {
+      target: {
+        width: number;
+        height: number;
+      };
+    }
+    function calculateTransfrorm(event: SizedEvent & Event) {
       // These constants are also set in the CSS below
       const CARD_HEIGHT = 380; // .work-card
       const TOP_BUFFER = 20; //   .thumb
@@ -156,7 +170,7 @@ export default {
       goToListing,
     };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
