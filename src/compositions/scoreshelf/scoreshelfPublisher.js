@@ -2,7 +2,7 @@ import { reactive, toRefs } from '@vue/composition-api';
 
 import { stringify } from 'qs';
 
-import useScoreshelf from '@/compositions/scoreshelf/scoreshelf.js';
+import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
 
 import Vue from 'vue';
 

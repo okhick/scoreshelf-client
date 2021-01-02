@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 
 // This feels like a bug. Why do I have to call this here when it's already called in main.js?
 // Might be fixed in Vue3: https://stackoverflow.com/questions/61885716/uncaught-error-vue-composition-api-must-call-vue-useplugin-before-using-any/61907559#61907559
@@ -8,10 +8,10 @@ Vue.use(VueCompositionAPI);
 
 import { authorizeScoreshelfApi } from '@/compositions/scoreshelf/scoreshelfAuth';
 
-const SCORESHELF = ref();
+const SCORESHELF = ref<AxiosInstance>();
 
 export default function useScoreshelf() {
-  const THUMBNAIL_BASE_URL = process.env.VUE_APP_THUMBNAIL_BASE_URL;
+  const THUMBNAIL_BASE_URL = <string>process.env.VUE_APP_THUMBNAIL_BASE_URL;
   const useAuthorizeScoreshelf = async () => await authorizeScoreshelf();
 
   return {

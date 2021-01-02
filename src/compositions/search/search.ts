@@ -1,6 +1,5 @@
 import VueCompositionAPI, { Ref, ref, SetupContext } from '@vue/composition-api';
-// @ts-ignore
-import useScoreshelf from '@/compositions/scoreshelf/scoreshelf.js';
+import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
 // @ts-ignore
 import useSharetribe from '@/compositions/sharetribe/sharetribe.js';
 

@@ -43,7 +43,7 @@
 
 <script lang="ts">
 import { ref, computed, PropType, defineComponent } from '@vue/composition-api';
-import useScoreshelf from '@/compositions/scoreshelf/scoreshelf.js';
+import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
 import debounce from 'lodash.debounce';
 
 import { Listing } from '@/@types';
