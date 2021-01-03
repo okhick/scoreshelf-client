@@ -109,7 +109,7 @@ export default function useSearch(context: SetupContext) {
     if (thumbnails.length === 0) return listingData;
 
     // hydrate the data
-    const thumbnailData: AxiosResponse<ListingThumbnailHydrated[]> = await SCORESHELF.value.get(
+    const thumbnailData = await SCORESHELF.value?.get<ListingThumbnailHydrated[]>(
       'getThumbnailData',
       {
         params: {
@@ -122,14 +122,16 @@ export default function useSearch(context: SetupContext) {
     );
 
     // update the listing with hydrated data
-    thumbnailData.data.forEach((thumbnail) => {
-      const listingRef = thumbnailRefs.find(
-        (thumbnailRef) => thumbnail._id === thumbnailRef.thumbnail_id
-      );
-      if (listingRef) {
-        listingData[listingRef.index].attributes.publicData.thumbnail = thumbnail;
-      }
-    });
+    if (thumbnailData?.status === 200 && thumbnailData.data) {
+      thumbnailData.data.forEach((thumbnail) => {
+        const listingRef = thumbnailRefs.find(
+          (thumbnailRef) => thumbnail._id === thumbnailRef.thumbnail_id
+        );
+        if (listingRef) {
+          listingData[listingRef.index].attributes.publicData.thumbnail = thumbnail;
+        }
+      });
+    }
 
     return listingData;
   }

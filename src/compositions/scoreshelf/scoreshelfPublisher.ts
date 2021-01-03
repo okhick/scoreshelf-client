@@ -1,17 +1,37 @@
+import Vue from 'vue';
 import { reactive, toRefs } from '@vue/composition-api';
-
 import { stringify } from 'qs';
 
+import {
+  ListingFormat,
+  UploadedFile,
+  Asset,
+  SharetribeAssetData,
+  ThumbnailSetting,
+  ThumbnailSettings,
+  PreviewSettings,
+  UploadParams,
+  AssetMetadata,
+} from '@/@types';
+
 import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
-
-import Vue from 'vue';
-
+// @ts-ignore
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
+// @ts-ignore
 import useDashboard from '@/compositions/dashboard/dashboard';
 
 // ============================================================================
 
-const FileState = reactive({
+interface IFileState {
+  // fileList: UploadedFile[] | Asset[];
+  fileList: (UploadedFile | Asset)[];
+  filesToBeRemoved: (UploadedFile | Asset)[];
+  thumbnailSettings: ThumbnailSettings;
+  previewSettings: PreviewSettings;
+  formats: ListingFormat[];
+}
+
+const FileState = reactive<IFileState>({
   fileList: [],
   filesToBeRemoved: [],
   thumbnailSettings: {},
@@ -47,7 +67,7 @@ export default function useScoreshelfPublisher() {
 // ============================================================================
 
 function FileStateManagement() {
-  function processUpload(newFiles) {
+  function processUpload(newFiles: UploadedFile[]) {
     newFiles.forEach((file) => {
       file.isStored = false;
       file.asset_name = file.name; // we use asset name everywhere else, start from the beg
@@ -57,19 +77,21 @@ function FileStateManagement() {
     });
   }
 
-  function addFileToFileList(payload) {
+  function addFileToFileList(payload: UploadedFile) {
     FileState.fileList.push(payload);
   }
 
-  function removeFileFromFileList(payload) {
-    FileState.fileList = FileState.fileList.filter((file) => file.asset_name !== payload);
+  function removeFileFromFileList(payload: string) {
+    FileState.fileList = FileState.fileList.filter(
+      (file: UploadedFile | Asset) => file.asset_name !== payload
+    );
     delete FileState.thumbnailSettings[payload];
     delete FileState.previewSettings[payload];
   }
 
-  function setFileToBeRemoved(payload) {
+  function setFileToBeRemoved(payload: string) {
     FileState.fileList.forEach((file) => {
-      if (file.asset_name == payload) {
+      if (file.asset_name === payload) {
         FileState.filesToBeRemoved.push(file);
       }
     });
@@ -87,7 +109,7 @@ function FileStateManagement() {
     FileState.formats = [];
   }
 
-  function replaceFileWithScoreshelfAsset(payload) {
+  function replaceFileWithScoreshelfAsset(payload: Asset[]) {
     FileState.fileList.forEach((file, index) => {
       const asset = payload.find((asset) => asset.asset_name === file.asset_name);
       if (asset) {
@@ -96,7 +118,7 @@ function FileStateManagement() {
     });
   }
 
-  function refreshFileListWithUpdatedAssets(payload) {
+  function refreshFileListWithUpdatedAssets(payload: Asset[]) {
     FileState.fileList = payload;
   }
 
@@ -114,32 +136,34 @@ function FileStateManagement() {
       }
 
       // then loadup any settings that may already exist
-      if (file.thumbnail_settings) {
-        FileState.thumbnailSettings[file.asset_name].page = file.thumbnail_settings.page;
+      if ('thumbnail_settings' in file) {
+        FileState.thumbnailSettings[file.asset_name].page = file.thumbnail_settings?.page
+          ? file.thumbnail_settings.page
+          : null;
         FileState.thumbnailSettings[file.asset_name].isThumbnail = true;
       }
       if (publishModalEditData.value.attributes.publicData?.preview) {
         const previewAsset = publishModalEditData.value.attributes.publicData.preview.asset_id;
-        if (file._id === previewAsset) {
+        if ('_id' in file && file._id === previewAsset) {
           FileState.previewSettings[file.asset_name].isPreview = true;
         }
       }
     });
   }
 
-  function initThumbnail(file) {
+  function initThumbnail(file: UploadedFile | Asset) {
     Vue.set(FileState.thumbnailSettings, file.asset_name, {
       ...makeBlankThumbnail(),
     });
   }
 
-  function initPreview(file) {
+  function initPreview(file: UploadedFile | Asset) {
     Vue.set(FileState.previewSettings, file.asset_name, {
       isPreview: false,
     });
   }
 
-  function makeBlankThumbnail() {
+  function makeBlankThumbnail(): ThumbnailSetting {
     return { isThumbnail: false, page: null };
   }
 
@@ -166,7 +190,8 @@ function ScoreshelfUploadManagement() {
   const scoreshelfUploadHelpers = ScoreshelfHelpers();
 
   async function submitUpload() {
-    const res = {};
+    // actually type this is if we're going to use it
+    const res: { uploadRes: any; deleteRes: any } = { uploadRes: undefined, deleteRes: undefined };
     const uploadParams = {
       thumbnailSettings: FileState.thumbnailSettings,
     };
@@ -184,35 +209,36 @@ function ScoreshelfUploadManagement() {
     return res;
   }
 
-  async function uploadNewFiles(uploadParams) {
+  async function uploadNewFiles(uploadParams: UploadParams) {
     const formData = new FormData();
     const { SCORESHELF } = useScoreshelf();
 
     // create a 'unique key' for each file, push it into formdata
     FileState.fileList.forEach((file, index) => {
-      if (file.isStored == false) {
-        formData.append(`file_${index}`, file);
+      if (file.isStored === false) {
+        formData.append(`file_${index}`, <UploadedFile>file);
       }
     });
 
     const assetMetadata = scoreshelfAssetManagement.formatNewAssetMetadata(uploadParams);
     // stringify this so we can stuff it in a form field
     formData.append('assetMetadata', JSON.stringify(assetMetadata));
-
     // send off the files. returns the files uploaded
-    let res = await SCORESHELF.value.post('/uploadAssets', formData, {
+    const res = await SCORESHELF.value?.post<Asset[]>('/uploadAssets', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
-    scoreshelfFileStateManagement.replaceFileWithScoreshelfAsset(res.data);
+    if (res?.status === 200 && res?.data) {
+      scoreshelfFileStateManagement.replaceFileWithScoreshelfAsset(res.data);
+    }
     return res;
   }
 
   async function removeUploads() {
     const { SCORESHELF } = useScoreshelf();
     // call the server to delete db and asset
-    await SCORESHELF.value.delete('/deleteAssets', {
+    const res = await SCORESHELF.value?.delete<string[]>('/deleteAssets', {
       data: {
         filesToRemove: FileState.filesToBeRemoved,
       },
@@ -220,7 +246,7 @@ function ScoreshelfUploadManagement() {
 
     // finally, remove it from the store
     scoreshelfFileStateManagement.clearToBeRemoved();
-    return true;
+    return res;
   }
 
   return {
@@ -243,9 +269,9 @@ function ScoreshelfAssetManagement() {
 
   const scoreshelfFileStateManagement = FileStateManagement();
 
-  async function hyrdateAssetData(fileList, getLink) {
-    const scoreshelf_ids = fileList.map((file) => file.scoreshelf_id);
-    const hydratedAssets = await SCORESHELF.value.get('/getAssetdata', {
+  async function hyrdateAssetData(assetDataList: SharetribeAssetData[], getLink: boolean) {
+    const scoreshelf_ids = assetDataList.map((file) => file.scoreshelf_id);
+    const hydratedAssets = await SCORESHELF.value?.get<(Asset | null)[]>('/getAssetdata', {
       params: {
         scoreshelf_ids: scoreshelf_ids,
         get_link: getLink,
@@ -257,23 +283,26 @@ function ScoreshelfAssetManagement() {
     return hydratedAssets;
   }
 
-  async function updateAssetMetadata(uploadParams) {
+  async function updateAssetMetadata(uploadParams: UploadParams) {
     const { SCORESHELF } = useScoreshelf();
     const assetMetadata = formatUpdatedAssetMetadata(uploadParams);
     // this return every asset
-    const res = await SCORESHELF.value.post('/updateAssetMetadata', assetMetadata);
-    scoreshelfFileStateManagement.refreshFileListWithUpdatedAssets(res.data);
-
+    const res = await SCORESHELF.value?.post<Asset[]>('/updateAssetMetadata', assetMetadata);
+    if (res?.data) {
+      scoreshelfFileStateManagement.refreshFileListWithUpdatedAssets(res.data);
+    }
     return res;
   }
 
-  function formatNewAssetMetadata(uploadParams) {
-    const formattedUploadParams = {};
+  // TODO: Combine these two functions.
+  function formatNewAssetMetadata(uploadParams: UploadParams) {
+    const formattedUploadParams = <AssetMetadata>{};
 
-    formattedUploadParams.sharetribe_listing_id = getCurrentListingId.value;
-    formattedUploadParams.sharetribe_user_id = getCurrentUserId.value;
+    formattedUploadParams.sharetribe_listing_id = getCurrentListingId();
+    formattedUploadParams.sharetribe_user_id = getCurrentUserId();
     formattedUploadParams.metadata = {};
 
+    // Is this even needed?! I don't think so...
     const newFiles = FileState.fileList.filter((file) => !file.isStored);
     newFiles.forEach((file) => {
       formattedUploadParams.metadata[file.asset_name] = {
@@ -285,18 +314,20 @@ function ScoreshelfAssetManagement() {
     return formattedUploadParams;
   }
 
-  function formatUpdatedAssetMetadata(uploadParams) {
-    const formattedUploadParams = {};
+  function formatUpdatedAssetMetadata(uploadParams: UploadParams) {
+    const formattedUploadParams = <AssetMetadata>{};
 
-    formattedUploadParams.sharetribe_listing_id = getCurrentListingId.value;
-    formattedUploadParams.sharetribe_user_id = getCurrentUserId.value;
+    formattedUploadParams.sharetribe_listing_id = getCurrentListingId();
+    formattedUploadParams.sharetribe_user_id = getCurrentUserId();
     formattedUploadParams.metadata = {};
 
     FileState.fileList.forEach((file) => {
-      formattedUploadParams.metadata[file._id] = {
-        thumbnailSettings: uploadParams.thumbnailSettings[file.asset_name],
-        // do more formatting here
-      };
+      if ('_id' in file) {
+        formattedUploadParams.metadata[file._id] = {
+          thumbnailSettings: uploadParams.thumbnailSettings[file.asset_name],
+          // do more formatting here
+        };
+      }
     });
     return formattedUploadParams;
   }
@@ -316,7 +347,7 @@ function ScoreshelfAssetManagement() {
 function ScoreshelfHelpers() {
   function areNewFiles() {
     let areNewFiles = false;
-    for (let file of FileState.fileList) {
+    for (const file of FileState.fileList) {
       if (!file.isStored) {
         areNewFiles = true;
         break;
@@ -326,7 +357,7 @@ function ScoreshelfHelpers() {
   }
 
   // ripped from stackoverflow
-  function calculateSize(file) {
+  function calculateSize(file: UploadedFile | Asset) {
     const fSExt = ['Bytes', 'KB', 'MB', 'GB'];
     let _size = file.size;
     let i = 0;
@@ -341,7 +372,7 @@ function ScoreshelfHelpers() {
   async function testScoreshelf() {
     const { SCORESHELF } = useScoreshelf();
     try {
-      let res = await SCORESHELF.value.get('/test');
+      const res = await SCORESHELF.value?.get<any>('/test');
       console.log(res);
     } catch (e) {
       console.log(e);

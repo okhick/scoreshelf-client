@@ -29,6 +29,7 @@ export default defineComponent({
       required: true,
     },
   },
+  name: 'TrixEditorComponent',
   setup(props, context) {
     const trixContent = ref<string>('');
     const trixInit = ref<boolean>(false);

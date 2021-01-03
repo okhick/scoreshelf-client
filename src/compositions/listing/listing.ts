@@ -50,7 +50,7 @@ export default function useListing(listingId: string, context: SetupContext) {
   }
 
   async function getPreviewBuffer(): Promise<void> {
-    if (ListingState.listingData) {
+    if (ListingState.listingData && SCORESHELF.value) {
       const previewRes: AxiosResponse<ArrayBuffer> = await SCORESHELF.value.get('/getAssetBin', {
         params: { scoreshelf_id: ListingState.listingData.attributes.publicData.preview.asset_id },
         responseType: 'arraybuffer', //defining the response type is EXTREMELY important here

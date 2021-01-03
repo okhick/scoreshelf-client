@@ -111,9 +111,9 @@ export default {
       // get init data about the files
       const assetData = pieceData.attributes.privateData.assetData;
       if (assetData && assetData.length > 0) {
-        const fileList = assetData;
+        const assetDataList = assetData;
         const hydratedFileListRes = await useScoreshelfAssetManagement.hyrdateAssetData(
-          fileList,
+          assetDataList,
           true
         );
 
