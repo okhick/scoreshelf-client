@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import Trix from 'trix';
+import 'trix/dist/trix.js';
 import 'trix/dist/trix.css';
 
 import { ref, watch, computed, defineComponent, PropType } from '@vue/composition-api';
@@ -29,7 +29,6 @@ export default defineComponent({
       required: true,
     },
   },
-  name: 'TrixEditorComponent',
   setup(props, context) {
     const trixContent = ref<string>('');
     const trixInit = ref<boolean>(false);
