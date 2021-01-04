@@ -6,7 +6,6 @@ import {
   ListingFormat,
   UploadedFile,
   Asset,
-  SharetribeAssetData,
   ThumbnailSetting,
   ThumbnailSettings,
   PreviewSettings,
@@ -142,7 +141,7 @@ function FileStateManagement() {
           : null;
         FileState.thumbnailSettings[file.asset_name].isThumbnail = true;
       }
-      if (publishModalEditData.value.attributes.publicData?.preview) {
+      if (publishModalEditData.value?.attributes.publicData?.preview) {
         const previewAsset = publishModalEditData.value.attributes.publicData.preview.asset_id;
         if ('_id' in file && file._id === previewAsset) {
           FileState.previewSettings[file.asset_name].isPreview = true;
@@ -269,7 +268,10 @@ function ScoreshelfAssetManagement() {
 
   const scoreshelfFileStateManagement = FileStateManagement();
 
-  async function hyrdateAssetData(assetDataList: SharetribeAssetData[], getLink: boolean) {
+  async function hyrdateAssetData(
+    assetDataList: { scoreshelf_id: string; thumbnail_id: string }[],
+    getLink: boolean
+  ) {
     const scoreshelf_ids = assetDataList.map((file) => file.scoreshelf_id);
     const hydratedAssets = await SCORESHELF.value?.get<(Asset | null)[]>('/getAssetdata', {
       params: {
