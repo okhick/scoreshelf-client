@@ -87,3 +87,35 @@ export interface ListingAssetaData {
   scoreshelf_id: string;
   thumbnail_id?: string;
 }
+
+export interface CurrentUser {
+  id: { uuid: string };
+  type: string;
+  attributes: CurrentUserAttributes;
+}
+
+export interface CurrentUserAttributes {
+  banned: boolean;
+  createdAt: Date;
+  deleted: false;
+  email: string;
+  emailVeified: boolean;
+  profile: CurrentUserAttributesProfile;
+  // sort these out when the time comes...
+  stripeChargesEnabled: boolean;
+  stripeConnected: boolean;
+  stripePayoutsEnabled: boolean;
+}
+
+export interface CurrentUserAttributesProfile {
+  abbreviatedName: string;
+  bio: string | null;
+  displayName: string;
+  firstName: string;
+  lastName: string;
+  // sort these out when the time comes...
+  metadata: any;
+  privateData: any;
+  protectedData: any;
+  publicData: any;
+}

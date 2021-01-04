@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="subtitle">This page will probably not exist someday but for now it's here</h2>
+    <h2 class="subtitle">This page will probably not exist someday but for now it's heree</h2>
   </div>
 </template>
 
@@ -22,7 +22,8 @@ export default {
     });
 
     return {
-      displayName,
+      // currentUser,
+      // displayName,
       isLoggedIn: useSharetribeState.isLoggedIn,
     };
   },

@@ -1,40 +1,6 @@
+// This doesn't work with import statements as of 2021-01-03
 const sharetribeSdk = require('sharetribe-flex-sdk');
 import SharetribeState from './sharetribeState';
-// ========================================================
-// ===================Sharetribe State=====================
-// ========================================================
-
-// const SHARETRIBE = ref();
-// const isLoggedIn = ref(false);
-// const currentUser = ref();
-
-// function SharetribeState() {
-//   function initSharetribe(payload) {
-//     SHARETRIBE.value = payload;
-//   }
-
-//   function updateIsLoggedIn(payload) {
-//     isLoggedIn.value = payload;
-//   }
-
-//   function updateCurrentUser(payload) {
-//     currentUser.value = payload;
-//   }
-
-//   function getCurrentUserId() {
-//     return currentUser.value.id.uuid;
-//   }
-
-//   return {
-//     initSharetribe,
-//     updateIsLoggedIn,
-//     updateCurrentUser,
-//     getCurrentUserId,
-//     SHARETRIBE,
-//     isLoggedIn,
-//     currentUser,
-//   };
-// }
 
 // ========================================================
 
@@ -55,7 +21,7 @@ export default function useSharetribe() {
   async function useRefreshLogin() {
     //check that SHARETRIBE has been loaded.
     if (typeof SHARETRIBE.value.authInfo === 'function') {
-      let authInfo = await SHARETRIBE.value.authInfo();
+      const authInfo = await SHARETRIBE.value.authInfo();
 
       if (authInfo && authInfo.isAnonymous === false) {
         useSharetribeState.updateIsLoggedIn(true);
@@ -68,6 +34,7 @@ export default function useSharetribe() {
         // TODO do some actions to make sure logout etc...
       }
     }
+    return false;
   }
 
   async function useUpdateCurrentUser() {
@@ -76,19 +43,10 @@ export default function useSharetribe() {
     return userData;
   }
 
-  function convertToSharetribePrice(money) {
-    return { amount: money * 100, currency: 'USD' };
-  }
-  function convertFromSharetribePrice(money) {
-    return parseInt(money.amount) / 100;
-  }
-
   return {
     useSharetribeState,
     useSharetribeSdk,
     useRefreshLogin,
     useUpdateCurrentUser,
-    convertToSharetribePrice,
-    convertFromSharetribePrice,
   };
 }

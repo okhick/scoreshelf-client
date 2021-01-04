@@ -12,6 +12,9 @@ export {
   ListingEditDataAttributes,
   ListingPrivateData,
   ListingAssetaData,
+  CurrentUser,
+  CurrentUserAttributes,
+  CurrentUserAttributesProfile,
 } from './sharetribe';
 
 export {

@@ -1,7 +1,7 @@
 import VueCompositionAPI, { Ref, ref, SetupContext } from '@vue/composition-api';
 import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
 // @ts-ignore
-import useSharetribe from '@/compositions/sharetribe/sharetribe.js';
+import useSharetribe from '@/compositions/sharetribe/sharetribe';
 
 import { stringify } from 'qs';
 
