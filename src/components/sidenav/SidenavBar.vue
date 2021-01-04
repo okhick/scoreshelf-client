@@ -96,7 +96,7 @@ export default {
 
     async function logout() {
       await SHARETRIBE.value.logout();
-      updateIsLoggedIn();
+      updateIsLoggedIn(false);
       context.root.$router.push({ path: '/' });
       toggleSidenav();
     }

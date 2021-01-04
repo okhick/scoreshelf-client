@@ -43,7 +43,7 @@ export interface ThumbnailSetting {
 
 export interface AssetMetadata {
   sharetribe_listing_id: string | undefined;
-  sharetribe_user_id: string;
+  sharetribe_user_id: string | undefined;
   metadata: {
     [key: string]: {
       thumbnailSettings: ThumbnailSetting;

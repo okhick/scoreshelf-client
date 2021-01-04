@@ -71,12 +71,17 @@
 </style>
 
 <script lang="ts">
-import { reactive, ref, toRefs } from '@vue/composition-api';
+import { reactive, ref, SetupContext, toRefs } from '@vue/composition-api';
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
+
+// copied from vue docs not sure it needed in Vue 3: https://composition-api.vuejs.org/api.html#setup
+interface Data {
+  [key: string]: unknown;
+}
 
 export default {
   name: 'SignUpForm',
-  setup(_, context) {
+  setup(_: Data, context: SetupContext) {
     const formData = reactive({
       email: '',
       password: '',
