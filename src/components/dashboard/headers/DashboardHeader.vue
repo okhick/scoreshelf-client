@@ -20,15 +20,19 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import useDashboard from '@/compositions/dashboard/dashboard';
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
+
+import { CreateDraftResponse, Data } from '@/@types';
+import { AxiosResponse } from 'axios';
+import { SetupContext } from '@vue/composition-api';
 
 export default {
   props: {
     displayName: String,
   },
-  setup(_, context) {
+  setup(_: Data, context: SetupContext) {
     const { useSharetribeState } = useSharetribe();
     const { SHARETRIBE, currentUser } = useSharetribeState;
 
@@ -41,9 +45,11 @@ export default {
       }
       // actually create a temp draft so we can have an uuid
       // we need a uuid up front so save assets
-      const draft = await SHARETRIBE.value.ownListings.createDraft({
-        title: `new_draft_${currentUser.value.id.uuid}`,
-      });
+      const draft: AxiosResponse<CreateDraftResponse> = await SHARETRIBE.value.ownListings.createDraft(
+        {
+          title: `new_draft_${currentUser.value?.id.uuid}`,
+        }
+      );
       draft.data.data.isBlankDraft = true;
       setPublishModalEditData(draft.data.data);
       togglePublishModal();

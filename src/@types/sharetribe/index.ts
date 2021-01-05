@@ -66,6 +66,10 @@ export interface ListingThumbnailHydrated {
   page: number;
 }
 
+export interface CreateDraftResponse {
+  data: ListingEditData;
+}
+
 export interface ListingEditData {
   id: { uuid: string };
   type: string;

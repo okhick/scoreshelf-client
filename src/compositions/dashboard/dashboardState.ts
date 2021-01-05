@@ -1,8 +1,9 @@
 import { toRefs, reactive } from '@vue/composition-api';
 import { ListingEditData } from '@/@types';
+import { Route } from 'vue-router';
 
 interface IDashboardStore {
-  activeDashboardView: string;
+  activeDashboardView: Route['name'];
   publishModalOpen: boolean;
   publishModalEditData: ListingEditData | null;
 }
@@ -15,7 +16,7 @@ const DashboardStore = reactive<IDashboardStore>({
 
 export default function DashboardState() {
   // ========== Mutations ==========
-  function setDashboardView(payload: string) {
+  function setDashboardView(payload: Route['name']) {
     DashboardStore.activeDashboardView = payload;
   }
 
@@ -23,7 +24,7 @@ export default function DashboardState() {
     DashboardStore.publishModalOpen = !DashboardStore.publishModalOpen;
   }
 
-  function setPublishModalEditData(payload: any) {
+  function setPublishModalEditData(payload: ListingEditData) {
     DashboardStore.publishModalEditData = payload;
   }
 

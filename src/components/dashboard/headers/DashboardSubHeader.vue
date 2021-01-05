@@ -20,7 +20,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import useDashboard from '@/compositions/dashboard/dashboard';
 
 export default {

@@ -12,6 +12,7 @@ export {
   ListingFormat,
   ListingPreview,
   ListingThumbnailHydrated,
+  CreateDraftResponse,
   ListingEditData,
   ListingEditDataAttributes,
   ListingPrivateData,

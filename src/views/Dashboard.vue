@@ -6,26 +6,26 @@
   </div>
 </template>
 
-<script>
-import { onMounted, ref, watch, computed } from '@vue/composition-api';
+<script lang="ts">
+import { onMounted, ref, watch, computed, SetupContext } from '@vue/composition-api';
 import useDashboard from '@/compositions/dashboard/dashboard';
 
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
 import useSearch from '@/compositions/search/search';
 
-import Menu from '@/components/dashboard/menu/Menu.vue';
 import DashboardHeader from '@/components/dashboard/headers/DashboardHeader.vue';
 import DashboardSubHeader from '@/components/dashboard/headers/DashboardSubHeader.vue';
 
+import { Data } from '@/@types';
+
 export default {
   components: {
-    // Menu,
     DashboardHeader,
     DashboardSubHeader,
   },
-  setup(_, context) {
+  setup(_: Data, context: SetupContext) {
     // hide the searchbar is needed
-    const { useSearchStateManagement } = useSearch();
+    const { useSearchStateManagement } = useSearch(context);
     onMounted(() => useSearchStateManagement.hideSearchbar());
 
     // refresh login and send displayName to header
