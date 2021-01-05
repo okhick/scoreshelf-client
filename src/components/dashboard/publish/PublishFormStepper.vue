@@ -23,7 +23,7 @@
 
 <script>
 import { ref } from '@vue/composition-api';
-import usePublishForm from '@/compositions/form/publishForm.js';
+import usePublishForm from '@/compositions/form/publishForm';
 
 export default {
   setup() {
@@ -43,7 +43,7 @@ export default {
 $steps-default-color: $tan;
 $steps-completed-color: $black;
 $steps-active-color: $black;
-@import 'bulma-o-steps/bulma-steps.scss';
+@import 'bulma-o-steps/bulma-steps.sass';
 
 .steps-content p.menu-label {
   margin-bottom: 0;

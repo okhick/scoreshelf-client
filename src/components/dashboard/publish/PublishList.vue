@@ -39,13 +39,14 @@
   </div>
 </template>
 
-<script>
-import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
-
+<script lang="ts">
 import { ref, onMounted, watch, computed } from '@vue/composition-api';
-import { createNamespacedHelpers } from 'vuex-composition-helpers';
-const DashboardStore = createNamespacedHelpers('dashboard');
-const SharetribeStore = createNamespacedHelpers('sharetribe');
+
+import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
+import useSharetribe from '@/compositions/sharetribe/sharetribe';
+import useDashboard from '@/compositions/dashboard/dashboard';
+import { GetOwnListingsResponse, Listing, ListingEditData } from '@/@types';
+import { AxiosResponse } from 'axios';
 
 import Vue from 'vue';
 Vue.use(require('vue-moment'));
@@ -56,24 +57,21 @@ export default {
     const { useScoreshelfAssetManagement, useFileStateManagement } = useScoreshelfPublisher();
 
     // |---------- Data ----------|
-    const publishedMusic = ref(null);
+    const publishedMusic = ref<ListingEditData[] | null>(null);
     const reloadTable = ref(0);
     const hasPublishedMusic = computed(() => (publishedMusic !== null ? true : false));
 
-    // I could descructure these if I wanted to, but these feel more self documenting?
-    const DashboardState = DashboardStore.useState(['publishModalOpen']);
-    const DashboardMutations = DashboardStore.useMutations([
-      'togglePublishModal',
-      'setPublishModalEditData',
-    ]);
-    const { SHARETRIBE, currentUser } = SharetribeStore.useState(['SHARETRIBE', 'currentUser']);
+    const { useDashboardState } = useDashboard();
+    const { publishModalOpen, togglePublishModal, setPublishModalEditData } = useDashboardState;
+    const { useSharetribeState } = useSharetribe();
+    const { SHARETRIBE, currentUser } = useSharetribeState;
 
     // Load published works
     onMounted(async () => {
       await getPublishedMusic();
     });
 
-    watch(DashboardState.publishModalOpen, async (newModalState) => {
+    watch(publishModalOpen, async (newModalState) => {
       if (newModalState == false) {
         await getPublishedMusic();
         reloadTable.value += 1;
@@ -81,9 +79,11 @@ export default {
     });
 
     async function getPublishedMusic() {
-      const publishedMusicRes = await SHARETRIBE.value.ownListings.query({});
+      const publishedMusicRes: AxiosResponse<GetOwnListingsResponse> = await SHARETRIBE.value.ownListings.query(
+        {}
+      );
 
-      if (publishedMusicRes.data.meta.totalItems > 0) {
+      if (publishedMusicRes.data.data.length > 0) {
         publishedMusic.value = publishedMusicRes.data.data;
         return;
       } else {
@@ -92,7 +92,7 @@ export default {
     }
 
     // things for DOM
-    function formatsAvailable(piece) {
+    function formatsAvailable(piece: Listing) {
       if (piece.attributes.publicData.formats) {
         const formatsAvailable = piece.attributes.publicData.formats.map((format) => format.format);
         return formatsAvailable.join(', ');
@@ -100,7 +100,7 @@ export default {
       return '';
     }
 
-    function ensembleOrInstrumentation(piece) {
+    function ensembleOrInstrumentation(piece: Listing) {
       const publicData = piece.attributes.publicData;
       if (publicData.ensemble) {
         return publicData.ensemble;
@@ -109,24 +109,28 @@ export default {
       }
     }
 
-    async function openEditModal(pieceData) {
-      DashboardMutations.setPublishModalEditData(pieceData);
+    async function openEditModal(pieceData: ListingEditData) {
+      setPublishModalEditData(pieceData);
       // get init data about the files
       const assetData = pieceData.attributes.privateData.assetData;
       if (assetData && assetData.length > 0) {
-        const fileList = assetData;
+        const assetDataList = assetData;
         const hydratedFileListRes = await useScoreshelfAssetManagement.hyrdateAssetData(
-          fileList,
+          assetDataList,
           true
         );
 
         // store the files
-        hydratedFileListRes.data.forEach((file) => {
-          file.isStored = true;
-          useFileStateManagement.addFileToFileList(file);
-        });
+        if (hydratedFileListRes) {
+          hydratedFileListRes.data.forEach((file) => {
+            if (file) {
+              file.isStored = true;
+              useFileStateManagement.addFileToFileList(file);
+            }
+          });
+        }
       }
-      DashboardMutations.togglePublishModal();
+      togglePublishModal();
     }
 
     return {

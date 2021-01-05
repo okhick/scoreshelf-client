@@ -49,9 +49,9 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue';
-import { ref } from '@vue/composition-api';
+import { onMounted, ref, SetupContext } from '@vue/composition-api';
 
 import vClickOutside from 'v-click-outside';
 Vue.use(vClickOutside);
@@ -62,31 +62,25 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faBars, faSearch);
 
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
-import { onMounted } from '@vue/composition-api';
+import useSidenav from '@/compositions/sidenav/sidenav';
+import useSearch from '@/compositions/search/search';
 
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const SharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
-const SidenavStore = createNamespacedHelpers('sidenav');
-const SearchStore = createNamespacedHelpers('search');
+// copied from vue docs not sure it needed in Vue 3: https://composition-api.vuejs.org/api.html#setup
+interface Data {
+  [key: string]: unknown;
+}
 
 export default {
   components: {
     FontAwesomeIcon,
   },
-  setup(_, context) {
-    const { useRefreshLogin, useSharetribeSdk } = useSharetribe();
+  setup(_: Data, context: SetupContext) {
+    const { useRefreshLogin, useSharetribeSdk, useSharetribeState } = useSharetribe();
+    const { isOpen, toggleSidenav, closeSidenav } = useSidenav();
+    const { searchbarIsShowing, useSearchStateManagement } = useSearch(context);
 
     // |---------- Data ----------|
-    const { isOpen } = SidenavStore.useState(['isOpen']);
-    const { toggleSidenav, closeSidenav } = SidenavStore.useMutations([
-      'toggleSidenav',
-      'closeSidenav',
-    ]);
-
-    const { SHARETRIBE, isLoggedIn } = SharetribeStore.useState(['SHARETRIBE', 'isLoggedIn']);
-    const { updateIsLoggedIn } = SharetribeStore.useMutations(['updateIsLoggedIn']);
-    const { searchbarIsShowing } = SearchStore.useState(['searchbarIsShowing']);
-    const { toggleSearchbarIsShowing } = SearchStore.useMutations(['toggleSearchbarIsShowing']);
+    const { SHARETRIBE, isLoggedIn, updateIsLoggedIn } = useSharetribeState;
 
     onMounted(async () => {
       await useSharetribeSdk();
@@ -102,7 +96,7 @@ export default {
 
     async function logout() {
       await SHARETRIBE.value.logout();
-      updateIsLoggedIn();
+      updateIsLoggedIn(false);
       context.root.$router.push({ path: '/' });
       toggleSidenav();
     }
@@ -116,7 +110,7 @@ export default {
       logout,
       clickOut,
       toggleSidenav,
-      toggleSearchbarIsShowing,
+      toggleSearchbarIsShowing: useSearchStateManagement.toggleSearchbarIsShowing,
     };
   },
 };

@@ -70,16 +70,13 @@
   </div>
 </template>
 
-<script>
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
-
+<script lang="ts">
+import useDashboard from '@/compositions/dashboard/dashboard';
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 import { onMounted } from '@vue/composition-api';
 
-import PublishFormInstrumentation from './PublishFormInstrumentation';
-
-import TrixEditorComponent from '@/components/forms/TrixEditor';
+import PublishFormInstrumentation from './PublishFormInstrumentation.vue';
+import TrixEditorComponent from '@/components/forms/TrixEditor.vue';
 
 export default {
   components: {
@@ -88,7 +85,8 @@ export default {
   },
   setup() {
     const { formData, useSharetribePublisherForm } = useSharetribePublisher();
-    const { publishModalEditData } = dashboardStore.useState(['publishModalEditData']);
+    const { useDashboardState } = useDashboard();
+    const { publishModalEditData } = useDashboardState;
 
     onMounted(() => {
       if (publishModalEditData.value != null && publishModalEditData.value?.attributes) {
@@ -105,7 +103,7 @@ export default {
       }
     });
 
-    function handleNewContent(event) {
+    function handleNewContent(event: string) {
       formData.value.otherNotes = event;
     }
 

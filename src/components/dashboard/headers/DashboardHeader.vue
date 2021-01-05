@@ -20,22 +20,24 @@
   </div>
 </template>
 
-<script>
-import { createNamespacedHelpers } from 'vuex-composition-helpers';
-const SharetribeStore = createNamespacedHelpers('sharetribe');
-const DashboardStore = createNamespacedHelpers('dashboard');
+<script lang="ts">
+import useDashboard from '@/compositions/dashboard/dashboard';
+import useSharetribe from '@/compositions/sharetribe/sharetribe';
+
+import { CreateDraftResponse, Data } from '@/@types';
+import { AxiosResponse } from 'axios';
+import { SetupContext } from '@vue/composition-api';
 
 export default {
   props: {
     displayName: String,
   },
-  setup(_, context) {
-    const { SHARETRIBE, currentUser } = SharetribeStore.useState(['SHARETRIBE', 'currentUser']);
-    const DashboardMutations = DashboardStore.useMutations([
-      'togglePublishModal',
-      'setPublishModalEditData',
-    ]);
-    const { activeDashboardView } = DashboardStore.useState(['activeDashboardView']);
+  setup(_: Data, context: SetupContext) {
+    const { useSharetribeState } = useSharetribe();
+    const { SHARETRIBE, currentUser } = useSharetribeState;
+
+    const { useDashboardState } = useDashboard();
+    const { togglePublishModal, setPublishModalEditData, activeDashboardView } = useDashboardState;
 
     async function createNewDraft() {
       if (activeDashboardView.value !== 'Publications') {
@@ -43,12 +45,14 @@ export default {
       }
       // actually create a temp draft so we can have an uuid
       // we need a uuid up front so save assets
-      const draft = await SHARETRIBE.value.ownListings.createDraft({
-        title: `new_draft_${currentUser.value.id.uuid}`,
-      });
+      const draft: AxiosResponse<CreateDraftResponse> = await SHARETRIBE.value.ownListings.createDraft(
+        {
+          title: `new_draft_${currentUser.value?.id.uuid}`,
+        }
+      );
       draft.data.data.isBlankDraft = true;
-      DashboardMutations.setPublishModalEditData(draft.data.data);
-      DashboardMutations.togglePublishModal();
+      setPublishModalEditData(draft.data.data);
+      togglePublishModal();
     }
 
     return {
@@ -71,7 +75,7 @@ export default {
   margin-bottom: 0px;
 }
 h2 {
-  font-weight: 600;
+  // font-weight: 600;
   padding: 12px;
   font-family: $family-primary;
 }

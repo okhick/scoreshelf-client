@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import useListing from '@/compositions/listing/listing.js';
+import useListing from '@/compositions/listing/listing';
 import { watch, ref, computed } from '@vue/composition-api';
 
 import ListingFormats from '@/components/listing/ListingFormats.vue';
