@@ -2,6 +2,12 @@ export interface Data {
   [key: string]: any;
 }
 
+export interface ChooseEvent {
+  target: {
+    value: string;
+  };
+}
+
 export {
   Listing,
   ListingSearch,

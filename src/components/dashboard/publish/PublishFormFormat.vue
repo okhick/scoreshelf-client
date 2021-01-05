@@ -6,6 +6,7 @@
         <td>${{ format.price }}</td>
       </tr>
     </table>
+
     <label class="label">Format and Price</label>
     <div v-for="format in formats" :key="format.formatId">
       <div class="field is-horizontal">
@@ -58,11 +59,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { watch } from '@vue/composition-api';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
-
 import useDashboard from '@/compositions/dashboard/dashboard';
+
+import { ListingFormat, Asset, ChooseEvent } from '@/@types';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -95,8 +97,8 @@ export default {
     function lookupFormatAssets() {
       formats.value.forEach((format) => {
         const assetNames = format.assets.map((assetId) => {
-          const asset = fileList.value.find((file) => file._id === assetId);
-          return asset.asset_name;
+          const asset = fileList.value.find((file) => '_id' in file && file._id === assetId);
+          return asset?.asset_name || '';
         });
         format.assets = assetNames;
       });
@@ -106,7 +108,7 @@ export default {
       formats.value.push(getBlankFormat());
     }
 
-    function removeFormat(formatId) {
+    function removeFormat(formatId: number) {
       if (formats.value.length > 1) {
         const remainingFormats = formats.value.filter((format) => format.formatId != formatId);
         formats.value = remainingFormats;
@@ -115,23 +117,25 @@ export default {
       }
     }
 
-    function newAssetSelected(event, formatId) {
-      const selectedAsset = event.target.value;
+    function newAssetSelected(event: Event & ChooseEvent, formatId: number) {
+      const selectedAsset: string = event.target.value;
       const thisFormat = formats.value.find((format) => format.formatId === formatId);
 
       // make sure it's not the blank option or an already chosen option
-      if (selectedAsset !== '' && thisFormat.assets.indexOf(selectedAsset) === -1) {
+      if (selectedAsset !== '' && thisFormat?.assets.indexOf(selectedAsset) === -1) {
         thisFormat.assets.push(selectedAsset);
       }
     }
 
-    function removeAsset(assetToRemove, formatId) {
+    function removeAsset(assetToRemove: string, formatId: number) {
       const thisFormat = formats.value.find((format) => format.formatId === formatId);
-      thisFormat.assets = thisFormat.assets.filter((asset) => asset !== assetToRemove);
+      if (thisFormat) {
+        thisFormat.assets = thisFormat.assets.filter((asset) => asset !== assetToRemove);
+      }
     }
 
     // ---------- Helper Methods ----------
-    function getBlankFormat() {
+    function getBlankFormat(): ListingFormat {
       return { formatId: getFormatId(), format: '', price: '', assets: [] };
     }
 
@@ -147,7 +151,7 @@ export default {
         // this is used on modal open
         formats.value.forEach((format) => {
           format.assets = format.assets.map((asset) => {
-            const thisFile = fileList.value.find((file) => file._id == asset);
+            const thisFile = fileList.value.find((file) => '_id' in file && file._id === asset);
             if (thisFile != undefined) {
               return thisFile.asset_name;
             }

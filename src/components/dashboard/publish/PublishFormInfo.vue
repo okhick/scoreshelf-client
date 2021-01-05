@@ -70,15 +70,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import useDashboard from '@/compositions/dashboard/dashboard';
-
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 import { onMounted } from '@vue/composition-api';
 
-import PublishFormInstrumentation from './PublishFormInstrumentation';
-
-import TrixEditorComponent from '@/components/forms/TrixEditor';
+import PublishFormInstrumentation from './PublishFormInstrumentation.vue';
+import TrixEditorComponent from '@/components/forms/TrixEditor.vue';
 
 export default {
   components: {
@@ -105,7 +103,7 @@ export default {
       }
     });
 
-    function handleNewContent(event) {
+    function handleNewContent(event: string) {
       formData.value.otherNotes = event;
     }
 

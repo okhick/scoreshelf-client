@@ -90,10 +90,10 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
-import { onMounted, ref } from '@vue/composition-api';
-import Vue from 'vue';
+import { onMounted, ref, SetupContext } from '@vue/composition-api';
+import { ChooseEvent, Data } from '@/@types';
 
 import { DateTime } from 'luxon';
 
@@ -106,7 +106,7 @@ export default {
   components: {
     FontAwesomeIcon,
   },
-  setup(_, context) {
+  setup(_: Data, context: SetupContext) {
     const {
       // States
       fileList,
@@ -126,14 +126,21 @@ export default {
 
     // ---------- Methods ----------
     // ---- Actions for the asset table ----
-    function formatDate(dateString) {
+    function formatDate(dateString: string) {
       return dateString ? DateTime.fromISO(dateString).toFormat('DDD') : '';
     }
-    function processUploadEvent() {
-      const newFiles = context.refs.file.files;
+
+    interface NewFileUpload {
+      target: {
+        files: File[];
+      };
+    }
+
+    function processUploadEvent(event: Event & NewFileUpload) {
+      const newFiles = event.target.files;
       useFileStateManagement.processUpload(newFiles);
     }
-    function removeUpload(fileName) {
+    function removeUpload(fileName: string) {
       fileList.value.forEach((file) => {
         if (file.asset_name === fileName) {
           if (file.isStored) {
@@ -147,8 +154,8 @@ export default {
     }
 
     // ---- Actions for the selectors below ----
-    const thumbAsset = ref();
-    const thumbPage = ref();
+    const thumbAsset = ref<string | null>(null);
+    const thumbPage = ref<number | string | null>(null);
     function initThumbSelector() {
       if (thumbnailSettings.value) {
         for (let asset in thumbnailSettings.value) {
@@ -163,7 +170,8 @@ export default {
       for (let asset in thumbnailSettings.value) {
         if (asset === thumbAsset.value) {
           thumbnailSettings.value[asset].isThumbnail = true;
-          thumbnailSettings.value[asset].page = parseInt(thumbPage.value);
+          thumbnailSettings.value[asset].page =
+            typeof thumbPage.value === 'string' ? parseInt(thumbPage.value) : thumbPage.value;
         } else {
           thumbnailSettings.value[asset].isThumbnail = false;
           thumbnailSettings.value[asset].page = null;
@@ -173,7 +181,8 @@ export default {
     function newThumbPage() {
       for (let asset in thumbnailSettings.value) {
         if (thumbnailSettings.value[asset].isThumbnail) {
-          thumbnailSettings.value[asset].page = parseInt(thumbPage.value);
+          thumbnailSettings.value[asset].page =
+            typeof thumbPage.value === 'string' ? parseInt(thumbPage.value) : thumbPage.value;
         } else {
           thumbnailSettings.value[asset].page = null;
         }
@@ -190,7 +199,7 @@ export default {
         }
       }
     }
-    function newPreviewSelected() {
+    function newPreviewSelected(event: Event & ChooseEvent) {
       const selectedPreview = event.target.value;
       for (let asset in previewSettings.value) {
         if (asset === previewAsset.value) {

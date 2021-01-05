@@ -55,20 +55,21 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { onMounted, ref, computed } from '@vue/composition-api';
+import { onMounted, ref, computed, SetupContext } from '@vue/composition-api';
 import Autocomplete from '@trevoreyre/autocomplete-vue';
 import startcase from 'lodash.startcase';
 import fullList from '@/store/listReduced.json';
-// @ts-ignore
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
+
+import { Data } from '@/@types';
 
 import useDashboard from '@/compositions/dashboard/dashboard';
 
-export default Vue.extend({
+export default {
   components: {
     Autocomplete,
   },
-  setup(_, context) {
+  setup(_: Data, context: SetupContext) {
     const flatList = ref<string[]>([]);
 
     onMounted(() => {
@@ -128,7 +129,7 @@ export default Vue.extend({
       removeInstrument,
     };
   },
-});
+};
 </script>
 
 <style lang="scss">
