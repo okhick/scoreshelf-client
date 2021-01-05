@@ -1,14 +1,28 @@
-import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
-
 import { reactive, toRefs } from '@vue/composition-api';
+import { Data, ListingAttributes, ListingAssetData, Asset } from '@/@types';
 
+import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
 import useDashboard from '@/compositions/dashboard/dashboard';
-
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
 
 // ============================================================================
 
-const PublishFormState = reactive({
+interface FormData extends Data {
+  title: string;
+  subtitle: string;
+  composer: string;
+  year: string;
+  duration: string;
+  commission: string;
+  otherNotes: string;
+  ensemble: string;
+  instrumentation: string[];
+}
+interface IPublishFormState {
+  formData: FormData;
+}
+
+const PublishFormState = reactive<IPublishFormState>({
   formData: {
     title: '',
     subtitle: '',
@@ -70,7 +84,7 @@ function SharetribePublisherForm() {
   }
 
   function sanitizeFormData() {
-    const cleanFormData = { publicData: {} };
+    const cleanFormData = { publicData: {} } as ListingAttributes;
 
     for (const field in PublishFormState.formData) {
       if (PublishFormState.formData[field] !== void 0) {
@@ -90,17 +104,25 @@ function SharetribePublisherForm() {
     return cleanFormData;
   }
 
-  function formatAssetData() {
-    const assetData = [];
+  function formatAssetData(): ListingAssetData[] {
+    const assetData: ListingAssetData[] = [];
 
     fileList.value.forEach((file) => {
-      const thumbnail_id = thumbnailSettings.value[file.asset_name].isThumbnail
-        ? file.thumbnail_settings._id
-        : null;
-      assetData.push({
-        scoreshelf_id: file._id,
-        thumbnail_id: thumbnail_id,
-      });
+      if ('_id' in file && file.thumbnail_settings) {
+        const thumbnail_id = thumbnailSettings.value[file.asset_name].isThumbnail
+          ? file.thumbnail_settings._id
+          : null;
+
+        assetData.push({
+          scoreshelf_id: file._id,
+          thumbnail_id: thumbnail_id,
+        });
+      } else {
+        assetData.push({
+          scoreshelf_id: null,
+          thumbnail_id: null,
+        });
+      }
     });
 
     return assetData;
@@ -108,40 +130,40 @@ function SharetribePublisherForm() {
 
   function formatThumbnailData() {
     if (thumbnailSettings.value == null) {
-      return {};
+      return { thumbnail_id: '' };
     } else {
       for (const asset in thumbnailSettings.value) {
         if (thumbnailSettings.value[asset].isThumbnail) {
-          const file = fileList.value.find((file) => file.asset_name === asset);
+          const file = <Asset>fileList.value.find((file) => file.asset_name === asset);
           return {
-            thumbnail_id: file.thumbnail_settings._id,
+            thumbnail_id: file.thumbnail_settings ? file.thumbnail_settings._id : '',
           };
         }
       }
-      return '';
+      return { thumbnail_id: '' };
     }
   }
 
   function formatPreviewData() {
     if (previewSettings.value == null) {
-      return {};
+      return { asset_id: '' };
     } else {
       for (const asset in previewSettings.value) {
         if (previewSettings.value[asset].isPreview) {
-          const file = fileList.value.find((file) => file.asset_name === asset);
+          const file = <Asset>fileList.value.find((file) => file.asset_name === asset);
           return {
             asset_id: file._id,
           };
         }
       }
     }
-    return '';
+    return { asset_id: '' };
   }
 
   function formatFormatData() {
     formats.value.forEach((format) => {
       format.assets = format.assets.map((asset) => {
-        const thisFile = fileList.value.find((file) => file.asset_name == asset);
+        const thisFile = <Asset>fileList.value.find((file) => file.asset_name == asset);
         return thisFile._id;
       });
     });
@@ -190,9 +212,9 @@ function SharetribePublisherListings() {
   }
 
   async function deletePublication() {
-    const listingState = publishModalEditData.value.isBlankDraft
+    const listingState = publishModalEditData.value?.isBlankDraft
       ? 'draft'
-      : publishModalEditData.value.attributes.state;
+      : publishModalEditData.value?.attributes.state;
 
     switch (listingState) {
       case 'draft':
@@ -213,7 +235,7 @@ function SharetribePublisherListings() {
   // for use when opening a publication after "deleting it"
   async function reopenPublication() {
     await SHARETRIBE.value.ownListings.open({
-      id: getCurrentListingId.value,
+      id: getCurrentListingId,
     });
 
     return;

@@ -1,3 +1,7 @@
+export interface Data {
+  [key: string]: any;
+}
+
 export {
   Listing,
   ListingSearch,
@@ -11,7 +15,7 @@ export {
   ListingEditData,
   ListingEditDataAttributes,
   ListingPrivateData,
-  ListingAssetaData,
+  ListingAssetData,
   CurrentUser,
   CurrentUserAttributes,
   CurrentUserAttributesProfile,

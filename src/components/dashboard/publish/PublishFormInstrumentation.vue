@@ -93,7 +93,7 @@ export default Vue.extend({
     const { publishModalEditData } = useDashboardState;
 
     onMounted(() => {
-      if (publishModalEditData.value.attributes) {
+      if (publishModalEditData.value?.attributes) {
         formData.value.instrumentation =
           publishModalEditData?.value.attributes.publicData.instrumentation;
       }

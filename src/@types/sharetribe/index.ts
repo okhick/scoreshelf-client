@@ -1,3 +1,5 @@
+import { Data } from '@/@types';
+
 export interface Listing {
   id: { uuid: string };
   type: 'listing';
@@ -21,7 +23,7 @@ export interface SearchResultsMeta {
   totalPages: number;
 }
 
-export interface ListingAttributes {
+export interface ListingAttributes extends Data {
   title: string;
   createdAt: Date;
   publicData: ListingPublicData;
@@ -29,7 +31,7 @@ export interface ListingAttributes {
   deleted: boolean;
 }
 
-export interface ListingPublicData {
+export interface ListingPublicData extends Data {
   commission: string;
   subtitle: string;
   composer: string;
@@ -68,6 +70,7 @@ export interface ListingEditData {
   id: { uuid: string };
   type: string;
   attributes: ListingEditDataAttributes;
+  isBlankDraft: boolean;
 }
 
 export interface ListingEditDataAttributes {
@@ -80,12 +83,12 @@ export interface ListingEditDataAttributes {
 }
 
 export interface ListingPrivateData {
-  assetData: ListingAssetaData[];
+  assetData: ListingAssetData[];
 }
 
-export interface ListingAssetaData {
-  scoreshelf_id: string;
-  thumbnail_id?: string;
+export interface ListingAssetData {
+  scoreshelf_id: string | null;
+  thumbnail_id?: string | null;
 }
 
 export interface CurrentUser {
