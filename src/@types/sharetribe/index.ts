@@ -70,6 +70,10 @@ export interface CreateDraftResponse {
   data: ListingEditData;
 }
 
+export interface GetOwnListingsResponse {
+  data: ListingEditData[];
+}
+
 export interface ListingEditData {
   id: { uuid: string };
   type: string;

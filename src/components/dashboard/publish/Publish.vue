@@ -9,11 +9,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 // import PublishTable from '@/components/dashboard/publish/PublishTable.vue';
 import PublishList from '@/components/dashboard/publish/PublishList.vue';
 import PublishModal from '@/components/dashboard/publish/PublishModal.vue';
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
+// can't figure out how to declare this
+// @ts-ignore
 import { vTeleport } from '@desislavsd/vue-teleport';
 
 import { onMounted } from '@vue/composition-api';

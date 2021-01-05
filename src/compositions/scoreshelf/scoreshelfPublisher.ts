@@ -11,6 +11,7 @@ import {
   PreviewSettings,
   UploadParams,
   AssetMetadata,
+  ListingAssetData,
 } from '@/@types';
 
 import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
@@ -76,7 +77,7 @@ function FileStateManagement() {
     });
   }
 
-  function addFileToFileList(payload: UploadedFile) {
+  function addFileToFileList(payload: UploadedFile | Asset) {
     FileState.fileList.push(payload);
   }
 
@@ -268,10 +269,7 @@ function ScoreshelfAssetManagement() {
 
   const scoreshelfFileStateManagement = FileStateManagement();
 
-  async function hyrdateAssetData(
-    assetDataList: { scoreshelf_id: string; thumbnail_id: string }[],
-    getLink: boolean
-  ) {
+  async function hyrdateAssetData(assetDataList: ListingAssetData[], getLink: boolean) {
     const scoreshelf_ids = assetDataList.map((file) => file.scoreshelf_id);
     const hydratedAssets = await SCORESHELF.value?.get<(Asset | null)[]>('/getAssetdata', {
       params: {

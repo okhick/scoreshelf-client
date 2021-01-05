@@ -13,6 +13,7 @@ export {
   ListingPreview,
   ListingThumbnailHydrated,
   CreateDraftResponse,
+  GetOwnListingsResponse,
   ListingEditData,
   ListingEditDataAttributes,
   ListingPrivateData,

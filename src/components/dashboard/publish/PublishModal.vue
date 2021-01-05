@@ -112,7 +112,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue';
 import PublishForm from './PublishForm.vue';
 
@@ -141,7 +141,6 @@ export default {
       publishModalOpen,
       togglePublishModal,
       clearPublishModalEditData,
-      editPublishModalEditData,
     } = useDashboardState;
 
     const { useSharetribePublisherListings, useSharetribePublisherForm } = useSharetribePublisher();
@@ -150,7 +149,7 @@ export default {
     const { usePublishFormNavigation } = usePublishForm();
 
     const isNewPiece = ref(true);
-    const pieceStatus = ref(null);
+    const pieceStatus = ref<string | null>(null);
 
     watch(publishModalEditData, async (newData) => {
       // if newData.attributes is falsy, we're publishing from a blank
@@ -166,7 +165,7 @@ export default {
     // ---------- Modal Control ----------
     const isLoading = ref({ button: '', status: false });
 
-    function setIsLoading(button) {
+    function setIsLoading(button: string) {
       isLoading.value.status = true;
       isLoading.value.button = button;
     }
@@ -178,7 +177,7 @@ export default {
     async function cancelModal() {
       setIsLoading('cancel');
 
-      if (publishModalEditData.value.isBlankDraft) {
+      if (publishModalEditData.value?.isBlankDraft) {
         await useSharetribePublisherListings.deletePublication();
       }
 
@@ -187,7 +186,7 @@ export default {
     }
 
     function closeEditModal() {
-      pieceStatus.value = '';
+      pieceStatus.value = null;
       clearPublishModalEditData();
 
       useSharetribePublisherForm.clearFormData();
@@ -197,27 +196,7 @@ export default {
       togglePublishModal();
     }
 
-    function togglePublishDropdown() {
-      publishDropdownIsActive.value = !publishDropdownIsActive.value;
-    }
-
-    function closePublishDropdown() {
-      publishDropdownIsActive.value = false;
-    }
-
     // ---------- Listing Control ----------
-    // I believe this is not longer needed here...
-    // async function createDraft() {
-    //   isLoading.value.status = true;
-    //   isLoading.value.button = 'create_draft';
-
-    //   await useScoreshelfUploadManagement.submitUpload();
-    //   await useSharetribePublisherListings.createDraft();
-
-    //   closeEditModal();
-    //   isNotLoading();
-    // }
-
     async function updatePublication() {
       setIsLoading('update');
 
@@ -272,10 +251,7 @@ export default {
       // -- Modal Control
       cancelModal,
       closeEditModal,
-      togglePublishDropdown,
-      closePublishDropdown,
       // -- Listing Control
-      // createDraft,
       updatePublication,
       publishDraft,
       deletePublication,
