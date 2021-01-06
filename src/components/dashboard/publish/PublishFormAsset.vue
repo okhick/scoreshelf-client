@@ -12,28 +12,11 @@
       </label>
     </div>
 
-    <table class="table is-fullwidth is-narrow" v-show="fileList.length > 0">
-      <thead>
-        <th>Filename</th>
-        <th>Date Added</th>
-        <th>Size</th>
-        <th></th>
-      </thead>
-      <tr v-for="file in fileList" :key="file.asset_name">
-        <td v-if="file.link" valign="middle">
-          <a :href="file.link">{{ file.asset_name }}</a>
-        </td>
-        <td v-else valign="middle">{{ file.asset_name }}</td>
-
-        <td valign="middle">{{ formatDate(file.date_added) }}</td>
-
-        <td valign="middle">{{ calculateSize(file) }}</td>
-
-        <td align="right" class="hover-pointer">
-          <font-awesome-icon icon="times" @click="removeUpload(file.asset_name)" />
-        </td>
-      </tr>
-    </table>
+    <asset-table
+      :fileList="fileList"
+      @remove-file="removeUpload"
+      v-show="fileList.length > 0"
+    ></asset-table>
 
     <div class="columns">
       <div class="column is-2 label"><label>Preview:</label></div>
@@ -94,17 +77,17 @@
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
 import { onMounted, ref, SetupContext } from '@vue/composition-api';
 import { ChooseEvent, Data } from '@/@types';
-
-import { DateTime } from 'luxon';
+import AssetTable from '@/components/forms/AssetTable.vue';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faUpload, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-library.add(faUpload, faTimes);
+library.add(faUpload);
 
 export default {
   components: {
     FontAwesomeIcon,
+    AssetTable,
   },
   setup(_: Data, context: SetupContext) {
     const {
@@ -114,7 +97,6 @@ export default {
       previewSettings,
       // Methods
       useFileStateManagement,
-      useScoreshelfHelpers,
     } = useScoreshelfPublisher();
 
     useFileStateManagement.initAssetData();
@@ -126,16 +108,11 @@ export default {
 
     // ---------- Methods ----------
     // ---- Actions for the asset table ----
-    function formatDate(dateString: string) {
-      return dateString ? DateTime.fromISO(dateString).toFormat('DDD') : '';
-    }
-
     interface NewFileUpload {
       target: {
         files: File[];
       };
     }
-
     function processUploadEvent(event: Event & NewFileUpload) {
       const newFiles = event.target.files;
       useFileStateManagement.processUpload(newFiles);
@@ -219,31 +196,21 @@ export default {
       thumbAsset,
       thumbPage,
       // ---- Methods ----
-      formatDate,
       removeUpload,
       newThumbSelected,
       newThumbPage,
       processUploadEvent,
       newPreviewSelected,
-      calculateSize: useScoreshelfHelpers.calculateSize,
     };
   },
 };
 </script>
 
 <style scoped>
-.hover-pointer:hover {
-  cursor: pointer;
-}
 .page-picker {
   width: 15px;
 }
 .bottom-margin {
   margin-bottom: 25px;
-}
-
-.column.label {
-  text-align: right;
-  padding-top: 18px;
 }
 </style>
