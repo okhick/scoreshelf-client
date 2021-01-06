@@ -10,20 +10,28 @@
   </div>
 </template>
 
-<script>
-import Vue from 'vue';
-import Trix from 'trix';
+<script lang="ts">
+import 'trix/dist/trix.js';
 import 'trix/dist/trix.css';
 
-import { onMounted, ref, watch, computed } from '@vue/composition-api';
+import { ref, watch, computed, defineComponent, PropType } from '@vue/composition-api';
 
-export default {
+interface TrixChangeEvent {
+  target: {
+    value: string;
+  };
+}
+
+export default defineComponent({
   props: {
-    initContent: String,
+    initContent: {
+      type: String as PropType<string>,
+      required: true,
+    },
   },
   setup(props, context) {
-    const trixContent = ref('');
-    const trixInit = ref(false);
+    const trixContent = ref<string>('');
+    const trixInit = ref<boolean>(false);
 
     // wait until the props are passed before loading Trix
     const initValue = computed(() => props.initContent);
@@ -32,7 +40,7 @@ export default {
       trixInit.value = true;
     });
 
-    function handleNewContent(event) {
+    function handleNewContent(event: Event & TrixChangeEvent) {
       context.emit('trix-editor-change', event.target.value);
     }
 
@@ -42,7 +50,7 @@ export default {
       handleNewContent,
     };
   },
-};
+});
 </script>
 
 <style lang="scss">

@@ -112,18 +112,17 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue';
 import PublishForm from './PublishForm.vue';
 
 import { ref, watch } from '@vue/composition-api';
 
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
+import useDashboard from '@/compositions/dashboard/dashboard';
 
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
-import usePublishForm from '@/compositions/form/publishForm.js';
+import usePublishForm from '@/compositions/form/publishForm';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTrashAlt, faAngleDown } from '@fortawesome/free-solid-svg-icons';
@@ -136,12 +135,13 @@ export default {
     PublishForm,
   },
   setup() {
-    const dashboardState = dashboardStore.useState(['publishModalEditData', 'publishModalOpen']);
-    const dashboardMutations = dashboardStore.useMutations([
-      'togglePublishModal',
-      'clearPublishModalEditData',
-      'editPublishModalEditData',
-    ]);
+    const { useDashboardState } = useDashboard();
+    const {
+      publishModalEditData,
+      publishModalOpen,
+      togglePublishModal,
+      clearPublishModalEditData,
+    } = useDashboardState;
 
     const { useSharetribePublisherListings, useSharetribePublisherForm } = useSharetribePublisher();
     const { useScoreshelfUploadManagement, useFileStateManagement } = useScoreshelfPublisher();
@@ -149,9 +149,9 @@ export default {
     const { usePublishFormNavigation } = usePublishForm();
 
     const isNewPiece = ref(true);
-    const pieceStatus = ref(null);
+    const pieceStatus = ref<string | null>(null);
 
-    watch(dashboardState.publishModalEditData, async (newData) => {
+    watch(publishModalEditData, async (newData) => {
       // if newData.attributes is falsy, we're publishing from a blank
       if (newData != null && newData?.attributes) {
         isNewPiece.value = false;
@@ -165,7 +165,7 @@ export default {
     // ---------- Modal Control ----------
     const isLoading = ref({ button: '', status: false });
 
-    function setIsLoading(button) {
+    function setIsLoading(button: string) {
       isLoading.value.status = true;
       isLoading.value.button = button;
     }
@@ -177,7 +177,7 @@ export default {
     async function cancelModal() {
       setIsLoading('cancel');
 
-      if (dashboardState.publishModalEditData.value.isBlankDraft) {
+      if (publishModalEditData.value?.isBlankDraft) {
         await useSharetribePublisherListings.deletePublication();
       }
 
@@ -186,37 +186,17 @@ export default {
     }
 
     function closeEditModal() {
-      pieceStatus.value = '';
-      dashboardMutations.clearPublishModalEditData();
+      pieceStatus.value = null;
+      clearPublishModalEditData();
 
       useSharetribePublisherForm.clearFormData();
       useFileStateManagement.resetFileState();
       usePublishFormNavigation.gotoStep('info');
 
-      dashboardMutations.togglePublishModal();
-    }
-
-    function togglePublishDropdown() {
-      publishDropdownIsActive.value = !publishDropdownIsActive.value;
-    }
-
-    function closePublishDropdown() {
-      publishDropdownIsActive.value = false;
+      togglePublishModal();
     }
 
     // ---------- Listing Control ----------
-    // I believe this is not longer needed here...
-    // async function createDraft() {
-    //   isLoading.value.status = true;
-    //   isLoading.value.button = 'create_draft';
-
-    //   await useScoreshelfUploadManagement.submitUpload();
-    //   await useSharetribePublisherListings.createDraft();
-
-    //   closeEditModal();
-    //   isNotLoading();
-    // }
-
     async function updatePublication() {
       setIsLoading('update');
 
@@ -266,15 +246,12 @@ export default {
       isLoading,
       isNewPiece,
       pieceStatus,
-      publishModalOpen: dashboardState.publishModalOpen,
+      publishModalOpen,
       // ---- Methods ----
       // -- Modal Control
       cancelModal,
       closeEditModal,
-      togglePublishDropdown,
-      closePublishDropdown,
       // -- Listing Control
-      // createDraft,
       updatePublication,
       publishDraft,
       deletePublication,

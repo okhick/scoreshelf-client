@@ -49,9 +49,9 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue';
-import { ref } from '@vue/composition-api';
+import { onMounted, ref, SetupContext } from '@vue/composition-api';
 
 import vClickOutside from 'v-click-outside';
 Vue.use(vClickOutside);
@@ -61,27 +61,26 @@ import { faBars, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faBars, faSearch);
 
-import { onMounted } from '@vue/composition-api';
-
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
 import useSidenav from '@/compositions/sidenav/sidenav';
 import useSearch from '@/compositions/search/search';
 
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const SharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
+// copied from vue docs not sure it needed in Vue 3: https://composition-api.vuejs.org/api.html#setup
+interface Data {
+  [key: string]: unknown;
+}
 
 export default {
   components: {
     FontAwesomeIcon,
   },
-  setup(_, context) {
-    const { useRefreshLogin, useSharetribeSdk } = useSharetribe();
+  setup(_: Data, context: SetupContext) {
+    const { useRefreshLogin, useSharetribeSdk, useSharetribeState } = useSharetribe();
     const { isOpen, toggleSidenav, closeSidenav } = useSidenav();
-    const { searchbarIsShowing, useSearchStateManagement } = useSearch();
+    const { searchbarIsShowing, useSearchStateManagement } = useSearch(context);
 
     // |---------- Data ----------|
-    const { SHARETRIBE, isLoggedIn } = SharetribeStore.useState(['SHARETRIBE', 'isLoggedIn']);
-    const { updateIsLoggedIn } = SharetribeStore.useMutations(['updateIsLoggedIn']);
+    const { SHARETRIBE, isLoggedIn, updateIsLoggedIn } = useSharetribeState;
 
     onMounted(async () => {
       await useSharetribeSdk();
@@ -97,7 +96,7 @@ export default {
 
     async function logout() {
       await SHARETRIBE.value.logout();
-      updateIsLoggedIn();
+      updateIsLoggedIn(false);
       context.root.$router.push({ path: '/' });
       toggleSidenav();
     }

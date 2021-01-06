@@ -78,11 +78,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+// import { mapState } from 'vuex';
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
-
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUnlock, faLock } from '@fortawesome/free-solid-svg-icons';
@@ -96,7 +93,6 @@ export default {
   },
   setup() {
     // Data
-    const { currentUser, SHARETRIBE } = sharetribeStore.useState(['currentUser', 'SHARETRIBE']);
     const formData = reactive({
       firstName: {
         disabled: true,
@@ -131,7 +127,7 @@ export default {
     });
 
     // methods
-    const { useRefreshLogin } = useSharetribe();
+    const { useRefreshLogin, useSharetribeState } = useSharetribe();
 
     function toggleEnable(element) {
       formData[element].disabled = !formData[element].disabled;
@@ -139,6 +135,9 @@ export default {
     function closeMessage(passFail, message) {
       messages[passFail][message] = !messages[passFail][message];
     }
+
+    const { SHARETRIBE, currentUser } = useSharetribeState;
+
     async function updateProfile() {
       isLoading.value = true;
       const res = await SHARETRIBE.value.currentUser.updateProfile({

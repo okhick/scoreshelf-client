@@ -2,7 +2,22 @@ import { reactive, toRefs } from '@vue/composition-api';
 
 // ============================================================================
 
-const PublishFormState = reactive({
+interface Step {
+  index: number;
+  active: boolean;
+  completed: boolean;
+  label: string;
+  description: string;
+}
+
+interface IPublishFormState {
+  steps: {
+    [key: string]: Step;
+  };
+  activeStep: string;
+}
+
+const PublishFormState = reactive<IPublishFormState>({
   steps: {
     info: {
       index: 0,
@@ -52,7 +67,7 @@ export default function usePublishForm() {
 // ============================================================================
 
 function ScoreshelfPublishFormNavigation() {
-  function gotoStep(stepSelected) {
+  function gotoStep(stepSelected: string) {
     for (const step in PublishFormState.steps) {
       if (step === stepSelected) {
         PublishFormState.steps[step].active = true;
@@ -63,7 +78,7 @@ function ScoreshelfPublishFormNavigation() {
     }
   }
 
-  function oneStep(direction) {
+  function oneStep(direction: 'next' | 'prev') {
     // start with current index
     let nextStepIndex = PublishFormState.steps[PublishFormState.activeStep].index;
     switch (direction) {
@@ -75,7 +90,7 @@ function ScoreshelfPublishFormNavigation() {
         break;
     }
 
-    let nextStep;
+    let nextStep: string = PublishFormState.activeStep;
     for (const step in PublishFormState.steps) {
       if (PublishFormState.steps[step].index === nextStepIndex) nextStep = step;
     }

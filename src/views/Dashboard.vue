@@ -6,43 +6,45 @@
   </div>
 </template>
 
-<script>
-import { onMounted, ref, watch, computed } from '@vue/composition-api';
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
-const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
+<script lang="ts">
+import { onMounted, ref, watch, computed, SetupContext } from '@vue/composition-api';
+import useDashboard from '@/compositions/dashboard/dashboard';
 
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
 import useSearch from '@/compositions/search/search';
 
-import Menu from '@/components/dashboard/menu/Menu.vue';
 import DashboardHeader from '@/components/dashboard/headers/DashboardHeader.vue';
 import DashboardSubHeader from '@/components/dashboard/headers/DashboardSubHeader.vue';
 
+import { Data } from '@/@types';
+
 export default {
   components: {
-    // Menu,
     DashboardHeader,
     DashboardSubHeader,
   },
-  setup(_, context) {
+  setup(_: Data, context: SetupContext) {
     // hide the searchbar is needed
-    const { useSearchStateManagement } = useSearch();
+    const { useSearchStateManagement } = useSearch(context);
     onMounted(() => useSearchStateManagement.hideSearchbar());
 
     // refresh login and send displayName to header
-    const { currentUser } = sharetribeStore.useState(['isLoggedIn', 'currentUser']);
-    const { useRefreshLogin, useUpdateCurrentUser } = useSharetribe();
-    const displayName = ref('');
+    const { useRefreshLogin, useUpdateCurrentUser, useSharetribeState } = useSharetribe();
+    const { currentUser } = useSharetribeState;
+
     // this can be converted into a suspense thing in Vue 3
     onMounted(async () => {
       await useRefreshLogin();
       await useUpdateCurrentUser();
-      displayName.value = currentUser.value.attributes.profile.displayName;
+    });
+
+    const displayName = computed(() => {
+      return currentUser?.value?.attributes.profile.displayName;
     });
 
     // get the active view and save it in the store
-    const { setDashboardView } = dashboardStore.useMutations(['setDashboardView']);
+    const { useDashboardState } = useDashboard();
+    const { setDashboardView } = useDashboardState;
     const dashboardRouterName = computed(() => context.root.$route.name);
     onMounted(() => setDashboardView(dashboardRouterName.value));
     watch(dashboardRouterName, (newValue) => setDashboardView(newValue));

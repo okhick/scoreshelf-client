@@ -21,33 +21,38 @@
   </div>
 </template>
 
-<script>
-import { onMounted, ref, computed, watch } from '@vue/composition-api';
+<script lang="ts">
+import { onMounted, ref, computed, watch, defineComponent, PropType } from '@vue/composition-api';
 import pdf from 'vue-pdf';
-import useListing from '@/compositions/listing/listing.js';
+import useListing from '@/compositions/listing/listing';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faAngleDoubleRight, faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
 library.add(faAngleDoubleRight, faAngleDoubleLeft);
 
-export default {
+// using defineComponent is key to getting the props working here
+export default defineComponent({
   components: {
     pdf,
     FontAwesomeIcon,
   },
   props: {
-    currentSize: String,
+    currentSize: {
+      required: true,
+      type: String as PropType<string>,
+    },
   },
-  setup(props) {
-    const { getPreviewBuffer, previewBuffer, listingData, scrollPos } = useListing();
+  setup(props, context) {
+    const { getPreviewBuffer, previewBuffer, listingData, scrollPos } = useListing('', context);
 
     // ========== Data for PDF renderer ==========
-    const loadingTask = ref();
-    const numPages = ref();
+    const loadingTask = ref<any>();
+    const numPages = ref<number>(0);
 
     // ========== Data for the loading bar ==========
-    const pageLoaded = ref();
+    const pageLoaded = ref<number>(0);
     const loadAmount = computed(() => Math.floor((pageLoaded.value / numPages.value) * 100));
 
     // ========== Toggle needed DOM elements based on size selection
@@ -74,7 +79,7 @@ export default {
 
     // ========== Load and reload PDF Preview ==========
     onMounted(async () => {
-      if (listingData.value.attributes.publicData?.preview?.asset_id) {
+      if (listingData?.value?.attributes.publicData?.preview?.asset_id) {
         loadPreview();
       }
     });
@@ -93,15 +98,15 @@ export default {
     }
 
     // ======== Resize preview on vertical scroll ==========
-    const previewHeight = ref('');
+    const previewHeight = ref<string>('');
 
     watch(scrollPos, (newPos) => {
       previewHeight.value = stretchyPreview(newPos);
     });
-    function stretchyPreview(newPos) {
+    function stretchyPreview(newPos: number) {
       const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
 
-      /* screen height - search bar height - bulma padding on columns */
+      // screen height - search bar height - bulma padding on columns
       const startingHeight = vh - 108 - 12;
       const height = startingHeight + newPos;
       const heightStr = height < vh - 24 ? `height: ${height}px` : `height: ${vh - 24}px`;
@@ -125,7 +130,7 @@ export default {
       loadAmount,
     };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -175,9 +180,6 @@ export default {
 .preview-wrapper .progress {
   margin: 4px;
   background-color: $off-white;
-}
-
-.pdf-page {
 }
 
 .small {

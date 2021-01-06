@@ -20,16 +20,14 @@
   </div>
 </template>
 
-<script>
-import { computed, ref } from '@vue/composition-api';
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
+<script lang="ts">
+import useDashboard from '@/compositions/dashboard/dashboard';
 
 export default {
   setup() {
-    const { activeDashboardView } = dashboardStore.useState(['activeDashboardView']);
+    const { useDashboardState } = useDashboard();
     return {
-      activeDashboardView,
+      activeDashboardView: useDashboardState.activeDashboardView,
     };
   },
 };

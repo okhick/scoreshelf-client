@@ -55,20 +55,21 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { onMounted, ref, computed } from '@vue/composition-api';
+import { onMounted, ref, computed, SetupContext } from '@vue/composition-api';
 import Autocomplete from '@trevoreyre/autocomplete-vue';
 import startcase from 'lodash.startcase';
 import fullList from '@/store/listReduced.json';
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 
-import { createNamespacedHelpers } from 'vuex-composition-helpers';
-const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
+import { Data } from '@/@types';
 
-export default Vue.extend({
+import useDashboard from '@/compositions/dashboard/dashboard';
+
+export default {
   components: {
     Autocomplete,
   },
-  setup(_, context) {
+  setup(_: Data, context: SetupContext) {
     const flatList = ref<string[]>([]);
 
     onMounted(() => {
@@ -89,12 +90,13 @@ export default Vue.extend({
     // ========== Handle instrument selection and display ==========
     const inputValue = ref<string>();
     const { formData } = useSharetribePublisher();
-    const { publishModalEditData } = dashboardStore.useState(['publishModalEditData']);
+    const { useDashboardState } = useDashboard();
+    const { publishModalEditData } = useDashboardState;
 
     onMounted(() => {
-      if (publishModalEditData.value.attributes) {
+      if (publishModalEditData.value?.attributes) {
         formData.value.instrumentation =
-          publishModalEditData.value.attributes.publicData.instrumentation;
+          publishModalEditData?.value.attributes.publicData.instrumentation;
       }
     });
 
@@ -127,7 +129,7 @@ export default Vue.extend({
       removeInstrument,
     };
   },
-});
+};
 </script>
 
 <style lang="scss">
