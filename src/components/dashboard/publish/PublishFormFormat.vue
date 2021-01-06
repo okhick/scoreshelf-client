@@ -1,7 +1,7 @@
 <template>
-  <div class="format">
+  <div class="container">
     <div class="columns">
-      <div class="column is-4">Name</div>
+      <div class="column is-4">Format</div>
       <div class="column is-5">Files</div>
       <div class="column is-2">Price</div>
       <div class="column is-1"></div>
@@ -9,12 +9,16 @@
 
     <div class="format-container" v-for="format in formats" :key="format.formatId">
       <div class="format-data">
-        <div class="format-name">{{ format.format }}</div>
-        <div class="format-assets">{{ format.assets }}</div>
-        <div class="format-price">${{ format.price }}</div>
+        <div class="format-name format-cell">{{ format.format }}</div>
+        <div class="format-assets format-cell">{{ stringifyAssets(format.assets) }}</div>
+        <div class="format-price format-cell">${{ format.price }}</div>
       </div>
-      <div class="action" @click="removeFormat(format.formatId)">X</div>
+      <div class="action" @click="removeFormat(format.formatId)">
+        <font-awesome-icon icon="times" />
+      </div>
     </div>
+
+    <hr />
 
     <div class="columns" id="new-format">
       <div class="field column is-4">
@@ -33,10 +37,10 @@
       <div class="field column is-5">
         <div class="control">
           <div class="select">
-            <select>
+            <select @input="newAssetSelected" v-model="assetSelectionModel">
               <option></option>
-              <option v-for="file in fileList" :key="file.asset_name">
-                {{ file.asset_name }}
+              <option v-for="(asset, index) in assetSelectionMenu" :key="index">
+                {{ asset }}
               </option>
             </select>
           </div>
@@ -57,17 +61,22 @@
       </div>
       <!--  -->
     </div>
+    <asset-table
+      :fileList="assetSelectionTable"
+      @remove-file="removeAsset"
+      v-show="assetSelectionTable.length > 0"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { ref, watch } from '@vue/composition-api';
+import { ref, watch, computed } from '@vue/composition-api';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
 import useDashboard from '@/compositions/dashboard/dashboard';
 
-import { ListingFormat, Asset, ChooseEvent } from '@/@types';
+import { ListingFormat, Asset, GenericAsset, ChooseEvent, UploadedFile } from '@/@types';
 
-// import AssetTable from '@/components/forms/AssetTable.vue';
+import AssetTable from '@/components/forms/AssetTable.vue';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -77,7 +86,7 @@ library.add(faPlus, faTimes);
 export default {
   components: {
     FontAwesomeIcon,
-    // AssetTable,
+    AssetTable,
   },
   setup() {
     const { formats, fileList } = useScoreshelfPublisher();
@@ -89,6 +98,7 @@ export default {
       'Full Score',
       'Performance Score',
       'Solo Part',
+      'Parts Only',
       'Choir Score',
       'Other',
     ];
@@ -133,21 +143,30 @@ export default {
       }
     }
 
-    function newAssetSelected(event: Event & ChooseEvent, formatId: number) {
+    const assetSelectionModel = ref('');
+    const assetSelectionMenu = computed(() => {
+      const allAssets = fileList.value.map((asset) => asset.asset_name);
+      const unusedAssets = allAssets.filter((asset) => !newFormat.value.assets.includes(asset));
+      return unusedAssets;
+    });
+    const assetSelectionTable = computed(() => {
+      const selectedFullAssets = newFormat.value.assets.map((asset) => {
+        return fileList.value.find((file) => file.asset_name === asset);
+      }) as (Asset | UploadedFile)[]; /* Type assertion because this will never be undefined */
+      return selectedFullAssets;
+    });
+    function newAssetSelected(event: Event & ChooseEvent) {
       const selectedAsset: string = event.target.value;
-      const thisFormat = formats.value.find((format) => format.formatId === formatId);
 
       // make sure it's not the blank option or an already chosen option
-      if (selectedAsset !== '' && thisFormat?.assets.indexOf(selectedAsset) === -1) {
-        thisFormat.assets.push(selectedAsset);
+      if (selectedAsset !== '' && newFormat.value.assets.indexOf(selectedAsset) === -1) {
+        newFormat.value.assets.push(selectedAsset);
       }
+      assetSelectionModel.value = '';
     }
 
-    function removeAsset(assetToRemove: string, formatId: number) {
-      const thisFormat = formats.value.find((format) => format.formatId === formatId);
-      if (thisFormat) {
-        thisFormat.assets = thisFormat.assets.filter((asset) => asset !== assetToRemove);
-      }
+    function removeAsset(assetToRemove: string) {
+      newFormat.value.assets = newFormat.value.assets.filter((asset) => asset !== assetToRemove);
     }
 
     // ---------- Helper Methods ----------
@@ -157,6 +176,10 @@ export default {
 
     function getFormatId() {
       return Date.now();
+    }
+
+    function stringifyAssets(assets: string[]) {
+      return assets.join(', ');
     }
 
     // ---------- Watchers ----------
@@ -189,11 +212,15 @@ export default {
       fileList,
       predefinedFormats,
       newFormat,
+      assetSelectionTable,
+      assetSelectionMenu,
+      assetSelectionModel,
       // ---- Methods ----
       addFormat,
       removeFormat,
       newAssetSelected,
       removeAsset,
+      stringifyAssets,
     };
   },
 };
@@ -212,6 +239,17 @@ export default {
     display: grid;
     grid-template-columns: 2fr 3fr 1fr;
     grid-column: 1;
+    align-items: center;
+
+    box-shadow: 0px 0.5px 8px 0px rgba(0, 0, 0, 0.4);
+    border-radius: 4px;
+    min-height: 42px;
+    // margin-bottom: 24px;
+    transition: all 0.1s ease-in-out;
+
+    .format-cell {
+      padding: 12px;
+    }
 
     .format-name {
       grid-column: 1;
@@ -226,12 +264,20 @@ export default {
 
   .action {
     grid-column: 2;
+    align-self: center;
+    justify-self: center;
+    cursor: pointer;
     // display: flex-item;
   }
 }
 
+.field.column,
+#new-format {
+  margin-bottom: 0;
+}
+
 .format-container {
-  margin-bottom: 25px;
+  margin-bottom: 12px;
 }
 .format-input {
   margin-right: 10px;
@@ -241,5 +287,8 @@ export default {
 }
 .hover-pointer:hover {
   cursor: pointer;
+}
+.container {
+  margin-bottom: 25px;
 }
 </style>
