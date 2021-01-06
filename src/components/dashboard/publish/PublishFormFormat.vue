@@ -1,70 +1,73 @@
 <template>
   <div class="format">
-    <table class="table">
-      <tr v-for="format in formats" :key="format.formatId">
-        <td>{{ format.format }}</td>
-        <td>${{ format.price }}</td>
-      </tr>
-    </table>
-
-    <label class="label">Format and Price</label>
-    <div v-for="format in formats" :key="format.formatId">
-      <div class="field is-horizontal">
-        <input class="input field-body" type="text" placeholder="Format" v-model="format.format" />
-
-        <div class="field is-expanded field-body">
-          <div class="field has-addons">
-            <p class="control">
-              <a class="button is-static">$</a>
-            </p>
-            <p class="control is-expanded">
-              <input class="input" type="text" placeholder="20" v-model="format.price" />
-            </p>
-          </div>
-        </div>
-
-        <button class="button is-maroon" @click="removeFormat(format.formatId)">
-          <font-awesome-icon icon="times" />
-        </button>
-      </div>
-
-      <table class="table is-fullwidth is-narrow" v-show="format.assets.length > 0">
-        <tr v-for="asset in format.assets" :key="asset">
-          <td valign="middle">
-            {{ asset }}
-          </td>
-          <td align="right" class="hover-pointer">
-            <font-awesome-icon icon="times" @click="removeAsset(asset, format.formatId)" />
-          </td>
-        </tr>
-      </table>
-
-      <div v-show="fileList.length > 0">
-        <label class="label">Add file(s) to format</label>
-        <div class="select">
-          <select @change="newAssetSelected($event, format.formatId)">
-            <option value=""></option>
-            <option v-for="file in fileList" :key="file.asset_name" :value="file.asset_name">
-              {{ file.asset_name }}
-            </option>
-          </select>
-        </div>
-      </div>
-      <hr />
+    <div class="columns">
+      <div class="column is-4">Name</div>
+      <div class="column is-5">Files</div>
+      <div class="column is-2">Price</div>
+      <div class="column is-1"></div>
     </div>
 
-    <button @click="addFormat" class="button is-outlined">
-      <font-awesome-icon icon="plus"></font-awesome-icon>
-    </button>
+    <div class="format-container" v-for="format in formats" :key="format.formatId">
+      <div class="format-data">
+        <div class="format-name">{{ format.format }}</div>
+        <div class="format-assets">{{ format.assets }}</div>
+        <div class="format-price">${{ format.price }}</div>
+      </div>
+      <div class="action" @click="removeFormat(format.formatId)">X</div>
+    </div>
+
+    <div class="columns" id="new-format">
+      <div class="field column is-4">
+        <div class="control">
+          <div class="select">
+            <select v-model="newFormat.format">
+              <option></option>
+              <option v-for="(format, index) in predefinedFormats" :key="index">
+                {{ format }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="field column is-5">
+        <div class="control">
+          <div class="select">
+            <select>
+              <option></option>
+              <option v-for="file in fileList" :key="file.asset_name">
+                {{ file.asset_name }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="field column is-2">
+        <div class="control has-icons-left">
+          <input class="input" type="price" placeholder="4.33" v-model="newFormat.price" />
+          <span class="icon is-left"> $ </span>
+        </div>
+      </div>
+
+      <div class="field column is-1">
+        <div class="control" @click="addFormat">
+          <font-awesome-icon icon="plus" />
+        </div>
+      </div>
+      <!--  -->
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { watch } from '@vue/composition-api';
+import { ref, watch } from '@vue/composition-api';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
 import useDashboard from '@/compositions/dashboard/dashboard';
 
 import { ListingFormat, Asset, ChooseEvent } from '@/@types';
+
+// import AssetTable from '@/components/forms/AssetTable.vue';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -74,11 +77,23 @@ library.add(faPlus, faTimes);
 export default {
   components: {
     FontAwesomeIcon,
+    // AssetTable,
   },
   setup() {
     const { formats, fileList } = useScoreshelfPublisher();
     const { useDashboardState } = useDashboard();
     const { publishModalEditData } = useDashboardState;
+
+    const predefinedFormats = [
+      'Score and Part(s)',
+      'Full Score',
+      'Performance Score',
+      'Solo Part',
+      'Choir Score',
+      'Other',
+    ];
+
+    const newFormat = ref<ListingFormat>(getBlankFormat());
     initFormatData();
 
     // ---------- Methods ----------
@@ -89,7 +104,7 @@ export default {
         lookupFormatAssets();
       } else {
         // if it's a new work
-        formats.value = [getBlankFormat()];
+        formats.value = [newFormat.value];
       }
     }
 
@@ -105,12 +120,13 @@ export default {
     }
 
     function addFormat() {
-      formats.value.push(getBlankFormat());
+      formats.value.push(newFormat.value);
+      newFormat.value = getBlankFormat();
     }
 
     function removeFormat(formatId: number) {
       if (formats.value.length > 1) {
-        const remainingFormats = formats.value.filter((format) => format.formatId != formatId);
+        const remainingFormats = formats.value.filter((format) => format.formatId !== formatId);
         formats.value = remainingFormats;
       } else {
         formats.value = [getBlankFormat()];
@@ -171,6 +187,8 @@ export default {
       // ---- Data ----
       formats,
       fileList,
+      predefinedFormats,
+      newFormat,
       // ---- Methods ----
       addFormat,
       removeFormat,
@@ -181,8 +199,38 @@ export default {
 };
 </script>
 
-<style scoped>
-.format {
+<style lang="scss" scoped>
+.column {
+  padding: 4px;
+}
+.format-container {
+  display: grid;
+  grid-template-columns: 94.5% 5.5%;
+
+  .format-data {
+    // display: flex-item;
+    display: grid;
+    grid-template-columns: 2fr 3fr 1fr;
+    grid-column: 1;
+
+    .format-name {
+      grid-column: 1;
+    }
+    .format-assets {
+      grid-column: 2;
+    }
+    .format-price {
+      grid-column: 3;
+    }
+  }
+
+  .action {
+    grid-column: 2;
+    // display: flex-item;
+  }
+}
+
+.format-container {
   margin-bottom: 25px;
 }
 .format-input {
