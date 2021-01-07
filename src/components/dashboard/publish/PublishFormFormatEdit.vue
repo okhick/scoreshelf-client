@@ -1,0 +1,193 @@
+<template>
+  <div class="new-format-container">
+    <div class="new-format-data">
+      <div class="field new-format">
+        <div class="control">
+          <div class="select">
+            <select v-model="newFormat.format">
+              <option></option>
+              <option v-for="(format, index) in predefinedFormats" :key="index">
+                {{ format }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="field new-file">
+        <div class="control">
+          <div class="select">
+            <select @input="newAssetSelected" v-model="assetSelectionModel">
+              <option></option>
+              <option v-for="(asset, index) in assetSelectionMenu" :key="index">
+                {{ asset }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="field new-price">
+        <div class="control has-icons-left">
+          <input class="input" type="price" placeholder="4.33" v-model="newFormat.price" />
+          <span class="icon is-left"> $ </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="new-action" @click="submitFormat">
+      <font-awesome-icon icon="plus" />
+    </div>
+
+    <table class="table is-fullwidth is-narrow">
+      <tr v-for="file in assetSelectionTable" :key="file.asset_name">
+        <td v-if="file.link" valign="middle">
+          <a :href="file.link">{{ file.asset_name }}</a>
+        </td>
+        <td v-else valign="middle">{{ file.asset_name }}</td>
+        <td align="right" class="hover-pointer">
+          <font-awesome-icon icon="times" @click="removeAsset(file.asset_name)" />
+        </td>
+      </tr>
+    </table>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, ref, computed, PropType } from '@vue/composition-api';
+import { Asset, UploadedFile, ChooseEvent, ListingFormat } from '@/@types';
+
+import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
+import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
+
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+library.add(faPlus, faTimes);
+
+export default defineComponent({
+  components: {
+    FontAwesomeIcon,
+  },
+  props: {
+    initFormat: {
+      required: true,
+      type: Object as PropType<ListingFormat>,
+    },
+  },
+  setup({ initFormat }) {
+    const { formats, fileList } = useScoreshelfPublisher();
+    const { useSharetribePublisherHelpers } = useSharetribePublisher();
+
+    // Mutating props in Vue is anti-pattern so we'll copy it into a new const
+    let newFormat = ref<ListingFormat>(initFormat);
+    const predefinedFormats = [
+      'Score and Part(s)',
+      'Full Score',
+      'Performance Score',
+      'Solo Part',
+      'Parts Only',
+      'Choir Score',
+      'Other',
+    ];
+
+    const assetSelectionModel = ref('');
+    const assetSelectionMenu = computed(() => {
+      const allAssets = fileList.value.map((asset) => asset.asset_name);
+      const unusedAssets = allAssets.filter((asset) => !newFormat.value.assets.includes(asset));
+      return unusedAssets;
+    });
+
+    const assetSelectionTable = computed(() => {
+      const selectedFullAssets = newFormat.value.assets.map((asset) => {
+        return fileList.value.find((file) => file.asset_name === asset);
+      }) as (Asset | UploadedFile)[]; /* Type assertion because this will never be undefined */
+      return selectedFullAssets;
+    });
+
+    function newAssetSelected(event: Event & ChooseEvent) {
+      const selectedAsset: string = event.target.value;
+
+      // make sure it's not the blank option or an already chosen option
+      if (selectedAsset !== '') {
+        newFormat.value.assets.push(selectedAsset);
+      }
+      assetSelectionModel.value = '';
+    }
+
+    function removeAsset(assetToRemove: string) {
+      newFormat.value.assets = newFormat.value.assets.filter((asset) => asset !== assetToRemove);
+    }
+
+    function submitFormat() {
+      const formatIds = formats.value.map((format) => format.formatId);
+      if (formatIds.includes(newFormat.value.formatId)) {
+        formats.value[newFormat.value.formatId] = newFormat.value;
+      } else {
+        formats.value.push(newFormat.value);
+        newFormat.value = useSharetribePublisherHelpers.getBlankFormat();
+      }
+    }
+
+    return {
+      // ---- Data ----
+      newFormat,
+      predefinedFormats,
+      assetSelectionModel,
+      assetSelectionMenu,
+      assetSelectionTable,
+      // ---- Actions ----
+      newAssetSelected,
+      removeAsset,
+      submitFormat,
+    };
+  },
+});
+</script>
+
+<style lang="scss" scoped>
+.new-format-container {
+  display: grid;
+  grid-template-columns: 32.5% auto 5.5%;
+  grid-template-rows: auto auto;
+  column-gap: 0px;
+
+  .new-format-data {
+    grid-column: 1 / 3;
+    display: grid;
+    grid-template-columns: 2fr auto 1fr;
+    column-gap: 4px;
+    align-items: center;
+
+    .new-format {
+      grid-column: 1;
+      margin: 0;
+    }
+    .new-file {
+      grid-column: 2;
+      margin: 0;
+
+      .select {
+        // I HATE this...
+        width: 268px;
+      }
+      option {
+        width: 268px;
+      }
+    }
+    .new-price {
+      grid-column: 3;
+    }
+  }
+  table {
+    grid-column: 2;
+  }
+  .new-action {
+    grid-column: 3;
+    grid-row: 1;
+    align-self: center;
+    justify-self: center;
+    cursor: pointer;
+  }
+}
+</style>

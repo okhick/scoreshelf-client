@@ -1,5 +1,5 @@
 import { reactive, toRefs } from '@vue/composition-api';
-import { Data, ListingAttributes, ListingAssetData, Asset } from '@/@types';
+import { Data, ListingAttributes, ListingAssetData, Asset, ListingFormat } from '@/@types';
 
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
 import useDashboard from '@/compositions/dashboard/dashboard';
@@ -41,13 +41,13 @@ const PublishFormState = reactive<IPublishFormState>({
 export default function useSharetribePublisher() {
   const useSharetribePublisherListings = SharetribePublisherListings();
   const useSharetribePublisherForm = SharetribePublisherForm();
-  const usesharetribePublisherHelpers = SharetribePublisherHelpers();
+  const useSharetribePublisherHelpers = SharetribePublisherHelpers();
 
   return {
     ...toRefs(PublishFormState),
     useSharetribePublisherListings,
     useSharetribePublisherForm,
-    usesharetribePublisherHelpers,
+    useSharetribePublisherHelpers,
   };
 }
 
@@ -260,6 +260,14 @@ function SharetribePublisherHelpers() {
     return useSharetribePublisherForm.formatArgs();
   }
 
+  function getBlankFormat(): ListingFormat {
+    return { formatId: generateFormatId(), format: '', price: '', assets: [] };
+  }
+
+  function generateFormatId() {
+    return Date.now();
+  }
+
   // function getThumbnailSettings() {
   //   // TODO: This won't work
   //   // reach deep to get this. seems icky but works for now...
@@ -269,6 +277,7 @@ function SharetribePublisherHelpers() {
 
   return {
     getFormattedArgs,
+    getBlankFormat,
     // getThumbnailSettings,
   };
 }
