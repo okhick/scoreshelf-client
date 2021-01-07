@@ -108,9 +108,9 @@ function SharetribePublisherForm() {
     const assetData: ListingAssetData[] = [];
 
     fileList.value.forEach((file) => {
-      if ('_id' in file && file.thumbnail_settings) {
+      if ('_id' in file) {
         const thumbnail_id = thumbnailSettings.value[file.asset_name].isThumbnail
-          ? file.thumbnail_settings._id
+          ? file.thumbnail_settings?._id
           : null;
 
         assetData.push({
@@ -118,6 +118,7 @@ function SharetribePublisherForm() {
           thumbnail_id: thumbnail_id,
         });
       } else {
+        // TODO: this should throw error. No good here.
         assetData.push({
           scoreshelf_id: null,
           thumbnail_id: null,

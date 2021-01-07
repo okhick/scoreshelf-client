@@ -11,7 +11,7 @@
       <publish-form-format-edit
         ref="formatTemplateRef"
         :initFormat="format"
-        v-show="showEditMode === format.formatId"
+        v-if="showEditMode === format.formatId"
       />
       <div
         class="format-data"
