@@ -1,6 +1,6 @@
 <template>
   <table class="table is-fullwidth is-narrow">
-    <thead>
+    <thead v-if="!displayMinimal">
       <th>Filename</th>
       <th>Date Added</th>
       <th>Size</th>
@@ -12,9 +12,9 @@
       </td>
       <td v-else valign="middle">{{ file.asset_name }}</td>
 
-      <td valign="middle">{{ formatDate(file.date_added) }}</td>
+      <td v-if="!displayMinimal" valign="middle">{{ formatDate(file.date_added) }}</td>
 
-      <td valign="middle">{{ calculateSize(file) }}</td>
+      <td v-if="!displayMinimal" valign="middle">{{ calculateSize(file) }}</td>
 
       <td align="right" class="hover-pointer">
         <font-awesome-icon icon="times" @click="$emit('remove-file', file.asset_name)" />
@@ -40,6 +40,11 @@ export default defineComponent({
     fileList: {
       required: true,
       type: Array as PropType<GenericAsset[]>,
+    },
+    displayMinimal: {
+      required: false,
+      type: Boolean,
+      default: true,
     },
   },
   components: {

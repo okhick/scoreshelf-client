@@ -1,10 +1,10 @@
 <template>
   <div class="container">
-    <div class="columns">
-      <div class="column is-4">Format</div>
-      <div class="column is-5">Files</div>
-      <div class="column is-2">Price</div>
-      <div class="column is-1"></div>
+    <div class="header-container">
+      <div class="format-header"><span class="column-header">Format</span></div>
+      <div class="files-header"><span class="column-header">Files</span></div>
+      <div class="price-header"><span class="column-header">Price</span></div>
+      <div class="clear-header"></div>
     </div>
 
     <div class="format-container" v-for="format in formats" :key="format.formatId">
@@ -20,52 +20,53 @@
 
     <hr />
 
-    <div class="columns" id="new-format">
-      <div class="field column is-4">
-        <div class="control">
-          <div class="select">
-            <select v-model="newFormat.format">
-              <option></option>
-              <option v-for="(format, index) in predefinedFormats" :key="index">
-                {{ format }}
-              </option>
-            </select>
+    <div class="new-format-container">
+      <div class="new-format-data">
+        <div class="field new-format">
+          <div class="control">
+            <div class="select">
+              <select v-model="newFormat.format">
+                <option></option>
+                <option v-for="(format, index) in predefinedFormats" :key="index">
+                  {{ format }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="field new-file">
+          <div class="control">
+            <div class="select">
+              <select @input="newAssetSelected" v-model="assetSelectionModel">
+                <option></option>
+                <option v-for="(asset, index) in assetSelectionMenu" :key="index">
+                  {{ asset }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="field new-price">
+          <div class="control has-icons-left">
+            <input class="input" type="price" placeholder="4.33" v-model="newFormat.price" />
+            <span class="icon is-left"> $ </span>
           </div>
         </div>
       </div>
 
-      <div class="field column is-5">
-        <div class="control">
-          <div class="select">
-            <select @input="newAssetSelected" v-model="assetSelectionModel">
-              <option></option>
-              <option v-for="(asset, index) in assetSelectionMenu" :key="index">
-                {{ asset }}
-              </option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div class="field column is-2">
-        <div class="control has-icons-left">
-          <input class="input" type="price" placeholder="4.33" v-model="newFormat.price" />
-          <span class="icon is-left"> $ </span>
-        </div>
-      </div>
-
-      <div class="field column is-1">
-        <div class="control" @click="addFormat">
-          <font-awesome-icon icon="plus" />
-        </div>
+      <div class="new-action" @click="addFormat">
+        <font-awesome-icon icon="plus" />
       </div>
       <!--  -->
+      <asset-table
+        :display-minimal="true"
+        :fileList="assetSelectionTable"
+        @remove-file="removeAsset"
+        v-show="assetSelectionTable.length > 0"
+      />
     </div>
-    <asset-table
-      :fileList="assetSelectionTable"
-      @remove-file="removeAsset"
-      v-show="assetSelectionTable.length > 0"
-    />
   </div>
 </template>
 
@@ -227,9 +228,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/index.scss';
+
 .column {
   padding: 4px;
 }
+.column-header {
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.header-container {
+  display: grid;
+  grid-template-columns: 2fr 3fr 1fr 2.25%;
+  padding-bottom: 8px;
+
+  .format-header {
+    grid-column: 1;
+  }
+  .files-header {
+    grid-column: 2;
+  }
+  .price-header {
+    grid-column: 3;
+  }
+  .clear-header {
+    grid-column: 4;
+  }
+}
+
 .format-container {
   display: grid;
   grid-template-columns: 94.5% 5.5%;
@@ -274,6 +302,48 @@ export default {
 .field.column,
 #new-format {
   margin-bottom: 0;
+}
+
+.new-format-container {
+  display: grid;
+  grid-template-columns: 94.5% 5.5%;
+  grid-template-rows: auto auto;
+  column-gap: 0px;
+
+  .new-format-data {
+    grid-column: 1;
+    display: grid;
+    grid-template-columns: 2fr auto 1fr;
+    column-gap: 4px;
+    align-items: center;
+
+    .new-format {
+      grid-column: 1;
+      margin: 0;
+    }
+    .new-file {
+      grid-column: 2;
+      margin: 0;
+
+      .select {
+        // I HATE this...
+        width: 268px;
+      }
+      option {
+        width: 268px;
+      }
+    }
+    .new-price {
+      grid-column: 3;
+    }
+  }
+  .new-action {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: center;
+    justify-self: center;
+    cursor: pointer;
+  }
 }
 
 .format-container {
