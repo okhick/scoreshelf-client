@@ -35,7 +35,7 @@
       </div>
     </div>
 
-    <div class="new-action" @click="submitFormat">
+    <div class="new-action" @click="submitFormat" v-if="!isExistingFormat">
       <font-awesome-icon icon="plus" />
     </div>
 
@@ -45,7 +45,7 @@
           <a :href="file.link">{{ file.asset_name }}</a>
         </td>
         <td v-else valign="middle">{{ file.asset_name }}</td>
-        <td align="right" class="hover-pointer">
+        <td align="right" class="action">
           <font-awesome-icon icon="times" @click="removeAsset(file.asset_name)" />
         </td>
       </tr>
@@ -91,6 +91,11 @@ export default defineComponent({
       'Other',
     ];
 
+    const isExistingFormat = computed(() => {
+      const formatIds = formats.value.map((format) => format.formatId);
+      return formatIds.includes(newFormat.value.formatId);
+    });
+
     const assetSelectionModel = ref('');
     const assetSelectionMenu = computed(() => {
       const allAssets = fileList.value.map((asset) => asset.asset_name);
@@ -120,9 +125,11 @@ export default defineComponent({
     }
 
     function submitFormat() {
-      const formatIds = formats.value.map((format) => format.formatId);
-      if (formatIds.includes(newFormat.value.formatId)) {
-        formats.value[newFormat.value.formatId] = newFormat.value;
+      if (isExistingFormat.value) {
+        const formatIndex = formats.value.findIndex(
+          (format) => format.formatId === newFormat.value.formatId
+        );
+        formats.value[formatIndex] = newFormat.value;
       } else {
         formats.value.push(newFormat.value);
         newFormat.value = useSharetribePublisherHelpers.getBlankFormat();
@@ -132,6 +139,7 @@ export default defineComponent({
     return {
       // ---- Data ----
       newFormat,
+      isExistingFormat,
       predefinedFormats,
       assetSelectionModel,
       assetSelectionMenu,
@@ -148,9 +156,9 @@ export default defineComponent({
 <style lang="scss" scoped>
 .new-format-container {
   display: grid;
-  grid-template-columns: 32.5% auto 5.5%;
+  grid-template-columns: 32.5% auto auto;
   grid-template-rows: auto auto;
-  column-gap: 0px;
+  column-gap: 8px;
 
   .new-format-data {
     grid-column: 1 / 3;
@@ -181,6 +189,10 @@ export default defineComponent({
   }
   table {
     grid-column: 2;
+
+    .action {
+      cursor: pointer;
+    }
   }
   .new-action {
     grid-column: 3;
@@ -188,6 +200,7 @@ export default defineComponent({
     align-self: center;
     justify-self: center;
     cursor: pointer;
+    padding-right: 9px;
   }
 }
 </style>

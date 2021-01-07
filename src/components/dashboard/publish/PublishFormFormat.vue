@@ -8,13 +8,33 @@
     </div>
 
     <div class="format-container" v-for="format in formats" :key="format.formatId">
-      <div class="format-data">
+      <publish-form-format-edit
+        ref="formatTemplateRef"
+        :initFormat="format"
+        v-show="showEditMode === format.formatId"
+      />
+      <div
+        class="format-data"
+        @click="showEditMode = format.formatId"
+        v-show="!(showEditMode === format.formatId)"
+      >
         <div class="format-name format-cell">{{ format.format }}</div>
         <div class="format-assets format-cell">{{ stringifyAssets(format.assets) }}</div>
         <div class="format-price format-cell">${{ format.price }}</div>
       </div>
-      <div class="action" @click="removeFormat(format.formatId)">
+      <div
+        class="action"
+        @click="removeFormat(format.formatId)"
+        v-show="!(showEditMode === format.formatId)"
+      >
         <font-awesome-icon icon="times" />
+      </div>
+      <div
+        class="action ok"
+        @click="updateFormat(format.formatId)"
+        v-show="showEditMode === format.formatId"
+      >
+        OK
       </div>
     </div>
 
@@ -25,7 +45,7 @@
 </template>
 
 <script lang="ts">
-import { ref, watch, computed } from '@vue/composition-api';
+import { ref, watch, computed, onMounted } from '@vue/composition-api';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 import useDashboard from '@/compositions/dashboard/dashboard';
@@ -84,6 +104,14 @@ export default {
       }
     }
 
+    const showEditMode = ref<string>();
+    const formatTemplateRef = ref();
+    function updateFormat(formatId: number) {
+      const formatIndex = formats.value.findIndex((format) => format.formatId === formatId);
+      formatTemplateRef.value[formatIndex].submitFormat();
+      showEditMode.value = '';
+    }
+
     // ---------- Helper Methods ----------
 
     function stringifyAssets(assets: string[]) {
@@ -119,9 +147,12 @@ export default {
       formats,
       fileList,
       newFormat,
+      showEditMode,
+      formatTemplateRef,
       // ---- Methods ----
       removeFormat,
       stringifyAssets,
+      updateFormat,
     };
   },
 };
@@ -168,6 +199,7 @@ export default {
     grid-template-columns: 2fr 3fr 1fr;
     grid-column: 1;
     align-items: center;
+    cursor: pointer;
 
     box-shadow: 0px 0.5px 8px 0px rgba(0, 0, 0, 0.4);
     border-radius: 4px;
@@ -193,6 +225,11 @@ export default {
     align-self: center;
     justify-self: center;
     cursor: pointer;
+  }
+  .ok {
+    font-weight: 800;
+    font-size: 14px;
+    text-transform: uppercase;
   }
 }
 </style>
