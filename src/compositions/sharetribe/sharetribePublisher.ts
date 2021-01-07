@@ -1,5 +1,5 @@
 import { reactive, toRefs } from '@vue/composition-api';
-import { Data, ListingAttributes, ListingAssetData, Asset } from '@/@types';
+import { Data, ListingAttributes, ListingAssetData, Asset, ListingFormat } from '@/@types';
 
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
 import useDashboard from '@/compositions/dashboard/dashboard';
@@ -41,13 +41,13 @@ const PublishFormState = reactive<IPublishFormState>({
 export default function useSharetribePublisher() {
   const useSharetribePublisherListings = SharetribePublisherListings();
   const useSharetribePublisherForm = SharetribePublisherForm();
-  const usesharetribePublisherHelpers = SharetribePublisherHelpers();
+  const useSharetribePublisherHelpers = SharetribePublisherHelpers();
 
   return {
     ...toRefs(PublishFormState),
     useSharetribePublisherListings,
     useSharetribePublisherForm,
-    usesharetribePublisherHelpers,
+    useSharetribePublisherHelpers,
   };
 }
 
@@ -108,9 +108,9 @@ function SharetribePublisherForm() {
     const assetData: ListingAssetData[] = [];
 
     fileList.value.forEach((file) => {
-      if ('_id' in file && file.thumbnail_settings) {
+      if ('_id' in file) {
         const thumbnail_id = thumbnailSettings.value[file.asset_name].isThumbnail
-          ? file.thumbnail_settings._id
+          ? file.thumbnail_settings?._id
           : null;
 
         assetData.push({
@@ -118,6 +118,7 @@ function SharetribePublisherForm() {
           thumbnail_id: thumbnail_id,
         });
       } else {
+        // TODO: this should throw error. No good here.
         assetData.push({
           scoreshelf_id: null,
           thumbnail_id: null,
@@ -260,6 +261,14 @@ function SharetribePublisherHelpers() {
     return useSharetribePublisherForm.formatArgs();
   }
 
+  function getBlankFormat(): ListingFormat {
+    return { formatId: generateFormatId(), format: '', price: '', assets: [] };
+  }
+
+  function generateFormatId() {
+    return Date.now();
+  }
+
   // function getThumbnailSettings() {
   //   // TODO: This won't work
   //   // reach deep to get this. seems icky but works for now...
@@ -269,6 +278,7 @@ function SharetribePublisherHelpers() {
 
   return {
     getFormattedArgs,
+    getBlankFormat,
     // getThumbnailSettings,
   };
 }

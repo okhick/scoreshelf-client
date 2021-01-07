@@ -8,77 +8,51 @@
     </div>
 
     <div class="format-container" v-for="format in formats" :key="format.formatId">
-      <div class="format-data">
+      <publish-form-format-edit
+        ref="formatTemplateRef"
+        :initFormat="format"
+        v-if="showEditMode === format.formatId"
+      />
+      <div
+        class="format-data"
+        @click="showEditMode = format.formatId"
+        v-show="!(showEditMode === format.formatId)"
+      >
         <div class="format-name format-cell">{{ format.format }}</div>
         <div class="format-assets format-cell">{{ stringifyAssets(format.assets) }}</div>
         <div class="format-price format-cell">${{ format.price }}</div>
       </div>
-      <div class="action" @click="removeFormat(format.formatId)">
+      <div
+        class="action"
+        @click="removeFormat(format.formatId)"
+        v-show="!(showEditMode === format.formatId)"
+      >
         <font-awesome-icon icon="times" />
+      </div>
+      <div
+        class="action ok"
+        @click="updateFormat(format.formatId)"
+        v-show="showEditMode === format.formatId"
+      >
+        OK
       </div>
     </div>
 
     <hr />
 
-    <div class="new-format-container">
-      <div class="new-format-data">
-        <div class="field new-format">
-          <div class="control">
-            <div class="select">
-              <select v-model="newFormat.format">
-                <option></option>
-                <option v-for="(format, index) in predefinedFormats" :key="index">
-                  {{ format }}
-                </option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="field new-file">
-          <div class="control">
-            <div class="select">
-              <select @input="newAssetSelected" v-model="assetSelectionModel">
-                <option></option>
-                <option v-for="(asset, index) in assetSelectionMenu" :key="index">
-                  {{ asset }}
-                </option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="field new-price">
-          <div class="control has-icons-left">
-            <input class="input" type="price" placeholder="4.33" v-model="newFormat.price" />
-            <span class="icon is-left"> $ </span>
-          </div>
-        </div>
-      </div>
-
-      <div class="new-action" @click="addFormat">
-        <font-awesome-icon icon="plus" />
-      </div>
-      <!--  -->
-      <asset-table
-        :display-minimal="true"
-        :fileList="assetSelectionTable"
-        @remove-file="removeAsset"
-        v-show="assetSelectionTable.length > 0"
-      />
-    </div>
+    <publish-form-format-edit :initFormat="newFormat" />
   </div>
 </template>
 
 <script lang="ts">
-import { ref, watch, computed } from '@vue/composition-api';
+import { ref, watch, computed, onMounted } from '@vue/composition-api';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
+import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 import useDashboard from '@/compositions/dashboard/dashboard';
 
 import { ListingFormat, Asset, GenericAsset, ChooseEvent, UploadedFile } from '@/@types';
 
-import AssetTable from '@/components/forms/AssetTable.vue';
-
+import PublishFormFormatEdit from './PublishFormFormatEdit.vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -87,24 +61,15 @@ library.add(faPlus, faTimes);
 export default {
   components: {
     FontAwesomeIcon,
-    AssetTable,
+    PublishFormFormatEdit,
   },
   setup() {
     const { formats, fileList } = useScoreshelfPublisher();
     const { useDashboardState } = useDashboard();
     const { publishModalEditData } = useDashboardState;
+    const { useSharetribePublisherHelpers } = useSharetribePublisher();
 
-    const predefinedFormats = [
-      'Score and Part(s)',
-      'Full Score',
-      'Performance Score',
-      'Solo Part',
-      'Parts Only',
-      'Choir Score',
-      'Other',
-    ];
-
-    const newFormat = ref<ListingFormat>(getBlankFormat());
+    const newFormat = ref<ListingFormat>(useSharetribePublisherHelpers.getBlankFormat());
     initFormatData();
 
     // ---------- Methods ----------
@@ -130,54 +95,24 @@ export default {
       });
     }
 
-    function addFormat() {
-      formats.value.push(newFormat.value);
-      newFormat.value = getBlankFormat();
-    }
-
     function removeFormat(formatId: number) {
       if (formats.value.length > 1) {
         const remainingFormats = formats.value.filter((format) => format.formatId !== formatId);
         formats.value = remainingFormats;
       } else {
-        formats.value = [getBlankFormat()];
+        formats.value = [useSharetribePublisherHelpers.getBlankFormat()];
       }
     }
 
-    const assetSelectionModel = ref('');
-    const assetSelectionMenu = computed(() => {
-      const allAssets = fileList.value.map((asset) => asset.asset_name);
-      const unusedAssets = allAssets.filter((asset) => !newFormat.value.assets.includes(asset));
-      return unusedAssets;
-    });
-    const assetSelectionTable = computed(() => {
-      const selectedFullAssets = newFormat.value.assets.map((asset) => {
-        return fileList.value.find((file) => file.asset_name === asset);
-      }) as (Asset | UploadedFile)[]; /* Type assertion because this will never be undefined */
-      return selectedFullAssets;
-    });
-    function newAssetSelected(event: Event & ChooseEvent) {
-      const selectedAsset: string = event.target.value;
-
-      // make sure it's not the blank option or an already chosen option
-      if (selectedAsset !== '' && newFormat.value.assets.indexOf(selectedAsset) === -1) {
-        newFormat.value.assets.push(selectedAsset);
-      }
-      assetSelectionModel.value = '';
-    }
-
-    function removeAsset(assetToRemove: string) {
-      newFormat.value.assets = newFormat.value.assets.filter((asset) => asset !== assetToRemove);
+    const showEditMode = ref<string>();
+    const formatTemplateRef = ref();
+    function updateFormat(formatId: number) {
+      const formatIndex = formats.value.findIndex((format) => format.formatId === formatId);
+      formatTemplateRef.value[formatIndex].submitFormat();
+      showEditMode.value = '';
     }
 
     // ---------- Helper Methods ----------
-    function getBlankFormat(): ListingFormat {
-      return { formatId: getFormatId(), format: '', price: '', assets: [] };
-    }
-
-    function getFormatId() {
-      return Date.now();
-    }
 
     function stringifyAssets(assets: string[]) {
       return assets.join(', ');
@@ -211,17 +146,13 @@ export default {
       // ---- Data ----
       formats,
       fileList,
-      predefinedFormats,
       newFormat,
-      assetSelectionTable,
-      assetSelectionMenu,
-      assetSelectionModel,
+      showEditMode,
+      formatTemplateRef,
       // ---- Methods ----
-      addFormat,
       removeFormat,
-      newAssetSelected,
-      removeAsset,
       stringifyAssets,
+      updateFormat,
     };
   },
 };
@@ -230,19 +161,19 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles/index.scss';
 
-.column {
-  padding: 4px;
+.container {
+  margin-bottom: 25px;
 }
-.column-header {
-  text-transform: uppercase;
-  font-weight: 600;
-  font-size: 18px;
-}
-
 .header-container {
   display: grid;
   grid-template-columns: 2fr 3fr 1fr 2.25%;
   padding-bottom: 8px;
+
+  .column-header {
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 18px;
+  }
 
   .format-header {
     grid-column: 1;
@@ -260,25 +191,24 @@ export default {
 
 .format-container {
   display: grid;
-  grid-template-columns: 94.5% 5.5%;
+  grid-template-columns: auto 5.5%;
+  margin-bottom: 12px;
 
   .format-data {
-    // display: flex-item;
     display: grid;
     grid-template-columns: 2fr 3fr 1fr;
     grid-column: 1;
     align-items: center;
+    cursor: pointer;
 
     box-shadow: 0px 0.5px 8px 0px rgba(0, 0, 0, 0.4);
     border-radius: 4px;
     min-height: 42px;
-    // margin-bottom: 24px;
     transition: all 0.1s ease-in-out;
 
     .format-cell {
       padding: 12px;
     }
-
     .format-name {
       grid-column: 1;
     }
@@ -295,70 +225,11 @@ export default {
     align-self: center;
     justify-self: center;
     cursor: pointer;
-    // display: flex-item;
   }
-}
-
-.field.column,
-#new-format {
-  margin-bottom: 0;
-}
-
-.new-format-container {
-  display: grid;
-  grid-template-columns: 94.5% 5.5%;
-  grid-template-rows: auto auto;
-  column-gap: 0px;
-
-  .new-format-data {
-    grid-column: 1;
-    display: grid;
-    grid-template-columns: 2fr auto 1fr;
-    column-gap: 4px;
-    align-items: center;
-
-    .new-format {
-      grid-column: 1;
-      margin: 0;
-    }
-    .new-file {
-      grid-column: 2;
-      margin: 0;
-
-      .select {
-        // I HATE this...
-        width: 268px;
-      }
-      option {
-        width: 268px;
-      }
-    }
-    .new-price {
-      grid-column: 3;
-    }
+  .ok {
+    font-weight: 800;
+    font-size: 14px;
+    text-transform: uppercase;
   }
-  .new-action {
-    grid-column: 2;
-    grid-row: 1;
-    align-self: center;
-    justify-self: center;
-    cursor: pointer;
-  }
-}
-
-.format-container {
-  margin-bottom: 12px;
-}
-.format-input {
-  margin-right: 10px;
-}
-.price-input {
-  margin-right: 10px;
-}
-.hover-pointer:hover {
-  cursor: pointer;
-}
-.container {
-  margin-bottom: 25px;
 }
 </style>
