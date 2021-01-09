@@ -1,7 +1,7 @@
 <template>
   <div class="new-format-container">
     <div class="new-format-data">
-      <div class="field new-format">
+      <div class="field new-format" v-show="!otherFlag">
         <div class="control">
           <div class="select">
             <select v-model="newFormat.format">
@@ -11,6 +11,17 @@
               </option>
             </select>
           </div>
+        </div>
+      </div>
+      <div class="field new-format" v-show="otherFlag">
+        <div class="control">
+          <input
+            class="input"
+            type="format"
+            placeholder="Max Patch"
+            @keyup.delete="switchBackToDropdown"
+            v-model="newFormat.format"
+          />
         </div>
       </div>
 
@@ -54,7 +65,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, PropType } from '@vue/composition-api';
+import {
+  defineComponent,
+  ref,
+  computed,
+  PropType,
+  onMounted,
+  watchEffect,
+} from '@vue/composition-api';
 import { Asset, UploadedFile, ChooseEvent, ListingFormat } from '@/@types';
 
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
@@ -81,6 +99,8 @@ export default defineComponent({
 
     // Mutating props in Vue is anti-pattern so we'll copy it into a new const
     let newFormat = ref<ListingFormat>(initFormat);
+
+    // Handle the dropdown or other box
     const predefinedFormats = [
       'Score and Part(s)',
       'Full Score',
@@ -90,6 +110,27 @@ export default defineComponent({
       'Choir Score',
       'Other',
     ];
+    const otherFlag = ref(false);
+    onMounted(() => {
+      if (predefinedFormats.includes(initFormat.format) || initFormat.format === '') {
+        otherFlag.value = false;
+      } else {
+        otherFlag.value = true;
+      }
+    });
+    watchEffect(() => {
+      if (!otherFlag.value) {
+        if (newFormat.value.format === 'Other') {
+          otherFlag.value = true;
+          newFormat.value.format = '';
+        }
+      }
+    });
+    function switchBackToDropdown() {
+      if (newFormat.value.format === '') {
+        otherFlag.value = false;
+      }
+    }
 
     const isExistingFormat = computed(() => {
       const formatIds = formats.value.map((format) => format.formatId);
@@ -144,10 +185,12 @@ export default defineComponent({
       assetSelectionModel,
       assetSelectionMenu,
       assetSelectionTable,
+      otherFlag,
       // ---- Actions ----
       newAssetSelected,
       removeAsset,
       submitFormat,
+      switchBackToDropdown,
     };
   },
 });

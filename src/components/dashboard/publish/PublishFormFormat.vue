@@ -108,7 +108,7 @@ export default {
     const formatTemplateRef = ref();
     function updateFormat(formatId: number) {
       const formatIndex = formats.value.findIndex((format) => format.formatId === formatId);
-      formatTemplateRef.value[formatIndex].submitFormat();
+      formatTemplateRef.value[0].submitFormat();
       showEditMode.value = '';
     }
 
