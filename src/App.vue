@@ -19,7 +19,6 @@
 </template>
 
 <script>
-// import Navbar from "@/components/Navbar.vue";
 import SidenavBar from '@/components/sidenav/SidenavBar.vue';
 import SearchBar from '@/components/search/SearchBar.vue';
 
@@ -28,10 +27,8 @@ import { vTeleportLocation } from '@desislavsd/vue-teleport';
 import { onMounted } from '@vue/composition-api';
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
 import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
-
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const SidenavStore = createNamespacedHelpers('sidenav'); // specific module name
-const searchStore = createNamespacedHelpers('search'); // specific module name
+import useSearch from '@/compositions/search/search';
+import useSidenav from '@/compositions/sidenav/sidenav';
 
 export default {
   components: {
@@ -43,14 +40,17 @@ export default {
   setup() {
     const { useSharetribeSdk } = useSharetribe();
     const { useAuthorizeScoreshelf } = useScoreshelf();
+    const { isOpen } = useSidenav();
 
-    const { isOpen } = SidenavStore.useState(['isOpen']);
-    const { searchbarIsShowing } = searchStore.useState(['searchbarIsShowing']);
+    const { searchbarIsShowing } = useSearch();
 
     onMounted(async () => await useSharetribeSdk());
     onMounted(async () => await useAuthorizeScoreshelf());
 
-    return { menuIsShowing: isOpen, searchbarIsShowing: searchbarIsShowing };
+    return {
+      menuIsShowing: isOpen,
+      searchbarIsShowing,
+    };
   },
 };
 </script>
@@ -64,11 +64,10 @@ body {
   @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&family=Lora:wght@400;500;600;700&display=swap');
 
   background: $off-white;
-
+  height: 100%;
   .title {
     color: $dark;
   }
-
   .main {
     transition: transform 0.25s ease-in-out;
     margin-left: 60px;

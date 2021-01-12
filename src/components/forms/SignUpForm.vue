@@ -46,7 +46,7 @@
 
     <div class="level">
       <button
-        class="button is-dark level-left"
+        class="button level-left"
         :class="{ 'is-loading': isLoading }"
         type="submit"
         @click="signupAttempt()"
@@ -70,17 +70,18 @@
 }
 </style>
 
-<script>
-import { reactive, ref, toRefs } from '@vue/composition-api';
-import { mapState } from 'vuex';
+<script lang="ts">
+import { reactive, ref, SetupContext, toRefs } from '@vue/composition-api';
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
 
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
+// copied from vue docs not sure it needed in Vue 3: https://composition-api.vuejs.org/api.html#setup
+interface Data {
+  [key: string]: unknown;
+}
 
 export default {
   name: 'SignUpForm',
-  setup(_, context) {
+  setup(_: Data, context: SetupContext) {
     const formData = reactive({
       email: '',
       password: '',
@@ -90,8 +91,8 @@ export default {
       displayName: '',
     });
     const isLoading = ref(false);
-    const { SHARETRIBE } = sharetribeStore.useState(['SHARETRIBE']);
-    const { useRefreshLogin } = useSharetribe();
+    const { useRefreshLogin, useSharetribeState } = useSharetribe();
+    const { SHARETRIBE } = useSharetribeState;
 
     function loginActually() {
       context.root.$router.push({ name: 'Login' });
@@ -100,6 +101,7 @@ export default {
     async function signupAttempt() {
       try {
         isLoading.value = true;
+        // TODO: Type this when you actually need error handling here.
         const signupRes = await SHARETRIBE.value.currentUser.create({
           email: formData.email,
           password: formData.password,
