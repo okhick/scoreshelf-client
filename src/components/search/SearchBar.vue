@@ -12,7 +12,10 @@
         />
       </div>
       <div class="control search-submit">
-        <a class="button is-info is-medium" @click="executeSearch">
+        <a
+          :class="['button', 'is-info', 'is-medium', { 'is-loading': searchIsLoading }]"
+          @click="executeSearch"
+        >
           <font-awesome-icon icon="arrow-right" />
         </a>
       </div>
@@ -34,12 +37,13 @@ export default {
     FontAwesomeIcon,
   },
   setup(_, context) {
-    const { executeSearch, searchInput, searchbarIsShowing } = useSearch(context);
+    const { executeSearch, searchInput, searchbarIsShowing, searchIsLoading } = useSearch(context);
 
     return {
       // ---- Data ----
       searchInput,
       searchbarIsShowing,
+      searchIsLoading,
       // ---- Methods ----
       executeSearch,
     };
