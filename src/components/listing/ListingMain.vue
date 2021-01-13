@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import useListing from '@/compositions/listing/listing.js';
+import useListing from '@/compositions/listing/listing';
 import { watch, ref, computed } from '@vue/composition-api';
 
 import ListingFormats from '@/components/listing/ListingFormats.vue';
@@ -104,7 +104,7 @@ h4.title.is-4.composer {
 .add-to-cart {
   height: 38px;
   width: 166px;
-  background-color: $maroon;
+  background-color: $black;
   color: $off-white;
   display: flex;
   justify-content: center;
@@ -113,6 +113,12 @@ h4.title.is-4.composer {
   margin-top: 11px;
   cursor: pointer;
   font-size: 20px;
+}
+.add-to-cart:hover {
+  // background-color: rgba(40, 40, 40, 0.1);
+  background-color: $tan-light;
+  border: solid 1px $black;
+  color: $black;
 }
 
 .info-table {

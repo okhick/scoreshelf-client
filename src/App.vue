@@ -2,6 +2,8 @@
   <div id="app">
     <sidenav-bar />
     <search-bar :class="{ 'menu-shift': menuIsShowing }" />
+    <!-- this can be converted to a real vue teleport in vue3 -->
+    <v-teleport-location />
     <div
       :class="[
         'main',
@@ -17,32 +19,38 @@
 </template>
 
 <script>
-// import Navbar from "@/components/Navbar.vue";
 import SidenavBar from '@/components/sidenav/SidenavBar.vue';
 import SearchBar from '@/components/search/SearchBar.vue';
 
+import { vTeleportLocation } from '@desislavsd/vue-teleport';
+
 import { onMounted } from '@vue/composition-api';
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
-
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const SidenavStore = createNamespacedHelpers('sidenav'); // specific module name
-const searchStore = createNamespacedHelpers('search'); // specific module name
+import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
+import useSearch from '@/compositions/search/search';
+import useSidenav from '@/compositions/sidenav/sidenav';
 
 export default {
   components: {
     SidenavBar,
     SearchBar,
+    vTeleportLocation,
   },
 
   setup() {
     const { useSharetribeSdk } = useSharetribe();
-    const { isOpen } = SidenavStore.useState(['isOpen']);
-    const { searchbarIsShowing } = searchStore.useState(['searchbarIsShowing']);
-    console.log(searchbarIsShowing);
+    const { useAuthorizeScoreshelf } = useScoreshelf();
+    const { isOpen } = useSidenav();
+
+    const { searchbarIsShowing } = useSearch();
 
     onMounted(async () => await useSharetribeSdk());
+    onMounted(async () => await useAuthorizeScoreshelf());
 
-    return { menuIsShowing: isOpen, searchbarIsShowing: searchbarIsShowing };
+    return {
+      menuIsShowing: isOpen,
+      searchbarIsShowing,
+    };
   },
 };
 </script>
@@ -56,11 +64,10 @@ body {
   @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&family=Lora:wght@400;500;600;700&display=swap');
 
   background: $off-white;
-
+  height: 100%;
   .title {
     color: $dark;
   }
-
   .main {
     transition: transform 0.25s ease-in-out;
     margin-left: 60px;

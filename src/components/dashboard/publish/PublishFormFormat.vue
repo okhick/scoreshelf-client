@@ -1,76 +1,75 @@
 <template>
-  <div class="format">
-    <label class="label">Format and Price</label>
-    <div v-for="format in formats" :key="format.formatId">
-      <div class="field is-horizontal">
-        <input class="input field-body" type="text" placeholder="Format" v-model="format.format" />
-
-        <div class="field is-expanded field-body">
-          <div class="field has-addons">
-            <p class="control">
-              <a class="button is-static">$</a>
-            </p>
-            <p class="control is-expanded">
-              <input class="input" type="text" placeholder="20" v-model="format.price" />
-            </p>
-          </div>
-        </div>
-
-        <button class="button" @click="removeFormat(format.formatId)">
-          <font-awesome-icon icon="trash-alt" />
-        </button>
-      </div>
-
-      <table class="table is-fullwidth is-narrow" v-show="format.assets.length > 0">
-        <tr v-for="asset in format.assets" :key="asset">
-          <td valign="middle">
-            {{ asset }}
-          </td>
-          <td align="right" class="hover-pointer">
-            <font-awesome-icon icon="times" @click="removeAsset(asset, format.formatId)" />
-          </td>
-        </tr>
-      </table>
-
-      <div v-show="fileList.length > 0">
-        <label class="label">Add file(s) to format</label>
-        <div class="select is-primary">
-          <select @change="newAssetSelected($event, format.formatId)">
-            <option value=""></option>
-            <option v-for="file in fileList" :key="file.asset_name" :value="file.asset_name">
-              {{ file.asset_name }}
-            </option>
-          </select>
-        </div>
-      </div>
-      <hr />
+  <div class="container">
+    <div class="header-container">
+      <div class="format-header"><span class="column-header">Format</span></div>
+      <div class="files-header"><span class="column-header">Files</span></div>
+      <div class="price-header"><span class="column-header">Price</span></div>
+      <div class="clear-header"></div>
     </div>
 
-    <button @click="addFormat" class="button is-outlined">
-      <font-awesome-icon icon="plus"></font-awesome-icon>
-    </button>
+    <div class="format-container" v-for="format in formats" :key="format.formatId">
+      <publish-form-format-edit
+        ref="formatTemplateRef"
+        :initFormat="format"
+        v-if="showEditMode === format.formatId"
+      />
+      <div
+        class="format-data"
+        @click="showEditMode = format.formatId"
+        v-show="!(showEditMode === format.formatId)"
+      >
+        <div class="format-name format-cell">{{ format.format }}</div>
+        <div class="format-assets format-cell">{{ stringifyAssets(format.assets) }}</div>
+        <div class="format-price format-cell">${{ format.price }}</div>
+      </div>
+      <div
+        class="action"
+        @click="removeFormat(format.formatId)"
+        v-show="!(showEditMode === format.formatId)"
+      >
+        <font-awesome-icon icon="times" />
+      </div>
+      <div
+        class="action ok"
+        @click="updateFormat(format.formatId)"
+        v-show="showEditMode === format.formatId"
+      >
+        OK
+      </div>
+    </div>
+
+    <hr />
+
+    <publish-form-format-edit :initFormat="newFormat" />
   </div>
 </template>
 
-<script>
-import { watch } from '@vue/composition-api';
+<script lang="ts">
+import { ref, watch, computed, onMounted } from '@vue/composition-api';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
+import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
+import useDashboard from '@/compositions/dashboard/dashboard';
 
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
+import { ListingFormat, Asset, GenericAsset, ChooseEvent, UploadedFile } from '@/@types';
 
+import PublishFormFormatEdit from './PublishFormFormatEdit.vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faPlus, faTrash, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-library.add(faPlus, faTrash, faTimes);
+library.add(faPlus, faTimes);
 
 export default {
   components: {
     FontAwesomeIcon,
+    PublishFormFormatEdit,
   },
   setup() {
     const { formats, fileList } = useScoreshelfPublisher();
-    const { publishModalEditData } = dashboardStore.useState(['publishModalEditData']);
+    const { useDashboardState } = useDashboard();
+    const { publishModalEditData } = useDashboardState;
+    const { useSharetribePublisherHelpers } = useSharetribePublisher();
+
+    const newFormat = ref<ListingFormat>(useSharetribePublisherHelpers.getBlankFormat());
     initFormatData();
 
     // ---------- Methods ----------
@@ -78,47 +77,45 @@ export default {
       if (publishModalEditData.value?.attributes?.publicData?.formats) {
         // if we've opened an existing work
         formats.value = publishModalEditData.value.attributes.publicData.formats;
+        lookupFormatAssets();
       } else {
         // if it's a new work
-        formats.values = [getBlankFormat()];
+        formats.value = [newFormat.value];
       }
     }
 
-    function addFormat() {
-      formats.value.push(getBlankFormat());
+    // swap out scoreshelf_ids for asset_names
+    function lookupFormatAssets() {
+      formats.value.forEach((format) => {
+        const assetNames = format.assets.map((assetId) => {
+          const asset = fileList.value.find((file) => '_id' in file && file._id === assetId);
+          return asset?.asset_name || '';
+        });
+        format.assets = assetNames;
+      });
     }
 
-    function removeFormat(formatId) {
+    function removeFormat(formatId: number) {
       if (formats.value.length > 1) {
-        const remainingFormats = formats.value.filter((format) => format.formatId != formatId);
+        const remainingFormats = formats.value.filter((format) => format.formatId !== formatId);
         formats.value = remainingFormats;
       } else {
-        formats.value = [getBlankFormat()];
+        formats.value = [useSharetribePublisherHelpers.getBlankFormat()];
       }
     }
 
-    function newAssetSelected(event, formatId) {
-      const selectedAsset = event.target.value;
-      const thisFormat = formats.value.find((format) => format.formatId === formatId);
-
-      // make sure it's not the blank option or an already chosen option
-      if (selectedAsset !== '' && thisFormat.assets.indexOf(selectedAsset) === -1) {
-        thisFormat.assets.push(selectedAsset);
-      }
-    }
-
-    function removeAsset(assetToRemove, formatId) {
-      const thisFormat = formats.value.find((format) => format.formatId === formatId);
-      thisFormat.assets = thisFormat.assets.filter((asset) => asset !== assetToRemove);
+    const showEditMode = ref<string>();
+    const formatTemplateRef = ref();
+    function updateFormat(formatId: number) {
+      const formatIndex = formats.value.findIndex((format) => format.formatId === formatId);
+      formatTemplateRef.value[0].submitFormat();
+      showEditMode.value = '';
     }
 
     // ---------- Helper Methods ----------
-    function getBlankFormat() {
-      return { formatId: getFormatId(), format: '', price: '', assets: [] };
-    }
 
-    function getFormatId() {
-      return Date.now();
+    function stringifyAssets(assets: string[]) {
+      return assets.join(', ');
     }
 
     // ---------- Watchers ----------
@@ -129,7 +126,7 @@ export default {
         // this is used on modal open
         formats.value.forEach((format) => {
           format.assets = format.assets.map((asset) => {
-            const thisFile = fileList.value.find((file) => file._id == asset);
+            const thisFile = fileList.value.find((file) => '_id' in file && file._id === asset);
             if (thisFile != undefined) {
               return thisFile.asset_name;
             }
@@ -149,24 +146,90 @@ export default {
       // ---- Data ----
       formats,
       fileList,
+      newFormat,
+      showEditMode,
+      formatTemplateRef,
       // ---- Methods ----
-      addFormat,
       removeFormat,
-      newAssetSelected,
-      removeAsset,
+      stringifyAssets,
+      updateFormat,
     };
   },
 };
 </script>
 
-<style scoped>
-.format-input {
-  margin-right: 10px;
+<style lang="scss" scoped>
+@import '@/styles/index.scss';
+
+.container {
+  margin-bottom: 25px;
 }
-.price-input {
-  margin-right: 10px;
+.header-container {
+  display: grid;
+  grid-template-columns: 2fr 3fr 1fr 2.25%;
+  padding-bottom: 8px;
+
+  .column-header {
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 18px;
+  }
+
+  .format-header {
+    grid-column: 1;
+  }
+  .files-header {
+    grid-column: 2;
+  }
+  .price-header {
+    grid-column: 3;
+  }
+  .clear-header {
+    grid-column: 4;
+  }
 }
-.hover-pointer:hover {
-  cursor: pointer;
+
+.format-container {
+  display: grid;
+  grid-template-columns: auto 5.5%;
+  margin-bottom: 12px;
+
+  .format-data {
+    display: grid;
+    grid-template-columns: 2fr 3fr 1fr;
+    grid-column: 1;
+    align-items: center;
+    cursor: pointer;
+
+    box-shadow: 0px 0.5px 8px 0px rgba(0, 0, 0, 0.4);
+    border-radius: 4px;
+    min-height: 42px;
+    transition: all 0.1s ease-in-out;
+
+    .format-cell {
+      padding: 12px;
+    }
+    .format-name {
+      grid-column: 1;
+    }
+    .format-assets {
+      grid-column: 2;
+    }
+    .format-price {
+      grid-column: 3;
+    }
+  }
+
+  .action {
+    grid-column: 2;
+    align-self: center;
+    justify-self: center;
+    cursor: pointer;
+  }
+  .ok {
+    font-weight: 800;
+    font-size: 14px;
+    text-transform: uppercase;
+  }
 }
 </style>

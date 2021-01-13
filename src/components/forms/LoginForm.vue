@@ -30,7 +30,7 @@
 
     <div class="level">
       <button
-        class="button is-dark level-left"
+        class="button level-left"
         :class="{ 'is-loading': isLoading }"
         type="submit"
         @click="loginAttempt"
@@ -55,11 +55,10 @@
 }
 </style>
 
-<script>
+<script type="ts">
 import { ref } from '@vue/composition-api';
 
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const sharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
+import useSharetribe from '@/compositions/sharetribe/sharetribe';
 
 export default {
   name: 'LoginForm',
@@ -70,7 +69,8 @@ export default {
     });
     const loginError = ref(false);
     const isLoading = ref(false);
-    const { SHARETRIBE } = sharetribeStore.useState(['SHARETRIBE']);
+    const { useSharetribeState } = useSharetribe();
+    const { SHARETRIBE } = useSharetribeState;
 
     function signupActually() {
       context.root.$router.push({ name: 'SignUp' });

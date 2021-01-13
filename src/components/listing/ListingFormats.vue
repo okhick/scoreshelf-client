@@ -14,11 +14,11 @@
 </template>
 
 <script>
-import useListing from '@/compositions/listing/listing.js';
+import useListing from '@/compositions/listing/listing';
 import { ref } from '@vue/composition-api';
 
 export default {
-  setup() {
+  setup(_, context) {
     const { listingData, selectedFormat } = useListing();
     const formats = listingData.value.attributes.publicData.formats;
 
@@ -38,7 +38,7 @@ export default {
   color: $black;
   height: 70px;
   width: 166px;
-  border: 1px solid $black-transp;
+  border: 1px solid $black-light;
   border-radius: 4px;
   padding: 13px;
   line-height: 1.1;
@@ -55,7 +55,7 @@ export default {
 }
 .selected {
   border: 2px solid $maroon;
-  background-color: $maroon-transp;
+  background-color: $maroon-light;
   box-shadow: 0px 0px 17px 0px rgba(0, 0, 0, 0.17);
 }
 </style>
