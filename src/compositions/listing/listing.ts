@@ -26,7 +26,7 @@ const ListingState = reactive<IListingState>({
 
 // ============================================
 
-export default function useListing(listingId: string, context: SetupContext) {
+export default function useListing(listingId: string = '', context: SetupContext) {
   const { SCORESHELF } = useScoreshelf();
   const { searchListingData } = useSearch(context);
   const { useSharetribeState } = useSharetribe();
