@@ -14,7 +14,7 @@
 import 'trix/dist/trix.js';
 import 'trix/dist/trix.css';
 
-import { ref, watch, computed, defineComponent, PropType } from '@vue/composition-api';
+import { ref, watch, computed, defineComponent, PropType, onMounted } from '@vue/composition-api';
 
 interface TrixChangeEvent {
   target: {
@@ -33,11 +33,15 @@ export default defineComponent({
     const trixContent = ref<string>('');
     const trixInit = ref<boolean>(false);
 
-    // wait until the props are passed before loading Trix
+    // Wait until fully mounted to init, otherwise it won't render
+    onMounted(() => {
+      trixInit.value = true;
+    });
+
+    // wait until the props are passed before loading Trix, usually after mount aparently
     const initValue = computed(() => props.initContent);
     watch(initValue, (newValue) => {
       trixContent.value = newValue;
-      trixInit.value = true;
     });
 
     function handleNewContent(event: Event & TrixChangeEvent) {
