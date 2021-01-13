@@ -44,7 +44,8 @@
 
 <script lang="ts">
 import useListing from '@/compositions/listing/listing';
-import { watch, ref, computed } from '@vue/composition-api';
+import { watch, ref, computed, SetupContext } from '@vue/composition-api';
+import { Data } from '@/@types';
 
 import ListingFormats from '@/components/listing/ListingFormats.vue';
 
@@ -52,7 +53,7 @@ export default {
   components: {
     ListingFormats,
   },
-  setup(_, context) {
+  setup(_: Data, context: SetupContext) {
     const { listingData, selectedFormat, scrollPos } = useListing(undefined, context);
 
     function addToCart() {
