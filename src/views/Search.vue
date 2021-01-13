@@ -12,7 +12,7 @@
         </p>
         <p><b>Total results:</b> {{ searchResultsMeta.totalItems }}</p>
       </div>
-      <div class="searchResults">
+      <div class="searchResults" v-if="searchResultsMeta.totalItems > 0">
         <search-result
           v-for="listing in searchListingData"
           :key="listing.id.uuid"
