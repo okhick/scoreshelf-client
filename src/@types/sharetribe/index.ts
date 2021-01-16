@@ -99,6 +99,10 @@ export interface ListingAssetData {
   thumbnail_id?: string | null;
 }
 
+export interface CurrentUserResponse {
+  data: CurrentUser;
+}
+
 export interface CurrentUser {
   id: { uuid: string };
   type: string;

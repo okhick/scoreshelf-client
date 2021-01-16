@@ -4,49 +4,43 @@
       <button class="delete" @click="closeMessage('success', 'profile')"></button>
       Your profile has been updated!
     </div>
-    <h1 class="title">Edit your profile</h1>
 
-    <label class="label">First Name</label>
-    <div class="field has-addons">
-      <div class="control">
-        <input :disabled="firstName.disabled" class="input" type="text" v-model="firstName.value" />
-      </div>
-      <div class="control">
-        <a class="button is-primary" @click="toggleEnable('firstName')">
-          <font-awesome-icon icon="lock" v-show="firstName.disabled" />
-          <font-awesome-icon icon="unlock" v-show="!firstName.disabled" />
-        </a>
-      </div>
-    </div>
-
-    <label class="label">Last Name</label>
-    <div class="field has-addons">
-      <div class="control">
-        <input :disabled="lastName.disabled" class="input" type="text" v-model="lastName.value" />
-      </div>
-      <div class="control">
-        <a class="button is-primary" @click="toggleEnable('lastName')">
-          <font-awesome-icon icon="lock" v-show="lastName.disabled" />
-          <font-awesome-icon icon="unlock" v-show="!lastName.disabled" />
-        </a>
-      </div>
-    </div>
-
-    <label class="label">Display Name</label>
-    <div class="field has-addons">
-      <div class="control">
-        <input
-          :disabled="displayName.disabled"
-          class="input"
-          type="text"
-          v-model="displayName.value"
-        />
-      </div>
-      <div class="control">
-        <a class="button is-primary" @click="toggleEnable('displayName')">
-          <font-awesome-icon icon="lock" v-show="displayName.disabled" />
-          <font-awesome-icon icon="unlock" v-show="!displayName.disabled" />
-        </a>
+    <div class="columns">
+      <div class="column is-half">
+        <div class="columns">
+          <div class="column is-half">
+            <label class="label">First Name</label>
+            <div class="field">
+              <div class="control">
+                <input class="input" type="text" v-model="firstName.value" />
+              </div>
+            </div>
+          </div>
+          <div class="column is-half">
+            <label class="label">Last Name</label>
+            <div class="field">
+              <div class="control">
+                <input class="input" type="text" v-model="lastName.value" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <label class="label">Display Name or Pseudonym</label>
+        <div class="field">
+          <div class="control">
+            <input class="input" type="text" v-model="displayName.value" />
+          </div>
+        </div>
+        <label class="label">Bio</label>
+        <div class="field">
+          <div class="control">
+            <trix-editor-component
+              v-if="dataHasLoaded"
+              v-bind:init-content="bio.value"
+              @trix-editor-change="handleNewContent"
+            />
+          </div>
+        </div>
       </div>
     </div>
 
@@ -77,22 +71,29 @@
   </div>
 </template>
 
-<script>
-// import { mapState } from 'vuex';
+<script lang="ts">
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
+
+import TrixEditorComponent from '@/components/forms/TrixEditor.vue';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUnlock, faLock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { onMounted, reactive, ref, toRefs } from '@vue/composition-api';
+import { onMounted, reactive, ref, toRefs, watchEffect } from '@vue/composition-api';
 library.add(faUnlock, faLock);
+
+interface IMessages {
+  [key: string]: {
+    [key: string]: boolean;
+  };
+}
 
 export default {
   components: {
     FontAwesomeIcon,
+    TrixEditorComponent,
   },
   setup() {
-    // Data
     const formData = reactive({
       firstName: {
         disabled: true,
@@ -106,13 +107,18 @@ export default {
         disabled: true,
         value: '',
       },
+      bio: {
+        disabled: true,
+        value: '',
+      },
       email: {
         disabled: true,
         value: '',
       },
     });
     const isLoading = ref(false);
-    const messages = reactive({
+    const dataHasLoaded = ref(false);
+    const messages: IMessages = reactive({
       success: {
         profile: false,
       },
@@ -120,23 +126,28 @@ export default {
 
     onMounted(async () => {
       await useRefreshLogin();
-      formData.firstName.value = currentUser.value.attributes.profile.firstName;
-      formData.lastName.value = currentUser.value.attributes.profile.lastName;
-      formData.displayName.value = currentUser.value.attributes.profile.displayName;
-      formData.email.value = currentUser.value.attributes.email;
+      await useUpdateCurrentUser();
+
+      formData.firstName.value = currentUser.value?.attributes.profile.firstName || '';
+      formData.lastName.value = currentUser.value?.attributes.profile.lastName || '';
+      formData.displayName.value = currentUser.value?.attributes.profile.displayName || '';
+      formData.bio.value = currentUser.value?.attributes.profile.bio || '';
+      formData.email.value = currentUser.value?.attributes.email || '';
+
+      dataHasLoaded.value = true;
     });
 
     // methods
-    const { useRefreshLogin, useSharetribeState } = useSharetribe();
+    const { useRefreshLogin, useSharetribeState, useUpdateCurrentUser } = useSharetribe();
+    const { SHARETRIBE, currentUser } = useSharetribeState;
 
-    function toggleEnable(element) {
-      formData[element].disabled = !formData[element].disabled;
+    function handleNewContent(event: string) {
+      formData.bio.value = event;
     }
-    function closeMessage(passFail, message) {
+
+    function closeMessage(passFail: string, message: string) {
       messages[passFail][message] = !messages[passFail][message];
     }
-
-    const { SHARETRIBE, currentUser } = useSharetribeState;
 
     async function updateProfile() {
       isLoading.value = true;
@@ -144,6 +155,7 @@ export default {
         firstName: formData.firstName.value,
         lastName: formData.lastName.value,
         displayName: formData.displayName.value,
+        bio: formData.bio.value,
       });
       await useRefreshLogin();
       messages.success.profile = true;
@@ -154,9 +166,11 @@ export default {
       ...toRefs(formData),
       messages,
       isLoading,
+      handleNewContent,
+      closeMessage,
       currentUser,
       updateProfile,
-      toggleEnable,
+      dataHasLoaded,
     };
   },
 };

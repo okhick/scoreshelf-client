@@ -24,6 +24,7 @@ export {
   ListingEditDataAttributes,
   ListingPrivateData,
   ListingAssetData,
+  CurrentUserResponse,
   CurrentUser,
   CurrentUserAttributes,
   CurrentUserAttributesProfile,
