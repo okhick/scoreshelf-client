@@ -11,7 +11,7 @@
     </div>
     <div class="level-right">
       <div class="level-item">
-        <h2><router-link to="edit-profile">Edit Profile</router-link></h2>
+        <h2><router-link :to="{ name: 'EditProfile' }">Edit Profile</router-link></h2>
       </div>
       <div class="level-item">
         <h2><a>Settings</a></h2>
