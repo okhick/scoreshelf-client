@@ -1,31 +1,41 @@
 <template>
   <div>
     <div class="columns">
-      <!-- View Mode -->
-      <div v-show="!editMode" class="column is-two-thirds namecard">
-        <p>
-          <span class="name"> {{ userProfile.firstName }} {{ userProfile.lastName }} </span>
-          <span class="display-name">({{ userProfile.displayName }})</span>
-        </p>
-        <p class="bio" v-html="userProfile.bio"></p>
-      </div>
+      <div class="column is-two-thirds">
+        <!-- View Mode -->
+        <div class="namecard" v-show="!editMode">
+          <p>
+            <span class="name"> {{ userProfile.firstName }} {{ userProfile.lastName }} </span>
+            <span class="display-name">({{ userProfile.displayName }})</span>
+          </p>
+          <p class="bio" v-html="userProfile.bio"></p>
+        </div>
 
-      <!-- Edit Mode -->
-      <!-- v-if stops render until all data has loaded, otherwise Trix breaks -->
-      <edit-profile-edit v-if="dataHasLoaded" v-show="editMode" />
+        <!-- Edit Mode -->
+        <!-- v-if stops render until all data has loaded, otherwise Trix breaks -->
+        <edit-profile-edit v-if="dataHasLoaded" v-show="editMode" />
+      </div>
+      <div class="column is-one-third">TEST</div>
     </div>
 
     <!-- Action buttons -->
-    <button class="button is-dark" @click="toggleEditMode" v-show="!editMode">Edit</button>
+    <div class="level">
+      <div class="level-left">
+        <button class="button level-item" @click="toggleEditMode" v-show="!editMode">Edit</button>
 
-    <button
-      class="button is-dark"
-      :class="{ 'is-loading': isLoading }"
-      v-show="editMode"
-      @click="updateProfile"
-    >
-      Update
-    </button>
+        <button
+          class="button level-item"
+          :class="{ 'is-loading': isLoading }"
+          v-show="editMode"
+          @click="updateProfile"
+        >
+          Update
+        </button>
+        <button class="button is-tan level-item" @click="cancelEditMode" v-show="editMode">
+          Cancel
+        </button>
+      </div>
+    </div>
 
     <hr class="hr" />
 
@@ -36,7 +46,7 @@
         <input disabled class="input" type="text" v-model="userProfile.email" />
       </div>
       <div class="control">
-        <a class="button is-primary">
+        <a class="button">
           <font-awesome-icon icon="lock" v-show="userProfile.email" />
         </a>
       </div>
@@ -72,15 +82,18 @@ export default {
       await useRefreshLogin();
       await useUpdateCurrentUser();
 
+      initUserProfile();
+
+      // Trix has issues when renedred before there's data
+      dataHasLoaded.value = true;
+    });
+    function initUserProfile() {
       userProfile.value.firstName = currentUser.value?.attributes.profile.firstName || '';
       userProfile.value.lastName = currentUser.value?.attributes.profile.lastName || '';
       userProfile.value.displayName = currentUser.value?.attributes.profile.displayName || '';
       userProfile.value.bio = currentUser.value?.attributes.profile.bio || '';
       userProfile.value.email = currentUser.value?.attributes.email || '';
-
-      // Trix has issues when renedred before there's data
-      dataHasLoaded.value = true;
-    });
+    }
 
     // ========== update data ==========
     const isLoading = ref(false);
@@ -105,6 +118,10 @@ export default {
     function toggleEditMode() {
       editMode.value = !editMode.value;
     }
+    function cancelEditMode() {
+      initUserProfile();
+      toggleEditMode();
+    }
 
     // ==========
 
@@ -116,6 +133,7 @@ export default {
       updateProfile,
       dataHasLoaded,
       toggleEditMode,
+      cancelEditMode,
     };
   },
 };
