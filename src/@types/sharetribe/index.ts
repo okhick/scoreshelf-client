@@ -134,3 +134,11 @@ export interface CurrentUserAttributesProfile {
   protectedData: any;
   publicData: any;
 }
+
+export interface EditUserProfile {
+  firstName: string;
+  lastName: string;
+  displayName: string;
+  bio: string;
+  email: string;
+}

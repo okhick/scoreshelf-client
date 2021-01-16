@@ -28,6 +28,7 @@ export {
   CurrentUser,
   CurrentUserAttributes,
   CurrentUserAttributesProfile,
+  EditUserProfile,
 } from './sharetribe';
 
 export {
