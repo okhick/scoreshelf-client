@@ -99,6 +99,10 @@ export interface ListingAssetData {
   thumbnail_id?: string | null;
 }
 
+export interface CurrentUserResponse {
+  data: CurrentUser;
+}
+
 export interface CurrentUser {
   id: { uuid: string };
   type: string;
@@ -129,4 +133,12 @@ export interface CurrentUserAttributesProfile {
   privateData: any;
   protectedData: any;
   publicData: any;
+}
+
+export interface EditUserProfile {
+  firstName: string;
+  lastName: string;
+  displayName: string;
+  bio: string;
+  email: string;
 }

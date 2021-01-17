@@ -1,11 +1,12 @@
 <template>
   <div>
-    <input id="trix-input" type="hidden" :value="trixContent" />
+    <input id="trix-input" type="hidden" :value="initContent" />
     <trix-editor
-      v-if="trixInit"
+      ref="trix"
       input="trix-input"
-      class="trix-editor"
+      class="trix-editor trix-content"
       @trix-change="handleNewContent"
+      @trix-initialize="initTrix"
     ></trix-editor>
   </div>
 </template>
@@ -14,7 +15,7 @@
 import 'trix/dist/trix.js';
 import 'trix/dist/trix.css';
 
-import { ref, watch, computed, defineComponent, PropType, onMounted } from '@vue/composition-api';
+import { ref, defineComponent, PropType, SetupContext } from '@vue/composition-api';
 
 interface TrixChangeEvent {
   target: {
@@ -29,28 +30,20 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, context) {
-    const trixContent = ref<string>('');
-    const trixInit = ref<boolean>(false);
-
+  setup(props, context: SetupContext) {
     // Wait until fully mounted to init, otherwise it won't render
-    onMounted(() => {
-      trixInit.value = true;
-    });
-
-    // wait until the props are passed before loading Trix, usually after mount aparently
-    const initValue = computed(() => props.initContent);
-    watch(initValue, (newValue) => {
-      trixContent.value = newValue;
-    });
+    const trix = ref();
+    function initTrix() {
+      trix.value.editor.loadHTML(props.initContent);
+    }
 
     function handleNewContent(event: Event & TrixChangeEvent) {
       context.emit('trix-editor-change', event.target.value);
     }
 
     return {
-      trixContent,
-      trixInit,
+      trix,
+      initTrix,
       handleNewContent,
     };
   },

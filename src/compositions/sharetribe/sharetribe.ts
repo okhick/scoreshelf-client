@@ -1,6 +1,8 @@
 // This doesn't work with import statements as of 2021-01-03
 const sharetribeSdk = require('sharetribe-flex-sdk');
 import SharetribeState from './sharetribeState';
+import { AxiosResponse } from 'axios';
+import { CurrentUserResponse } from '@/@types';
 
 // ========================================================
 
@@ -38,7 +40,7 @@ export default function useSharetribe() {
   }
 
   async function useUpdateCurrentUser() {
-    const userData = await SHARETRIBE.value.currentUser.show();
+    const userData: AxiosResponse<CurrentUserResponse> = await SHARETRIBE.value.currentUser.show();
     useSharetribeState.updateCurrentUser(userData.data.data);
     return userData;
   }

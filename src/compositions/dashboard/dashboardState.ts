@@ -1,17 +1,25 @@
 import { toRefs, reactive } from '@vue/composition-api';
-import { ListingEditData } from '@/@types';
+import { EditUserProfile, ListingEditData } from '@/@types';
 import { Route } from 'vue-router';
 
 interface IDashboardStore {
   activeDashboardView: Route['name'];
   publishModalOpen: boolean;
   publishModalEditData: ListingEditData | null;
+  userProfile: EditUserProfile;
 }
 
 const DashboardStore = reactive<IDashboardStore>({
   activeDashboardView: '',
   publishModalOpen: false,
   publishModalEditData: null,
+  userProfile: {
+    firstName: '',
+    lastName: '',
+    displayName: '',
+    bio: '',
+    email: '',
+  },
 });
 
 export default function DashboardState() {
