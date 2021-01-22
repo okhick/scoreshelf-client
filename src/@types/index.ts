@@ -8,6 +8,12 @@ export interface ChooseEvent {
   };
 }
 
+export interface NewFileUpload {
+  target: {
+    files: File[];
+  };
+}
+
 export {
   Listing,
   ListingSearch,

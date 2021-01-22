@@ -15,7 +15,9 @@
         <!-- v-if stops render until all data has loaded, otherwise Trix breaks -->
         <edit-profile-edit v-if="dataHasLoaded" v-show="editMode" />
       </div>
-      <div class="column is-one-third">TEST</div>
+      <div class="column is-one-third">
+        <edit-profile-picture />
+      </div>
     </div>
 
     <!-- Action buttons -->
@@ -59,6 +61,7 @@ import useSharetribe from '@/compositions/sharetribe/sharetribe';
 import DashboardState from '@/compositions/dashboard/dashboardState';
 
 import EditProfileEdit from './EditProfileEdit.vue';
+import EditProfilePicture from './EditProfilePicture.vue';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
@@ -70,6 +73,7 @@ export default {
   components: {
     FontAwesomeIcon,
     EditProfileEdit,
+    EditProfilePicture,
   },
   setup() {
     const { userProfile } = DashboardState();

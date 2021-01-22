@@ -141,4 +141,5 @@ export interface EditUserProfile {
   displayName: string;
   bio: string;
   email: string;
+  profileImage: File | undefined;
 }
