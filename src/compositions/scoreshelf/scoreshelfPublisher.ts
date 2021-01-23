@@ -51,6 +51,8 @@ export default function useScoreshelfPublisher() {
   // manage files/data upload to scoreshelf
   const useScoreshelfAssetManagement = ScoreshelfAssetManagement();
 
+  const useScoreshelfProfilePicture = ScoreshelfProfilePicture();
+
   const useScoreshelfHelpers = ScoreshelfHelpers();
 
   return {
@@ -58,6 +60,7 @@ export default function useScoreshelfPublisher() {
     useFileStateManagement,
     useScoreshelfUploadManagement,
     useScoreshelfAssetManagement,
+    useScoreshelfProfilePicture,
     useScoreshelfHelpers,
   };
 }
@@ -339,6 +342,33 @@ function ScoreshelfAssetManagement() {
     updateAssetMetadata,
     formatNewAssetMetadata,
     formatUpdatedAssetMetadata,
+  };
+}
+
+// ============================================================================
+// ============================================================================
+// ============================================================================
+
+function ScoreshelfProfilePicture() {
+  async function uploadProfilePicture(file: UploadedFile) {
+    const formData = new FormData();
+    const { SCORESHELF } = useScoreshelf();
+    const { useSharetribeState } = useSharetribe();
+    const { getCurrentUserId } = useSharetribeState;
+
+    const currentUserId = {
+      sharetribe_user_id: getCurrentUserId(),
+    };
+
+    formData.append(`file`, file);
+    formData.append('assetMetadata', JSON.stringify(currentUserId));
+
+    const newProfilePicture = await SCORESHELF.value?.post('/uploadProfilePicture', formData);
+    return newProfilePicture;
+  }
+
+  return {
+    uploadProfilePicture,
   };
 }
 

@@ -13,7 +13,9 @@
           </span>
           <span class="file-label"> Upload Profile Picture </span>
         </span>
-        <span v-if="profileImage" class="file-name"> {{ profileImage.name }} </span>
+        <span v-if="userProfile.profileImage" class="file-name">
+          {{ userProfile.profileImage.name }}
+        </span>
       </label>
     </div>
   </div>
@@ -21,8 +23,9 @@
 
 <script lang="ts">
 import { ref } from '@vue/composition-api';
-import { NewFileUpload } from '@/@types';
+import { NewFileUpload, UploadedFile } from '@/@types';
 import DashboardState from '@/compositions/dashboard/dashboardState';
+import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
@@ -36,19 +39,29 @@ export default {
   setup() {
     const { userProfile } = DashboardState();
     const profileImagePreview = ref<string | ArrayBuffer | undefined>();
-    function processUploadEvent(event: Event & NewFileUpload) {
-      userProfile.value.profileImage = event.target.files[0];
+    const { useScoreshelfProfilePicture } = useScoreshelfPublisher();
+
+    async function processUploadEvent(event: Event & NewFileUpload) {
+      userProfile.value.profilePicture = event.target.files[0] as UploadedFile;
+      userProfile.value.profilePicture.isStored = false;
+      userProfile.value.profilePicture.asset_name = event.target.files[0].name;
+
+      const newProfilePicture = await useScoreshelfProfilePicture.uploadProfilePicture(
+        userProfile.value.profilePicture
+      );
+      console.log(newProfilePicture);
+
       const reader = new FileReader();
       reader.onload = (e) => {
         // Read image as base64
         profileImagePreview.value = e.target?.result || undefined;
       };
       // Start the reader job - read file as a data url (base64 format)
-      reader.readAsDataURL(userProfile.value.profileImage);
+      reader.readAsDataURL(userProfile.value.profilePicture);
     }
 
     return {
-      profileImage: userProfile.value.profileImage,
+      userProfile,
       profileImagePreview,
       processUploadEvent,
     };

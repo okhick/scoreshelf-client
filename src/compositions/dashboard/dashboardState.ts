@@ -19,7 +19,7 @@ const DashboardStore = reactive<IDashboardStore>({
     displayName: '',
     bio: '',
     email: '',
-    profileImage: undefined,
+    profilePicture: undefined,
   },
 });
 
