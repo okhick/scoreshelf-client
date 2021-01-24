@@ -1,4 +1,5 @@
 import { Data } from '@/@types';
+import { UploadedFile, ProfilePicture } from '../scoreshelf';
 
 export interface Listing {
   id: { uuid: string };
@@ -99,6 +100,10 @@ export interface ListingAssetData {
   thumbnail_id?: string | null;
 }
 
+export interface CurrentUserResponse {
+  data: CurrentUser;
+}
+
 export interface CurrentUser {
   id: { uuid: string };
   type: string;
@@ -128,5 +133,16 @@ export interface CurrentUserAttributesProfile {
   metadata: any;
   privateData: any;
   protectedData: any;
-  publicData: any;
+  publicData: {
+    profilePicture: string | undefined;
+  };
+}
+
+export interface EditUserProfile {
+  firstName: string;
+  lastName: string;
+  displayName: string;
+  bio: string;
+  email: string;
+  profilePicture: UploadedFile | ProfilePicture | undefined;
 }
