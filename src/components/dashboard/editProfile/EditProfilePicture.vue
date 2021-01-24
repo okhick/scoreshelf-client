@@ -1,9 +1,11 @@
 <template>
   <div>
-    <loading :active.sync="isLoading" :can-cancel="false" :is-full-page="false"></loading>
-
+    <progress class="progress is-small is-primary" v-show="isLoading" max="100">15%</progress>
     <div class="view-image">
-      <img :src="profileImagePreview || '/profile_placeholder.png'" />
+      <img
+        :class="{ 'is-loading': isLoading }"
+        :src="profileImagePreview || '/profile_placeholder.png'"
+      />
     </div>
 
     <div class="file has-name is-boxed">
@@ -25,15 +27,12 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from '@vue/composition-api';
-import { NewFileUpload, ProfilePicture, UploadedFile } from '@/@types';
+import { NewFileUpload, UploadedFile } from '@/@types';
 
 import DashboardState from '@/compositions/dashboard/dashboardState';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
 import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
-
-import Loading from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/vue-loading.css';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
@@ -43,8 +42,6 @@ library.add(faUpload);
 export default defineComponent({
   components: {
     FontAwesomeIcon,
-    // @ts-ignore don't know why things are weird here
-    Loading,
   },
   setup() {
     const { userProfile } = DashboardState();
@@ -107,9 +104,23 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles';
+
 .view-image {
   display: flex;
   max-width: 252px;
   padding-bottom: 8px;
+}
+img {
+  transition: all 0.2s ease-in-out;
+
+  &.is-loading {
+    opacity: 20%;
+  }
+}
+progress.progress {
+  max-width: 252px;
+  margin-bottom: -12px !important;
+  position: relative;
 }
 </style>
