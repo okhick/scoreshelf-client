@@ -16,7 +16,7 @@
         <edit-profile-edit v-if="dataHasLoaded" v-show="editMode" />
       </div>
       <div class="column is-one-third">
-        <edit-profile-picture />
+        <edit-profile-picture v-if="dataHasLoaded" />
       </div>
     </div>
 
@@ -58,6 +58,7 @@
 
 <script lang="ts">
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
+import ScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
 import DashboardState from '@/compositions/dashboard/dashboardState';
 
 import EditProfileEdit from './EditProfileEdit.vue';
@@ -67,6 +68,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { onMounted, reactive, ref, toRefs, watchEffect } from '@vue/composition-api';
+import { ProfilePicture, UploadedFile } from '@/@types';
 library.add(faLock);
 
 export default {
@@ -79,12 +81,19 @@ export default {
     const { userProfile } = DashboardState();
     const { useRefreshLogin, useSharetribeState, useUpdateCurrentUser } = useSharetribe();
     const { SHARETRIBE, currentUser } = useSharetribeState;
+    const { useScoreshelfProfilePicture } = ScoreshelfPublisher();
 
     // ========== Load and init data ==========
     const dataHasLoaded = ref(false);
+    const hydratedProfilePicture = ref<ProfilePicture | undefined>();
     onMounted(async () => {
       await useRefreshLogin();
       await useUpdateCurrentUser();
+
+      const resHydratedProfilePicture = await useScoreshelfProfilePicture.hydrateProfilePicture(
+        currentUser.value?.attributes.profile.publicData.profilePicture as string
+      );
+      hydratedProfilePicture.value = resHydratedProfilePicture;
 
       initUserProfile();
 
@@ -97,6 +106,7 @@ export default {
       userProfile.value.displayName = currentUser.value?.attributes.profile.displayName || '';
       userProfile.value.bio = currentUser.value?.attributes.profile.bio || '';
       userProfile.value.email = currentUser.value?.attributes.email || '';
+      userProfile.value.profilePicture = hydratedProfilePicture.value;
     }
 
     // ========== update data ==========

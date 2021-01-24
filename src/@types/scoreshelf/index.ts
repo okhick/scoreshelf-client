@@ -6,7 +6,7 @@ export interface UploadedFile extends File {
 export interface GenericAsset {
   _id: string;
   sharetribe_user_id: string;
-  sharetribe_listing_id: string;
+  sharetribe_listing_id?: string;
   date_added: Date;
   asset_name: string;
   isStored: boolean;
@@ -23,6 +23,8 @@ export interface Thumbnail extends GenericAsset {
   height: number;
   width: number;
 }
+
+export interface ProfilePicture extends GenericAsset {}
 
 export interface PreviewSetting {
   isPreview: boolean;

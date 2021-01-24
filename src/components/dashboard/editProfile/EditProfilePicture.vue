@@ -1,5 +1,7 @@
 <template>
   <div>
+    <loading :active.sync="isLoading" :can-cancel="false" :is-full-page="false"></loading>
+
     <div class="view-image">
       <img :src="profileImagePreview || '/profile_placeholder.png'" />
     </div>
@@ -14,7 +16,7 @@
           <span class="file-label"> Upload Profile Picture </span>
         </span>
         <span v-if="userProfile.profileImage" class="file-name">
-          {{ userProfile.profileImage.name }}
+          {{ userProfile.profileImage.asset_name }}
         </span>
       </label>
     </div>
@@ -22,51 +24,86 @@
 </template>
 
 <script lang="ts">
-import { ref } from '@vue/composition-api';
-import { NewFileUpload, UploadedFile } from '@/@types';
+import { defineComponent, onMounted, ref } from '@vue/composition-api';
+import { NewFileUpload, ProfilePicture, UploadedFile } from '@/@types';
+
 import DashboardState from '@/compositions/dashboard/dashboardState';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
+import useSharetribe from '@/compositions/sharetribe/sharetribe';
+import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
+
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faUpload);
 
-export default {
+export default defineComponent({
   components: {
     FontAwesomeIcon,
+    // @ts-ignore don't know why things are weird here
+    Loading,
   },
   setup() {
     const { userProfile } = DashboardState();
-    const profileImagePreview = ref<string | ArrayBuffer | undefined>();
     const { useScoreshelfProfilePicture } = useScoreshelfPublisher();
 
+    const { useSharetribeState } = useSharetribe();
+    const { SHARETRIBE, getCurrentUserId } = useSharetribeState;
+
+    const { THUMBNAIL_BASE_URL } = useScoreshelf();
+
+    const profileImagePreview = ref<string | undefined>();
+    const isLoading = ref(false);
+
+    onMounted(() => {
+      loadProfilePictureURL();
+    });
+
     async function processUploadEvent(event: Event & NewFileUpload) {
+      isLoading.value = true;
+
       userProfile.value.profilePicture = event.target.files[0] as UploadedFile;
       userProfile.value.profilePicture.isStored = false;
       userProfile.value.profilePicture.asset_name = event.target.files[0].name;
 
+      // upload the picture to scoreshelf
       const newProfilePicture = await useScoreshelfProfilePicture.uploadProfilePicture(
         userProfile.value.profilePicture
       );
-      console.log(newProfilePicture);
+      userProfile.value.profilePicture = newProfilePicture?.data;
 
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        // Read image as base64
-        profileImagePreview.value = e.target?.result || undefined;
-      };
-      // Start the reader job - read file as a data url (base64 format)
-      reader.readAsDataURL(userProfile.value.profilePicture);
+      // save new picture id
+      await SHARETRIBE.value.currentUser.updateProfile({
+        publicData: {
+          profilePicture: userProfile.value.profilePicture?._id,
+        },
+      });
+
+      loadProfilePictureURL();
+      isLoading.value = false;
+    }
+
+    function loadProfilePictureURL() {
+      if (userProfile.value.profilePicture) {
+        profileImagePreview.value = `${THUMBNAIL_BASE_URL}/${getCurrentUserId()}/${
+          userProfile.value.profilePicture?.asset_name
+        }`;
+      } else {
+        profileImagePreview.value = '/profile_placeholder.png';
+      }
     }
 
     return {
       userProfile,
       profileImagePreview,
       processUploadEvent,
+      isLoading,
     };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

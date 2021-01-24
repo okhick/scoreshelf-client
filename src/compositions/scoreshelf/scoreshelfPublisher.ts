@@ -12,6 +12,7 @@ import {
   UploadParams,
   AssetMetadata,
   ListingAssetData,
+  ProfilePicture,
 } from '@/@types';
 
 import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
@@ -279,7 +280,8 @@ function ScoreshelfAssetManagement() {
     const hydratedAssets = await SCORESHELF.value?.get<(Asset | null)[]>('/getAssetdata', {
       params: {
         scoreshelf_ids: scoreshelf_ids,
-        get_link: getLink,
+        getLink: getLink,
+        getType: 'asset',
       },
       paramsSerializer: (params) => {
         return stringify(params);
@@ -350,11 +352,23 @@ function ScoreshelfAssetManagement() {
 // ============================================================================
 
 function ScoreshelfProfilePicture() {
+  const { SCORESHELF } = useScoreshelf();
+  const { useSharetribeState } = useSharetribe();
+  const { getCurrentUserId } = useSharetribeState;
+
+  async function hydrateProfilePicture(scoreshelf_id: string) {
+    const res = await SCORESHELF.value?.get<ProfilePicture[]>('/getAssetData', {
+      params: {
+        scoreshelf_ids: [scoreshelf_id],
+        getLink: false,
+        getType: 'profile',
+      },
+    });
+    return res?.data[0];
+  }
+
   async function uploadProfilePicture(file: UploadedFile) {
     const formData = new FormData();
-    const { SCORESHELF } = useScoreshelf();
-    const { useSharetribeState } = useSharetribe();
-    const { getCurrentUserId } = useSharetribeState;
 
     const currentUserId = {
       sharetribe_user_id: getCurrentUserId(),
@@ -363,12 +377,16 @@ function ScoreshelfProfilePicture() {
     formData.append(`file`, file);
     formData.append('assetMetadata', JSON.stringify(currentUserId));
 
-    const newProfilePicture = await SCORESHELF.value?.post('/uploadProfilePicture', formData);
+    const newProfilePicture = await SCORESHELF.value?.post<ProfilePicture>(
+      '/uploadProfilePicture',
+      formData
+    );
     return newProfilePicture;
   }
 
   return {
     uploadProfilePicture,
+    hydrateProfilePicture,
   };
 }
 

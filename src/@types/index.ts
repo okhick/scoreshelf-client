@@ -42,6 +42,7 @@ export {
   GenericAsset,
   Asset,
   Thumbnail,
+  ProfilePicture,
   PreviewSetting,
   PreviewSettings,
   ThumbnailSetting,
