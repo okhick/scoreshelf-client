@@ -35,7 +35,7 @@ export interface ListingAttributes extends Data {
 export interface ListingPublicData extends Data {
   commission: string;
   subtitle: string;
-  composer: string;
+  composer: string[];
   duration: string;
   ensemble: string;
   instrumentation: string[];
