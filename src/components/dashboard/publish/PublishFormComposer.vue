@@ -2,7 +2,7 @@
   <div>
     <label class="label">Composer(s)</label>
     <div class="field has-addons">
-      <div class="control">
+      <div class="control is-expanded">
         <input
           class="input"
           type="text"
@@ -15,6 +15,11 @@
       <div class="control">
         <button @click="saveCurrentUserAsComposer" class="button is-tan">
           {{ displayName }}
+        </button>
+      </div>
+      <div class="control">
+        <button @click="saveComposer" class="button is-tan">
+          <font-awesome-icon icon="plus" />
         </button>
       </div>
     </div>
@@ -36,7 +41,15 @@ import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublishe
 import useDashboard from '@/compositions/dashboard/dashboard';
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
 
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+library.add(faPlus);
+
 export default {
+  components: {
+    FontAwesomeIcon,
+  },
   setup() {
     const { useSharetribeState } = useSharetribe();
     const { currentUser } = useSharetribeState;
