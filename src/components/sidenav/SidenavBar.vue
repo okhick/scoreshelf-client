@@ -70,7 +70,6 @@ import useSidenav from '@/compositions/sidenav/sidenav';
 import useSearch from '@/compositions/search/search';
 import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
-import { async } from 'crypto-random-string';
 
 // copied from vue docs not sure it needed in Vue 3: https://composition-api.vuejs.org/api.html#setup
 interface Data {

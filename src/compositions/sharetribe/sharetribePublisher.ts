@@ -10,7 +10,7 @@ import useSharetribe from '@/compositions/sharetribe/sharetribe';
 interface FormData extends Data {
   title: string;
   subtitle: string;
-  composer: string;
+  composer: string[];
   year: string;
   duration: string;
   commission: string;
@@ -26,7 +26,7 @@ const PublishFormState = reactive<IPublishFormState>({
   formData: {
     title: '',
     subtitle: '',
-    composer: '',
+    composer: [],
     year: '',
     duration: '',
     commission: '',
@@ -61,6 +61,7 @@ function SharetribePublisherForm() {
   function clearFormData() {
     for (const field in PublishFormState.formData) {
       switch (field) {
+        case 'composer':
         case 'instrumentation':
           PublishFormState.formData[field] = [];
           break;
