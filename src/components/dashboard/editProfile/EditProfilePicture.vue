@@ -47,7 +47,7 @@ export default defineComponent({
     const { userProfile } = DashboardState();
     const { useScoreshelfProfilePicture } = useScoreshelfPublisher();
 
-    const { useSharetribeState } = useSharetribe();
+    const { useSharetribeState, useUpdateCurrentUser } = useSharetribe();
     const { SHARETRIBE, getCurrentUserId } = useSharetribeState;
 
     const { THUMBNAIL_BASE_URL } = useScoreshelf();
@@ -78,7 +78,7 @@ export default defineComponent({
           profilePicture: userProfile.value.profilePicture?._id,
         },
       });
-
+      useUpdateCurrentUser();
       loadProfilePictureURL();
       isLoading.value = false;
     }
@@ -112,6 +112,7 @@ export default defineComponent({
   padding-bottom: 8px;
 }
 img {
+  border-radius: 4px;
   transition: all 0.2s ease-in-out;
 
   &.is-loading {
