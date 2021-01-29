@@ -3,9 +3,10 @@ module.exports = {
   env: {
     node: true,
   },
-  extends: ['plugin:vue/essential', 'prettier', '@vue/prettier'],
-  plugins: ['prettier'],
+  extends: ['plugin:vue/essential', '@vue/typescript', 'prettier', '@vue/prettier'],
+  plugins: ['@typescript-eslint', 'prettier'],
   parserOptions: {
-    parser: 'babel-eslint',
+    parser: '@typescript-eslint/parser',
+    // parser: 'babel-eslint',
   },
 };

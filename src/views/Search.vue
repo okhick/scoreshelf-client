@@ -12,7 +12,7 @@
         </p>
         <p><b>Total results:</b> {{ searchResultsMeta.totalItems }}</p>
       </div>
-      <div class="searchResults">
+      <div class="searchResults" v-if="searchResultsMeta.totalItems > 0">
         <search-result
           v-for="listing in searchListingData"
           :key="listing.id.uuid"
@@ -26,26 +26,38 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { sharetribe } from '../mixins/sharetribe';
+import { onMounted } from '@vue/composition-api';
 import SearchResult from '../components/search/SearchResult';
+
+import useSearch from '@/compositions/search/search';
 
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 
 export default {
-  mixins: [sharetribe],
   components: {
     Loading,
     SearchResult,
   },
-  computed: {
-    ...mapState({
-      // SHARETRIBE: state => state.sharetribe.SHARETRIBE,
-      searchIsLoading: state => state.search.searchIsLoading,
-      searchListingData: state => state.search.searchListingData,
-      searchResultsMeta: state => state.search.searchResultsMeta,
-    }),
+  setup(_, context) {
+    const {
+      executeSearch,
+      searchInput,
+      searchIsLoading,
+      searchListingData,
+      searchResultsMeta,
+    } = useSearch(context);
+
+    onMounted(() => {
+      // check if we're at a query route but there hasn't been a query
+      const query = context.root.$route.params.query;
+      if (query && Object.keys(searchResultsMeta.value).length === 0) {
+        searchInput.value = query;
+        executeSearch();
+      }
+    });
+
+    return { searchIsLoading, searchListingData, searchResultsMeta };
   },
 };
 </script>
