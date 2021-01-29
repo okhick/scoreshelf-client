@@ -21,10 +21,15 @@ const searchListingData: Ref<Listing[] | []> = ref([]);
 const searchResultsMeta: Ref<SearchResultsMeta | {}> = ref({});
 
 function searchStateManagement() {
-  function toggleSearchIsLoading() {
-    searchIsLoading.value = !searchIsLoading.value;
+  // function toggleSearchIsLoading() {
+  //   searchIsLoading.value = !searchIsLoading.value;
+  // }
+  function searchLoadingOn() {
+    searchIsLoading.value = true;
   }
-  // TODO: Type these payloads
+  function searchLoadingOff() {
+    searchIsLoading.value = false;
+  }
   function addSearchListingData(payload: Listing[]) {
     searchListingData.value = payload;
   }
@@ -43,7 +48,8 @@ function searchStateManagement() {
   }
 
   return {
-    toggleSearchIsLoading,
+    searchLoadingOn,
+    searchLoadingOff,
     addSearchListingData,
     addSearchResultsMeta,
     toggleSearchbarIsShowing,
@@ -67,7 +73,7 @@ export default function useSearch(context: SetupContext) {
   const useSearchStateManagement = searchStateManagement();
 
   async function executeSearch() {
-    useSearchStateManagement.toggleSearchIsLoading();
+    useSearchStateManagement.searchLoadingOn();
 
     const res: AxiosResponse<ListingSearch> = await SHARETRIBE.value.listings.query({
       keywords: searchInput.value,
@@ -85,7 +91,7 @@ export default function useSearch(context: SetupContext) {
 
     // wait until the dom has reloaded to turn the toggle off
     context.root.$nextTick(() => {
-      useSearchStateManagement.toggleSearchIsLoading();
+      useSearchStateManagement.searchLoadingOff();
     });
   }
 

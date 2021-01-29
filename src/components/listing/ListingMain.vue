@@ -14,7 +14,7 @@
       <table>
         <tr v-if="listing.attributes.publicData.instrumentation">
           <td>Instrumentation:</td>
-          <td>{{ listing.attributes.publicData.instrumentation }}</td>
+          <td>{{ stringifyInstruments(listing.attributes.publicData.instrumentation) }}</td>
         </tr>
         <tr v-if="listing.attributes.publicData.ensemble">
           <td>Ensemble:</td>
@@ -42,9 +42,10 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import useListing from '@/compositions/listing/listing';
-import { watch, ref, computed } from '@vue/composition-api';
+import { watch, ref, computed, SetupContext } from '@vue/composition-api';
+import { Data } from '@/@types';
 
 import ListingFormats from '@/components/listing/ListingFormats.vue';
 
@@ -52,16 +53,21 @@ export default {
   components: {
     ListingFormats,
   },
-  setup() {
-    const { listingData, selectedFormat, scrollPos } = useListing();
+  setup(_: Data, context: SetupContext) {
+    const { listingData, selectedFormat, scrollPos } = useListing(undefined, context);
 
     function addToCart() {
       console.log(selectedFormat.value, 'has been selected for cart');
     }
 
+    function stringifyInstruments(instruments: string[]) {
+      return instruments.join(', ');
+    }
+
     return {
       listing: listingData,
       addToCart,
+      stringifyInstruments,
     };
   },
 };
