@@ -10,11 +10,21 @@
       </div>
     </div>
     <div class="level-right">
-      <div class="level-item">
-        <h2><router-link :to="{ name: 'EditProfile' }">Edit Profile</router-link></h2>
-      </div>
-      <div class="level-item">
-        <h2><a>Settings</a></h2>
+      <div class="level-item music-profile-toggle">
+        <div class="buttons has-addons">
+          <button
+            id="music"
+            :class="['button', 'is-tan', { 'is-inverted': activeDashboardView != 'EditProfile' }]"
+          >
+            <router-link :to="{ name: 'Purchases' }">Music</router-link>
+          </button>
+          <button
+            id="profile"
+            :class="['button', 'is-tan', { 'is-inverted': activeDashboardView === 'EditProfile' }]"
+          >
+            <router-link :to="{ name: 'EditProfile' }">Profile</router-link>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -57,6 +67,7 @@ export default {
 
     return {
       createNewDraft,
+      activeDashboardView,
     };
   },
 };
@@ -74,9 +85,16 @@ export default {
   font-family: $family-secondary;
   margin-bottom: 0px;
 }
-h2 {
-  // font-weight: 600;
-  padding: 12px;
-  font-family: $family-primary;
+.music-profile-toggle .button {
+  border-color: $tan;
+
+  &.is-inverted {
+    z-index: 1;
+  }
+
+  a {
+    color: $black;
+    text-decoration: none;
+  }
 }
 </style>
