@@ -66,6 +66,11 @@ export interface ListingThumbnailHydrated {
   height: number;
   page: number;
 }
+export function isListingThumbnailHydrated(
+  listingThumbnail: any
+): listingThumbnail is ListingThumbnailHydrated {
+  return listingThumbnail._id !== undefined;
+}
 
 export interface CreateDraftResponse {
   data: ListingEditData;
