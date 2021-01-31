@@ -135,6 +135,10 @@ export interface CurrentUserAttributesProfile {
   protectedData: any;
   publicData: {
     profilePicture: string | undefined;
+    publisher: {
+      name: string;
+      about: string;
+    };
   };
 }
 
@@ -145,4 +149,8 @@ export interface EditUserProfile {
   bio: string;
   email: string;
   profilePicture: UploadedFile | ProfilePicture | undefined;
+  publisher: {
+    name: string;
+    about: string;
+  };
 }
