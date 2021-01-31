@@ -20,6 +20,10 @@ const DashboardStore = reactive<IDashboardStore>({
     bio: '',
     email: '',
     profilePicture: undefined,
+    publisher: {
+      name: '',
+      about: '',
+    },
   },
 });
 

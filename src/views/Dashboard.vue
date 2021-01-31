@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <dashboard-header :display-name="displayName" />
-    <dashboard-sub-header />
+    <dashboard-sub-header v-show="activeDashboardView != 'EditProfile'" />
     <router-view></router-view>
   </div>
 </template>
@@ -44,13 +44,14 @@ export default {
 
     // get the active view and save it in the store
     const { useDashboardState } = useDashboard();
-    const { setDashboardView } = useDashboardState;
+    const { setDashboardView, activeDashboardView } = useDashboardState;
     const dashboardRouterName = computed(() => context.root.$route.name);
     onMounted(() => setDashboardView(dashboardRouterName.value));
     watch(dashboardRouterName, (newValue) => setDashboardView(newValue));
 
     return {
       displayName,
+      activeDashboardView,
     };
   },
 };
