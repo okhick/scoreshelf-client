@@ -106,8 +106,11 @@ export default function useSearch(context: SetupContext) {
         'thumbnail_id' in listing.attributes.publicData.thumbnail
       ) {
         const thumbnail_id = listing.attributes.publicData.thumbnail.thumbnail_id;
-        thumbnails.push(thumbnail_id);
-        thumbnailRefs.push({ index: index, thumbnail_id: thumbnail_id });
+        // TODO: make this not be an empty string. Probably be a very rare thing but still annoying...
+        if (thumbnail_id != '') {
+          thumbnails.push(thumbnail_id);
+          thumbnailRefs.push({ index: index, thumbnail_id: thumbnail_id });
+        }
       }
     });
 

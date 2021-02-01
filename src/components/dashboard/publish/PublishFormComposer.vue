@@ -24,9 +24,9 @@
       </div>
     </div>
     <div class="field is-grouped is-grouped-multiline">
-      <div class="control" v-for="(compsoer, index) in formData.composer" :key="index">
+      <div class="control" v-for="(composer, index) in formData.composer" :key="index">
         <div class="tags has-addons">
-          <div class="tag is-tan">{{ compsoer }}</div>
+          <div class="tag is-tan">{{ composer === DISPLAY_NAME ? displayName : composer }}</div>
           <div class="tag is-delete" @click="removeComposer(index)"></div>
         </div>
       </div>
@@ -54,10 +54,9 @@ export default {
     const { useSharetribeState } = useSharetribe();
     const { currentUser } = useSharetribeState;
 
-    const { formData } = useSharetribePublisher();
+    const { formData, DISPLAY_NAME } = useSharetribePublisher();
     const { useDashboardState } = useDashboard();
     const { publishModalEditData } = useDashboardState;
-    const composerInput = ref<string>();
 
     onMounted(() => {
       if (publishModalEditData.value?.attributes) {
@@ -70,11 +69,22 @@ export default {
       return currentUser.value?.attributes.profile.displayName || '';
     });
 
+    const composerInputToSave = ref<string>();
+    const composerInput = computed({
+      set: (input) => {
+        composerInputToSave.value = input === displayName.value ? DISPLAY_NAME.value : input;
+      },
+      get: () =>
+        composerInputToSave.value === DISPLAY_NAME.value
+          ? displayName.value
+          : composerInputToSave.value,
+    });
+
     function saveComposer() {
-      if (composerInput.value) {
-        formData.value.composer.push(composerInput.value);
+      if (composerInputToSave.value) {
+        formData.value.composer.push(composerInputToSave.value);
       }
-      composerInput.value = undefined;
+      composerInputToSave.value = undefined;
     }
 
     function removeComposer(index: number) {
@@ -83,7 +93,7 @@ export default {
 
     function saveCurrentUserAsComposer() {
       if (!formData.value.composer.includes(displayName.value)) {
-        formData.value.composer.push(displayName.value);
+        formData.value.composer.push(DISPLAY_NAME.value);
       }
     }
 
@@ -94,6 +104,8 @@ export default {
       removeComposer,
       displayName,
       saveCurrentUserAsComposer,
+      composerInputToSave,
+      DISPLAY_NAME,
     };
   },
 };

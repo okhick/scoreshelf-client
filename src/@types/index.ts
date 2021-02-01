@@ -24,6 +24,7 @@ export {
   ListingFormat,
   ListingPreview,
   ListingThumbnailHydrated,
+  isListingThumbnailHydrated,
   CreateDraftResponse,
   GetOwnListingsResponse,
   ListingEditData,
