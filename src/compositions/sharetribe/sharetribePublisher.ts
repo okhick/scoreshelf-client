@@ -20,6 +20,7 @@ interface FormData extends Data {
 }
 interface IPublishFormState {
   formData: FormData;
+  DISPLAY_NAME: string;
 }
 
 const PublishFormState = reactive<IPublishFormState>({
@@ -34,6 +35,7 @@ const PublishFormState = reactive<IPublishFormState>({
     ensemble: '',
     instrumentation: [],
   },
+  DISPLAY_NAME: '__DISPLAY-NAME__',
 });
 
 // ============================================================================
