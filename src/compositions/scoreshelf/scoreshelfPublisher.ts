@@ -230,7 +230,7 @@ function ScoreshelfUploadManagement() {
     // stringify this so we can stuff it in a form field
     formData.append('assetMetadata', JSON.stringify(assetMetadata));
     // send off the files. returns the files uploaded
-    const res = await SCORESHELF.value?.post<Asset[]>('/uploadAssets', formData, {
+    const res = await SCORESHELF.value?.post<Asset[]>('assets/uploadAssets', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -244,7 +244,7 @@ function ScoreshelfUploadManagement() {
   async function removeUploads() {
     const { SCORESHELF } = useScoreshelf();
     // call the server to delete db and asset
-    const res = await SCORESHELF.value?.delete<string[]>('/deleteAssets', {
+    const res = await SCORESHELF.value?.delete<string[]>('assets/deleteAssets', {
       data: {
         filesToRemove: FileState.filesToBeRemoved,
       },
@@ -277,7 +277,7 @@ function ScoreshelfAssetManagement() {
 
   async function hyrdateAssetData(assetDataList: ListingAssetData[], getLink: boolean) {
     const scoreshelf_ids = assetDataList.map((file) => file.scoreshelf_id);
-    const hydratedAssets = await SCORESHELF.value?.get<(Asset | null)[]>('/getAssetdata', {
+    const hydratedAssets = await SCORESHELF.value?.get<(Asset | null)[]>('assets/getAssetdata', {
       params: {
         scoreshelf_ids: scoreshelf_ids,
         getLink: getLink,
@@ -294,7 +294,7 @@ function ScoreshelfAssetManagement() {
     const { SCORESHELF } = useScoreshelf();
     const assetMetadata = formatUpdatedAssetMetadata(uploadParams);
     // this return every asset
-    const res = await SCORESHELF.value?.post<Asset[]>('/updateAssetMetadata', assetMetadata);
+    const res = await SCORESHELF.value?.post<Asset[]>('assets/updateAssetMetadata', assetMetadata);
     if (res?.data) {
       scoreshelfFileStateManagement.refreshFileListWithUpdatedAssets(res.data);
     }
@@ -357,7 +357,7 @@ function ScoreshelfProfilePicture() {
   const { getCurrentUserId } = useSharetribeState;
 
   async function hydrateProfilePicture(scoreshelf_id: string) {
-    const res = await SCORESHELF.value?.get<ProfilePicture[]>('/getAssetData', {
+    const res = await SCORESHELF.value?.get<ProfilePicture[]>('assets/getAssetData', {
       params: {
         scoreshelf_ids: [scoreshelf_id],
         getLink: false,
@@ -378,7 +378,7 @@ function ScoreshelfProfilePicture() {
     formData.append('assetMetadata', JSON.stringify(currentUserId));
 
     const newProfilePicture = await SCORESHELF.value?.post<ProfilePicture>(
-      '/uploadProfilePicture',
+      'assets/uploadProfilePicture',
       formData
     );
     return newProfilePicture;
@@ -422,7 +422,7 @@ function ScoreshelfHelpers() {
   async function testScoreshelf() {
     const { SCORESHELF } = useScoreshelf();
     try {
-      const res = await SCORESHELF.value?.get<any>('/test');
+      const res = await SCORESHELF.value?.get<any>('assets/test');
       console.log(res);
     } catch (e) {
       console.log(e);
