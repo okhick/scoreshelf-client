@@ -119,7 +119,7 @@ export default function useSearch(context: SetupContext) {
 
     // hydrate the data
     const thumbnailData = await SCORESHELF.value?.get<ListingThumbnailHydrated[]>(
-      'getThumbnailData',
+      'assets/getThumbnailData',
       {
         params: {
           scoreshelf_ids: thumbnails,
