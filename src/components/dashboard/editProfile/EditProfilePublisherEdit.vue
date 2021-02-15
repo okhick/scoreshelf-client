@@ -2,9 +2,26 @@
   <div>
     <label class="label">Publisher Name</label>
     <div class="field">
-      <div class="control">
-        <input class="input" type="text" v-model="userProfile.publisher.name" />
+      <div class="control has-icons-right" id="publisher-name">
+        <input
+          :class="[
+            'input',
+            { invalid: userProfile.publisher.valid === false },
+            { valid: userProfile.publisher.valid === true },
+          ]"
+          type="text"
+          v-model="userProfile.publisher.name"
+          @blur="handlePublisherNameChange"
+          @input="handlePublisherNameChange"
+        />
+        <span class="icon is-small is-right">
+          <font-awesome-icon icon="check" v-show="userProfile.publisher.valid === true" />
+          <font-awesome-icon icon="ban" v-show="userProfile.publisher.valid === false" />
+        </span>
       </div>
+      <p class="help" v-show="userProfile.publisher.valid === false">
+        This publisher is already in use.
+      </p>
     </div>
     <label class="label">Publisher About</label>
     <div class="field">
@@ -21,10 +38,27 @@
 <script lang="ts">
 import TrixEditorComponent from '@/components/forms/TrixEditor.vue';
 import DashboardState from '@/compositions/dashboard/dashboardState';
+import useScoreshelfUserPublisher from '@/compositions/scoreshelf/scoreshelfUserPublisher';
+
+import { computed, onMounted } from '@vue/composition-api';
+import throttle from 'lodash.throttle';
+
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faCheck, faBan } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+interface InputChangeEvent {
+  target: {
+    value: string;
+  };
+}
+
+library.add(faCheck, faBan);
 
 export default {
   components: {
     TrixEditorComponent,
+    FontAwesomeIcon,
   },
   setup() {
     const { userProfile } = DashboardState();
@@ -34,10 +68,48 @@ export default {
       userProfile.value.publisher.about = event;
     }
 
+    // ========== handle publisher name validation ==========
+    const { validatePublisher } = useScoreshelfUserPublisher();
+
+    onMounted(async () => {
+      const isValid = await throttledValidation(userProfile.value.publisher.name);
+      userProfile.value.publisher.valid = isValid != undefined ? isValid : null;
+    });
+
+    const throttledValidation = throttle(async (value: string) => {
+      const isValid = await validatePublisher(value);
+      return isValid;
+    }, 150);
+
+    async function handlePublisherNameChange(event: Event & InputChangeEvent) {
+      const isValid = await throttledValidation(event.target.value);
+      userProfile.value.publisher.valid = isValid != undefined ? isValid : null;
+    }
+
     return {
       userProfile,
       handleNewContent,
+      handlePublisherNameChange,
     };
   },
 };
 </script>
+
+<style lang="scss" scoped>
+@import '@/styles/index.scss';
+
+#publisher-name {
+  input.invalid {
+    border-color: $orange;
+    + .icon {
+      color: $orange;
+    }
+  }
+  input.valid:focus {
+    border-color: $green;
+    + .icon {
+      color: $green;
+    }
+  }
+}
+</style>

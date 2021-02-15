@@ -52,7 +52,7 @@
       editName="Publisher"
       @edit-clicked="toggleEditMode('publisher')"
       @cancel-clicked="cancelEditMode('publisher')"
-      @update-clicked="updatePublisher"
+      @update-clicked="savePublisher"
     />
 
     <hr class="hr" />
@@ -74,8 +74,10 @@
 
 <script lang="ts">
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
+import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
 import ScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
 import DashboardState from '@/compositions/dashboard/dashboardState';
+import useScoreshelfUserPublisher from '@/compositions/scoreshelf/scoreshelfUserPublisher';
 
 import EditProfileEdit from './EditProfileEdit.vue';
 import EditProfilePublisherEdit from './EditProfilePublisherEdit.vue';
@@ -86,7 +88,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { onMounted, reactive, ref, toRefs, watchEffect } from '@vue/composition-api';
-import { ProfilePicture, UploadedFile } from '@/@types';
+import { ProfilePicture, UploadedFile, Publisher } from '@/@types';
 
 library.add(faLock);
 
@@ -103,6 +105,7 @@ export default {
     const { useRefreshLogin, useSharetribeState, useUpdateCurrentUser } = useSharetribe();
     const { SHARETRIBE, currentUser } = useSharetribeState;
     const { useScoreshelfProfilePicture } = ScoreshelfPublisher();
+    const { hydratePublisher, updatePublisher, addNewPublisher } = useScoreshelfUserPublisher();
 
     // ========== Load and init data ==========
     const dataHasLoaded = ref(false);
@@ -116,22 +119,28 @@ export default {
       );
       hydratedProfilePicture.value = resHydratedProfilePicture;
 
-      initUserProfile();
+      await initUserProfile();
 
       // Trix has issues when renedred before there's data
       dataHasLoaded.value = true;
     });
-    function initUserProfile() {
+    async function initUserProfile() {
       userProfile.value.firstName = currentUser.value?.attributes.profile.firstName || '';
       userProfile.value.lastName = currentUser.value?.attributes.profile.lastName || '';
       userProfile.value.displayName = currentUser.value?.attributes.profile.displayName || '';
       userProfile.value.bio = currentUser.value?.attributes.profile.bio || '';
       userProfile.value.email = currentUser.value?.attributes.email || '';
       userProfile.value.profilePicture = hydratedProfilePicture.value;
-      userProfile.value.publisher.name =
-        currentUser.value?.attributes.profile.publicData.publisher?.name || '';
-      userProfile.value.publisher.about =
-        currentUser.value?.attributes.profile.publicData.publisher?.about || '';
+
+      userProfile.value.publisher._id = currentUser.value?.attributes.profile.publicData.publisher;
+
+      if (userProfile.value.publisher._id != undefined) {
+        const resHydratedPublisher = await hydratePublisher(userProfile.value.publisher._id);
+        if (resHydratedPublisher != undefined) {
+          userProfile.value.publisher.name = resHydratedPublisher.name;
+          userProfile.value.publisher.about = resHydratedPublisher.about;
+        }
+      }
     }
 
     // ========== update data ==========
@@ -152,16 +161,14 @@ export default {
       isLoading.value.profile = false;
     }
 
-    async function updatePublisher() {
+    async function savePublisher() {
       isLoading.value.publisher = true;
-      const res = await SHARETRIBE.value.currentUser.updateProfile({
-        publicData: {
-          publisher: {
-            name: userProfile.value.publisher.name,
-            about: userProfile.value.publisher.about,
-          },
-        },
-      });
+
+      if (userProfile.value.publisher._id) {
+        await updatePublisher();
+      } else {
+        await addNewPublisher();
+      }
 
       await useRefreshLogin();
       await useUpdateCurrentUser();
@@ -187,7 +194,7 @@ export default {
       isLoading,
       currentUser,
       updateProfile,
-      updatePublisher,
+      savePublisher,
       dataHasLoaded,
       toggleEditMode,
       cancelEditMode,
