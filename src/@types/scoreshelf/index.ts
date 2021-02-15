@@ -56,3 +56,10 @@ export interface AssetMetadata {
 export interface UploadParams {
   thumbnailSettings: ThumbnailSettings;
 }
+
+export interface Publisher {
+  _id: undefined | string;
+  valid: null | boolean;
+  name: string;
+  about: string;
+}

@@ -21,6 +21,8 @@ const DashboardStore = reactive<IDashboardStore>({
     email: '',
     profilePicture: undefined,
     publisher: {
+      _id: undefined,
+      valid: null,
       name: '',
       about: '',
     },

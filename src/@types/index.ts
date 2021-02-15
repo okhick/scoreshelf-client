@@ -50,4 +50,5 @@ export {
   ThumbnailSettings,
   AssetMetadata,
   UploadParams,
+  Publisher,
 } from './scoreshelf';

@@ -16,9 +16,7 @@ import {
 } from '@/@types';
 
 import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
-// @ts-ignore
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
-// @ts-ignore
 import useDashboard from '@/compositions/dashboard/dashboard';
 
 // ============================================================================
