@@ -6,17 +6,18 @@
         <input
           :class="[
             'input',
-            { invalid: userProfile.publisher.valid === false },
-            { valid: userProfile.publisher.valid === true },
+            { 'is-invalid': userProfile.publisher.valid === false },
+            { 'is-valid': userProfile.publisher.valid === true },
           ]"
           type="text"
           v-model="userProfile.publisher.name"
-          @blur="handlePublisherNameChange"
+          @blur="handlePublisherBlur"
           @input="handlePublisherNameChange"
         />
         <span class="icon is-small is-right">
           <font-awesome-icon icon="check" v-show="userProfile.publisher.valid === true" />
           <font-awesome-icon icon="ban" v-show="userProfile.publisher.valid === false" />
+          <span class="spinner" v-show="userProfile.publisher.valid === null"></span>
         </span>
       </div>
       <p class="help" v-show="userProfile.publisher.valid === false">
@@ -41,7 +42,7 @@ import DashboardState from '@/compositions/dashboard/dashboardState';
 import useScoreshelfUserPublisher from '@/compositions/scoreshelf/scoreshelfUserPublisher';
 
 import { computed, onMounted } from '@vue/composition-api';
-import throttle from 'lodash.throttle';
+import debounce from 'lodash.debounce';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faCheck, faBan } from '@fortawesome/free-solid-svg-icons';
@@ -72,17 +73,23 @@ export default {
     const { validatePublisher } = useScoreshelfUserPublisher();
 
     onMounted(async () => {
-      const isValid = await throttledValidation(userProfile.value.publisher.name);
+      const isValid = await validatePublisher(userProfile.value.publisher.name);
       userProfile.value.publisher.valid = isValid != undefined ? isValid : null;
     });
 
-    const throttledValidation = throttle(async (value: string) => {
+    // wait until user stops typing for 250ms before checking
+    const debounceValidation = debounce(async (value: string) => {
+      userProfile.value.publisher.valid = null;
       const isValid = await validatePublisher(value);
-      return isValid;
-    }, 150);
+      userProfile.value.publisher.valid = isValid != undefined ? isValid : null;
+    }, 250);
 
+    // handle name field events
     async function handlePublisherNameChange(event: Event & InputChangeEvent) {
-      const isValid = await throttledValidation(event.target.value);
+      await debounceValidation(event.target.value);
+    }
+    async function handlePublisherBlur(event: Event & InputChangeEvent) {
+      const isValid = await validatePublisher(event.target.value);
       userProfile.value.publisher.valid = isValid != undefined ? isValid : null;
     }
 
@@ -90,26 +97,11 @@ export default {
       userProfile,
       handleNewContent,
       handlePublisherNameChange,
+      handlePublisherBlur,
     };
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/index.scss';
-
-#publisher-name {
-  input.invalid {
-    border-color: $orange;
-    + .icon {
-      color: $orange;
-    }
-  }
-  input.valid:focus {
-    border-color: $green;
-    + .icon {
-      color: $green;
-    }
-  }
-}
 </style>
