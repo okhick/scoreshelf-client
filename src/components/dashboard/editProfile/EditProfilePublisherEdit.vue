@@ -59,11 +59,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faCheck, faBan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-interface InputChangeEvent {
-  target: {
-    value: string;
-  };
-}
+import { InputChangeEvent } from '@/@types';
 
 library.add(faCheck, faBan);
 
@@ -110,6 +106,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-</style>

@@ -14,6 +14,12 @@ export interface NewFileUpload {
   };
 }
 
+export interface InputChangeEvent {
+  target: {
+    value: string;
+  };
+}
+
 export {
   Listing,
   ListingSearch,
@@ -36,7 +42,7 @@ export {
   CurrentUserAttributes,
   CurrentUserAttributesProfile,
   EditUserProfile,
-} from './sharetribe';
+} from '@/@types/sharetribe';
 
 export {
   UploadedFile,
@@ -51,4 +57,4 @@ export {
   AssetMetadata,
   UploadParams,
   Publisher,
-} from './scoreshelf';
+} from '@/@types/scoreshelf';
