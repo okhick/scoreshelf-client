@@ -6,20 +6,30 @@
         <input
           :class="[
             'input',
-            { invalid: userProfile.publisher.valid === false },
-            { valid: userProfile.publisher.valid === true },
+            { 'is-invalid': publisherValidationStore.publisher_name.status === false },
+            { 'is-valid': publisherValidationStore.publisher_name.status === true },
           ]"
           type="text"
           v-model="userProfile.publisher.name"
-          @blur="handlePublisherNameChange"
+          @blur="handlePublisherBlur"
           @input="handlePublisherNameChange"
         />
         <span class="icon is-small is-right">
-          <font-awesome-icon icon="check" v-show="userProfile.publisher.valid === true" />
-          <font-awesome-icon icon="ban" v-show="userProfile.publisher.valid === false" />
+          <font-awesome-icon
+            icon="check"
+            v-show="publisherValidationStore.publisher_name.status === true"
+          />
+          <font-awesome-icon
+            icon="ban"
+            v-show="publisherValidationStore.publisher_name.status === false"
+          />
+          <span
+            class="spinner"
+            v-show="publisherValidationStore.publisher_name.status === 'isLoading'"
+          ></span>
         </span>
       </div>
-      <p class="help" v-show="userProfile.publisher.valid === false">
+      <p class="help" v-show="publisherValidationStore.publisher_name.status === false">
         This publisher is already in use.
       </p>
     </div>
@@ -38,20 +48,18 @@
 <script lang="ts">
 import TrixEditorComponent from '@/components/forms/TrixEditor.vue';
 import DashboardState from '@/compositions/dashboard/dashboardState';
-import useScoreshelfUserPublisher from '@/compositions/scoreshelf/scoreshelfUserPublisher';
 
-import { computed, onMounted } from '@vue/composition-api';
-import throttle from 'lodash.throttle';
+import usePublisherValidation from '@/compositions/validation/publisherValidation';
+import useValidationState from '@/compositions/validation/validationState';
+
+import { computed, onBeforeMount } from '@vue/composition-api';
+import debounce from 'lodash.debounce';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faCheck, faBan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-interface InputChangeEvent {
-  target: {
-    value: string;
-  };
-}
+import { InputChangeEvent } from '@/@types';
 
 library.add(faCheck, faBan);
 
@@ -69,47 +77,32 @@ export default {
     }
 
     // ========== handle publisher name validation ==========
-    const { validatePublisher } = useScoreshelfUserPublisher();
+    const { validatePublisherName } = usePublisherValidation();
+    const { ValidationStore } = useValidationState();
+    const publisherValidationStore = computed(() => ValidationStore.value.publisher);
 
-    onMounted(async () => {
-      const isValid = await throttledValidation(userProfile.value.publisher.name);
-      userProfile.value.publisher.valid = isValid != undefined ? isValid : null;
-    });
+    onBeforeMount(async () => await validatePublisherName(userProfile.value.publisher.name));
 
-    const throttledValidation = throttle(async (value: string) => {
-      const isValid = await validatePublisher(value);
-      return isValid;
-    }, 150);
+    // wait until user stops typing for 250ms before checking
+    const debounceValidation = debounce(async (value: string) => {
+      await validatePublisherName(value);
+    }, 250);
 
+    // handle name field events
     async function handlePublisherNameChange(event: Event & InputChangeEvent) {
-      const isValid = await throttledValidation(event.target.value);
-      userProfile.value.publisher.valid = isValid != undefined ? isValid : null;
+      await debounceValidation(event.target.value);
+    }
+    async function handlePublisherBlur(event: Event & InputChangeEvent) {
+      await validatePublisherName(event.target.value);
     }
 
     return {
       userProfile,
       handleNewContent,
       handlePublisherNameChange,
+      handlePublisherBlur,
+      publisherValidationStore,
     };
   },
 };
 </script>
-
-<style lang="scss" scoped>
-@import '@/styles/index.scss';
-
-#publisher-name {
-  input.invalid {
-    border-color: $orange;
-    + .icon {
-      color: $orange;
-    }
-  }
-  input.valid:focus {
-    border-color: $green;
-    + .icon {
-      color: $green;
-    }
-  }
-}
-</style>
