@@ -8,6 +8,18 @@ export interface ChooseEvent {
   };
 }
 
+export interface NewFileUpload {
+  target: {
+    files: File[];
+  };
+}
+
+export interface InputChangeEvent {
+  target: {
+    value: string;
+  };
+}
+
 export {
   Listing,
   ListingSearch,
@@ -18,26 +30,31 @@ export {
   ListingFormat,
   ListingPreview,
   ListingThumbnailHydrated,
+  isListingThumbnailHydrated,
   CreateDraftResponse,
   GetOwnListingsResponse,
   ListingEditData,
   ListingEditDataAttributes,
   ListingPrivateData,
   ListingAssetData,
+  CurrentUserResponse,
   CurrentUser,
   CurrentUserAttributes,
   CurrentUserAttributesProfile,
-} from './sharetribe';
+  EditUserProfile,
+} from '@/@types/sharetribe';
 
 export {
   UploadedFile,
   GenericAsset,
   Asset,
   Thumbnail,
+  ProfilePicture,
   PreviewSetting,
   PreviewSettings,
   ThumbnailSetting,
   ThumbnailSettings,
   AssetMetadata,
   UploadParams,
-} from './scoreshelf';
+  Publisher,
+} from '@/@types/scoreshelf';

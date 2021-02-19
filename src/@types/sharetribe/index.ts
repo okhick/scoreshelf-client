@@ -1,4 +1,5 @@
 import { Data } from '@/@types';
+import { UploadedFile, ProfilePicture, Publisher } from '../scoreshelf';
 
 export interface Listing {
   id: { uuid: string };
@@ -34,7 +35,7 @@ export interface ListingAttributes extends Data {
 export interface ListingPublicData extends Data {
   commission: string;
   subtitle: string;
-  composer: string;
+  composer: string[];
   duration: string;
   ensemble: string;
   instrumentation: string[];
@@ -64,6 +65,11 @@ export interface ListingThumbnailHydrated {
   width: number;
   height: number;
   page: number;
+}
+export function isListingThumbnailHydrated(
+  listingThumbnail: any
+): listingThumbnail is ListingThumbnailHydrated {
+  return listingThumbnail._id !== undefined;
 }
 
 export interface CreateDraftResponse {
@@ -99,6 +105,10 @@ export interface ListingAssetData {
   thumbnail_id?: string | null;
 }
 
+export interface CurrentUserResponse {
+  data: CurrentUser;
+}
+
 export interface CurrentUser {
   id: { uuid: string };
   type: string;
@@ -128,5 +138,18 @@ export interface CurrentUserAttributesProfile {
   metadata: any;
   privateData: any;
   protectedData: any;
-  publicData: any;
+  publicData: {
+    profilePicture: string | undefined;
+    publisher: string | undefined;
+  };
+}
+
+export interface EditUserProfile {
+  firstName: string;
+  lastName: string;
+  displayName: string;
+  bio: string;
+  email: string;
+  profilePicture: UploadedFile | ProfilePicture | undefined;
+  publisher: Publisher;
 }

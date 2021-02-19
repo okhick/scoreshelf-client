@@ -100,11 +100,18 @@ export default {
       }
     });
 
-    function saveSelectedInstrument(result: string): void {
+    function saveSelectedInstrument(result: string | undefined): void {
       if (formData.value.instrumentation == undefined) {
         formData.value.instrumentation = [];
       }
-      formData.value.instrumentation.push(result); /* This will go away once properly typed */
+
+      // if there was a dropdown selection, use that. If not, use the input assuming it's not blank
+      if (result != undefined) {
+        formData.value.instrumentation.push(result);
+      } else if (inputValue.value != undefined && inputValue.value != '') {
+        formData.value.instrumentation.push(inputValue.value);
+      }
+
       inputValue.value = undefined;
     }
     function removeInstrument(index: number): void {

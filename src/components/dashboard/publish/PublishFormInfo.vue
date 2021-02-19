@@ -16,17 +16,7 @@
 
     <hr />
 
-    <div class="field">
-      <label class="label">Composer(s)</label>
-      <div class="control">
-        <input
-          class="input"
-          type="text"
-          v-model="formData.composer"
-          placeholder="Person 1, Person 2"
-        />
-      </div>
-    </div>
+    <publish-form-composer />
 
     <div class="field">
       <label class="label">Year of Completion</label>
@@ -76,11 +66,13 @@ import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublishe
 import { onMounted } from '@vue/composition-api';
 
 import PublishFormInstrumentation from './PublishFormInstrumentation.vue';
+import PublishFormComposer from './PublishFormComposer.vue';
 import TrixEditorComponent from '@/components/forms/TrixEditor.vue';
 
 export default {
   components: {
     TrixEditorComponent,
+    PublishFormComposer,
     PublishFormInstrumentation,
   },
   setup() {
@@ -92,7 +84,6 @@ export default {
       if (publishModalEditData.value != null && publishModalEditData.value?.attributes) {
         formData.value.title = publishModalEditData.value.attributes.title;
         formData.value.subtitle = publishModalEditData.value.attributes.publicData.subtitle;
-        formData.value.composer = publishModalEditData.value.attributes.publicData.composer;
         formData.value.commission = publishModalEditData.value.attributes.publicData.commission;
         formData.value.duration = publishModalEditData.value.attributes.publicData.duration;
         formData.value.year = publishModalEditData.value.attributes.publicData.year;

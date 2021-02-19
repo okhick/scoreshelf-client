@@ -29,6 +29,11 @@ export default function SharetribeState() {
     SharetribeStore.currentUser = payload;
   }
 
+  function logoutUser() {
+    SharetribeStore.isLoggedIn = false;
+    SharetribeStore.currentUser = undefined;
+  }
+
   function getCurrentUserId() {
     return SharetribeStore.currentUser?.id.uuid;
   }
@@ -38,6 +43,7 @@ export default function SharetribeState() {
     initSharetribe,
     updateIsLoggedIn,
     updateCurrentUser,
+    logoutUser,
     getCurrentUserId,
   };
 }

@@ -35,8 +35,6 @@
     "src/**/*.js",
     "tests/**/*.ts",
     "tests/**/*.tsx", 
-    "src/store/index.ts", 
-    "src/store/sidenav/index.js"
   ],
   "exclude": [
     "node_modules"

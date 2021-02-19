@@ -10,7 +10,7 @@ import useSharetribe from '@/compositions/sharetribe/sharetribe';
 interface FormData extends Data {
   title: string;
   subtitle: string;
-  composer: string;
+  composer: string[];
   year: string;
   duration: string;
   commission: string;
@@ -20,20 +20,22 @@ interface FormData extends Data {
 }
 interface IPublishFormState {
   formData: FormData;
+  DISPLAY_NAME: string;
 }
 
 const PublishFormState = reactive<IPublishFormState>({
   formData: {
     title: '',
     subtitle: '',
-    composer: '',
+    composer: [],
     year: '',
     duration: '',
     commission: '',
-    otherNotes: '__INIT_TRIX__' /* Trix field needs to not be empty string to register an init */,
+    otherNotes: '',
     ensemble: '',
     instrumentation: [],
   },
+  DISPLAY_NAME: '__DISPLAY-NAME__',
 });
 
 // ============================================================================
@@ -61,9 +63,7 @@ function SharetribePublisherForm() {
   function clearFormData() {
     for (const field in PublishFormState.formData) {
       switch (field) {
-        case 'otherNotes':
-          PublishFormState.formData[field] = '__INIT-TRIX__';
-          break;
+        case 'composer':
         case 'instrumentation':
           PublishFormState.formData[field] = [];
           break;

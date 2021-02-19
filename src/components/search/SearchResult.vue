@@ -46,7 +46,7 @@ import { ref, computed, PropType, defineComponent } from '@vue/composition-api';
 import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
 import debounce from 'lodash.debounce';
 
-import { Listing } from '@/@types';
+import { Listing, ListingThumbnailHydrated, isListingThumbnailHydrated } from '@/@types';
 
 // using defineComponent is key to getting the props working here
 export default defineComponent({
@@ -70,8 +70,9 @@ export default defineComponent({
     // ========== Get thumbnail link ==========
     const pathToThumbnail = computed(() => {
       const { THUMBNAIL_BASE_URL } = useScoreshelf();
-      if ('_id' in listing.attributes.publicData.thumbnail) {
-        const thumbnail = listing.attributes.publicData.thumbnail;
+      const thumbnail = listing.attributes.publicData.thumbnail;
+
+      if (thumbnail && isListingThumbnailHydrated(thumbnail)) {
         return `${THUMBNAIL_BASE_URL}/${thumbnail.sharetribe_user_id}/${thumbnail.sharetribe_listing_id}/${thumbnail.asset_name}`;
       } else {
         // TODO: this should just be a default thumbnail
