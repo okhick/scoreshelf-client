@@ -6,7 +6,13 @@ import useSharetribe from '@/compositions/sharetribe/sharetribe';
 import { stringify } from 'qs';
 
 import { AxiosResponse } from 'axios';
-import { SearchResultsMeta, Listing, ListingSearch, ListingThumbnailHydrated } from '@/@types';
+import {
+  SearchResultsMeta,
+  Listing,
+  ListingSearch,
+  ListingThumbnailHydrated,
+  CurrentUser,
+} from '@/@types';
 
 // This feels like a bug. Why do I have to call this here when it's already called in main.js?
 // Might be fixed in Vue3: https://stackoverflow.com/questions/61885716/uncaught-error-vue-composition-api-must-call-vue-useplugin-before-using-any/61907559#61907559
@@ -19,6 +25,7 @@ const searchbarIsShowing = ref(true);
 const searchIsLoading = ref(false);
 const searchListingData: Ref<Listing[] | []> = ref([]);
 const searchResultsMeta: Ref<SearchResultsMeta | {}> = ref({});
+const searchResultsAuthors: Ref<CurrentUser[] | null> = ref(null);
 
 function searchStateManagement() {
   // function toggleSearchIsLoading() {
@@ -36,6 +43,9 @@ function searchStateManagement() {
   function addSearchResultsMeta(payload: SearchResultsMeta) {
     searchResultsMeta.value = payload;
   }
+  function addSearchResultsAuthors(payload: CurrentUser[]) {
+    searchResultsAuthors.value = payload;
+  }
   function toggleSearchbarIsShowing() {
     searchbarIsShowing.value = !searchbarIsShowing.value;
   }
@@ -45,6 +55,7 @@ function searchStateManagement() {
   function resetSearchStore() {
     searchListingData.value = [];
     searchResultsMeta.value = {};
+    searchResultsAuthors.value = null;
   }
 
   return {
@@ -52,6 +63,7 @@ function searchStateManagement() {
     searchLoadingOff,
     addSearchListingData,
     addSearchResultsMeta,
+    addSearchResultsAuthors,
     toggleSearchbarIsShowing,
     hideSearchbar,
     resetSearchStore,
@@ -77,6 +89,7 @@ export default function useSearch(context: SetupContext) {
 
     const res: AxiosResponse<ListingSearch> = await SHARETRIBE.value.listings.query({
       keywords: searchInput.value,
+      include: 'author',
     });
     context.root.$router.push({
       name: 'Search',
@@ -84,10 +97,12 @@ export default function useSearch(context: SetupContext) {
     });
 
     const listingData = res.data.data;
+
     const hydratedThumbnailListingData = await hydrateThumbnailData(listingData);
 
     useSearchStateManagement.addSearchListingData(hydratedThumbnailListingData);
     useSearchStateManagement.addSearchResultsMeta(res.data.meta);
+    useSearchStateManagement.addSearchResultsAuthors(res.data.included);
 
     // wait until the dom has reloaded to turn the toggle off
     context.root.$nextTick(() => {
@@ -145,6 +160,25 @@ export default function useSearch(context: SetupContext) {
     return listingData;
   }
 
+  function stringifyComposers(listing: Listing) {
+    const author = searchResultsAuthors.value?.find(
+      (author) => listing?.relationships?.author.data.id.uuid === author.id.uuid
+    );
+    const displayName = author?.attributes.profile.displayName;
+
+    const replaceDisplayName = listing.attributes.publicData.composer.map((composer) => {
+      if (composer === '__DISPLAY-NAME__') {
+        if (listing.relationships?.author.data.id.uuid) {
+          return displayName;
+        }
+        return '';
+      }
+      return composer;
+    });
+
+    return replaceDisplayName.join(', ');
+  }
+
   return {
     // ---- data ----
     searchInput,
@@ -152,8 +186,10 @@ export default function useSearch(context: SetupContext) {
     searchIsLoading,
     searchListingData,
     searchResultsMeta,
+    searchResultsAuthors,
     // ---- functions ----
     executeSearch,
     useSearchStateManagement,
+    stringifyComposers,
   };
 }

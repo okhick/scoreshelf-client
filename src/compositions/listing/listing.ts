@@ -1,17 +1,16 @@
 import { reactive, toRefs, ref, onMounted, SetupContext } from '@vue/composition-api';
-// @ts-ignore
 import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
 import useSearch from '@/compositions/search/search';
-// @ts-ignore
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
 
 import { AxiosResponse } from 'axios';
-import { Listing, ListingQuery } from '@/@types';
+import { CurrentUser, Listing, ListingQuery } from '@/@types';
 
 // ============================================
 
 interface IListingState {
   listingData: Listing | undefined;
+  authorData: CurrentUser | undefined;
   previewBuffer: ArrayBuffer | undefined;
   selectedFormat: string;
   scrollPos: number;
@@ -19,6 +18,7 @@ interface IListingState {
 
 const ListingState = reactive<IListingState>({
   listingData: undefined,
+  authorData: undefined,
   previewBuffer: undefined,
   selectedFormat: '',
   scrollPos: 0,
@@ -28,7 +28,7 @@ const ListingState = reactive<IListingState>({
 
 export default function useListing(listingId: string = '', context: SetupContext) {
   const { SCORESHELF } = useScoreshelf();
-  const { searchListingData } = useSearch(context);
+  const { searchListingData, searchResultsAuthors } = useSearch(context);
   const { useSharetribeState } = useSharetribe();
   const { SHARETRIBE } = useSharetribeState;
 
@@ -37,16 +37,46 @@ export default function useListing(listingId: string = '', context: SetupContext
     const searchListingStore = searchListingData.value.find(
       (listing) => listing.id.uuid === listingId
     );
-
+    // if we're coming from a search page, just load up data from the search store
     if (searchListingStore !== undefined) {
       ListingState.listingData = searchListingStore;
+      ListingState.authorData = searchResultsAuthors.value?.find(
+        (author) => author.id.uuid === ListingState.listingData?.relationships?.author.data.id.uuid
+      );
+      // else we need to fetch it.
     } else {
       const listingRes: AxiosResponse<ListingQuery> = await SHARETRIBE.value.listings.show({
         id: listingId,
+        include: 'author',
       });
       ListingState.listingData = listingRes.data.data;
+      ListingState.authorData = listingRes.data.included[0]; //there should only be one author
     }
     return;
+  }
+
+  // TODO: figure out a way to share logic between this and search.
+  function stringifyComposers() {
+    const displayName = ListingState.authorData?.attributes.profile.displayName;
+    if (ListingState.listingData) {
+      const replaceDisplayName: (
+        | string
+        | undefined
+      )[] = ListingState.listingData.attributes.publicData.composer.map((composer) => {
+        if (composer === '__DISPLAY-NAME__') {
+          if (ListingState.listingData?.relationships?.author.data.id.uuid) {
+            return displayName;
+          }
+          return '';
+        }
+        return composer;
+      });
+
+      return replaceDisplayName.join(', ');
+    } else {
+      console.log('ERROR STRINGIFYING COMPOSERS');
+      '';
+    }
   }
 
   async function getPreviewBuffer(): Promise<void> {
@@ -82,5 +112,6 @@ export default function useListing(listingId: string = '', context: SetupContext
     ...toRefs(ListingState),
     getSearchListing,
     getPreviewBuffer,
+    stringifyComposers,
   };
 }

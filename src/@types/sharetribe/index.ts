@@ -5,16 +5,28 @@ export interface Listing {
   id: { uuid: string };
   type: 'listing';
   attributes: ListingAttributes;
+  relationships?: {
+    author: AuthorRelationship;
+  };
+}
+
+export interface AuthorRelationship {
+  data: {
+    id: { uuid: string };
+    type: string;
+  };
 }
 
 export interface ListingSearch {
   data: Listing[];
   meta: SearchResultsMeta;
+  included: CurrentUser[];
 }
 
 export interface ListingQuery {
   data: Listing;
   meta: SearchResultsMeta;
+  included: CurrentUser[];
 }
 
 export interface SearchResultsMeta {

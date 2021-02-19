@@ -13,7 +13,7 @@
       </div>
       <div class="info-spacer"></div>
       <div class="info" @click="goToListing">
-        <div class="human secondary-info">{{ listing.attributes.publicData.composer }}</div>
+        <div class="human secondary-info">{{ composers }}</div>
         <div class="result-titles">
           <div class="result-title">
             {{ listing.attributes.title }} <span class="result-year">{{ showYear }}</span>
@@ -44,6 +44,7 @@
 <script lang="ts">
 import { ref, computed, PropType, defineComponent } from '@vue/composition-api';
 import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
+import useSearch from '@/compositions/search/search';
 import debounce from 'lodash.debounce';
 
 import { Listing, ListingThumbnailHydrated, isListingThumbnailHydrated } from '@/@types';
@@ -65,6 +66,15 @@ export default defineComponent({
 
     const showYear = computed(() => {
       return listing.attributes.publicData.year ? `(${listing.attributes.publicData.year})` : '';
+    });
+
+    const { stringifyComposers } = useSearch(context);
+    const composers = computed(() => {
+      if (listing.attributes.publicData.composer) {
+        return stringifyComposers(listing);
+      } else {
+        return '';
+      }
     });
 
     // ========== Get thumbnail link ==========
@@ -162,6 +172,7 @@ export default defineComponent({
       // ---- Computed ----
       showEnsembleOrInstrumentation,
       pathToThumbnail,
+      composers,
       // ---- Methods ----
       showThumbnail,
       showYear,

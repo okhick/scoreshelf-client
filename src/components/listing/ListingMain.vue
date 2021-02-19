@@ -4,7 +4,7 @@
     <h3 v-if="listing.attributes.publicData.subtitle" class="title is-3 subtitle">
       {{ listing.attributes.publicData.subtitle }}
     </h3>
-    <h4 class="title is-4 composer">{{ listing.attributes.publicData.composer }}</h4>
+    <h4 class="title is-4 composer">{{ composerString }}</h4>
 
     <listing-formats />
 
@@ -44,7 +44,7 @@
 
 <script lang="ts">
 import useListing from '@/compositions/listing/listing';
-import { watch, ref, computed, SetupContext } from '@vue/composition-api';
+import { computed, SetupContext } from '@vue/composition-api';
 import { Data } from '@/@types';
 
 import ListingFormats from '@/components/listing/ListingFormats.vue';
@@ -54,7 +54,7 @@ export default {
     ListingFormats,
   },
   setup(_: Data, context: SetupContext) {
-    const { listingData, selectedFormat, scrollPos } = useListing(undefined, context);
+    const { listingData, selectedFormat, stringifyComposers } = useListing(undefined, context);
 
     function addToCart() {
       console.log(selectedFormat.value, 'has been selected for cart');
@@ -64,10 +64,19 @@ export default {
       return instruments.join(', ');
     }
 
+    const composerString = computed(() => {
+      if (listingData.value?.attributes.publicData.composer) {
+        return stringifyComposers();
+      } else {
+        return '';
+      }
+    });
+
     return {
       listing: listingData,
       addToCart,
       stringifyInstruments,
+      composerString,
     };
   },
 };
