@@ -26,6 +26,7 @@ export interface ListingSearch {
 export interface ListingQuery {
   data: Listing;
   meta: SearchResultsMeta;
+  included: CurrentUser[];
 }
 
 export interface SearchResultsMeta {

@@ -186,6 +186,7 @@ export default function useSearch(context: SetupContext) {
     searchIsLoading,
     searchListingData,
     searchResultsMeta,
+    searchResultsAuthors,
     // ---- functions ----
     executeSearch,
     useSearchStateManagement,

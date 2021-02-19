@@ -70,7 +70,11 @@ export default defineComponent({
 
     const { stringifyComposers } = useSearch(context);
     const composers = computed(() => {
-      return stringifyComposers(listing);
+      if (listing.attributes.publicData.composer) {
+        return stringifyComposers(listing);
+      } else {
+        return '';
+      }
     });
 
     // ========== Get thumbnail link ==========
