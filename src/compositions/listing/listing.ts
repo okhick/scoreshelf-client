@@ -43,6 +43,7 @@ export default function useListing(listingId: string = '', context: SetupContext
     } else {
       const listingRes: AxiosResponse<ListingQuery> = await SHARETRIBE.value.listings.show({
         id: listingId,
+        include: 'author',
       });
       ListingState.listingData = listingRes.data.data;
     }
