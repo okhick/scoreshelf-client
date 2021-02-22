@@ -27,6 +27,7 @@ export {
   SearchResultsMeta,
   ListingAttributes,
   ListingPublicData,
+  ListingRole,
   ListingFormat,
   ListingPreview,
   ListingThumbnailHydrated,

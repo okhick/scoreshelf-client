@@ -47,7 +47,7 @@ export interface ListingAttributes extends Data {
 export interface ListingPublicData extends Data {
   commission: string;
   subtitle: string;
-  composer: string[];
+  role: ListingRole[];
   duration: string;
   ensemble: string;
   instrumentation: string[];
@@ -55,6 +55,11 @@ export interface ListingPublicData extends Data {
   preview: ListingPreview;
   formats: ListingFormat[];
   thumbnail: { thumbnail_id: string } | ListingThumbnailHydrated;
+}
+
+export interface ListingRole {
+  role: string;
+  name: string;
 }
 
 export interface ListingFormat {
