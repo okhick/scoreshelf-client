@@ -160,20 +160,20 @@ export default function useSearch(context: SetupContext) {
     return listingData;
   }
 
-  function stringifyComposers(listing: Listing) {
+  function stringifyRoles(listing: Listing) {
     const author = searchResultsAuthors.value?.find(
       (author) => listing?.relationships?.author.data.id.uuid === author.id.uuid
     );
     const displayName = author?.attributes.profile.displayName;
 
-    const replaceDisplayName = listing.attributes.publicData.composer.map((composer) => {
-      if (composer === '__DISPLAY-NAME__') {
+    const replaceDisplayName = listing.attributes.publicData.role.map((role) => {
+      if (role.name === '__DISPLAY-NAME__') {
         if (listing.relationships?.author.data.id.uuid) {
           return displayName;
         }
         return '';
       }
-      return composer;
+      return role.name;
     });
 
     return replaceDisplayName.join(', ');
@@ -190,6 +190,6 @@ export default function useSearch(context: SetupContext) {
     // ---- functions ----
     executeSearch,
     useSearchStateManagement,
-    stringifyComposers,
+    stringifyRoles,
   };
 }

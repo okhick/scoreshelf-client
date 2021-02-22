@@ -5,6 +5,8 @@ h3,
 h4 {
   font-family: $family-secondary;
 }
+// Bulma moves .subtitle closer to .title but its just a little too close
+$subtitle-negative-margin: -0.75rem;
 
 $link: $maroon;
 $link-hover: $maroon;
@@ -42,6 +44,7 @@ $button-hover-border-color: $black;
 .button.is-tan {
   background-color: $tan;
   color: $black;
+  border-color: $tan;
 }
 .button.is-tan:hover {
   background-color: $tan-light;

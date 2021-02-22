@@ -4,7 +4,9 @@
     <h3 v-if="listing.attributes.publicData.subtitle" class="title is-3 subtitle">
       {{ listing.attributes.publicData.subtitle }}
     </h3>
-    <h4 class="title is-4 composer">{{ composerString }}</h4>
+    <div class="roles">
+      <div class="role" v-for="(role, index) in rolesString" :key="index" v-html="role"></div>
+    </div>
 
     <listing-formats />
 
@@ -54,7 +56,7 @@ export default {
     ListingFormats,
   },
   setup(_: Data, context: SetupContext) {
-    const { listingData, selectedFormat, stringifyComposers } = useListing(undefined, context);
+    const { listingData, selectedFormat, stringifyRoles } = useListing(undefined, context);
 
     function addToCart() {
       console.log(selectedFormat.value, 'has been selected for cart');
@@ -64,9 +66,9 @@ export default {
       return instruments.join(', ');
     }
 
-    const composerString = computed(() => {
-      if (listingData.value?.attributes.publicData.composer) {
-        return stringifyComposers();
+    const rolesString = computed(() => {
+      if (listingData.value?.attributes.publicData.role) {
+        return stringifyRoles();
       } else {
         return '';
       }
@@ -76,7 +78,7 @@ export default {
       listing: listingData,
       addToCart,
       stringifyInstruments,
-      composerString,
+      rolesString,
     };
   },
 };
@@ -88,9 +90,6 @@ export default {
 .publication {
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
-  /* screen height - search bar height - bulma padding on columns */
-  /* min-height: calc(100vh - 64px - 12px); */
   margin-top: 32px;
 }
 h2.title.is-2.title {
@@ -99,21 +98,8 @@ h2.title.is-2.title {
   font-size: 48px;
 }
 
-h3.subtitle {
-  color: $black;
-  font-size: 36px;
-  margin: 0;
-}
-
-h3.title.is-3,
-h4.title.is-4 {
+h3.title.is-3 {
   font-weight: 500;
-}
-
-h4.title.is-4.composer {
-  margin-top: 40px;
-  margin-bottom: 40px;
-  font-size: 28px;
 }
 
 .add-to-cart {
@@ -161,5 +147,26 @@ h4.title.is-4.composer {
 }
 .other-notes p {
   font-size: 16px;
+}
+</style>
+
+<style lang="scss">
+// There's something at the global scope polluting this so it can't be scoped
+@import '@/styles/index.scss';
+.roles {
+  margin-bottom: 24px;
+
+  .role {
+    h4.is-4.role-name {
+      font-weight: 500;
+      font-size: 20px;
+      font-family: $family-secondary;
+      display: inline;
+    }
+    span.role-role {
+      font-size: 15px;
+      font-family: $family-primary;
+    }
+  }
 }
 </style>

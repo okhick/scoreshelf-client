@@ -13,7 +13,7 @@
       </div>
       <div class="info-spacer"></div>
       <div class="info" @click="goToListing">
-        <div class="human secondary-info">{{ composers }}</div>
+        <div class="human secondary-info">{{ roles }}</div>
         <div class="result-titles">
           <div class="result-title">
             {{ listing.attributes.title }} <span class="result-year">{{ showYear }}</span>
@@ -47,8 +47,7 @@ import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
 import useSearch from '@/compositions/search/search';
 import debounce from 'lodash.debounce';
 
-import { Listing, ListingThumbnailHydrated, isListingThumbnailHydrated } from '@/@types';
-
+import { Listing, isListingThumbnailHydrated } from '@/@types';
 // using defineComponent is key to getting the props working here
 export default defineComponent({
   props: {
@@ -61,17 +60,17 @@ export default defineComponent({
     const showEnsembleOrInstrumentation = computed(() => {
       return listing.attributes.publicData.ensemble
         ? listing.attributes.publicData.ensemble
-        : listing.attributes.publicData.instrumentation;
+        : listing.attributes.publicData.instrumentation.join(', ');
     });
 
     const showYear = computed(() => {
       return listing.attributes.publicData.year ? `(${listing.attributes.publicData.year})` : '';
     });
 
-    const { stringifyComposers } = useSearch(context);
-    const composers = computed(() => {
-      if (listing.attributes.publicData.composer) {
-        return stringifyComposers(listing);
+    const { stringifyRoles } = useSearch(context);
+    const roles = computed(() => {
+      if (listing.attributes.publicData.role) {
+        return stringifyRoles(listing);
       } else {
         return '';
       }
@@ -172,7 +171,7 @@ export default defineComponent({
       // ---- Computed ----
       showEnsembleOrInstrumentation,
       pathToThumbnail,
-      composers,
+      roles,
       // ---- Methods ----
       showThumbnail,
       showYear,

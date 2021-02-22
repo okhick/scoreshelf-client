@@ -56,26 +56,27 @@ export default function useListing(listingId: string = '', context: SetupContext
   }
 
   // TODO: figure out a way to share logic between this and search.
-  function stringifyComposers() {
+  function stringifyRoles() {
     const displayName = ListingState.authorData?.attributes.profile.displayName;
+
     if (ListingState.listingData) {
       const replaceDisplayName: (
         | string
         | undefined
-      )[] = ListingState.listingData.attributes.publicData.composer.map((composer) => {
-        if (composer === '__DISPLAY-NAME__') {
+      )[] = ListingState.listingData.attributes.publicData.role.map((role) => {
+        if (role.name === '__DISPLAY-NAME__') {
           if (ListingState.listingData?.relationships?.author.data.id.uuid) {
-            return displayName;
+            return `<h4 class="role-name is-4">${displayName}</h4> <span class="role-role">(${role.role})</span>`;
           }
           return '';
         }
-        return composer;
+        return `<h4 class="role-name is-4">${role.name}</h4> <span class="role-role">(${role.role})</span>`;
       });
 
-      return replaceDisplayName.join(', ');
+      return replaceDisplayName;
     } else {
-      console.log('ERROR STRINGIFYING COMPOSERS');
-      '';
+      console.log('ERROR STRINGIFYING ROLES');
+      return [''];
     }
   }
 
@@ -112,6 +113,6 @@ export default function useListing(listingId: string = '', context: SetupContext
     ...toRefs(ListingState),
     getSearchListing,
     getPreviewBuffer,
-    stringifyComposers,
+    stringifyRoles,
   };
 }

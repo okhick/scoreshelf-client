@@ -98,7 +98,7 @@ export default defineComponent({
     const { useSharetribePublisherHelpers } = useSharetribePublisher();
 
     // Mutating props in Vue is anti-pattern so we'll copy it into a new const
-    let newFormat = ref<ListingFormat>(initFormat);
+    const newFormat = ref<ListingFormat>(initFormat);
 
     // Handle the dropdown or other box
     const predefinedFormats = [

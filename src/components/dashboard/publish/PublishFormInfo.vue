@@ -16,7 +16,7 @@
 
     <hr />
 
-    <publish-form-composer />
+    <publish-form-role />
 
     <div class="field">
       <label class="label">Year of Completion</label>
@@ -66,13 +66,13 @@ import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublishe
 import { onMounted } from '@vue/composition-api';
 
 import PublishFormInstrumentation from './PublishFormInstrumentation.vue';
-import PublishFormComposer from './PublishFormComposer.vue';
+import PublishFormRole from './PublishFormRole.vue';
 import TrixEditorComponent from '@/components/forms/TrixEditor.vue';
 
 export default {
   components: {
     TrixEditorComponent,
-    PublishFormComposer,
+    PublishFormRole,
     PublishFormInstrumentation,
   },
   setup() {
