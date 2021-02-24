@@ -1,4 +1,6 @@
-import { ref } from '@vue/composition-api';
+import Vue from 'vue';
+import VueCompositionAPI, { reactive } from '@vue/composition-api';
+Vue.use(VueCompositionAPI);
 
 // ========== Validation Class ===========
 
@@ -8,6 +10,10 @@ export class Validation {
   constructor(field: string, status: boolean | 'isLoading' | null) {
     this.field = field;
     this.status = status;
+  }
+
+  getStatus() {
+    return this.status;
   }
 }
 
@@ -19,8 +25,9 @@ interface IValidationStore {
   };
 }
 
-const ValidationStore = ref<IValidationStore>({
+const ValidationStore = reactive<any>({
   publisher: {},
+  publishForm: {},
 });
 
 export default function useValidationState() {

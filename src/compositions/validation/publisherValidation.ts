@@ -1,9 +1,8 @@
+import Vue from 'vue';
 import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
 import SharetribeState from '@/compositions/sharetribe/sharetribeState';
 
 import useValidationState, { Validation } from '@/compositions/validation/validationState';
-
-import { computed } from '@vue/composition-api';
 
 export default function usePublisherValidation() {
   const { ValidationStore } = useValidationState();
@@ -13,8 +12,8 @@ export default function usePublisherValidation() {
     const { currentUser } = SharetribeState();
     const fieldSlug = 'publisher_name';
 
-    const publisherValidation = computed(() => ValidationStore.value.publisher);
-    publisherValidation.value[fieldSlug] = new Validation(fieldSlug, null);
+    const publisherValidation = ValidationStore.publisher;
+    Vue.set(ValidationStore.publisher, fieldSlug, new Validation(fieldSlug, 'isLoading'));
 
     const isValidPublisher = await SCORESHELF.value?.get<boolean>('publisher/validatePublisher', {
       params: {
@@ -24,7 +23,7 @@ export default function usePublisherValidation() {
     });
 
     const isValid = isValidPublisher?.status === 200 ? isValidPublisher.data : false;
-    publisherValidation.value[fieldSlug].status = isValid;
+    publisherValidation[fieldSlug].status = isValid;
 
     return publisherValidation;
   }

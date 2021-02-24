@@ -1,11 +1,13 @@
 <template>
   <div class="info-wrapper">
-    <div class="field">
-      <label class="label">Title</label>
-      <div class="control">
-        <input class="input" type="text" v-model="formData.title" placeholder="Title" />
-      </div>
-    </div>
+    <validated-field
+      v-if="formData.title"
+      :init="formData.title"
+      :isValid="publishFormValidaton.title.status"
+      fieldLabel="Title"
+      helpMessage="This is required!"
+      @new-validated-input="handleNameValidation"
+    />
 
     <div class="field">
       <label class="label">Subtitle</label>
@@ -63,17 +65,22 @@
 <script lang="ts">
 import useDashboard from '@/compositions/dashboard/dashboard';
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
-import { onMounted } from '@vue/composition-api';
+import { computed, onMounted, ref, toRef, watch } from '@vue/composition-api';
 
 import PublishFormInstrumentation from './PublishFormInstrumentation.vue';
 import PublishFormRole from './PublishFormRole.vue';
 import TrixEditorComponent from '@/components/forms/TrixEditor.vue';
+import ValidatedField from '@/components/forms/ValidatedField.vue';
+
+import useValidationState from '@/compositions/validation/validationState';
+import usePublishFormInfoValidation from '@/compositions/validation/publishFormInfoValidation';
 
 export default {
   components: {
     TrixEditorComponent,
     PublishFormRole,
     PublishFormInstrumentation,
+    ValidatedField,
   },
   setup() {
     const { formData, useSharetribePublisherForm } = useSharetribePublisher();
@@ -98,7 +105,24 @@ export default {
       formData.value.otherNotes = event;
     }
 
-    return { formData, handleNewContent };
+    // ======= Handle Form Validation ==========
+    const { ValidationStore } = useValidationState();
+    const publishFormValidaton = computed(() => ValidationStore.publishForm);
+
+    const { validateTitle } = usePublishFormInfoValidation();
+    onMounted(() => validateTitle(formData.value.title));
+
+    function handleNameValidation(value: string) {
+      validateTitle(value);
+    }
+
+    return {
+      formData,
+      handleNewContent,
+      publishFormValidaton,
+      validateTitle,
+      handleNameValidation,
+    };
   },
 };
 </script>
