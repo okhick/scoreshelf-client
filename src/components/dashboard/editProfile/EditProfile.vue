@@ -114,10 +114,12 @@ export default {
       await useRefreshLogin();
       await useUpdateCurrentUser();
 
-      const resHydratedProfilePicture = await useScoreshelfProfilePicture.hydrateProfilePicture(
-        currentUser.value?.attributes.profile.publicData.profilePicture as string
-      );
-      hydratedProfilePicture.value = resHydratedProfilePicture;
+      if (currentUser.value?.attributes.profile.publicData.profilePicture) {
+        const resHydratedProfilePicture = await useScoreshelfProfilePicture.hydrateProfilePicture(
+          currentUser.value?.attributes.profile.publicData.profilePicture as string
+        );
+        hydratedProfilePicture.value = resHydratedProfilePicture;
+      }
 
       await initUserProfile();
 

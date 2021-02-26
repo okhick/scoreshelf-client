@@ -100,6 +100,21 @@ input.is-valid:focus {
     color: $green !important;
   }
 }
+.control.is-invalid,
+button.is-invalid,
+select.is-invalid {
+  border-color: $orange !important;
+}
+svg.is-valid {
+  color: $green;
+}
+svg.is-invalid {
+  color: $orange;
+}
+p.help.invalid {
+  color: $orange;
+  font-weight: 600;
+}
 
 // ---- Select dropdown ----
 $input-arrow: $black;

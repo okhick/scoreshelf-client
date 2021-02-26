@@ -1,13 +1,20 @@
 <template>
   <div id="role-wrapper">
     <label class="label">Roles</label>
+    <span class="validation">
+      <font-awesome-icon class="is-valid" icon="check" v-show="roleValidation.status === true" />
+      <!-- <font-awesome-icon class="is-invalid" icon="ban" v-show="roleValidation.status === false" /> -->
+    </span>
     <div class="field is-horizontal">
       <div class="field-body">
         <!-- Role -->
         <div class="field" id="role-choose" v-show="!otherFlag">
           <div class="control">
             <div class="select">
-              <select v-model="inputRole.role">
+              <select
+                :class="{ 'is-invalid': roleValidation.status === false }"
+                v-model="inputRole.role"
+              >
                 <option value="" disabled selected hidden>Choose role...</option>
                 <option v-for="(role, index) in predefinedRoles" :key="index">
                   {{ role }}
@@ -19,7 +26,7 @@
         <div class="field" id="role-other" v-show="otherFlag">
           <div class="control">
             <input
-              class="input"
+              :class="['input', { 'is-invalid': roleValidation.status === false }]"
               type="format"
               placeholder="Co-composer"
               @keyup.delete="switchBackToDropdown"
@@ -31,7 +38,7 @@
         <div class="field has-addons" id="role-name">
           <div class="control is-expanded">
             <input
-              class="input"
+              :class="['input', { 'is-invalid': roleValidation.status === false }]"
               type="text"
               v-model.trim="inputRole.name"
               @keyup.enter="saveRole"
@@ -39,18 +46,27 @@
             />
           </div>
           <div class="control">
-            <button @click="saveCurrentUserAsRole" class="button is-tan">
+            <button
+              @click="saveCurrentUserAsRole"
+              :class="['button', 'is-tan', { 'is-invalid': roleValidation.status === false }]"
+            >
               {{ displayName }}
             </button>
           </div>
           <div class="control">
-            <button @click="saveRole" class="button is-tan">
+            <button
+              @click="saveRole"
+              :class="['button', 'is-tan', { 'is-invalid': roleValidation.status === false }]"
+            >
               <font-awesome-icon icon="plus" />
             </button>
           </div>
         </div>
       </div>
     </div>
+    <p class="help invalid" v-show="roleValidation.status === false">
+      You must have at least 1 role.
+    </p>
     <!-- Human Labels -->
     <div class="field is-grouped is-grouped-multiline">
       <div class="control" v-for="(role, index) in formData.role" :key="index">
@@ -71,11 +87,13 @@ import { onMounted, ref, computed, watchEffect } from '@vue/composition-api';
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 import useDashboard from '@/compositions/dashboard/dashboard';
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
+import useValidationState from '@/compositions/validation/validationState';
+import usePublishFormInfoValidation from '@/compositions/validation/publishFormInfoValidation';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faCheck, faBan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-library.add(faPlus);
+library.add(faPlus, faCheck, faBan);
 
 import { ListingRole } from '@/@types';
 
@@ -96,11 +114,12 @@ export default {
         const editRoleData = publishModalEditData?.value.attributes.publicData.role;
         formData.value.role = editRoleData != undefined ? editRoleData : [];
       }
+      validateRole();
     });
 
     const inputRole = ref<ListingRole>(initRole());
 
-    // Handle the role functions
+    //========== Role dropdown ==========//
     const predefinedRoles = ['Composer', 'Arranger', 'Editor', 'Lyricist', 'Librettist', 'Other'];
     const otherFlag = ref(false);
     watchEffect(() => {
@@ -117,8 +136,7 @@ export default {
       }
     }
 
-    //==========
-
+    //========== CRUD ==========//
     const displayName = computed(() => {
       return currentUser.value?.attributes.profile.displayName || '';
     });
@@ -152,6 +170,12 @@ export default {
       return { name: '', role: '' };
     }
 
+    //========== Validation ==========//
+    const { ValidationStore } = useValidationState();
+    const roleValidation = computed(() => ValidationStore.publishForm.role);
+    // use after initial formData has been loaded
+    const { validateRole } = usePublishFormInfoValidation();
+
     return {
       formData,
       predefinedRoles,
@@ -163,6 +187,7 @@ export default {
       saveCurrentUserAsRole,
       DISPLAY_NAME,
       inputRole,
+      roleValidation,
     };
   },
 };
@@ -182,5 +207,17 @@ export default {
 }
 #role-other {
   margin-right: 4px;
+}
+
+label {
+  display: inline-block;
+  margin-right: 4px;
+}
+.validation {
+  display: inline;
+}
+p.help {
+  margin-top: -8px;
+  margin-bottom: 8px;
 }
 </style>

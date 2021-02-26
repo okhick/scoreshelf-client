@@ -52,7 +52,7 @@ import DashboardState from '@/compositions/dashboard/dashboardState';
 import usePublisherValidation from '@/compositions/validation/publisherValidation';
 import useValidationState from '@/compositions/validation/validationState';
 
-import { computed, onBeforeMount } from '@vue/composition-api';
+import { computed, onBeforeMount, toRef } from '@vue/composition-api';
 import debounce from 'lodash.debounce';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -79,7 +79,7 @@ export default {
     // ========== handle publisher name validation ==========
     const { validatePublisherName } = usePublisherValidation();
     const { ValidationStore } = useValidationState();
-    const publisherValidationStore = computed(() => ValidationStore.value.publisher);
+    const publisherValidationStore = computed(() => ValidationStore.publisher);
 
     onBeforeMount(async () => await validatePublisherName(userProfile.value.publisher.name));
 
