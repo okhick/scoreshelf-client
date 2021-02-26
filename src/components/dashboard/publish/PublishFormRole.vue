@@ -1,6 +1,10 @@
 <template>
   <div id="role-wrapper">
     <label class="label">Roles</label>
+    <span class="validation">
+      <font-awesome-icon class="is-valid" icon="check" v-show="roleValidation.status === true" />
+      <font-awesome-icon class="is-invalid" icon="ban" v-show="roleValidation.status === false" />
+    </span>
     <div class="field is-horizontal">
       <div class="field-body">
         <!-- Role -->
@@ -51,6 +55,9 @@
         </div>
       </div>
     </div>
+    <p class="help invalid" v-show="roleValidation.status === false">
+      You must have at least 1 role.
+    </p>
     <!-- Human Labels -->
     <div class="field is-grouped is-grouped-multiline">
       <div class="control" v-for="(role, index) in formData.role" :key="index">
@@ -66,16 +73,18 @@
 </template>
 
 <script lang="ts">
-import { onMounted, ref, computed, watchEffect } from '@vue/composition-api';
+import { onMounted, ref, computed, watchEffect, watch } from '@vue/composition-api';
 
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 import useDashboard from '@/compositions/dashboard/dashboard';
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
+import useValidationState from '@/compositions/validation/validationState';
+import usePublishFormInfoValidation from '@/compositions/validation/publishFormInfoValidation';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faCheck, faBan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-library.add(faPlus);
+library.add(faPlus, faCheck, faBan);
 
 import { ListingRole } from '@/@types';
 
@@ -100,7 +109,7 @@ export default {
 
     const inputRole = ref<ListingRole>(initRole());
 
-    // Handle the role functions
+    //========== Role dropdown ==========//
     const predefinedRoles = ['Composer', 'Arranger', 'Editor', 'Lyricist', 'Librettist', 'Other'];
     const otherFlag = ref(false);
     watchEffect(() => {
@@ -117,8 +126,7 @@ export default {
       }
     }
 
-    //==========
-
+    //========== CRUD ==========//
     const displayName = computed(() => {
       return currentUser.value?.attributes.profile.displayName || '';
     });
@@ -152,6 +160,18 @@ export default {
       return { name: '', role: '' };
     }
 
+    //========== Validation ==========//
+    const { ValidationStore } = useValidationState();
+    const { validateRoles } = usePublishFormInfoValidation();
+
+    onMounted(() => validateRoles());
+    watch(
+      computed(() => formData.value.role),
+      () => validateRoles()
+    );
+
+    const roleValidation = computed(() => ValidationStore.publishForm.roles);
+
     return {
       formData,
       predefinedRoles,
@@ -163,6 +183,7 @@ export default {
       saveCurrentUserAsRole,
       DISPLAY_NAME,
       inputRole,
+      roleValidation,
     };
   },
 };
@@ -182,5 +203,17 @@ export default {
 }
 #role-other {
   margin-right: 4px;
+}
+
+label {
+  display: inline-block;
+  margin-right: 4px;
+}
+.validation {
+  display: inline;
+}
+p.help {
+  margin-top: -8px;
+  margin-bottom: 8px;
 }
 </style>

@@ -14,7 +14,7 @@
         <span class="spinner" v-show="isValid === 'isLoading'"></span>
       </span>
     </div>
-    <p class="help" v-show="isValid === false">{{ helpMessage }}</p>
+    <p class="help invalid" v-show="isValid === false">{{ helpMessage }}</p>
   </div>
 </template>
 
