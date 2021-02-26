@@ -100,6 +100,11 @@ input.is-valid:focus {
     color: $green !important;
   }
 }
+.control.is-invalid,
+button.is-invalid,
+select.is-invalid {
+  border-color: $orange !important;
+}
 svg.is-valid {
   color: $green;
 }

@@ -1,12 +1,13 @@
 <template>
   <div class="info-wrapper">
     <validated-field
-      v-if="formData.title"
+      v-if="formDataLoaded"
       :init="formData.title"
       :isValid="publishFormValidaton.title.status"
       fieldLabel="Title"
-      helpMessage="This is required!"
-      @new-validated-input="handleNameValidation"
+      placeholder="Sonata No. Eleventy Seven"
+      helpMessage="A title is required."
+      @new-input="handleNameInput"
     />
 
     <div class="field">
@@ -43,14 +44,23 @@
 
     <hr />
 
-    <div class="field">
-      <label class="label">Ensemble</label>
-      <div class="control">
-        <input class="input" type="text" v-model="formData.ensemble" placeholder="String Quartet" />
-      </div>
-    </div>
+    <validated-field
+      v-if="formDataLoaded"
+      :init="formData.ensemble"
+      :isValid="publishFormValidaton.ensembleInst.status"
+      fieldLabel="Ensemble"
+      placeholder="String Quartet"
+      @new-input="handleEnsembleInput"
+    />
 
     <publish-form-instrumentation />
+
+    <p
+      class="help invalid"
+      v-if="publishFormValidaton.ensembleInst.status === false && formDataLoaded"
+    >
+      You must have at least 1 instrument or ensemble.
+    </p>
 
     <hr />
 
@@ -65,7 +75,7 @@
 <script lang="ts">
 import useDashboard from '@/compositions/dashboard/dashboard';
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
-import { computed, onMounted, ref, toRef, watch } from '@vue/composition-api';
+import { computed, onMounted, ref } from '@vue/composition-api';
 
 import PublishFormInstrumentation from './PublishFormInstrumentation.vue';
 import PublishFormRole from './PublishFormRole.vue';
@@ -86,42 +96,54 @@ export default {
     const { formData, useSharetribePublisherForm } = useSharetribePublisher();
     const { useDashboardState } = useDashboard();
     const { publishModalEditData } = useDashboardState;
+    const formDataLoaded = ref(false);
 
     onMounted(() => {
       if (publishModalEditData.value != null && publishModalEditData.value?.attributes) {
         formData.value.title = publishModalEditData.value.attributes.title;
         formData.value.subtitle = publishModalEditData.value.attributes.publicData.subtitle;
         formData.value.commission = publishModalEditData.value.attributes.publicData.commission;
+        formData.value.ensemble = publishModalEditData.value.attributes.publicData.ensemble;
         formData.value.duration = publishModalEditData.value.attributes.publicData.duration;
         formData.value.year = publishModalEditData.value.attributes.publicData.year;
-        formData.value.ensemble = publishModalEditData.value.attributes.publicData.ensemble;
         formData.value.otherNotes = publishModalEditData.value.attributes.publicData.otherNotes;
       } else {
         useSharetribePublisherForm.clearFormData();
       }
+      initValidation();
+      formDataLoaded.value = true;
     });
 
     function handleNewContent(event: string) {
       formData.value.otherNotes = event;
     }
 
-    // ======= Handle Form Validation ==========
+    // ======= Handle Form Validation/Inputs ==========
     const { ValidationStore } = useValidationState();
     const publishFormValidaton = computed(() => ValidationStore.publishForm);
 
-    const { validateTitle } = usePublishFormInfoValidation();
-    onMounted(() => validateTitle(formData.value.title));
+    const { validateTitle, validateEnsembleInstrumentation } = usePublishFormInfoValidation();
+    // use after initial formData has been loaded
+    function initValidation() {
+      validateTitle();
+      validateEnsembleInstrumentation();
+    }
 
-    function handleNameValidation(value: string) {
-      validateTitle(value);
+    function handleNameInput(value: string) {
+      formData.value.title = value;
+    }
+    function handleEnsembleInput(value: string) {
+      formData.value.ensemble = value;
     }
 
     return {
       formData,
+      formDataLoaded,
       handleNewContent,
       publishFormValidaton,
       validateTitle,
-      handleNameValidation,
+      handleNameInput,
+      handleEnsembleInput,
     };
   },
 };

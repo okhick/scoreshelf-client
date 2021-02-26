@@ -21,12 +21,24 @@
           }"
         >
           <div v-bind="rootProps">
-            <input
-              :class="['input', { 'rounded-top': results.length > 0 }]"
-              v-bind="inputProps"
-              v-on="inputListeners"
-              v-model="inputValue"
-            />
+            <div class="control has-icons-right">
+              <input
+                :class="[
+                  'input',
+                  { 'rounded-top': results.length > 0 },
+                  { 'is-invalid': ensembleInstValidation.status === false },
+                ]"
+                type="text"
+                placeholder="Search for an instrument"
+                v-model="inputValue"
+                v-bind="inputProps"
+                v-on="inputListeners"
+              />
+              <span class="icon is-small is-right">
+                <!-- <font-awesome-icon icon="check" v-show="isValid === true" /> -->
+                <font-awesome-icon icon="ban" v-show="ensembleInstValidation.status === false" />
+              </span>
+            </div>
             <ul v-bind="resultListProps" v-on="resultListListeners" class="results">
               <li
                 v-for="(result, index) in results"
@@ -54,22 +66,30 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import { onMounted, ref, computed, SetupContext } from '@vue/composition-api';
 import Autocomplete from '@trevoreyre/autocomplete-vue';
 import startcase from 'lodash.startcase';
 import fullList from '@/store/listReduced.json';
+
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faBan } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+library.add(faBan);
+
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
+import useDashboard from '@/compositions/dashboard/dashboard';
+import useValidationState from '@/compositions/validation/validationState';
+import usePublishFormInfoValidation from '@/compositions/validation/publishFormInfoValidation';
 
 import { Data } from '@/@types';
-
-import useDashboard from '@/compositions/dashboard/dashboard';
 
 export default {
   components: {
     Autocomplete,
+    FontAwesomeIcon,
   },
   setup(_: Data, context: SetupContext) {
+    // ========== Load up instrument list ==========
     const flatList = ref<string[]>([]);
 
     onMounted(() => {
@@ -77,6 +97,7 @@ export default {
       flatList.value = instrumentList.flat();
     });
 
+    // ========== Handle instrument search ==========
     function search(term: string): string[] {
       let matches: string[] = flatList.value.filter((instrument: string) => {
         const match = instrument.toLowerCase().search(term.toLowerCase());
@@ -98,6 +119,7 @@ export default {
         formData.value.instrumentation =
           publishModalEditData?.value.attributes.publicData.instrumentation;
       }
+      validateEnsembleInstrumentation();
     });
 
     function saveSelectedInstrument(result: string | undefined): void {
@@ -124,6 +146,12 @@ export default {
       selectedIndex.value = selectedIndexInput;
     }
 
+    //========== Validation ==========//
+    const { ValidationStore } = useValidationState();
+    const ensembleInstValidation = computed(() => ValidationStore.publishForm.ensembleInst);
+    // use after initial formData has been loaded
+    const { validateEnsembleInstrumentation } = usePublishFormInfoValidation();
+
     return {
       // ---- Data ----
       selectedIndex,
@@ -134,6 +162,7 @@ export default {
       setSelectedIndex,
       saveSelectedInstrument,
       removeInstrument,
+      ensembleInstValidation,
     };
   },
 };
@@ -141,6 +170,14 @@ export default {
 
 <style lang="scss">
 @import '@/styles/index.scss';
+
+label.label {
+  display: inline-block;
+  margin-right: 4px;
+}
+.validation {
+  display: inline;
+}
 
 .control {
   .rounded-top:focus {

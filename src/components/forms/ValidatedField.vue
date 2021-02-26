@@ -5,6 +5,7 @@
       <input
         :class="['input', { 'is-invalid': isValid === false }, { 'is-valid': isValid === true }]"
         type="text"
+        :placeholder="placeholder"
         v-model="inputValue"
         @input="handleFieldChange"
       />
@@ -32,6 +33,7 @@ export default defineComponent({
   },
   props: {
     fieldLabel: String,
+    placeholder: String,
     init: String,
     isValid: Boolean,
     helpMessage: String,
@@ -44,7 +46,7 @@ export default defineComponent({
     });
 
     function handleFieldChange() {
-      context.emit('new-validated-input', inputValue.value);
+      context.emit('new-input', inputValue.value);
     }
 
     return {
