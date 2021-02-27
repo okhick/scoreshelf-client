@@ -8,7 +8,7 @@
         'steps-segment hover-pointer',
         {
           'is-active': steps[key].active,
-          'has-gaps': steps[key].active || !steps[key].completed,
+          'has-gaps': hasGaps(step),
         },
       ]"
     >
@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import { ref } from '@vue/composition-api';
-import usePublishForm from '@/compositions/form/publishForm';
+import usePublishForm, { Step } from '@/compositions/form/publishForm';
 import useValidationState from '@/compositions/validation/validationState';
 
 export default {
@@ -49,9 +49,29 @@ export default {
       // if we're still here that step is not available.
     }
 
+    function hasGaps(step: Step) {
+      // if the next step is complete, no gaps
+      if (step.completed) {
+        const thisStepIndex = step.index;
+        const nextStep = Object.keys(steps.value).find(
+          (step) => steps.value[step].index === thisStepIndex + 1
+        );
+        if (nextStep && steps.value[nextStep].completed) {
+          return false;
+        }
+      }
+
+      if (step.label === 'Review') {
+        // check if all complete, if all complete, the return false (no gaps)
+      }
+
+      return true;
+    }
+
     return {
       steps,
       handleGoToStep,
+      hasGaps,
     };
   },
 };

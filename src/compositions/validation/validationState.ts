@@ -58,8 +58,8 @@ function trackValidation() {
     }
   });
 
-  function validateAllFields(form: string) {
-    const fields = Object.keys(ValidationStore[form]);
+  function validateAllFields(storeKey: string) {
+    const fields = Object.keys(ValidationStore[storeKey]);
     const allFieldsValid = fields.every(
       (field) => ValidationStore.publishFormInfo[field].status === true
     );
@@ -71,8 +71,10 @@ function trackValidation() {
           invalidFields.push(field);
         }
       });
+      steps.value[activeStep.value].completed = false;
       return invalidFields;
     } else {
+      steps.value[activeStep.value].completed = true;
       return true;
     }
   }

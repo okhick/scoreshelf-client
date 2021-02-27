@@ -1,10 +1,8 @@
 import { reactive, toRefs } from '@vue/composition-api';
 
-import useValidationState from '@/compositions/validation/validationState';
-
 // ============================================================================
 
-interface Step {
+export interface Step {
   index: number;
   active: boolean;
   completed: boolean;
