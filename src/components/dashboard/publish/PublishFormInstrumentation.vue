@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section v-if="formDataLoaded">
     <div class="field control">
       <label class="label">Instrumentation</label>
       <autocomplete
@@ -114,12 +114,14 @@ export default {
     const { useDashboardState } = useDashboard();
     const { publishModalEditData } = useDashboardState;
 
+    const formDataLoaded = ref(false);
     onMounted(() => {
       if (publishModalEditData.value?.attributes) {
         formData.value.instrumentation =
           publishModalEditData?.value.attributes.publicData.instrumentation;
       }
       validateEnsembleInstrumentation();
+      formDataLoaded.value = true;
     });
 
     function saveSelectedInstrument(result: string | undefined): void {
@@ -156,6 +158,7 @@ export default {
       // ---- Data ----
       selectedIndex,
       formData /* this loses reactivity when you do formdata.value.instrumentation */,
+      formDataLoaded,
       inputValue,
       // ---- Methods ----
       search,

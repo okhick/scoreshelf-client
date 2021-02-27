@@ -57,7 +57,9 @@
 
     <p
       class="help invalid"
-      v-if="publishFormValidaton.ensembleInst.status === false && formDataLoaded"
+      v-if="
+        formDataLoaded && publishFormValidaton && publishFormValidaton.ensembleInst.status === false
+      "
     >
       You must have at least 1 instrument or ensemble.
     </p>
