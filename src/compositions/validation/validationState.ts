@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import VueCompositionAPI, { reactive, computed } from '@vue/composition-api';
+import VueCompositionAPI, { reactive, computed, onMounted } from '@vue/composition-api';
 Vue.use(VueCompositionAPI);
 
 import usePublishForm from '@/compositions/form/publishForm';
@@ -41,6 +41,7 @@ export default function useValidationState() {
     ValidationStore.publishFormInfo = {};
     ValidationStore.publishFormAssets = {};
     ValidationStore.publishFormFormats = {};
+    useTrackValidation.initValidation();
   }
 
   return {
@@ -88,8 +89,15 @@ function trackValidation() {
     }
   }
 
+  function initValidation() {
+    validateAllFields('publishFormInfo');
+    validateAllFields('publishFormAssets');
+    validateAllFields('publishFormFormats');
+  }
+
   return {
     nextStepDisabled,
     publishFormInfoValid,
+    initValidation,
   };
 }

@@ -81,7 +81,7 @@ export default {
 @import '@/styles/index.scss';
 
 $steps-default-color: $tan;
-$steps-completed-color: $black;
+$steps-completed-color: $tan;
 $steps-active-color: $black;
 @import 'bulma-o-steps/bulma-steps.sass';
 

@@ -147,6 +147,7 @@ export default {
     const { useScoreshelfUploadManagement, useFileStateManagement } = useScoreshelfPublisher();
 
     const { usePublishFormNavigation } = usePublishForm();
+    const { resetPublishFormValidation, useTrackValidation } = useValidationState();
 
     const isNewPiece = ref(true);
     const pieceStatus = ref<string | null>(null);
@@ -191,8 +192,8 @@ export default {
 
       useSharetribePublisherForm.clearFormData();
       useFileStateManagement.resetFileState();
+      resetPublishFormValidation(); // must come before navigation reset
       usePublishFormNavigation.resetCompleted();
-      useValidationState().resetPublishFormValidation();
 
       togglePublishModal();
     }
