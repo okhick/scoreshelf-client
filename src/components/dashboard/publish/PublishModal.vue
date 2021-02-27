@@ -190,7 +190,7 @@ export default {
 
       useSharetribePublisherForm.clearFormData();
       useFileStateManagement.resetFileState();
-      usePublishFormNavigation.gotoStep('info');
+      usePublishFormNavigation.resetCompleted();
 
       togglePublishModal();
     }

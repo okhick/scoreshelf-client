@@ -22,7 +22,6 @@
 </template>
 
 <script lang="ts">
-import { ref } from '@vue/composition-api';
 import usePublishForm, { Step } from '@/compositions/form/publishForm';
 import useValidationState from '@/compositions/validation/validationState';
 
