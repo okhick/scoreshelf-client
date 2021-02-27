@@ -20,6 +20,7 @@
       <!-- Put something here when back button is hidden to keep next of the left -->
       <div v-show="activeStep !== 'review'"></div>
       <button
+        :disabled="nextStepDisabled"
         class="button level-right is-tan"
         v-show="activeStep !== 'review'"
         @click="oneStep('next')"
@@ -30,20 +31,21 @@
   </section>
 </template>
 
-<script>
-import PublishFormStepper from './PublishFormStepper';
-import PublishFormInfo from './PublishFormInfo';
-import PublishFormAsset from './PublishFormAsset';
-import PublishFormFormat from './PublishFormFormat';
-import PublishFormReview from './PublishFormReview';
+<script lang="ts">
+import PublishFormStepper from './PublishFormStepper.vue';
+import PublishFormInfo from './PublishFormInfo.vue';
+import PublishFormAsset from './PublishFormAsset.vue';
+import PublishFormFormat from './PublishFormFormat.vue';
+import PublishFormReview from './PublishFormReview.vue';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faAngleLeft, faAngleRight);
 
-import { ref } from '@vue/composition-api';
+import { computed } from '@vue/composition-api';
 import usePublishForm from '@/compositions/form/publishForm';
+import useValidationState from '@/compositions/validation/validationState';
 
 export default {
   components: {
@@ -54,12 +56,14 @@ export default {
     PublishFormReview,
     FontAwesomeIcon,
   },
-  setup(_, context) {
+  setup() {
     const { usePublishFormNavigation, activeStep } = usePublishForm();
+    const { useTrackValidation } = useValidationState();
 
     return {
       activeStep: activeStep,
       oneStep: usePublishFormNavigation.oneStep,
+      nextStepDisabled: useTrackValidation.nextStepDisabled,
     };
   },
 };

@@ -113,7 +113,6 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import PublishForm from './PublishForm.vue';
 
 import { ref, watch } from '@vue/composition-api';
