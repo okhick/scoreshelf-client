@@ -122,6 +122,7 @@ import useDashboard from '@/compositions/dashboard/dashboard';
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
 import usePublishForm from '@/compositions/form/publishForm';
+import useValidationState from '@/compositions/validation/validationState';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTrashAlt, faAngleDown } from '@fortawesome/free-solid-svg-icons';
@@ -191,6 +192,7 @@ export default {
       useSharetribePublisherForm.clearFormData();
       useFileStateManagement.resetFileState();
       usePublishFormNavigation.resetCompleted();
+      useValidationState().resetPublishFormValidation();
 
       togglePublishModal();
     }

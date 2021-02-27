@@ -30,13 +30,22 @@ interface IValidationStore {
 const ValidationStore = reactive<IValidationStore>({
   publisher: {},
   publishFormInfo: {},
+  publishFormAssets: {},
+  publishFormFormats: {},
 });
 
 export default function useValidationState() {
   const useTrackValidation = trackValidation();
 
+  function resetPublishFormValidation() {
+    ValidationStore.publishFormInfo = {};
+    ValidationStore.publishFormAssets = {};
+    ValidationStore.publishFormFormats = {};
+  }
+
   return {
     ValidationStore,
+    resetPublishFormValidation,
     useTrackValidation,
   };
 }
