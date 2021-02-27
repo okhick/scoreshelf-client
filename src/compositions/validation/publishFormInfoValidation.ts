@@ -6,15 +6,15 @@ import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublishe
 
 export default function usePublishFormInfoValidation() {
   const { ValidationStore } = useValidationState();
-  const publishFormValidation = computed(() => ValidationStore.publishForm);
+  const publishFormInfoValidation = computed(() => ValidationStore.publishFormInfo);
   const { formData } = useSharetribePublisher();
 
   //==========
   function validateTitle() {
-    Vue.set(ValidationStore.publishForm, 'title', new Validation('title', false));
+    Vue.set(ValidationStore.publishFormInfo, 'title', new Validation('title', false));
 
     if (formData.value.title.length !== 0) {
-      publishFormValidation.value['title'].status = true;
+      publishFormInfoValidation.value['title'].status = true;
     }
   }
   watch(
@@ -25,10 +25,10 @@ export default function usePublishFormInfoValidation() {
   //==========
 
   function validateRole() {
-    Vue.set(ValidationStore.publishForm, 'role', new Validation('role', false));
+    Vue.set(ValidationStore.publishFormInfo, 'role', new Validation('role', false));
 
     if (formData.value.role != undefined && formData.value.role.length > 0) {
-      publishFormValidation.value['role'].status = true;
+      publishFormInfoValidation.value['role'].status = true;
     }
   }
   watch(
@@ -39,14 +39,14 @@ export default function usePublishFormInfoValidation() {
   //==========
 
   function validateEnsembleInstrumentation() {
-    Vue.set(ValidationStore.publishForm, 'ensembleInst', new Validation('ensembleInst', false));
+    Vue.set(ValidationStore.publishFormInfo, 'ensembleInst', new Validation('ensembleInst', false));
 
     const instValid =
       formData.value.instrumentation != undefined && formData.value.instrumentation.length > 0;
     const ensembleValid = formData.value.ensemble != undefined && formData.value.ensemble != '';
 
     if (instValid || ensembleValid) {
-      publishFormValidation.value['ensembleInst'].status = true;
+      publishFormInfoValidation.value['ensembleInst'].status = true;
     }
   }
   watch(

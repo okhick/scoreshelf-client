@@ -120,7 +120,7 @@ export default {
 
     // ======= Handle Form Validation/Inputs ==========
     const { ValidationStore } = useValidationState();
-    const publishFormValidaton = computed(() => ValidationStore.publishForm);
+    const publishFormValidaton = computed(() => ValidationStore.publishFormInfo);
 
     const { validateTitle, validateEnsembleInstrumentation } = usePublishFormInfoValidation();
     // use after initial formData has been loaded

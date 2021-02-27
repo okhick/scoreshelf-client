@@ -172,7 +172,7 @@ export default {
 
     //========== Validation ==========//
     const { ValidationStore } = useValidationState();
-    const roleValidation = computed(() => ValidationStore.publishForm.role);
+    const roleValidation = computed(() => ValidationStore.publishFormInfo.role);
     // use after initial formData has been loaded
     const { validateRole } = usePublishFormInfoValidation();
 

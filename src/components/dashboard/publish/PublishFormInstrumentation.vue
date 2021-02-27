@@ -148,7 +148,7 @@ export default {
 
     //========== Validation ==========//
     const { ValidationStore } = useValidationState();
-    const ensembleInstValidation = computed(() => ValidationStore.publishForm.ensembleInst);
+    const ensembleInstValidation = computed(() => ValidationStore.publishFormInfo.ensembleInst);
     // use after initial formData has been loaded
     const { validateEnsembleInstrumentation } = usePublishFormInfoValidation();
 

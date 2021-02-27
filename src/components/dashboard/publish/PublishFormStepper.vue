@@ -36,12 +36,12 @@ export default {
       const selectedStep = steps.value[stepSelectedKey];
 
       // if we're going back
-      if (currentStep.index >= selectedStep.index) {
+      if (currentStep.index > selectedStep.index) {
         usePublishFormNavigation.gotoStep(stepSelectedKey);
         return;
       }
 
-      // of if the next step is not disabled
+      // or if the next step is not disabled
       if (!useTrackValidation.nextStepDisabled.value) {
         usePublishFormNavigation.gotoStep(stepSelectedKey);
         return;

@@ -29,7 +29,7 @@ interface IValidationStore {
 
 const ValidationStore = reactive<IValidationStore>({
   publisher: {},
-  publishForm: {},
+  publishFormInfo: {},
 });
 
 export default function useValidationState() {
@@ -44,14 +44,14 @@ export default function useValidationState() {
 // ========== Track validation progress ==========
 
 function trackValidation() {
-  const { activeStep } = usePublishForm();
+  const { activeStep, steps } = usePublishForm();
 
-  const publishFormValid = computed(() => validateAllFields('publishForm'));
+  const publishFormInfoValid = computed(() => validateAllFields('publishFormInfo'));
 
   const nextStepDisabled = computed(() => {
     switch (activeStep.value) {
       case 'info':
-        if (Array.isArray(publishFormValid.value)) return true;
+        if (Array.isArray(publishFormInfoValid.value)) return true;
 
       default:
         return false;
@@ -61,13 +61,13 @@ function trackValidation() {
   function validateAllFields(form: string) {
     const fields = Object.keys(ValidationStore[form]);
     const allFieldsValid = fields.every(
-      (field) => ValidationStore.publishForm[field].status === true
+      (field) => ValidationStore.publishFormInfo[field].status === true
     );
 
     if (!allFieldsValid) {
       const invalidFields: string[] = [];
       fields.forEach((field) => {
-        if (ValidationStore.publishForm[field].status !== true) {
+        if (ValidationStore.publishFormInfo[field].status !== true) {
           invalidFields.push(field);
         }
       });
@@ -79,6 +79,6 @@ function trackValidation() {
 
   return {
     nextStepDisabled,
-    publishFormValid,
+    publishFormInfoValid,
   };
 }
