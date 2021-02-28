@@ -24,7 +24,6 @@
 <script lang="ts">
 import usePublishForm, { Step } from '@/compositions/form/publishForm';
 import useValidationState from '@/compositions/validation/validationState';
-import { onMounted } from '@vue/composition-api';
 
 export default {
   setup() {

@@ -41,7 +41,6 @@ export default function useValidationState() {
     ValidationStore.publishFormInfo = {};
     ValidationStore.publishFormAssets = {};
     ValidationStore.publishFormFormats = {};
-    useTrackValidation.initValidation();
   }
 
   return {
@@ -57,6 +56,8 @@ function trackValidation() {
   const { activeStep, steps } = usePublishForm();
 
   const publishFormInfoValid = computed(() => validateAllFields('publishFormInfo'));
+  const publishFormAssetsValid = computed(() => validateAllFields('publishFormAssets'));
+  const publishFormFormatsValid = computed(() => validateAllFields('publishFormFormats'));
 
   const nextStepDisabled = computed(() => {
     switch (activeStep.value) {
@@ -89,15 +90,8 @@ function trackValidation() {
     }
   }
 
-  function initValidation() {
-    validateAllFields('publishFormInfo');
-    validateAllFields('publishFormAssets');
-    validateAllFields('publishFormFormats');
-  }
-
   return {
     nextStepDisabled,
     publishFormInfoValid,
-    initValidation,
   };
 }

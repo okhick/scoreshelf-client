@@ -157,7 +157,7 @@ export default {
       if (newData != null && newData?.attributes) {
         isNewPiece.value = false;
         pieceStatus.value = newData.attributes.state;
-        usePublishFormNavigation.gotoStep('review');
+        usePublishFormNavigation.gotoStep('info');
       } else {
         isNewPiece.value = true;
       }
