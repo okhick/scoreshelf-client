@@ -18,56 +18,49 @@
       v-show="fileList.length > 0"
     ></asset-table>
 
-    <div class="columns">
-      <div class="column is-2 label"><label>Preview:</label></div>
-      <div class="column">
-        <div class="field">
-          <div class="control">
-            <div class="select is-fullwidth">
-              <select @change="newPreviewSelected" v-model="previewAsset">
-                <option></option>
-                <option v-for="file in Object.keys(previewSettings)" :key="file">
-                  {{ file }}
-                </option>
-              </select>
-            </div>
+    <div id="asset-options-grid">
+      <!-- preview -->
+      <div id="preview" class="label"><label>Preview</label></div>
+      <div id="preview" class="field">
+        <div class="control">
+          <div class="select is-fullwidth">
+            <select @change="newPreviewSelected" v-model="previewAsset">
+              <option></option>
+              <option v-for="file in Object.keys(previewSettings)" :key="file">
+                {{ file }}
+              </option>
+            </select>
           </div>
-          <p class="help">Choose a document to be shown as the preview on the publication page.</p>
         </div>
-      </div>
-    </div>
-
-    <div class="columns">
-      <div class="column is-2 label"><label>Thumbnail:</label></div>
-      <div class="column">
-        <div class="field">
-          <div class="control is-expanded">
-            <div class="select is-fullwidth">
-              <select @change="newThumbSelected" v-model="thumbAsset">
-                <option></option>
-                <option v-for="file in Object.keys(thumbnailSettings)" :key="file">
-                  {{ file }}
-                </option>
-              </select>
-            </div>
-          </div>
-          <p class="help">
-            Pick a document and a page and we'll generate a thumbnail image for you.
-          </p>
-        </div>
+        <p class="help">Choose a document to be shown as the preview on the publication page.</p>
       </div>
 
-      <div class="column is-narrow label"><label>Page No.:</label></div>
-      <div class="column is-2">
-        <div class="field">
-          <input
-            class="input"
-            v-model="thumbPage"
-            @change="newThumbPage"
-            type="text"
-            placeholder="Page"
-          />
+      <!-- thumbnail -->
+      <div id="thumbnail" class="label"><label>Thumbnail</label></div>
+      <div id="thumbnail" class="field">
+        <div class="control is-expanded">
+          <div class="select is-fullwidth">
+            <select @change="newThumbSelected" v-model="thumbAsset">
+              <option></option>
+              <option v-for="file in Object.keys(thumbnailSettings)" :key="file">
+                {{ file }}
+              </option>
+            </select>
+          </div>
         </div>
+        <p class="help">Pick a document and a page and we'll generate a thumbnail image for you.</p>
+      </div>
+
+      <!-- page number -->
+      <div id="page" class="label"><label>Page No.</label></div>
+      <div id="page" class="field">
+        <input
+          class="input"
+          v-model="thumbPage"
+          @change="newThumbPage"
+          type="text"
+          placeholder="Page"
+        />
       </div>
     </div>
   </div>
@@ -98,8 +91,6 @@ export default {
       // Methods
       useFileStateManagement,
     } = useScoreshelfPublisher();
-
-    // useFileStateManagement.initAssetData();
 
     onMounted(() => {
       initPreviewSelector();
@@ -205,7 +196,44 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+#asset-options-grid {
+  display: grid;
+  grid-template-columns: auto 56% auto auto;
+  grid-template-rows: auto auto;
+  column-gap: 8px;
+
+  .label {
+    padding-top: 8px;
+  }
+
+  #preview.label {
+    grid-row: 1;
+    grid-column: 1;
+  }
+  #preview.field {
+    grid-row: 1;
+    grid-column-start: 2;
+    grid-column-end: 5;
+  }
+  #thumbnail.label {
+    grid-row: 2;
+    grid-column: 1;
+  }
+  #thumbnail.field {
+    grid-row: 2;
+    grid-column: 2;
+  }
+  #page.label {
+    grid-row: 2;
+    grid-column: 3;
+  }
+  #page.field {
+    grid-row: 2;
+    grid-column: 4;
+  }
+}
+
 .page-picker {
   width: 15px;
 }
