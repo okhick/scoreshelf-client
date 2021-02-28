@@ -111,25 +111,6 @@ export default {
 
     async function openEditModal(pieceData: ListingEditData) {
       setPublishModalEditData(pieceData);
-      // get init data about the files
-      const assetData = pieceData.attributes.privateData.assetData;
-      if (assetData && assetData.length > 0) {
-        const assetDataList = assetData;
-        const hydratedFileListRes = await useScoreshelfAssetManagement.hyrdateAssetData(
-          assetDataList,
-          true
-        );
-
-        // store the files
-        if (hydratedFileListRes) {
-          hydratedFileListRes.data.forEach((file) => {
-            if (file) {
-              file.isStored = true;
-              useFileStateManagement.addFileToFileList(file);
-            }
-          });
-        }
-      }
       togglePublishModal();
     }
 

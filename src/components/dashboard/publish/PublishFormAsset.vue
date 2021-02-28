@@ -99,7 +99,7 @@ export default {
       useFileStateManagement,
     } = useScoreshelfPublisher();
 
-    useFileStateManagement.initAssetData();
+    // useFileStateManagement.initAssetData();
 
     onMounted(() => {
       initPreviewSelector();
@@ -176,8 +176,7 @@ export default {
         }
       }
     }
-    function newPreviewSelected(event: Event & ChooseEvent) {
-      const selectedPreview = event.target.value;
+    function newPreviewSelected() {
       for (let asset in previewSettings.value) {
         if (asset === previewAsset.value) {
           previewSettings.value[asset].isPreview = true;

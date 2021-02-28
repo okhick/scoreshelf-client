@@ -8,7 +8,7 @@
 
       <!-- Doing this on v-if stops things from trying to load before the data exists -->
       <publish-form
-        v-if="publishModalOpen"
+        v-if="publishModalOpen && formDataLoaded"
         v-bind:isNewPiece="isNewPiece"
         v-bind:pieceStatus="pieceStatus"
         ref="form"
@@ -152,11 +152,12 @@ export default {
     const { useScoreshelfUploadManagement, useFileStateManagement } = useScoreshelfPublisher();
 
     const { usePublishFormNavigation } = usePublishForm();
-    const { resetPublishFormValidation, useTrackValidation } = useValidationState();
+    const { resetPublishFormValidation } = useValidationState();
     const { initInfoValidation } = usePublishFormInfoValidation();
 
     const isNewPiece = ref(true);
     const pieceStatus = ref<string | null>(null);
+    const formDataLoaded = ref(false);
 
     watch(publishModalEditData, async (newData) => {
       // if newData.attributes is falsy, we're publishing from a blank
@@ -164,13 +165,18 @@ export default {
         // ---- set some things
         isNewPiece.value = false;
         pieceStatus.value = newData.attributes.state;
+
         // ---- init the formData
         useInitSharetribePublishForm.initInfo();
+        await useFileStateManagement.initAssetData();
         useInitSharetribePublishForm.initFormatData();
+
         // ---- validate the formData
         initInfoValidation();
+
         // ---- to go correct step
         usePublishFormNavigation.gotoStep('info');
+        formDataLoaded.value = true;
       } else {
         isNewPiece.value = true;
       }
@@ -201,6 +207,7 @@ export default {
 
     function closeEditModal() {
       pieceStatus.value = null;
+      formDataLoaded.value = false;
       clearPublishModalEditData();
 
       useSharetribePublisherForm.clearFormData();
@@ -262,6 +269,7 @@ export default {
       isNewPiece,
       pieceStatus,
       publishModalOpen,
+      formDataLoaded,
       // ---- Methods ----
       // -- Modal Control
       cancelModal,
