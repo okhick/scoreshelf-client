@@ -9,6 +9,12 @@ export default function usePublishFormInfoValidation() {
   const publishFormInfoValidation = computed(() => ValidationStore.publishFormInfo);
   const { formData } = useSharetribePublisher();
 
+  function initInfoValidation() {
+    validateTitle();
+    validateRole();
+    validateEnsembleInstrumentation();
+  }
+
   //==========
   function validateTitle() {
     Vue.set(ValidationStore.publishFormInfo, 'title', new Validation('title', false));
@@ -55,6 +61,7 @@ export default function usePublishFormInfoValidation() {
   );
 
   return {
+    initInfoValidation,
     validateTitle,
     validateRole,
     validateEnsembleInstrumentation,

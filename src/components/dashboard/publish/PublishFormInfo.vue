@@ -1,7 +1,6 @@
 <template>
   <div class="info-wrapper">
     <validated-field
-      v-if="formDataLoaded"
       :init="formData.title"
       :isValid="publishFormValidaton.title.status"
       fieldLabel="Title"
@@ -45,7 +44,6 @@
     <hr />
 
     <validated-field
-      v-if="formDataLoaded"
       :init="formData.ensemble"
       :isValid="publishFormValidaton.ensembleInst.status"
       fieldLabel="Ensemble"
@@ -57,9 +55,7 @@
 
     <p
       class="help invalid"
-      v-if="
-        formDataLoaded && publishFormValidaton && publishFormValidaton.ensembleInst.status === false
-      "
+      v-if="publishFormValidaton && publishFormValidaton.ensembleInst.status === false"
     >
       You must have at least 1 instrument or ensemble.
     </p>
@@ -75,7 +71,6 @@
 </template>
 
 <script lang="ts">
-import useDashboard from '@/compositions/dashboard/dashboard';
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 import { computed, onMounted, ref } from '@vue/composition-api';
 
@@ -95,26 +90,7 @@ export default {
     ValidatedField,
   },
   setup() {
-    const { formData, useSharetribePublisherForm } = useSharetribePublisher();
-    const { useDashboardState } = useDashboard();
-    const { publishModalEditData } = useDashboardState;
-    const formDataLoaded = ref(false);
-
-    onMounted(() => {
-      if (publishModalEditData.value != null && publishModalEditData.value?.attributes) {
-        formData.value.title = publishModalEditData.value.attributes.title;
-        formData.value.subtitle = publishModalEditData.value.attributes.publicData.subtitle;
-        formData.value.commission = publishModalEditData.value.attributes.publicData.commission;
-        formData.value.ensemble = publishModalEditData.value.attributes.publicData.ensemble;
-        formData.value.duration = publishModalEditData.value.attributes.publicData.duration;
-        formData.value.year = publishModalEditData.value.attributes.publicData.year;
-        formData.value.otherNotes = publishModalEditData.value.attributes.publicData.otherNotes;
-      } else {
-        useSharetribePublisherForm.clearFormData();
-      }
-      initValidation();
-      formDataLoaded.value = true;
-    });
+    const { formData } = useSharetribePublisher();
 
     function handleNewContent(event: string) {
       formData.value.otherNotes = event;
@@ -124,12 +100,7 @@ export default {
     const { ValidationStore } = useValidationState();
     const publishFormValidaton = computed(() => ValidationStore.publishFormInfo);
 
-    const { validateTitle, validateEnsembleInstrumentation } = usePublishFormInfoValidation();
-    // use after initial formData has been loaded
-    function initValidation() {
-      validateTitle();
-      validateEnsembleInstrumentation();
-    }
+    const { validateTitle } = usePublishFormInfoValidation();
 
     function handleNameInput(value: string) {
       formData.value.title = value;
@@ -140,7 +111,6 @@ export default {
 
     return {
       formData,
-      formDataLoaded,
       handleNewContent,
       publishFormValidaton,
       validateTitle,

@@ -29,11 +29,7 @@
       >
         <font-awesome-icon icon="times" />
       </div>
-      <div
-        class="action ok"
-        @click="updateFormat(format.formatId)"
-        v-show="showEditMode === format.formatId"
-      >
+      <div class="action ok" @click="updateFormat()" v-show="showEditMode === format.formatId">
         OK
       </div>
     </div>
@@ -45,12 +41,11 @@
 </template>
 
 <script lang="ts">
-import { ref, watch, computed, onMounted } from '@vue/composition-api';
+import { ref, watch, onMounted } from '@vue/composition-api';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
-import useDashboard from '@/compositions/dashboard/dashboard';
 
-import { ListingFormat, Asset, GenericAsset, ChooseEvent, UploadedFile } from '@/@types';
+import { ListingFormat } from '@/@types';
 
 import PublishFormFormatEdit from './PublishFormFormatEdit.vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -65,25 +60,12 @@ export default {
   },
   setup() {
     const { formats, fileList } = useScoreshelfPublisher();
-    const { useDashboardState } = useDashboard();
-    const { publishModalEditData } = useDashboardState;
     const { useSharetribePublisherHelpers } = useSharetribePublisher();
 
     const newFormat = ref<ListingFormat>(useSharetribePublisherHelpers.getBlankFormat());
-    initFormatData();
+    onMounted(() => lookupFormatAssets());
 
     // ---------- Methods ----------
-    function initFormatData() {
-      if (publishModalEditData.value?.attributes?.publicData?.formats) {
-        // if we've opened an existing work
-        formats.value = publishModalEditData.value.attributes.publicData.formats;
-        lookupFormatAssets();
-      } else {
-        // if it's a new work
-        formats.value = [newFormat.value];
-      }
-    }
-
     // swap out scoreshelf_ids for asset_names
     function lookupFormatAssets() {
       formats.value.forEach((format) => {
@@ -106,8 +88,7 @@ export default {
 
     const showEditMode = ref<string>();
     const formatTemplateRef = ref();
-    function updateFormat(formatId: number) {
-      const formatIndex = formats.value.findIndex((format) => format.formatId === formatId);
+    function updateFormat() {
       formatTemplateRef.value[0].submitFormat();
       showEditMode.value = '';
     }

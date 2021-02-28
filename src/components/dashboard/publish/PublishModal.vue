@@ -123,6 +123,7 @@ import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublishe
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
 import usePublishForm from '@/compositions/form/publishForm';
 import useValidationState from '@/compositions/validation/validationState';
+import usePublishFormInfoValidation from '@/compositions/validation/publishFormInfoValidation';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTrashAlt, faAngleDown } from '@fortawesome/free-solid-svg-icons';
@@ -143,11 +144,16 @@ export default {
       clearPublishModalEditData,
     } = useDashboardState;
 
-    const { useSharetribePublisherListings, useSharetribePublisherForm } = useSharetribePublisher();
+    const {
+      useSharetribePublisherListings,
+      useSharetribePublisherForm,
+      useInitSharetribePublishForm,
+    } = useSharetribePublisher();
     const { useScoreshelfUploadManagement, useFileStateManagement } = useScoreshelfPublisher();
 
     const { usePublishFormNavigation } = usePublishForm();
     const { resetPublishFormValidation, useTrackValidation } = useValidationState();
+    const { initInfoValidation } = usePublishFormInfoValidation();
 
     const isNewPiece = ref(true);
     const pieceStatus = ref<string | null>(null);
@@ -155,8 +161,15 @@ export default {
     watch(publishModalEditData, async (newData) => {
       // if newData.attributes is falsy, we're publishing from a blank
       if (newData != null && newData?.attributes) {
+        // ---- set some things
         isNewPiece.value = false;
         pieceStatus.value = newData.attributes.state;
+        // ---- init the formData
+        useInitSharetribePublishForm.initInfo();
+        useInitSharetribePublishForm.initFormatData();
+        // ---- validate the formData
+        initInfoValidation();
+        // ---- to go correct step
         usePublishFormNavigation.gotoStep('info');
       } else {
         isNewPiece.value = true;

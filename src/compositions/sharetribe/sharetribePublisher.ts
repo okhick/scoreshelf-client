@@ -51,12 +51,14 @@ export default function useSharetribePublisher() {
   const useSharetribePublisherListings = SharetribePublisherListings();
   const useSharetribePublisherForm = SharetribePublisherForm();
   const useSharetribePublisherHelpers = SharetribePublisherHelpers();
+  const useInitSharetribePublishForm = InitSharetribePublishForm();
 
   return {
     ...toRefs(PublishFormState),
     useSharetribePublisherListings,
     useSharetribePublisherForm,
     useSharetribePublisherHelpers,
+    useInitSharetribePublishForm,
   };
 }
 
@@ -287,5 +289,59 @@ function SharetribePublisherHelpers() {
     getFormattedArgs,
     getBlankFormat,
     // getThumbnailSettings,
+  };
+}
+
+// ============================================================================
+// ============================================================================
+// ============================================================================
+
+function InitSharetribePublishForm() {
+  const { useDashboardState } = useDashboard();
+  const { publishModalEditData } = useDashboardState;
+
+  function initInfo() {
+    if (publishModalEditData.value != null && publishModalEditData.value?.attributes) {
+      // dumb info fields
+      PublishFormState.formData.title = publishModalEditData.value.attributes.title;
+      PublishFormState.formData.subtitle =
+        publishModalEditData.value.attributes.publicData.subtitle;
+      PublishFormState.formData.commission =
+        publishModalEditData.value.attributes.publicData.commission;
+      PublishFormState.formData.ensemble =
+        publishModalEditData.value.attributes.publicData.ensemble;
+      PublishFormState.formData.duration =
+        publishModalEditData.value.attributes.publicData.duration;
+      PublishFormState.formData.year = publishModalEditData.value.attributes.publicData.year;
+      PublishFormState.formData.otherNotes =
+        publishModalEditData.value.attributes.publicData.otherNotes;
+      // instrumentation
+      PublishFormState.formData.instrumentation =
+        publishModalEditData?.value.attributes.publicData.instrumentation;
+      // roles
+      const editRoleData = publishModalEditData?.value.attributes.publicData.role;
+      PublishFormState.formData.role = editRoleData != undefined ? editRoleData : [];
+    } else {
+      SharetribePublisherForm().clearFormData();
+    }
+  }
+
+  // ==========================================================================
+
+  const { formats } = useScoreshelfPublisher();
+
+  function initFormatData() {
+    if (publishModalEditData.value?.attributes?.publicData?.formats) {
+      // if we've opened an existing work
+      formats.value = publishModalEditData.value.attributes.publicData.formats;
+    } else {
+      // if it's a new work
+      formats.value = [SharetribePublisherHelpers().getBlankFormat()];
+    }
+  }
+
+  return {
+    initInfo,
+    initFormatData,
   };
 }
