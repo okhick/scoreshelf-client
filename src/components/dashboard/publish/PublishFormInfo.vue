@@ -57,7 +57,9 @@
 
     <p
       class="help invalid"
-      v-if="publishFormValidaton.ensembleInst.status === false && formDataLoaded"
+      v-if="
+        formDataLoaded && publishFormValidaton && publishFormValidaton.ensembleInst.status === false
+      "
     >
       You must have at least 1 instrument or ensemble.
     </p>
@@ -120,7 +122,7 @@ export default {
 
     // ======= Handle Form Validation/Inputs ==========
     const { ValidationStore } = useValidationState();
-    const publishFormValidaton = computed(() => ValidationStore.publishForm);
+    const publishFormValidaton = computed(() => ValidationStore.publishFormInfo);
 
     const { validateTitle, validateEnsembleInstrumentation } = usePublishFormInfoValidation();
     // use after initial formData has been loaded

@@ -113,7 +113,6 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import PublishForm from './PublishForm.vue';
 
 import { ref, watch } from '@vue/composition-api';
@@ -123,6 +122,7 @@ import useDashboard from '@/compositions/dashboard/dashboard';
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
 import usePublishForm from '@/compositions/form/publishForm';
+import useValidationState from '@/compositions/validation/validationState';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTrashAlt, faAngleDown } from '@fortawesome/free-solid-svg-icons';
@@ -147,6 +147,7 @@ export default {
     const { useScoreshelfUploadManagement, useFileStateManagement } = useScoreshelfPublisher();
 
     const { usePublishFormNavigation } = usePublishForm();
+    const { resetPublishFormValidation, useTrackValidation } = useValidationState();
 
     const isNewPiece = ref(true);
     const pieceStatus = ref<string | null>(null);
@@ -156,7 +157,7 @@ export default {
       if (newData != null && newData?.attributes) {
         isNewPiece.value = false;
         pieceStatus.value = newData.attributes.state;
-        usePublishFormNavigation.gotoStep('review');
+        usePublishFormNavigation.gotoStep('info');
       } else {
         isNewPiece.value = true;
       }
@@ -191,7 +192,8 @@ export default {
 
       useSharetribePublisherForm.clearFormData();
       useFileStateManagement.resetFileState();
-      usePublishFormNavigation.gotoStep('info');
+      resetPublishFormValidation(); // must come before navigation reset
+      usePublishFormNavigation.resetCompleted();
 
       togglePublishModal();
     }

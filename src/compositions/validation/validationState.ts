@@ -1,6 +1,8 @@
 import Vue from 'vue';
-import VueCompositionAPI, { reactive } from '@vue/composition-api';
+import VueCompositionAPI, { reactive, computed, onMounted } from '@vue/composition-api';
 Vue.use(VueCompositionAPI);
+
+import usePublishForm from '@/compositions/form/publishForm';
 
 // ========== Validation Class ===========
 
@@ -25,13 +27,71 @@ interface IValidationStore {
   };
 }
 
-const ValidationStore = reactive<any>({
+const ValidationStore = reactive<IValidationStore>({
   publisher: {},
-  publishForm: {},
+  publishFormInfo: {},
+  publishFormAssets: {},
+  publishFormFormats: {},
 });
 
 export default function useValidationState() {
+  const useTrackValidation = trackValidation();
+
+  function resetPublishFormValidation() {
+    ValidationStore.publishFormInfo = {};
+    ValidationStore.publishFormAssets = {};
+    ValidationStore.publishFormFormats = {};
+  }
+
   return {
     ValidationStore,
+    resetPublishFormValidation,
+    useTrackValidation,
+  };
+}
+
+// ========== Track validation progress ==========
+
+function trackValidation() {
+  const { activeStep, steps } = usePublishForm();
+
+  const publishFormInfoValid = computed(() => validateAllFields('publishFormInfo'));
+  const publishFormAssetsValid = computed(() => validateAllFields('publishFormAssets'));
+  const publishFormFormatsValid = computed(() => validateAllFields('publishFormFormats'));
+
+  const nextStepDisabled = computed(() => {
+    switch (activeStep.value) {
+      case 'info':
+        if (Array.isArray(publishFormInfoValid.value)) return true;
+
+      default:
+        return false;
+    }
+  });
+
+  function validateAllFields(storeKey: string) {
+    const fields = Object.keys(ValidationStore[storeKey]);
+    const allFieldsValid = fields.every(
+      (field) => ValidationStore.publishFormInfo[field].status === true
+    );
+
+    if (!allFieldsValid) {
+      const invalidFields: string[] = [];
+      fields.forEach((field) => {
+        if (ValidationStore.publishFormInfo[field].status !== true) {
+          invalidFields.push(field);
+        }
+      });
+      steps.value[activeStep.value].completed = false;
+      return invalidFields;
+    } else {
+      steps.value[activeStep.value].completed = true;
+      return true;
+    }
+  }
+
+  return {
+    nextStepDisabled,
+    publishFormInfoValid,
   };
 }
