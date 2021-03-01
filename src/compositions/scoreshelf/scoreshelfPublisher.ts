@@ -142,18 +142,18 @@ function FileStateManagement() {
         }
       });
     }
+    return;
   }
 
   async function initAssetData() {
     const { useDashboardState } = useDashboard();
     const { publishModalEditData } = useDashboardState;
-
     // ----- First hydrate the asset data and add to FileList -----
     const assetData = publishModalEditData.value?.attributes.privateData.assetData;
+
     if (assetData && assetData.length > 0) {
       await hydrateAssetData(assetData);
     }
-
     // ----- Then init the fields -----
     FileState.fileList.forEach((file) => {
       // first make reactive refs for everything
@@ -178,6 +178,7 @@ function FileStateManagement() {
         }
       }
     });
+    return;
   }
 
   function initThumbnail(file: UploadedFile | Asset) {
@@ -316,6 +317,7 @@ function ScoreshelfAssetManagement() {
   async function updateAssetMetadata(uploadParams: UploadParams) {
     const { SCORESHELF } = useScoreshelf();
     const assetMetadata = formatUpdatedAssetMetadata(uploadParams);
+
     // this return every asset
     const res = await SCORESHELF.value?.post<Asset[]>('assets/updateAssetMetadata', assetMetadata);
     if (res?.data) {

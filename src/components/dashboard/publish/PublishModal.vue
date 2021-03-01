@@ -122,8 +122,10 @@ import useDashboard from '@/compositions/dashboard/dashboard';
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
 import usePublishForm from '@/compositions/form/publishForm';
+
 import useValidationState from '@/compositions/validation/validationState';
 import usePublishFormInfoValidation from '@/compositions/validation/publishFormInfoValidation';
+import usePublishFormAssetsValidation from '@/compositions/validation/publishFormAssetsValidation';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTrashAlt, faAngleDown } from '@fortawesome/free-solid-svg-icons';
@@ -154,6 +156,7 @@ export default {
     const { usePublishFormNavigation } = usePublishForm();
     const { resetPublishFormValidation } = useValidationState();
     const { initInfoValidation } = usePublishFormInfoValidation();
+    const { initAssetsValidation } = usePublishFormAssetsValidation();
 
     const isNewPiece = ref(true);
     const pieceStatus = ref<string | null>(null);
@@ -162,6 +165,7 @@ export default {
     watch(publishModalEditData, async (newData) => {
       // if newData.attributes is falsy, we're publishing from a blank
       if (newData != null && newData?.attributes) {
+        formDataLoaded.value = false;
         // ---- set some things
         isNewPiece.value = false;
         pieceStatus.value = newData.attributes.state;
@@ -171,16 +175,26 @@ export default {
         await useFileStateManagement.initAssetData();
         useInitSharetribePublishForm.initFormatData();
 
-        // ---- validate the formData
-        initInfoValidation();
+        // ---- init validation
+        initAllValidation();
 
         // ---- to go correct step
         usePublishFormNavigation.gotoStep('info');
         formDataLoaded.value = true;
       } else {
         isNewPiece.value = true;
+
+        // ---- init validation
+        initAllValidation();
+
+        formDataLoaded.value = true;
       }
     });
+
+    function initAllValidation() {
+      initInfoValidation();
+      initAssetsValidation();
+    }
 
     // ---------- Modal Control ----------
     const isLoading = ref({ button: '', status: false });
@@ -208,11 +222,11 @@ export default {
     function closeEditModal() {
       pieceStatus.value = null;
       formDataLoaded.value = false;
-      clearPublishModalEditData();
 
+      resetPublishFormValidation(); // must come before navigation reset
+      clearPublishModalEditData();
       useSharetribePublisherForm.clearFormData();
       useFileStateManagement.resetFileState();
-      resetPublishFormValidation(); // must come before navigation reset
       usePublishFormNavigation.resetCompleted();
 
       togglePublishModal();
