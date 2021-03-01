@@ -3,7 +3,7 @@
     <div class="bottom-margin file is-boxed is-centered">
       <label class="file-label">
         <input class="file-input" type="file" ref="file" multiple @change="processUploadEvent" />
-        <span class="file-cta">
+        <span :class="['file-cta', { 'is-invalid': !publishAssetsValidation.list.status }]">
           <span class="file-icon">
             <font-awesome-icon icon="upload" />
           </span>
@@ -53,24 +53,27 @@
 
       <!-- page number -->
       <div id="page" class="label"><label>Page No.</label></div>
-      <div id="page" class="field">
-        <input
-          class="input"
-          v-model="thumbPage"
-          @change="newThumbPage"
-          type="text"
-          placeholder="Page"
-        />
-      </div>
+      <validated-field
+        id="page"
+        class="field"
+        fieldLabel=""
+        placeholder="Page"
+        :init="thumbPage"
+        :isValid="publishAssetsValidation.page.status"
+        @new-input="handlePageInput"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import { computed, onBeforeMount, ref, watch } from '@vue/composition-api';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
-import { onMounted, ref, SetupContext } from '@vue/composition-api';
-import { ChooseEvent, Data } from '@/@types';
+import useValidationState from '@/compositions/validation/validationState';
+import usePublishFormAssetsValidation from '@/compositions/validation/publishFormAssetsValidation';
+
 import AssetTable from '@/components/forms/AssetTable.vue';
+import ValidatedField from '@/components/forms/ValidatedField.vue';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
@@ -81,8 +84,9 @@ export default {
   components: {
     FontAwesomeIcon,
     AssetTable,
+    ValidatedField,
   },
-  setup(_: Data, context: SetupContext) {
+  setup() {
     const {
       // States
       fileList,
@@ -92,7 +96,11 @@ export default {
       useFileStateManagement,
     } = useScoreshelfPublisher();
 
-    onMounted(() => {
+    const { validatePage } = usePublishFormAssetsValidation();
+    const { ValidationStore } = useValidationState();
+    const publishAssetsValidation = computed(() => ValidationStore.publishFormAssets);
+
+    onBeforeMount(() => {
       initPreviewSelector();
       initThumbSelector();
     });
@@ -124,12 +132,14 @@ export default {
     // ---- Actions for the selectors below ----
     const thumbAsset = ref<string | null>(null);
     const thumbPage = ref<number | string | null>(null);
+
     function initThumbSelector() {
       if (thumbnailSettings.value) {
         for (let asset in thumbnailSettings.value) {
           if (thumbnailSettings.value[asset].isThumbnail) {
             thumbAsset.value = asset;
             thumbPage.value = thumbnailSettings.value[asset].page;
+            validatePage();
           }
         }
       }
@@ -138,8 +148,7 @@ export default {
       for (let asset in thumbnailSettings.value) {
         if (asset === thumbAsset.value) {
           thumbnailSettings.value[asset].isThumbnail = true;
-          thumbnailSettings.value[asset].page =
-            typeof thumbPage.value === 'string' ? parseInt(thumbPage.value) : thumbPage.value;
+          thumbnailSettings.value[asset].page = thumbPage.value;
         } else {
           thumbnailSettings.value[asset].isThumbnail = false;
           thumbnailSettings.value[asset].page = null;
@@ -149,12 +158,15 @@ export default {
     function newThumbPage() {
       for (let asset in thumbnailSettings.value) {
         if (thumbnailSettings.value[asset].isThumbnail) {
-          thumbnailSettings.value[asset].page =
-            typeof thumbPage.value === 'string' ? parseInt(thumbPage.value) : thumbPage.value;
+          thumbnailSettings.value[asset].page = thumbPage.value;
         } else {
           thumbnailSettings.value[asset].page = null;
         }
       }
+    }
+    function handlePageInput(value: string) {
+      thumbPage.value = value;
+      newThumbPage();
     }
 
     const previewAsset = ref();
@@ -185,18 +197,22 @@ export default {
       thumbnailSettings,
       thumbAsset,
       thumbPage,
+      publishAssetsValidation,
       // ---- Methods ----
       removeUpload,
       newThumbSelected,
       newThumbPage,
       processUploadEvent,
       newPreviewSelected,
+      handlePageInput,
     };
   },
 };
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/index.scss';
+
 #asset-options-grid {
   display: grid;
   grid-template-columns: auto 56% auto auto;
@@ -232,6 +248,10 @@ export default {
     grid-row: 2;
     grid-column: 4;
   }
+}
+
+span.file-cta.is-invalid {
+  border-color: $orange;
 }
 
 .page-picker {

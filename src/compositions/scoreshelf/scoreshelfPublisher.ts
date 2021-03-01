@@ -316,6 +316,7 @@ function ScoreshelfAssetManagement() {
   async function updateAssetMetadata(uploadParams: UploadParams) {
     const { SCORESHELF } = useScoreshelf();
     const assetMetadata = formatUpdatedAssetMetadata(uploadParams);
+
     // this return every asset
     const res = await SCORESHELF.value?.post<Asset[]>('assets/updateAssetMetadata', assetMetadata);
     if (res?.data) {
