@@ -54,11 +54,12 @@
       <!-- page number -->
       <div id="page" class="label"><label>Page No.</label></div>
       <validated-field
+        v-if="thumbPage != null"
+        :init="thumbPage"
         id="page"
         class="field"
         fieldLabel=""
         placeholder="Page"
-        :init="thumbPage"
         :isValid="publishAssetsValidation.page.status"
         @new-input="handlePageInput"
       />
@@ -67,7 +68,7 @@
 </template>
 
 <script lang="ts">
-import { computed, onBeforeMount, ref, watch } from '@vue/composition-api';
+import { computed, onMounted, ref, watch } from '@vue/composition-api';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
 import useValidationState from '@/compositions/validation/validationState';
 import usePublishFormAssetsValidation from '@/compositions/validation/publishFormAssetsValidation';
@@ -100,7 +101,7 @@ export default {
     const { ValidationStore } = useValidationState();
     const publishAssetsValidation = computed(() => ValidationStore.publishFormAssets);
 
-    onBeforeMount(() => {
+    onMounted(() => {
       initPreviewSelector();
       initThumbSelector();
     });
