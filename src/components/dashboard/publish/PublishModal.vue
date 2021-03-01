@@ -165,6 +165,7 @@ export default {
     watch(publishModalEditData, async (newData) => {
       // if newData.attributes is falsy, we're publishing from a blank
       if (newData != null && newData?.attributes) {
+        formDataLoaded.value = false;
         // ---- set some things
         isNewPiece.value = false;
         pieceStatus.value = newData.attributes.state;
