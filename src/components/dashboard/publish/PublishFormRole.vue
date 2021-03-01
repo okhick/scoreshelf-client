@@ -1,5 +1,5 @@
 <template>
-  <div id="role-wrapper" v-if="formDataLoaded">
+  <div id="role-wrapper">
     <label class="label">Roles</label>
     <span class="validation">
       <font-awesome-icon class="is-valid" icon="check" v-show="roleValidation.status === true" />
@@ -82,10 +82,9 @@
 </template>
 
 <script lang="ts">
-import { onMounted, ref, computed, watchEffect } from '@vue/composition-api';
+import { ref, computed, watchEffect } from '@vue/composition-api';
 
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
-import useDashboard from '@/compositions/dashboard/dashboard';
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
 import useValidationState from '@/compositions/validation/validationState';
 import usePublishFormInfoValidation from '@/compositions/validation/publishFormInfoValidation';
@@ -106,18 +105,6 @@ export default {
     const { currentUser } = useSharetribeState;
 
     const { formData, DISPLAY_NAME } = useSharetribePublisher();
-    const { useDashboardState } = useDashboard();
-    const { publishModalEditData } = useDashboardState;
-
-    const formDataLoaded = ref(false);
-    onMounted(() => {
-      if (publishModalEditData.value?.attributes) {
-        const editRoleData = publishModalEditData?.value.attributes.publicData.role;
-        formData.value.role = editRoleData != undefined ? editRoleData : [];
-      }
-      validateRole();
-      formDataLoaded.value = true;
-    });
 
     const inputRole = ref<ListingRole>(initRole());
 
@@ -175,12 +162,9 @@ export default {
     //========== Validation ==========//
     const { ValidationStore } = useValidationState();
     const roleValidation = computed(() => ValidationStore.publishFormInfo.role);
-    // use after initial formData has been loaded
-    const { validateRole } = usePublishFormInfoValidation();
 
     return {
       formData,
-      formDataLoaded,
       predefinedRoles,
       otherFlag,
       saveRole,

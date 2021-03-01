@@ -40,7 +40,7 @@ export interface ThumbnailSettings {
 
 export interface ThumbnailSetting {
   isThumbnail: boolean;
-  page: number | null;
+  page: string | number | null;
 }
 
 export interface AssetMetadata {

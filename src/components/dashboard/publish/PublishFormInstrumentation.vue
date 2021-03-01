@@ -1,5 +1,5 @@
 <template>
-  <section v-if="formDataLoaded">
+  <section>
     <div class="field control">
       <label class="label">Instrumentation</label>
       <autocomplete
@@ -77,7 +77,6 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faBan);
 
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
-import useDashboard from '@/compositions/dashboard/dashboard';
 import useValidationState from '@/compositions/validation/validationState';
 import usePublishFormInfoValidation from '@/compositions/validation/publishFormInfoValidation';
 
@@ -111,18 +110,6 @@ export default {
     // ========== Handle instrument selection and display ==========
     const inputValue = ref<string>();
     const { formData } = useSharetribePublisher();
-    const { useDashboardState } = useDashboard();
-    const { publishModalEditData } = useDashboardState;
-
-    const formDataLoaded = ref(false);
-    onMounted(() => {
-      if (publishModalEditData.value?.attributes) {
-        formData.value.instrumentation =
-          publishModalEditData?.value.attributes.publicData.instrumentation;
-      }
-      validateEnsembleInstrumentation();
-      formDataLoaded.value = true;
-    });
 
     function saveSelectedInstrument(result: string | undefined): void {
       if (formData.value.instrumentation == undefined) {
@@ -151,14 +138,11 @@ export default {
     //========== Validation ==========//
     const { ValidationStore } = useValidationState();
     const ensembleInstValidation = computed(() => ValidationStore.publishFormInfo.ensembleInst);
-    // use after initial formData has been loaded
-    const { validateEnsembleInstrumentation } = usePublishFormInfoValidation();
 
     return {
       // ---- Data ----
       selectedIndex,
       formData /* this loses reactivity when you do formdata.value.instrumentation */,
-      formDataLoaded,
       inputValue,
       // ---- Methods ----
       search,

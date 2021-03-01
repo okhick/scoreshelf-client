@@ -8,7 +8,7 @@
 
       <!-- Doing this on v-if stops things from trying to load before the data exists -->
       <publish-form
-        v-if="publishModalOpen"
+        v-if="publishModalOpen && formDataLoaded"
         v-bind:isNewPiece="isNewPiece"
         v-bind:pieceStatus="pieceStatus"
         ref="form"
@@ -122,7 +122,10 @@ import useDashboard from '@/compositions/dashboard/dashboard';
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
 import usePublishForm from '@/compositions/form/publishForm';
+
 import useValidationState from '@/compositions/validation/validationState';
+import usePublishFormInfoValidation from '@/compositions/validation/publishFormInfoValidation';
+import usePublishFormAssetsValidation from '@/compositions/validation/publishFormAssetsValidation';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTrashAlt, faAngleDown } from '@fortawesome/free-solid-svg-icons';
@@ -143,21 +146,41 @@ export default {
       clearPublishModalEditData,
     } = useDashboardState;
 
-    const { useSharetribePublisherListings, useSharetribePublisherForm } = useSharetribePublisher();
+    const {
+      useSharetribePublisherListings,
+      useSharetribePublisherForm,
+      useInitSharetribePublishForm,
+    } = useSharetribePublisher();
     const { useScoreshelfUploadManagement, useFileStateManagement } = useScoreshelfPublisher();
 
     const { usePublishFormNavigation } = usePublishForm();
-    const { resetPublishFormValidation, useTrackValidation } = useValidationState();
+    const { resetPublishFormValidation } = useValidationState();
+    const { initInfoValidation } = usePublishFormInfoValidation();
+    const { initAssetsValidation } = usePublishFormAssetsValidation();
 
     const isNewPiece = ref(true);
     const pieceStatus = ref<string | null>(null);
+    const formDataLoaded = ref(false);
 
     watch(publishModalEditData, async (newData) => {
       // if newData.attributes is falsy, we're publishing from a blank
       if (newData != null && newData?.attributes) {
+        // ---- set some things
         isNewPiece.value = false;
         pieceStatus.value = newData.attributes.state;
+
+        // ---- init the formData
+        useInitSharetribePublishForm.initInfo();
+        await useFileStateManagement.initAssetData();
+        useInitSharetribePublishForm.initFormatData();
+
+        // ---- validate the formData
+        initInfoValidation();
+        initAssetsValidation();
+
+        // ---- to go correct step
         usePublishFormNavigation.gotoStep('info');
+        formDataLoaded.value = true;
       } else {
         isNewPiece.value = true;
       }
@@ -188,6 +211,7 @@ export default {
 
     function closeEditModal() {
       pieceStatus.value = null;
+      formDataLoaded.value = false;
       clearPublishModalEditData();
 
       useSharetribePublisherForm.clearFormData();
@@ -249,6 +273,7 @@ export default {
       isNewPiece,
       pieceStatus,
       publishModalOpen,
+      formDataLoaded,
       // ---- Methods ----
       // -- Modal Control
       cancelModal,

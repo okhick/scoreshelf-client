@@ -126,10 +126,35 @@ function FileStateManagement() {
     FileState.fileList = payload;
   }
 
-  function initAssetData() {
+  async function hydrateAssetData(assetData: ListingAssetData[]) {
+    const assetDataList = assetData;
+    const hydratedFileListRes = await ScoreshelfAssetManagement().getHyrdatedAssetData(
+      assetDataList,
+      true
+    );
+
+    // store the files
+    if (hydratedFileListRes) {
+      hydratedFileListRes.data.forEach((file) => {
+        if (file) {
+          file.isStored = true;
+          FileStateManagement().addFileToFileList(file);
+        }
+      });
+    }
+  }
+
+  async function initAssetData() {
     const { useDashboardState } = useDashboard();
     const { publishModalEditData } = useDashboardState;
 
+    // ----- First hydrate the asset data and add to FileList -----
+    const assetData = publishModalEditData.value?.attributes.privateData.assetData;
+    if (assetData && assetData.length > 0) {
+      await hydrateAssetData(assetData);
+    }
+
+    // ----- Then init the fields -----
     FileState.fileList.forEach((file) => {
       // first make reactive refs for everything
       if (FileState.thumbnailSettings[file.asset_name] === undefined) {
@@ -273,7 +298,7 @@ function ScoreshelfAssetManagement() {
 
   const scoreshelfFileStateManagement = FileStateManagement();
 
-  async function hyrdateAssetData(assetDataList: ListingAssetData[], getLink: boolean) {
+  async function getHyrdatedAssetData(assetDataList: ListingAssetData[], getLink: boolean) {
     const scoreshelf_ids = assetDataList.map((file) => file.scoreshelf_id);
     const hydratedAssets = await SCORESHELF.value?.get<(Asset | null)[]>('assets/getAssetdata', {
       params: {
@@ -291,6 +316,7 @@ function ScoreshelfAssetManagement() {
   async function updateAssetMetadata(uploadParams: UploadParams) {
     const { SCORESHELF } = useScoreshelf();
     const assetMetadata = formatUpdatedAssetMetadata(uploadParams);
+
     // this return every asset
     const res = await SCORESHELF.value?.post<Asset[]>('assets/updateAssetMetadata', assetMetadata);
     if (res?.data) {
@@ -338,7 +364,7 @@ function ScoreshelfAssetManagement() {
   }
 
   return {
-    hyrdateAssetData,
+    getHyrdatedAssetData,
     updateAssetMetadata,
     formatNewAssetMetadata,
     formatUpdatedAssetMetadata,

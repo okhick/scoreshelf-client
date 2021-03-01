@@ -1,6 +1,6 @@
 <template>
   <div class="field">
-    <label class="label">{{ fieldLabel }}</label>
+    <label v-if="fieldLabel != ''" class="label">{{ fieldLabel }}</label>
     <div class="control has-icons-right" :id="fieldLabel">
       <input
         :class="['input', { 'is-invalid': isValid === false }, { 'is-valid': isValid === true }]"
@@ -34,12 +34,12 @@ export default defineComponent({
   props: {
     fieldLabel: String,
     placeholder: String,
-    init: String,
+    init: null,
     isValid: Boolean,
     helpMessage: String,
   },
   setup(props, context) {
-    const inputValue = ref<string>('');
+    const inputValue = ref<string | number>('');
     onMounted(() => {
       inputValue.value = props.init || '';
       handleFieldChange();
