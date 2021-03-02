@@ -62,7 +62,7 @@
       <!-- page number -->
       <div id="page" class="label"><label>Page No.</label></div>
       <validated-field
-        v-if="thumbPage != null || thumbAsset == ''"
+        v-if="thumbPage != null"
         :init="thumbPage"
         id="page"
         class="field"
@@ -125,6 +125,8 @@ export default {
     function processUploadEvent(event: Event & NewFileUpload) {
       const newFiles = event.target.files;
       useFileStateManagement.processUpload(newFiles);
+      // inti the thumbPage if it hasn't already been inited
+      thumbPage.value = '';
     }
     function removeUpload(fileName: string) {
       fileList.value.forEach((file) => {

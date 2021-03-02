@@ -5,7 +5,7 @@
         <div class="control">
           <div class="select">
             <select v-model="newFormat.format">
-              <option></option>
+              <option value="" disabled selected hidden>Choose format...</option>
               <option v-for="(format, index) in predefinedFormats" :key="index">
                 {{ format }}
               </option>
@@ -29,7 +29,7 @@
         <div class="control">
           <div class="select">
             <select @input="newAssetSelected" v-model="assetSelectionModel">
-              <option></option>
+              <option value="" disabled selected hidden>Choose uploaded file(s)...</option>
               <option v-for="(asset, index) in assetSelectionMenu" :key="index">
                 {{ asset }}
               </option>
@@ -141,6 +141,9 @@ export default defineComponent({
     const assetSelectionMenu = computed(() => {
       const allAssets = fileList.value.map((asset) => asset.asset_name);
       const unusedAssets = allAssets.filter((asset) => !newFormat.value.assets.includes(asset));
+
+      // yes this is a weird place to set this, but there's some weird stuff going on when I set this to '' before I filter all assets...
+      assetSelectionModel.value = '';
       return unusedAssets;
     });
 
@@ -152,13 +155,8 @@ export default defineComponent({
     });
 
     function newAssetSelected(event: Event & ChooseEvent) {
-      const selectedAsset: string = event.target.value;
-
-      // make sure it's not the blank option or an already chosen option
-      if (selectedAsset !== '') {
-        newFormat.value.assets.push(selectedAsset);
-      }
-      assetSelectionModel.value = '';
+      const selectedAsset = event.target.value;
+      newFormat.value.assets.push(selectedAsset);
     }
 
     function removeAsset(assetToRemove: string) {
