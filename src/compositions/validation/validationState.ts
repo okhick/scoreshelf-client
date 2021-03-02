@@ -63,6 +63,10 @@ function trackValidation() {
     switch (activeStep.value) {
       case 'info':
         if (Array.isArray(publishFormInfoValid.value)) return true;
+        break;
+      case 'assets':
+        if (Array.isArray(publishFormAssetsValid.value)) return true;
+        break;
 
       default:
         return false;
@@ -72,13 +76,13 @@ function trackValidation() {
   function validateAllFields(storeKey: string) {
     const fields = Object.keys(ValidationStore[storeKey]);
     const allFieldsValid = fields.every(
-      (field) => ValidationStore.publishFormInfo[field].status === true
+      (field) => ValidationStore[storeKey][field].status === true
     );
 
     if (!allFieldsValid) {
       const invalidFields: string[] = [];
       fields.forEach((field) => {
-        if (ValidationStore.publishFormInfo[field].status !== true) {
+        if (ValidationStore[storeKey][field].status !== true) {
           invalidFields.push(field);
         }
       });

@@ -87,7 +87,6 @@ import { ref, computed, watchEffect } from '@vue/composition-api';
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
 import useValidationState from '@/compositions/validation/validationState';
-import usePublishFormInfoValidation from '@/compositions/validation/publishFormInfoValidation';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faPlus, faCheck, faBan } from '@fortawesome/free-solid-svg-icons';
