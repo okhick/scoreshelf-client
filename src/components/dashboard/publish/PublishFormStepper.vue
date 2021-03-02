@@ -22,6 +22,7 @@
 </template>
 
 <script lang="ts">
+import { onMounted, watch } from '@vue/composition-api';
 import usePublishForm, { Step } from '@/compositions/form/publishForm';
 import useValidationState from '@/compositions/validation/validationState';
 
@@ -30,11 +31,36 @@ export default {
     const { steps, activeStep, usePublishFormNavigation } = usePublishForm();
     const { useTrackValidation } = useValidationState();
 
+    // watch for validation changes
+    watch(useTrackValidation.publishFormInfoValid, () => {
+      steps.value.info.completed = !Array.isArray(useTrackValidation.publishFormInfoValid.value);
+    });
+    watch(useTrackValidation.publishFormAssetsValid, () => {
+      steps.value.assets.completed = !Array.isArray(
+        useTrackValidation.publishFormAssetsValid.value
+      );
+    });
+    watch(useTrackValidation.publishFormFormatsValid, () => {
+      steps.value.formats.completed = !Array.isArray(
+        useTrackValidation.publishFormFormatsValid.value
+      );
+    });
+    // init the stepper completeds
+    onMounted(() => {
+      steps.value.info.completed = !Array.isArray(useTrackValidation.publishFormInfoValid.value);
+      steps.value.assets.completed = !Array.isArray(
+        useTrackValidation.publishFormAssetsValid.value
+      );
+      steps.value.formats.completed = !Array.isArray(
+        useTrackValidation.publishFormFormatsValid.value
+      );
+    });
+
     function handleGoToStep(stepSelectedKey: string) {
       const currentStep = steps.value[activeStep.value];
       const selectedStep = steps.value[stepSelectedKey];
 
-      // if we're going back
+      // if we're going backx
       if (currentStep.index > selectedStep.index) {
         usePublishFormNavigation.gotoStep(stepSelectedKey);
         return;
