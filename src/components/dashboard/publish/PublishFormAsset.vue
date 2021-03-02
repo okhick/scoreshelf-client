@@ -62,7 +62,7 @@
       <!-- page number -->
       <div id="page" class="label"><label>Page No.</label></div>
       <validated-field
-        v-if="thumbPage != null"
+        v-if="thumbPage != null || thumbAsset == ''"
         :init="thumbPage"
         id="page"
         class="field"
