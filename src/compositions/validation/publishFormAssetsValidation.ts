@@ -4,13 +4,17 @@ import { computed, watch } from '@vue/composition-api';
 import useValidationState, { Validation } from '@/compositions/validation/validationState';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
 
+import validator from 'validator';
+
 export default function usePublishFormAssetsValidation() {
   const { ValidationStore } = useValidationState();
   const publishFormAssetsValidation = computed(() => ValidationStore.publishFormAssets);
-  const { fileList, thumbnailSettings } = useScoreshelfPublisher();
+  const { fileList, thumbnailSettings, previewSettings } = useScoreshelfPublisher();
 
   function initAssetsValidation() {
     validateAssetList();
+    validatePreviewSelection();
+    validateThumbnailSelection();
     validatePage();
   }
 
@@ -24,10 +28,21 @@ export default function usePublishFormAssetsValidation() {
   }
   watch(
     computed(() => fileList.value),
-    () => validateAssetList()
+    // validate everything incase you removed a file already selected
+    () => initAssetsValidation()
   );
 
   //==========
+  function validateThumbnailSelection() {
+    Vue.set(ValidationStore.publishFormAssets, 'thumbnail', new Validation('thumbnail', false));
+
+    for (const asset in thumbnailSettings.value) {
+      if (thumbnailSettings.value[asset].isThumbnail) {
+        Vue.set(ValidationStore.publishFormAssets, 'thumbnail', new Validation('thumbnail', true));
+        break;
+      }
+    }
+  }
   function validatePage() {
     let pageValue;
     for (const asset in thumbnailSettings.value) {
@@ -39,18 +54,39 @@ export default function usePublishFormAssetsValidation() {
 
     Vue.set(ValidationStore.publishFormAssets, 'page', new Validation('page', false));
 
-    // This validation process is dumb. Make sure it's not a string, then convert to string to we can regex it to digits?!
-    if (pageValue != null && pageValue !== '') {
-      if (/^[0-9]*$/.test(pageValue.toString())) {
-        publishFormAssetsValidation.value['page'].status = true;
-      }
+    // convert to string if we can
+    pageValue = pageValue != null && pageValue !== '' ? pageValue.toString() : pageValue;
+
+    if (pageValue != null && validator.isInt(pageValue)) {
+      publishFormAssetsValidation.value['page'].status = true;
     }
   }
   watch(
     computed(() => thumbnailSettings.value),
-    () => validatePage(),
+    () => {
+      validateThumbnailSelection();
+      validatePage();
+    },
     { deep: true }
   );
+
+  //==========
+  function validatePreviewSelection() {
+    Vue.set(ValidationStore.publishFormAssets, 'preview', new Validation('preview', false));
+
+    for (const asset in previewSettings.value) {
+      if (previewSettings.value[asset].isPreview) {
+        Vue.set(ValidationStore.publishFormAssets, 'preview', new Validation('preview', true));
+        break;
+      }
+    }
+  }
+  watch(
+    computed(() => previewSettings.value),
+    () => validatePreviewSelection(),
+    { deep: true }
+  );
+
   return {
     initAssetsValidation,
     validateAssetList,

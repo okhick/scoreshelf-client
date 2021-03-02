@@ -18,14 +18,18 @@
       v-show="fileList.length > 0"
     ></asset-table>
 
-    <div id="asset-options-grid">
+    <div id="asset-options-grid" v-show="fileList.length > 0">
       <!-- preview -->
       <div id="preview" class="label"><label>Preview</label></div>
       <div id="preview" class="field">
         <div class="control">
           <div class="select is-fullwidth">
-            <select @change="newPreviewSelected" v-model="previewAsset">
-              <option></option>
+            <select
+              @change="newPreviewSelected"
+              v-model="previewAsset"
+              :class="{ 'is-invalid': !publishAssetsValidation.preview.status }"
+            >
+              <option value="" disabled selected hidden>Choose uploaded file...</option>
               <option v-for="file in Object.keys(previewSettings)" :key="file">
                 {{ file }}
               </option>
@@ -40,8 +44,12 @@
       <div id="thumbnail" class="field">
         <div class="control is-expanded">
           <div class="select is-fullwidth">
-            <select @change="newThumbSelected" v-model="thumbAsset">
-              <option></option>
+            <select
+              @change="newThumbSelected"
+              v-model="thumbAsset"
+              :class="{ 'is-invalid': !publishAssetsValidation.thumbnail.status }"
+            >
+              <option value="" disabled selected hidden>Choose uploaded file...</option>
               <option v-for="file in Object.keys(thumbnailSettings)" :key="file">
                 {{ file }}
               </option>
@@ -58,8 +66,9 @@
         :init="thumbPage"
         id="page"
         class="field"
-        fieldLabel=""
+        :disabled="!publishAssetsValidation.thumbnail.status"
         placeholder="Page"
+        fieldLabel=""
         :isValid="publishAssetsValidation.page.status"
         @new-input="handlePageInput"
       />
@@ -68,7 +77,7 @@
 </template>
 
 <script lang="ts">
-import { computed, onMounted, ref, watch } from '@vue/composition-api';
+import { computed, onMounted, ref } from '@vue/composition-api';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
 import useValidationState from '@/compositions/validation/validationState';
 import usePublishFormAssetsValidation from '@/compositions/validation/publishFormAssetsValidation';
@@ -128,10 +137,15 @@ export default {
           }
         }
       });
+      if (fileName === previewAsset.value) previewAsset.value = '';
+      if (fileName === thumbAsset.value) {
+        thumbAsset.value = '';
+        thumbPage.value = '';
+      }
     }
 
     // ---- Actions for the selectors below ----
-    const thumbAsset = ref<string | null>(null);
+    const thumbAsset = ref<string | null>('');
     const thumbPage = ref<number | string | null>(null);
 
     function initThumbSelector() {
@@ -170,7 +184,7 @@ export default {
       newThumbPage();
     }
 
-    const previewAsset = ref();
+    const previewAsset = ref('');
     function initPreviewSelector() {
       if (previewSettings.value) {
         for (let asset in previewSettings.value) {

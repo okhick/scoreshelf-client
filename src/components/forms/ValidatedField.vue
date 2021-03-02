@@ -8,6 +8,7 @@
         :placeholder="placeholder"
         v-model="inputValue"
         @input="handleFieldChange"
+        :disabled="disabled"
       />
       <span class="icon is-small is-right">
         <font-awesome-icon icon="check" v-show="isValid === true" />
@@ -37,6 +38,10 @@ export default defineComponent({
     init: null,
     isValid: Boolean,
     helpMessage: String,
+    disabled: {
+      default: false,
+      type: Boolean,
+    },
   },
   setup(props, context) {
     const inputValue = ref<string | number>('');
