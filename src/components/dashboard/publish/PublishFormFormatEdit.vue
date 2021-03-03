@@ -6,10 +6,7 @@
           <div class="select">
             <select
               v-model="newFormat.format"
-              :class="[
-                { 'is-invalid': validation.formatSelect.status === false },
-                { 'is-valid': validation.formatSelect.status === true },
-              ]"
+              :class="[{ 'is-invalid': validation.formatSelect.status === false }]"
             >
               <option value="" disabled selected hidden>Choose format...</option>
               <option v-for="(format, index) in predefinedFormats" :key="index">
@@ -19,18 +16,10 @@
           </div>
         </div>
       </div>
-      <div
-        :class="[
-          'field',
-          'new-format',
-          { 'is-invalid': validation.formatSelect.status === false },
-          { 'is-valid': validation.formatSelect.status === true },
-        ]"
-        v-show="otherFlag"
-      >
+      <div class="field new-format" v-show="otherFlag">
         <div class="control">
           <input
-            class="input"
+            :class="['input', { 'is-invalid': validation.formatSelect.status === false }]"
             type="format"
             placeholder="Max Patch"
             @keyup.delete="switchBackToDropdown"
@@ -45,10 +34,7 @@
             <select
               @input="newAssetSelected"
               v-model="assetSelectionModel"
-              :class="[
-                { 'is-invalid': validation.assetList.status === false },
-                { 'is-valid': validation.assetList.status === true },
-              ]"
+              :class="[{ 'is-invalid': validation.assetList.status === false }]"
             >
               <option value="" disabled selected hidden>Choose uploaded file(s)...</option>
               <option v-for="(asset, index) in assetSelectionMenu" :key="index">
