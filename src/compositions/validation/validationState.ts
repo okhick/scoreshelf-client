@@ -67,6 +67,9 @@ function trackValidation() {
       case 'assets':
         if (Array.isArray(publishFormAssetsValid.value)) return true;
         break;
+      case 'formats':
+        if (Array.isArray(publishFormFormatsValid.value)) return true;
+        break;
 
       default:
         return false;

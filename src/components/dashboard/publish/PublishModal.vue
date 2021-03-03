@@ -126,6 +126,7 @@ import usePublishForm from '@/compositions/form/publishForm';
 import useValidationState from '@/compositions/validation/validationState';
 import usePublishFormInfoValidation from '@/compositions/validation/publishFormInfoValidation';
 import usePublishFormAssetsValidation from '@/compositions/validation/publishFormAssetsValidation';
+import usePublishFormFormatsValidation from '@/compositions/validation/publishFormFormatsValidation';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTrashAlt, faAngleDown } from '@fortawesome/free-solid-svg-icons';
@@ -157,6 +158,7 @@ export default {
     const { resetPublishFormValidation } = useValidationState();
     const { initInfoValidation } = usePublishFormInfoValidation();
     const { initAssetsValidation } = usePublishFormAssetsValidation();
+    const { initFormatsValidation } = usePublishFormFormatsValidation();
 
     const isNewPiece = ref(true);
     const pieceStatus = ref<string | null>(null);
@@ -194,6 +196,7 @@ export default {
     function initAllValidation() {
       initInfoValidation();
       initAssetsValidation();
+      initFormatsValidation();
     }
 
     // ---------- Modal Control ----------
