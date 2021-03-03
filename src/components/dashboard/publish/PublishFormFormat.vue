@@ -38,25 +38,29 @@
         OK
       </div>
     </div>
-
+    <p v-show="!publishAssetsValidaton.formats.status" class="help invalid">
+      <font-awesome-icon icon="ban" />
+      You need to create at least 1 product format.
+    </p>
     <hr />
-
     <publish-form-format-edit :initFormat="newFormat" />
   </div>
 </template>
 
 <script lang="ts">
-import { ref, watch, onMounted } from '@vue/composition-api';
+import { ref, watch, onMounted, computed } from '@vue/composition-api';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 
-import { ListingFormat } from '@/@types';
+import useValidationState from '@/compositions/validation/validationState';
 
 import PublishFormFormatEdit from './PublishFormFormatEdit.vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTimes, faBan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-library.add(faPlus, faTimes);
+library.add(faPlus, faTimes, faBan);
+
+import { ListingFormat } from '@/@types';
 
 export default {
   components: {
@@ -66,6 +70,8 @@ export default {
   setup() {
     const { formats, fileList } = useScoreshelfPublisher();
     const { useSharetribePublisherHelpers } = useSharetribePublisher();
+    const { ValidationStore } = useValidationState();
+    const publishAssetsValidaton = computed(() => ValidationStore.publishFormFormats);
 
     const newFormat = ref<ListingFormat>(useSharetribePublisherHelpers.getBlankFormat());
     onMounted(() => lookupFormatAssets());
@@ -131,6 +137,7 @@ export default {
       newFormat,
       showEditMode,
       formatTemplateRef,
+      publishAssetsValidaton,
       // ---- Methods ----
       removeFormat,
       stringifyAssets,
@@ -217,5 +224,8 @@ export default {
     font-size: 14px;
     text-transform: uppercase;
   }
+}
+.help.invalid {
+  font-size: 16px;
 }
 </style>
