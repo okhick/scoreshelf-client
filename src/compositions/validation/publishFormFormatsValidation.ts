@@ -3,6 +3,8 @@ import { computed, watch } from '@vue/composition-api';
 
 import useValidationState, { Validation } from '@/compositions/validation/validationState';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
+import validator from 'validator';
+import { ListingFormat } from '@/@types';
 
 export default function usePublishFormFormatsValidation() {
   const { ValidationStore } = useValidationState();
@@ -26,7 +28,29 @@ export default function usePublishFormFormatsValidation() {
     () => validateFormatsList()
   );
 
+  //==========
+  function validateFormat(format: ListingFormat) {
+    const validation = {
+      formatSelect: new Validation('formatSelect', false),
+      assetList: new Validation('assetList', false),
+      price: new Validation('price', false),
+      completeValid: false,
+    };
+
+    if (format.format != '') validation.formatSelect.status = true;
+    if (format.assets.length > 0) validation.assetList.status = true;
+    if (validator.isNumeric(format.price)) validation.price.status = true;
+
+    validation.completeValid =
+      validation.formatSelect.status === true &&
+      validation.assetList.status === true &&
+      validation.price.status === true;
+
+    return validation;
+  }
+
   return {
     initFormatsValidation,
+    validateFormat,
   };
 }

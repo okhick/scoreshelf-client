@@ -1,10 +1,16 @@
 <template>
-  <div class="new-format-container">
+  <div class="new-format-container" v-if="validation">
     <div class="new-format-data">
       <div class="field new-format" v-show="!otherFlag">
         <div class="control">
           <div class="select">
-            <select v-model="newFormat.format">
+            <select
+              v-model="newFormat.format"
+              :class="[
+                { 'is-invalid': validation.formatSelect.status === false },
+                { 'is-valid': validation.formatSelect.status === true },
+              ]"
+            >
               <option value="" disabled selected hidden>Choose format...</option>
               <option v-for="(format, index) in predefinedFormats" :key="index">
                 {{ format }}
@@ -13,7 +19,15 @@
           </div>
         </div>
       </div>
-      <div class="field new-format" v-show="otherFlag">
+      <div
+        :class="[
+          'field',
+          'new-format',
+          { 'is-invalid': validation.formatSelect.status === false },
+          { 'is-valid': validation.formatSelect.status === true },
+        ]"
+        v-show="otherFlag"
+      >
         <div class="control">
           <input
             class="input"
@@ -28,7 +42,14 @@
       <div class="field new-file">
         <div class="control">
           <div class="select">
-            <select @input="newAssetSelected" v-model="assetSelectionModel">
+            <select
+              @input="newAssetSelected"
+              v-model="assetSelectionModel"
+              :class="[
+                { 'is-invalid': validation.assetList.status === false },
+                { 'is-valid': validation.assetList.status === true },
+              ]"
+            >
               <option value="" disabled selected hidden>Choose uploaded file(s)...</option>
               <option v-for="(asset, index) in assetSelectionMenu" :key="index">
                 {{ asset }}
@@ -47,7 +68,8 @@
     </div>
 
     <div class="new-action" @click="submitFormat" v-if="!isExistingFormat">
-      <font-awesome-icon icon="plus" />
+      <font-awesome-icon v-show="validation.completeValid" icon="plus" />
+      <font-awesome-icon v-show="!validation.completeValid" icon="ban" class="is-invalid" />
     </div>
 
     <table class="table is-fullwidth is-narrow">
@@ -72,16 +94,18 @@ import {
   PropType,
   onMounted,
   watchEffect,
+  watch,
 } from '@vue/composition-api';
 import { Asset, UploadedFile, ChooseEvent, ListingFormat } from '@/@types';
 
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
+import usePublishFormFormatsValidation from '@/compositions/validation/publishFormFormatsValidation';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTimes, faBan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-library.add(faPlus, faTimes);
+library.add(faPlus, faTimes, faBan);
 
 export default defineComponent({
   components: {
@@ -126,6 +150,14 @@ export default defineComponent({
         }
       }
     });
+
+    // ========== Handle validation ==========
+    const { validateFormat } = usePublishFormFormatsValidation();
+    const validation = ref();
+    onMounted(() => (validation.value = validateFormat(initFormat)));
+    watch(initFormat, () => (validation.value = validateFormat(initFormat)));
+
+    // ==========
     function switchBackToDropdown() {
       if (newFormat.value.format === '') {
         otherFlag.value = false;
@@ -184,6 +216,7 @@ export default defineComponent({
       assetSelectionMenu,
       assetSelectionTable,
       otherFlag,
+      validation,
       // ---- Actions ----
       newAssetSelected,
       removeAsset,
