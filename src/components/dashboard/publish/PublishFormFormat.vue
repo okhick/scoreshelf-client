@@ -14,13 +14,13 @@
       :key="format.formatId"
     >
       <publish-form-format-edit
+        v-if="showEditMode === format.formatId"
         ref="formatTemplateRef"
         :initFormat="format"
-        v-if="showEditMode === format.formatId"
       />
       <div
         class="format-data"
-        @click="showEditMode = format.formatId"
+        @click="toggleEditMode(format.formatId)"
         v-show="!(showEditMode === format.formatId)"
       >
         <div class="format-name format-cell">{{ format.format }}</div>
@@ -34,8 +34,17 @@
       >
         <font-awesome-icon icon="times" />
       </div>
-      <div class="action ok" @click="updateFormat()" v-show="showEditMode === format.formatId">
-        OK
+      <div
+        v-if="showEditMode === format.formatId && formatTemplateRef && formatTemplateRef.length > 0"
+        class="action ok"
+        @click="updateFormat()"
+      >
+        <span v-show="formatTemplateRef[0].validation.completeValid">OK</span>
+        <font-awesome-icon
+          v-show="!formatTemplateRef[0].validation.completeValid"
+          class="is-invalid"
+          icon="ban"
+        />
       </div>
     </div>
     <p v-show="!publishAssetsValidaton.formats.status" class="help invalid">
@@ -93,11 +102,19 @@ export default {
       formats.value = remainingFormats;
     }
 
-    const showEditMode = ref<string>();
+    function toggleEditMode(formatId: number) {
+      if (showEditMode.value == null) {
+        showEditMode.value = formatId;
+      }
+    }
+
+    const showEditMode = ref<number | null>();
     const formatTemplateRef = ref();
     function updateFormat() {
-      formatTemplateRef.value[0].submitFormat();
-      showEditMode.value = '';
+      if (formatTemplateRef.value[0].validation.completeValid) {
+        formatTemplateRef.value[0].submitFormat();
+        showEditMode.value = null;
+      }
     }
 
     // ---------- Helper Methods ----------
@@ -139,6 +156,7 @@ export default {
       formatTemplateRef,
       publishAssetsValidaton,
       // ---- Methods ----
+      toggleEditMode,
       removeFormat,
       stringifyAssets,
       updateFormat,
