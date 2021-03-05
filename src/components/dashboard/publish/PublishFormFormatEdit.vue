@@ -146,7 +146,7 @@ export default defineComponent({
     const { validateFormat } = usePublishFormFormatsValidation();
     const validation = ref();
     onMounted(() => (validation.value = validateFormat(initFormat)));
-    watch(initFormat, () => (validation.value = validateFormat(initFormat)));
+    watch(newFormat.value, () => (validation.value = validateFormat(newFormat.value)));
 
     // ==========
     function switchBackToDropdown() {
@@ -196,6 +196,8 @@ export default defineComponent({
         } else {
           formats.value.push(newFormat.value);
           newFormat.value = useSharetribePublisherHelpers.getBlankFormat();
+          // for some reason the validation watcher isn't catching this so call it manually
+          validation.value = validateFormat(newFormat.value);
         }
       }
     }
