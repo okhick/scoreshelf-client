@@ -13,9 +13,9 @@
     </div>
 
     <asset-table
+      v-show="fileList.length > 0"
       :fileList="fileList"
       @remove-file="removeUpload"
-      v-show="fileList.length > 0"
     ></asset-table>
 
     <div id="asset-options-grid" v-show="fileList.length > 0">
@@ -106,7 +106,7 @@ export default {
       useFileStateManagement,
     } = useScoreshelfPublisher();
 
-    const { validatePage } = usePublishFormAssetsValidation();
+    const { validatePage, validateUploadedAssets } = usePublishFormAssetsValidation();
     const { ValidationStore } = useValidationState();
     const publishAssetsValidation = computed(() => ValidationStore.publishFormAssets);
 
@@ -119,11 +119,11 @@ export default {
     // ---- Actions for the asset table ----
     interface NewFileUpload {
       target: {
-        files: File[];
+        files: FileList;
       };
     }
     function processUploadEvent(event: Event & NewFileUpload) {
-      const newFiles = event.target.files;
+      const newFiles: FileList = event.target.files;
       useFileStateManagement.processUpload(newFiles);
       // inti the thumbPage if it hasn't already been inited
       thumbPage.value = '';

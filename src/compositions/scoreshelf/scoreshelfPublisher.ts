@@ -69,9 +69,9 @@ export default function useScoreshelfPublisher() {
 // ============================================================================
 
 function FileStateManagement() {
-  function processUpload(input: File[]) {
-    // pass in a FileList from HTML and recast it
-    const newFiles = <UploadedFile[]>input;
+  function processUpload(input: FileList) {
+    // pass in a FileList from DOM and recast it
+    const newFiles = (input as unknown) as UploadedFile[];
     newFiles.forEach((file) => {
       file.isStored = false;
       file.asset_name = file.name; // we use asset name everywhere else, start from the beg

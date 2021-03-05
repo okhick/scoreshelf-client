@@ -2,7 +2,7 @@
   <div id="role-wrapper">
     <label class="label">Roles</label>
     <span class="validation">
-      <font-awesome-icon class="is-valid" icon="check" v-show="roleValidation.status === true" />
+      <!-- <font-awesome-icon icon="check" v-show="roleValidation.status === true" /> -->
       <!-- <font-awesome-icon class="is-invalid" icon="ban" v-show="roleValidation.status === false" /> -->
     </span>
     <div class="field is-horizontal">

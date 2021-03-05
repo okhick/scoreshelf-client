@@ -3,7 +3,7 @@
     <label v-if="fieldLabel != ''" class="label">{{ fieldLabel }}</label>
     <div class="control has-icons-right" :id="fieldLabel">
       <input
-        :class="['input', { 'is-invalid': isValid === false }, { 'is-valid': isValid === true }]"
+        :class="['input', { 'is-invalid': isValid === false }]"
         type="text"
         :placeholder="placeholder"
         v-model="inputValue"

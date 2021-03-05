@@ -47,7 +47,12 @@
 
       <div class="field new-price">
         <div class="control has-icons-left">
-          <input class="input" type="price" placeholder="4.33" v-model="newFormat.price" />
+          <input
+            :class="['input', { 'is-invalid': validation.price.status === false }]"
+            type="price"
+            placeholder="4.33"
+            v-model="newFormat.price"
+          />
           <span class="icon is-left"> $ </span>
         </div>
       </div>
@@ -141,7 +146,7 @@ export default defineComponent({
     const { validateFormat } = usePublishFormFormatsValidation();
     const validation = ref();
     onMounted(() => (validation.value = validateFormat(initFormat)));
-    watch(initFormat, () => (validation.value = validateFormat(initFormat)));
+    watch(newFormat.value, () => (validation.value = validateFormat(newFormat.value)));
 
     // ==========
     function switchBackToDropdown() {
@@ -182,14 +187,18 @@ export default defineComponent({
     }
 
     function submitFormat() {
-      if (isExistingFormat.value) {
-        const formatIndex = formats.value.findIndex(
-          (format) => format.formatId === newFormat.value.formatId
-        );
-        formats.value[formatIndex] = newFormat.value;
-      } else {
-        formats.value.push(newFormat.value);
-        newFormat.value = useSharetribePublisherHelpers.getBlankFormat();
+      if (validation.value.completeValid) {
+        if (isExistingFormat.value) {
+          const formatIndex = formats.value.findIndex(
+            (format) => format.formatId === newFormat.value.formatId
+          );
+          formats.value[formatIndex] = newFormat.value;
+        } else {
+          formats.value.push(newFormat.value);
+          newFormat.value = useSharetribePublisherHelpers.getBlankFormat();
+          // for some reason the validation watcher isn't catching this so call it manually
+          validation.value = validateFormat(newFormat.value);
+        }
       }
     }
 
