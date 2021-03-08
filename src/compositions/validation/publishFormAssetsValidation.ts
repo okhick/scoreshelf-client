@@ -18,30 +18,6 @@ export default function usePublishFormAssetsValidation() {
     validatePage();
   }
 
-  function validateUploadedAssets(fileList: FileList) {
-    const allowedMimeType = [
-      'application/pdf',
-      'audio/mpeg',
-      'audio/aiff',
-      'audio/wav',
-      'image/jpeg',
-      'image/png',
-      'application/zip',
-    ];
-    // a FileList doesn't have a map method, so we use a for loop instead
-    const checkedFiles = [];
-    for (const file of fileList) {
-      const fileAllowed = allowedMimeType.includes(file.type);
-      checkedFiles.push({
-        name: file.name,
-        isAllowed: fileAllowed,
-        message: fileAllowed ? null : `The file ${file.name} is not an allowed format.`,
-      });
-    }
-
-    return checkedFiles;
-  }
-
   //==========
   function validateAssetList() {
     Vue.set(ValidationStore.publishFormAssets, 'list', new Validation('list', false));
@@ -115,6 +91,5 @@ export default function usePublishFormAssetsValidation() {
     initAssetsValidation,
     validateAssetList,
     validatePage,
-    validateUploadedAssets,
   };
 }

@@ -14,6 +14,7 @@ import {
   ListingAssetData,
   ProfilePicture,
 } from '@/@types';
+import { DropzoneFile } from 'dropzone';
 
 import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
@@ -69,16 +70,14 @@ export default function useScoreshelfPublisher() {
 // ============================================================================
 
 function FileStateManagement() {
-  function processUpload(input: FileList) {
-    // pass in a FileList from DOM and recast it
-    const newFiles = (input as unknown) as UploadedFile[];
-    newFiles.forEach((file) => {
-      file.isStored = false;
-      file.asset_name = file.name; // we use asset name everywhere else, start from the beg
-      addFileToFileList(file);
-      initThumbnail(file);
-      initPreview(file);
-    });
+  function processUpload(file: DropzoneFile) {
+    // pass in a DropzoneFile and recast as UploadedFile so we can extent it
+    const newFile = file as UploadedFile;
+    newFile.isStored = false;
+    newFile.asset_name = file.name; // we use asset name everywhere else, start from the beg
+    addFileToFileList(newFile);
+    initThumbnail(newFile);
+    initPreview(newFile);
   }
 
   function addFileToFileList(payload: UploadedFile | Asset) {
