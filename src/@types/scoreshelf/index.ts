@@ -1,4 +1,6 @@
-export interface UploadedFile extends File {
+import { DropzoneFile } from 'dropzone';
+
+export interface UploadedFile extends DropzoneFile {
   isStored: boolean;
   asset_name: string;
 }

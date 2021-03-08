@@ -1,16 +1,6 @@
 <template>
   <div class="bottom-margin">
-    <div class="bottom-margin file is-boxed is-centered">
-      <label class="file-label">
-        <input class="file-input" type="file" ref="file" multiple @change="processUploadEvent" />
-        <span :class="['file-cta', { 'is-invalid': !publishAssetsValidation.list.status }]">
-          <span class="file-icon">
-            <font-awesome-icon icon="upload" />
-          </span>
-          <span class="file-label">Upload your file(s)</span>
-        </span>
-      </label>
-    </div>
+    <dropzone @file-uploaded="processDropzoneUpload" ref="dropzoneRef" />
 
     <asset-table
       v-show="fileList.length > 0"
@@ -84,18 +74,17 @@ import usePublishFormAssetsValidation from '@/compositions/validation/publishFor
 
 import AssetTable from '@/components/forms/AssetTable.vue';
 import ValidatedField from '@/components/forms/ValidatedField.vue';
+import Dropzone from '@/components/forms/Dropzone.vue';
 
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faUpload } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-library.add(faUpload);
+import { DropzoneFile } from 'dropzone';
 
 export default {
   components: {
-    FontAwesomeIcon,
     AssetTable,
     ValidatedField,
+    Dropzone,
   },
+
   setup() {
     const {
       // States
@@ -106,7 +95,7 @@ export default {
       useFileStateManagement,
     } = useScoreshelfPublisher();
 
-    const { validatePage, validateUploadedAssets } = usePublishFormAssetsValidation();
+    const { validatePage } = usePublishFormAssetsValidation();
     const { ValidationStore } = useValidationState();
     const publishAssetsValidation = computed(() => ValidationStore.publishFormAssets);
 
@@ -116,18 +105,18 @@ export default {
     });
 
     // ---------- Methods ----------
+    // ---- Actions for the dropzone ----
+    const dropzoneRef = ref();
+    function processDropzoneUpload(file: DropzoneFile) {
+      if (file.accepted) {
+        useFileStateManagement.processUpload(file);
+        thumbPage.value = '';
+        dropzoneRef.value.uploadsValid = true;
+      } else {
+        dropzoneRef.value.uploadsValid = false;
+      }
+    }
     // ---- Actions for the asset table ----
-    interface NewFileUpload {
-      target: {
-        files: FileList;
-      };
-    }
-    function processUploadEvent(event: Event & NewFileUpload) {
-      const newFiles: FileList = event.target.files;
-      useFileStateManagement.processUpload(newFiles);
-      // inti the thumbPage if it hasn't already been inited
-      thumbPage.value = '';
-    }
     function removeUpload(fileName: string) {
       fileList.value.forEach((file) => {
         if (file.asset_name === fileName) {
@@ -215,11 +204,13 @@ export default {
       thumbAsset,
       thumbPage,
       publishAssetsValidation,
+      dropzoneRef,
       // ---- Methods ----
       removeUpload,
       newThumbSelected,
       newThumbPage,
-      processUploadEvent,
+      // processUploadEvent,
+      processDropzoneUpload,
       newPreviewSelected,
       handlePageInput,
     };
