@@ -38,7 +38,7 @@ export default {
         autoProcessQueue: false,
         url: '/doNothing',
       });
-      dropzone.on('addedfile', async (file) => {
+      dropzone.on('addedfile', (file) => {
         // dropzone event is emitted before file is validated, so wait 100ms before emiting to vue
         setTimeout(() => emit('file-uploaded', file), 100);
       });

@@ -78,7 +78,6 @@ library.add(faBan);
 
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 import useValidationState from '@/compositions/validation/validationState';
-import usePublishFormInfoValidation from '@/compositions/validation/publishFormInfoValidation';
 
 import { Data } from '@/@types';
 
