@@ -24,6 +24,7 @@ interface FormData extends Data {
   otherNotes: string;
   ensemble: string;
   instrumentation: string[];
+  tags: string[];
 }
 interface IPublishFormState {
   formData: FormData;
@@ -41,6 +42,7 @@ const PublishFormState = reactive<IPublishFormState>({
     otherNotes: '',
     ensemble: '',
     instrumentation: [],
+    tags: [],
   },
   DISPLAY_NAME: '__DISPLAY-NAME__',
 });
@@ -74,6 +76,7 @@ function SharetribePublisherForm() {
       switch (field) {
         case 'role':
         case 'instrumentation':
+        case 'tags':
           PublishFormState.formData[field] = [];
           break;
         default:
@@ -318,6 +321,8 @@ function InitSharetribePublishForm() {
       // instrumentation
       PublishFormState.formData.instrumentation =
         publishModalEditData?.value.attributes.publicData.instrumentation;
+      // tags
+      PublishFormState.formData.tags = publishModalEditData?.value.attributes.publicData.tags;
       // roles
       const editRoleData = publishModalEditData?.value.attributes.publicData.role;
       PublishFormState.formData.role = editRoleData != undefined ? editRoleData : [];

@@ -20,27 +20,6 @@
 
     <publish-form-role />
 
-    <div class="field">
-      <label class="label">Year of Completion</label>
-      <div class="control">
-        <input class="input" type="text" v-model="formData.year" placeholder="2020" />
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="label">Duration</label>
-      <div class="control">
-        <input class="input" type="text" v-model="formData.duration" placeholder="6:20" />
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="label">Commission or Dedication</label>
-      <div class="control">
-        <input class="input" type="text" v-model="formData.commission" placeholder="to Mother" />
-      </div>
-    </div>
-
     <hr />
 
     <validated-field
@@ -62,6 +41,31 @@
 
     <hr />
 
+    <div class="field">
+      <label class="label">Year of Completion</label>
+      <div class="control">
+        <input class="input" type="text" v-model="formData.year" placeholder="2020" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Duration</label>
+      <div class="control">
+        <input class="input" type="text" v-model="formData.duration" placeholder="6:20" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Commission or Dedication</label>
+      <div class="control">
+        <input class="input" type="text" v-model="formData.commission" placeholder="to Mother" />
+      </div>
+    </div>
+
+    <publish-form-tags />
+
+    <hr />
+
     <label class="label">Other notes, movements, program notes, whatever</label>
     <trix-editor-component
       @trix-editor-change="handleNewContent"
@@ -72,12 +76,13 @@
 
 <script lang="ts">
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
-import { computed, onMounted, ref } from '@vue/composition-api';
+import { computed } from '@vue/composition-api';
 
 import PublishFormInstrumentation from './PublishFormInstrumentation.vue';
 import PublishFormRole from './PublishFormRole.vue';
 import TrixEditorComponent from '@/components/forms/TrixEditor.vue';
 import ValidatedField from '@/components/forms/ValidatedField.vue';
+import PublishFormTags from './PublishFormTags.vue';
 
 import useValidationState from '@/compositions/validation/validationState';
 import usePublishFormInfoValidation from '@/compositions/validation/publishFormInfoValidation';
@@ -88,6 +93,7 @@ export default {
     PublishFormRole,
     PublishFormInstrumentation,
     ValidatedField,
+    PublishFormTags,
   },
   setup() {
     const { formData } = useSharetribePublisher();
