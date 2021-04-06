@@ -8,7 +8,7 @@
     </thead>
     <tr v-for="file in fileList" :key="file.asset_name">
       <td v-if="file.link" valign="middle">
-        <a :href="file.link">{{ file.asset_name }}</a>
+        <a :href="file.link" target="_blank">{{ file.asset_name }}</a>
       </td>
       <td v-else valign="middle">{{ file.asset_name }}</td>
 
