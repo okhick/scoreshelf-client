@@ -3,15 +3,29 @@
     <h1 class="title">{{ formData.title }}</h1>
     <h2 v-if="formData.subtitle != ''" class="subtitle">{{ formData.subtitle }}</h2>
     <div id="roles">
-      {{ formData.role }}
+      <p v-for="(role, index) in formData.role" :key="index">{{ getRoleName(role) }}</p>
     </div>
-    <div id="formats">{{ formats }}</div>
+    <div id="formats">
+      <table class="table">
+        <tr v-for="format in formats" :key="format.formatId">
+          <td id="format">{{ format.format }}</td>
+          <td>{{ `$${format.price}` }}</td>
+          <td>
+            <p
+              v-for="(asset, index) in format.assets"
+              :key="index"
+              v-html="getAssetLink(asset)"
+            ></p>
+          </td>
+        </tr>
+      </table>
+    </div>
     <table class="info-table">
       <tr v-if="formData.ensemble != ''">
         <td>Ensemble:</td>
         <td>{{ formData.ensemble }}</td>
       </tr>
-      <tr v-if="formData.instrumentation.length > 0">
+      <tr v-if="formData.instrumentation && formData.instrumentation.length > 0">
         <td>Instrumentation:</td>
         <td>
           {{ formData.instrumentation.join(', ') }}
@@ -33,7 +47,7 @@
     <div id="otherNotes">
       <p v-html="formData.otherNotes"></p>
     </div>
-    <div id="tags">
+    <div v-if="formData.tags" id="tags">
       <p>{{ `#${formData.tags.join(', #')}` }}</p>
     </div>
   </div>
@@ -41,16 +55,41 @@
 
 <script lang="ts">
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
+import useSharetribe from '@/compositions/sharetribe/sharetribe';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
+import useDashboardState from '@/compositions/dashboard/dashboardState';
+import { Asset, ListingRole, UploadedFile } from '@/@types';
 
 export default {
   setup() {
-    const { formData } = useSharetribePublisher();
+    const { formData, DISPLAY_NAME } = useSharetribePublisher();
+    const { useSharetribeState } = useSharetribe();
     const { formats, fileList } = useScoreshelfPublisher();
+    const { userProfile } = useDashboardState();
+
+    function getRoleName(role: ListingRole): string {
+      if (role.name === DISPLAY_NAME.value) {
+        role.name = useSharetribeState.currentUser.value?.attributes.profile.displayName || '';
+      }
+      return `${role.name} — ${role.role}`;
+    }
+
+    function isAsset(asset: Asset | UploadedFile): asset is Asset {
+      return asset.isStored;
+    }
+    function getAssetLink(assetName: string) {
+      const fullAsset = fileList.value.find((fullAsset) => assetName === fullAsset.asset_name);
+      if (fullAsset && isAsset(fullAsset)) {
+        return `<a href="${fullAsset.link}" target="_blank">${assetName}</a>`;
+      }
+      return assetName;
+    }
 
     return {
       formData,
       formats,
+      getRoleName,
+      getAssetLink,
     };
   },
 };
@@ -58,6 +97,15 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/index.scss';
+
+.table {
+  width: 100%;
+
+  td#format {
+    white-space: nowrap;
+    padding-left: 0;
+  }
+}
 
 .info-table {
   margin: 25px 0;
