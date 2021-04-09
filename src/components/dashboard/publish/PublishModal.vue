@@ -155,7 +155,7 @@ export default {
     const { useScoreshelfUploadManagement, useFileStateManagement } = useScoreshelfPublisher();
 
     const { usePublishFormNavigation } = usePublishForm();
-    const { resetPublishFormValidation } = useValidationState();
+    const { resetPublishFormValidation, useTrackValidation } = useValidationState();
     const { initInfoValidation } = usePublishFormInfoValidation();
     const { initAssetsValidation } = usePublishFormAssetsValidation();
     const { initFormatsValidation } = usePublishFormFormatsValidation();
@@ -181,7 +181,7 @@ export default {
         initAllValidation();
 
         // ---- to go correct step
-        usePublishFormNavigation.gotoStep('info');
+        usePublishFormNavigation.gotoStep(useTrackValidation.firstInvalidStep.value);
         formDataLoaded.value = true;
       } else {
         isNewPiece.value = true;

@@ -76,6 +76,18 @@ function trackValidation() {
     }
   });
 
+  const firstInvalidStep = computed(() => {
+    if (publishFormInfoValid.value !== true) {
+      return 'info';
+    } else if (publishFormAssetsValid.value !== true) {
+      return 'assets';
+    } else if (publishFormFormatsValid.value !== true) {
+      return 'formats';
+    } else {
+      return 'review';
+    }
+  });
+
   function validateAllFields(storeKey: string) {
     const fields = Object.keys(ValidationStore[storeKey]);
     const allFieldsValid = fields.every(
@@ -100,5 +112,6 @@ function trackValidation() {
     publishFormInfoValid,
     publishFormAssetsValid,
     publishFormFormatsValid,
+    firstInvalidStep,
   };
 }
