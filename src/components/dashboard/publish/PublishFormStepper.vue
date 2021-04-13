@@ -25,11 +25,13 @@
 import { onMounted, watch } from '@vue/composition-api';
 import usePublishForm, { Step } from '@/compositions/form/publishForm';
 import useValidationState from '@/compositions/validation/validationState';
+import useDashboardState from '@/compositions/dashboard/dashboardState';
 
 export default {
   setup() {
     const { steps, activeStep, usePublishFormNavigation } = usePublishForm();
     const { useTrackValidation } = useValidationState();
+    const { publishModalEditData } = useDashboardState();
 
     // watch for validation changes
     watch(useTrackValidation.publishFormInfoValid, () => {
@@ -54,6 +56,7 @@ export default {
       steps.value.formats.completed = !Array.isArray(
         useTrackValidation.publishFormFormatsValid.value
       );
+      steps.value.review.completed = publishModalEditData.value?.attributes.state === 'published';
     });
 
     function handleGoToStep(stepSelectedKey: string) {
@@ -86,8 +89,8 @@ export default {
         }
       }
 
-      if (step.label === 'Review') {
-        // check if all complete, if all complete, the return false (no gaps)
+      if (step.label === 'Review' && step.completed) {
+        return false;
       }
 
       return true;
