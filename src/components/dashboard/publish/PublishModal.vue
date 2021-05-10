@@ -4,12 +4,11 @@
     <div class="modal-card">
       <header class="modal-card-head">
         <p class="modal-card-title">Publish Music</p>
-        <button class="delete" @click="cancelModal" aria-label="close"></button>
       </header>
 
       <!-- Doing this on v-if stops things from trying to load before the data exists -->
       <publish-form
-        v-if="publishModalOpen"
+        v-if="publishModalOpen && formDataLoaded"
         v-bind:isNewPiece="isNewPiece"
         v-bind:pieceStatus="pieceStatus"
         ref="form"
@@ -18,65 +17,89 @@
       <footer class="modal-card-foot">
         <div class="level">
           <div class="level-left">
-            <!-- Dropdown for drafts -->
-            <div
-              class="dropdown level-item is-up"
-              v-if="pieceStatus != 'published' && pieceStatus != 'closed'"
-              :class="{ 'is-active': publishDropdownIsActive }"
-              @click="togglePublishDropdown"
-              v-click-outside="closePublishDropdown"
+            <button
+              :class="[
+                'button',
+                'level-item',
+                { 'is-loading': isLoading.status && isLoading.button === 'update' },
+              ]"
+              v-if="isNewPiece"
+              @click="updatePublication"
             >
-              <div class="dropdown-trigger">
-                <button
-                  class="button"
-                  :class="{ 'is-loading': isLoading }"
-                  aria-haspopup="true"
-                  aria-controls="dropdown-menu"
-                >
-                  <span>Publish</span>
-                  <span class="icon is-small">
-                    <font-awesome-icon icon="angle-down" aria-hidden="true"></font-awesome-icon>
-                  </span>
-                </button>
-              </div>
-              <div class="dropdown-menu" id="dropdown-menu" role="menu">
-                <div class="dropdown-content">
-                  <a class="dropdown-item" @click="publishDraft">Publish</a>
-                  <a class="dropdown-item" v-if="pieceStatus == 'draft'" @click="updatePublication"
-                    >Update Draft</a
-                  >
-                  <a class="dropdown-item" v-if="isNewPiece" @click="updatePublication"
-                    >Create Draft</a
-                  >
-                </div>
-              </div>
-            </div>
+              Create Draft
+            </button>
+
+            <button
+              :class="[
+                'button',
+                'level-item',
+                { 'is-loading': isLoading.status && isLoading.button === 'update' },
+              ]"
+              v-if="pieceStatus == 'draft'"
+              @click="updatePublication"
+            >
+              Update Draft
+            </button>
+
+            <button
+              :class="[
+                'button',
+                'level-item',
+                { 'is-loading': isLoading.status && isLoading.button === 'publish' },
+              ]"
+              v-if="pieceStatus == 'draft'"
+              @click="publishDraft"
+            >
+              Publish Draft
+            </button>
 
             <button
               v-if="pieceStatus == 'published'"
               class="button level-item"
-              :class="{ 'is-loading': isLoading }"
+              :class="[
+                'button',
+                'level-item',
+                { 'is-loading': isLoading.status && isLoading.button === 'update' },
+              ]"
               @click="updatePublication"
             >
-              Update
+              Update Publication
             </button>
 
             <button
               v-if="pieceStatus == 'closed'"
-              class="button level-item"
-              :class="{ 'is-loading': isLoading }"
+              :class="[
+                'button',
+                'level-item',
+                { 'is-loading': isLoading.status && isLoading.button === 'republish' },
+              ]"
               @click="republishPublication"
             >
               Re-publish
             </button>
 
-            <button class="button level-item is-tan" @click="cancelModal">Cancel</button>
+            <button
+              :class="[
+                'button',
+                'level-item',
+                'is-tan',
+                { 'is-loading': isLoading.status && isLoading.button === 'cancel' },
+              ]"
+              @click="cancelModal"
+            >
+              Cancel
+            </button>
           </div>
           <!-- End class level-left -->
 
           <button
             v-if="!isNewPiece"
-            class="button level-right is-maroon"
+            :class="[
+              'button',
+              'level-right',
+              'is-maroon',
+              { 'is-loading': isLoading.status && isLoading.button === 'delete' },
+            ]"
             @click="deletePublication"
           >
             <font-awesome-icon icon="trash-alt" class="action-buttons" />
@@ -89,25 +112,26 @@
   </div>
 </template>
 
-<script>
-import Vue from 'vue';
+<script lang="ts">
 import PublishForm from './PublishForm.vue';
 
 import { ref, watch } from '@vue/composition-api';
 
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
+import useDashboard from '@/compositions/dashboard/dashboard';
 
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
+import usePublishForm from '@/compositions/form/publishForm';
+
+import useValidationState from '@/compositions/validation/validationState';
+import usePublishFormInfoValidation from '@/compositions/validation/publishFormInfoValidation';
+import usePublishFormAssetsValidation from '@/compositions/validation/publishFormAssetsValidation';
+import usePublishFormFormatsValidation from '@/compositions/validation/publishFormFormatsValidation';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTrashAlt, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faTrashAlt, faAngleDown);
-
-import vClickOutside from 'v-click-outside';
-Vue.use(vClickOutside);
 
 export default {
   components: {
@@ -115,106 +139,136 @@ export default {
     PublishForm,
   },
   setup() {
-    const isLoading = ref(false);
-    const dashboardState = dashboardStore.useState(['publishModalEditData', 'publishModalOpen']);
-    const dashboardMutations = dashboardStore.useMutations([
-      'togglePublishModal',
-      'clearPublishModalEditData',
-      'editPublishModalEditData',
-    ]);
+    const { useDashboardState } = useDashboard();
+    const {
+      publishModalEditData,
+      publishModalOpen,
+      togglePublishModal,
+      clearPublishModalEditData,
+    } = useDashboardState;
 
-    const { useSharetribePublisherListings, useSharetribePublisherForm } = useSharetribePublisher();
+    const {
+      useSharetribePublisherListings,
+      useSharetribePublisherForm,
+      useInitSharetribePublishForm,
+    } = useSharetribePublisher();
     const { useScoreshelfUploadManagement, useFileStateManagement } = useScoreshelfPublisher();
 
-    const isNewPiece = ref(true);
-    const pieceStatus = ref(null);
+    const { usePublishFormNavigation } = usePublishForm();
+    const { resetPublishFormValidation, useTrackValidation } = useValidationState();
+    const { initInfoValidation } = usePublishFormInfoValidation();
+    const { initAssetsValidation } = usePublishFormAssetsValidation();
+    const { initFormatsValidation } = usePublishFormFormatsValidation();
 
-    watch(dashboardState.publishModalEditData, async (newData) => {
+    const isNewPiece = ref(true);
+    const pieceStatus = ref<string | null>(null);
+    const formDataLoaded = ref(false);
+
+    watch(publishModalEditData, async (newData) => {
       // if newData.attributes is falsy, we're publishing from a blank
       if (newData != null && newData?.attributes) {
+        formDataLoaded.value = false;
+        // ---- set some things
         isNewPiece.value = false;
         pieceStatus.value = newData.attributes.state;
+
+        // ---- init the formData
+        useInitSharetribePublishForm.initInfo();
+        await useFileStateManagement.initAssetData();
+        useInitSharetribePublishForm.initFormatData();
+
+        // ---- init validation
+        initAllValidation();
+
+        // ---- to go correct step
+        usePublishFormNavigation.gotoStep(useTrackValidation.firstInvalidStep.value);
+        formDataLoaded.value = true;
       } else {
         isNewPiece.value = true;
+
+        // ---- init validation
+        initAllValidation();
+
+        formDataLoaded.value = true;
       }
     });
 
+    function initAllValidation() {
+      initInfoValidation();
+      initAssetsValidation();
+      initFormatsValidation();
+    }
+
     // ---------- Modal Control ----------
-    const publishDropdownIsActive = ref(false);
+    const isLoading = ref({ button: '', status: false });
+
+    function setIsLoading(button: string) {
+      isLoading.value.status = true;
+      isLoading.value.button = button;
+    }
+    function isNotLoading() {
+      isLoading.value.status = false;
+      isLoading.value.button = '';
+    }
 
     async function cancelModal() {
-      isLoading.value = true;
+      setIsLoading('cancel');
 
-      if (dashboardState.publishModalEditData.value.isBlankDraft) {
+      if (publishModalEditData.value?.isBlankDraft) {
         await useSharetribePublisherListings.deletePublication();
       }
 
       closeEditModal();
-      isLoading.value = false;
+      isNotLoading();
     }
 
     function closeEditModal() {
-      pieceStatus.value = '';
-      dashboardMutations.clearPublishModalEditData();
+      pieceStatus.value = null;
+      formDataLoaded.value = false;
 
+      resetPublishFormValidation(); // must come before navigation reset
+      clearPublishModalEditData();
       useSharetribePublisherForm.clearFormData();
       useFileStateManagement.resetFileState();
+      usePublishFormNavigation.resetCompleted();
 
-      dashboardMutations.togglePublishModal();
-    }
-
-    function togglePublishDropdown() {
-      publishDropdownIsActive.value = !publishDropdownIsActive.value;
-    }
-
-    function closePublishDropdown() {
-      publishDropdownIsActive.value = false;
+      togglePublishModal();
     }
 
     // ---------- Listing Control ----------
-    async function createDraft() {
-      isLoading.value = true;
-
-      await useScoreshelfUploadManagement.submitUpload();
-      await useSharetribePublisherListings.createDraft();
-
-      closeEditModal();
-      isLoading.value = false;
-    }
-
     async function updatePublication() {
-      isLoading.value = true;
+      setIsLoading('update');
 
       await useScoreshelfUploadManagement.submitUpload();
       await useSharetribePublisherListings.updatePublication();
 
       closeEditModal();
-      isLoading.value = false;
+      isNotLoading();
     }
 
     async function publishDraft() {
-      isLoading.value = true;
+      setIsLoading('publish');
 
       await useScoreshelfUploadManagement.submitUpload();
       await useSharetribePublisherListings.updatePublication();
       await useSharetribePublisherListings.publishDraft();
 
       closeEditModal();
-      isLoading.value = false;
+      isNotLoading();
     }
 
     async function deletePublication() {
-      isLoading.value = true;
+      setIsLoading('delete');
 
       // TODO: deal with assets?
       await useSharetribePublisherListings.deletePublication();
 
       closeEditModal();
-      isLoading.value = false;
+      isNotLoading();
     }
 
     async function republishPublication() {
-      isLoading.value = true;
+      setIsLoading('republish');
 
       await useScoreshelfUploadManagement.submitUpload();
       // update just incase anyone's changed anything
@@ -223,7 +277,7 @@ export default {
       await useSharetribePublisherListings.reopenPublication();
 
       closeEditModal();
-      isLoading.value = false;
+      isNotLoading();
     }
 
     return {
@@ -231,16 +285,13 @@ export default {
       isLoading,
       isNewPiece,
       pieceStatus,
-      publishDropdownIsActive,
-      publishModalOpen: dashboardState.publishModalOpen,
+      publishModalOpen,
+      formDataLoaded,
       // ---- Methods ----
       // -- Modal Control
       cancelModal,
       closeEditModal,
-      togglePublishDropdown,
-      closePublishDropdown,
       // -- Listing Control
-      createDraft,
       updatePublication,
       publishDraft,
       deletePublication,
@@ -253,6 +304,7 @@ export default {
 <style lang="scss" scoped>
 .modal-card {
   overflow: visible;
+  height: calc(100vh - 40px);
 }
 .dropdown {
   margin-right: 8px;

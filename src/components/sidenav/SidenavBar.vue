@@ -1,5 +1,5 @@
 <template>
-  <div class="sidenav" :class="{ showMenu: isOpen }" v-click-outside="clickOut">
+  <div :class="['sidenav', { showMenu: isOpen }]" v-click-outside="clickOut">
     <div class="menu-body">
       <!-- If user is not logged in -->
       <ul v-if="!isLoggedIn">
@@ -29,7 +29,7 @@
     </div>
 
     <div class="right-side">
-      <span class="menu-container">
+      <span class="actions-container">
         <font-awesome-icon
           icon="bars"
           size="2x"
@@ -45,13 +45,17 @@
         />
       </span>
       <p class="logo"><router-link :to="{ name: 'Home' }">SCORESHELF</router-link></p>
+      <div class="profile">
+        <p class="display-name">{{ displayName }}</p>
+        <img :src="profilePictureLink" />
+      </div>
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue';
-import { ref } from '@vue/composition-api';
+import { computed, onMounted, ref, SetupContext, watch, watchEffect } from '@vue/composition-api';
 
 import vClickOutside from 'v-click-outside';
 Vue.use(vClickOutside);
@@ -62,38 +66,66 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faBars, faSearch);
 
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
-import { onMounted } from '@vue/composition-api';
+import useSidenav from '@/compositions/sidenav/sidenav';
+import useSearch from '@/compositions/search/search';
+import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
+import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
 
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const SharetribeStore = createNamespacedHelpers('sharetribe'); // specific module name
-const SidenavStore = createNamespacedHelpers('sidenav');
-const SearchStore = createNamespacedHelpers('search');
+// copied from vue docs not sure it needed in Vue 3: https://composition-api.vuejs.org/api.html#setup
+interface Data {
+  [key: string]: unknown;
+}
 
 export default {
   components: {
     FontAwesomeIcon,
   },
-  setup(_, context) {
-    const { useRefreshLogin, useSharetribeSdk } = useSharetribe();
+  setup(_: Data, context: SetupContext) {
+    const { useRefreshLogin, useSharetribeSdk, useSharetribeState } = useSharetribe();
+    const { SHARETRIBE, isLoggedIn, logoutUser, currentUser } = useSharetribeState;
 
-    // |---------- Data ----------|
-    const { isOpen } = SidenavStore.useState(['isOpen']);
-    const { toggleSidenav, closeSidenav } = SidenavStore.useMutations([
-      'toggleSidenav',
-      'closeSidenav',
-    ]);
+    const { THUMBNAIL_BASE_URL } = useScoreshelf();
+    const { useScoreshelfProfilePicture } = useScoreshelfPublisher();
 
-    const { SHARETRIBE, isLoggedIn } = SharetribeStore.useState(['SHARETRIBE', 'isLoggedIn']);
-    const { updateIsLoggedIn } = SharetribeStore.useMutations(['updateIsLoggedIn']);
-    const { searchbarIsShowing } = SearchStore.useState(['searchbarIsShowing']);
-    const { toggleSearchbarIsShowing } = SearchStore.useMutations(['toggleSearchbarIsShowing']);
+    const { isOpen, toggleSidenav, closeSidenav } = useSidenav();
+    const { searchbarIsShowing, useSearchStateManagement } = useSearch(context);
 
     onMounted(async () => {
       await useSharetribeSdk();
       await useRefreshLogin();
     });
 
-    // |---------- Methods ----------|
+    // ========== Handle the display name and profile picture ==========
+    const profilePictureLink = ref<string | undefined>();
+    const displayName = computed(() => {
+      return currentUser.value?.attributes.profile.displayName || '';
+    });
+    const profilePictureId = computed(() => {
+      return currentUser.value?.attributes.profile.publicData.profilePicture;
+    });
+
+    // watch for changes in profilePictureId, refresh when happens
+    // handles picture updates and logins and outs
+    watchEffect(async () => {
+      if (profilePictureId.value) {
+        const profilePictureData = await useScoreshelfProfilePicture.hydrateProfilePicture(
+          profilePictureId.value
+        );
+
+        if (profilePictureData) {
+          profilePictureLink.value = `${THUMBNAIL_BASE_URL}/${useSharetribeState.getCurrentUserId()}/${
+            profilePictureData.asset_name
+          }`;
+        } else {
+          profilePictureLink.value = '/profile_placeholder.png';
+        }
+      } else {
+        profilePictureLink.value = undefined;
+      }
+    });
+
+    // ========== Other functions ==========
+
     function clickOut() {
       if (isOpen.value) {
         closeSidenav();
@@ -102,7 +134,7 @@ export default {
 
     async function logout() {
       await SHARETRIBE.value.logout();
-      updateIsLoggedIn();
+      logoutUser();
       context.root.$router.push({ path: '/' });
       toggleSidenav();
     }
@@ -112,11 +144,13 @@ export default {
       isOpen,
       isLoggedIn,
       searchbarIsShowing,
+      displayName,
+      profilePictureLink,
       // ---- Methods ----
       logout,
       clickOut,
       toggleSidenav,
-      toggleSearchbarIsShowing,
+      toggleSearchbarIsShowing: useSearchStateManagement.toggleSearchbarIsShowing,
     };
   },
 };
@@ -151,54 +185,74 @@ export default {
 .right-side {
   grid-column: sidebar;
   display: grid;
-  grid-template-rows: [burger] 1fr [logo] 2fr [bottom] 1fr;
+  grid-template-rows: [burger] auto [logo] 1fr [bottom] auto;
   justify-items: center;
   z-index: 1;
-}
-/* the logo */
-.sidenav .logo {
-  transform: rotate(90deg);
-  transform-origin: center;
-  grid-row: logo;
-  font-family: 'lora';
-  font-weight: bold;
-  font-size: 22px;
-  align-self: center;
-}
 
-.sidenav .logo a {
-  color: $black;
-  text-decoration: none;
-}
+  .actions-container {
+    display: flex;
+    flex-flow: column;
+    transform: scale(0.8);
+    align-items: center;
 
-.menu-container {
-  display: flex;
-  flex-flow: column;
-  transform: scale(0.8);
-  align-items: center;
-}
+    /* the hamburger */
+    .burger {
+      grid-row: burger;
+      color: $black;
+      align-self: start;
+      transition: transform 0.25s ease-in-out;
+      cursor: pointer;
+    }
+    .rotateBurger {
+      transform: rotate(90deg);
+    }
 
-// the search
-.search {
-  color: $black;
-  margin-top: 12px;
-  cursor: pointer;
-  transition: transform 0.25s ease-in-out;
-}
-.hide-search {
-  transform: rotate(90deg);
-}
+    // the search
+    .search {
+      color: $black;
+      margin-top: 12px;
+      cursor: pointer;
+      transition: transform 0.25s ease-in-out;
+    }
+    .hide-search {
+      transform: rotate(90deg);
+    }
+  }
 
-/* the hamburger */
-.burger {
-  grid-row: burger;
-  color: $black;
-  align-self: start;
-  transition: transform 0.25s ease-in-out;
-  cursor: pointer;
-}
+  /* the logo */
+  .logo {
+    writing-mode: vertical-rl;
+    grid-row: logo;
+    font-family: 'lora';
+    font-weight: bold;
+    font-size: 22px;
+    align-self: center;
+  }
 
-.rotateBurger {
-  transform: rotate(90deg);
+  .logo a {
+    color: $black;
+    text-decoration: none;
+  }
+
+  .profile {
+    grid-row: bottom;
+    max-width: 40px;
+    display: grid;
+    grid-template-rows: [displayName] 1fr [profilePicture] auto;
+    row-gap: 8px;
+    margin-bottom: 8px;
+
+    .display-name {
+      grid-row: displayName;
+      writing-mode: vertical-rl;
+      justify-self: center;
+      font-size: 18px;
+    }
+
+    img {
+      grid-row: profilePicture;
+      border-radius: 4px;
+    }
+  }
 }
 </style>

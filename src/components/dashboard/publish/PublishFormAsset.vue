@@ -1,100 +1,91 @@
 <template>
-  <div class="field bottom-margin">
-    <label class="label">Upload</label>
+  <div class="bottom-margin">
+    <dropzone @file-uploaded="processDropzoneUpload" ref="dropzoneRef" />
 
-    <div class="file is-boxed is-centered">
-      <label class="file-label">
-        <input class="file-input" type="file" ref="file" multiple @change="processUploadEvent" />
-        <span class="file-cta">
-          <span class="file-icon">
-            <font-awesome-icon icon="upload" />
-          </span>
-          <span class="file-label">Upload your file(s)</span>
-        </span>
-      </label>
+    <asset-table
+      v-show="fileList.length > 0"
+      :fileList="fileList"
+      @remove-file="removeUpload"
+    ></asset-table>
+
+    <div id="asset-options-grid" v-show="fileList.length > 0">
+      <!-- preview -->
+      <div id="preview" class="label"><label>Preview</label></div>
+      <div id="preview" class="field">
+        <div class="control">
+          <div class="select is-fullwidth">
+            <select
+              @change="newPreviewSelected"
+              v-model="previewAsset"
+              :class="{ 'is-invalid': !publishAssetsValidation.preview.status }"
+            >
+              <option value="" disabled selected hidden>Choose uploaded file...</option>
+              <option v-for="file in Object.keys(previewSettings)" :key="file">
+                {{ file }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <p class="help">Choose a document to be shown as the preview on the publication page.</p>
+      </div>
+
+      <!-- thumbnail -->
+      <div id="thumbnail" class="label"><label>Thumbnail</label></div>
+      <div id="thumbnail" class="field">
+        <div class="control is-expanded">
+          <div class="select is-fullwidth">
+            <select
+              @change="newThumbSelected"
+              v-model="thumbAsset"
+              :class="{ 'is-invalid': !publishAssetsValidation.thumbnail.status }"
+            >
+              <option value="" disabled selected hidden>Choose uploaded file...</option>
+              <option v-for="file in Object.keys(thumbnailSettings)" :key="file">
+                {{ file }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <p class="help">Pick a document and a page and we'll generate a thumbnail image for you.</p>
+      </div>
+
+      <!-- page number -->
+      <div id="page" class="label"><label>Page No.</label></div>
+      <validated-field
+        v-if="thumbPage != null"
+        :init="thumbPage"
+        id="page"
+        class="field"
+        :disabled="!publishAssetsValidation.thumbnail.status"
+        placeholder="Page"
+        fieldLabel=""
+        :isValid="publishAssetsValidation.page.status"
+        @new-input="handlePageInput"
+      />
     </div>
-
-    <table class="table is-fullwidth is-narrow" v-show="fileList.length > 0">
-      <thead>
-        <th>Filename</th>
-        <th>Preview?</th>
-        <th>Thumbnail?</th>
-        <th>Size</th>
-        <th></th>
-      </thead>
-      <tr v-for="file in fileList" :key="file.asset_name">
-        <td v-if="file.link" valign="middle">
-          <a :href="file.link">{{ file.asset_name }}</a>
-        </td>
-        <td v-else valign="middle">{{ file.asset_name }}</td>
-
-        <td>
-          <div class="field is-horizontal">
-            <div class="field-body">
-              <div class="field">
-                <input
-                  type="checkbox"
-                  v-model="previewSettings[file.asset_name].isPreview"
-                  @click="newPreviewSelected($event, file.asset_name)"
-                />
-              </div>
-            </div>
-          </div>
-        </td>
-
-        <td>
-          <div class="field is-horizontal">
-            <div class="field-body">
-              <div class="field">
-                <input
-                  type="checkbox"
-                  v-model="thumbnailSettings[file.asset_name].isThumbnail"
-                  @click="newThumbSelected($event, file.asset_name)"
-                />
-              </div>
-              <div
-                class="field page-picker"
-                v-show="thumbnailSettings[file.asset_name].isThumbnail"
-              >
-                <input
-                  class="input is-small"
-                  type="text"
-                  placeholder="Page No."
-                  v-model.number="thumbnailSettings[file.asset_name].page"
-                />
-              </div>
-            </div>
-          </div>
-        </td>
-
-        <td valign="middle">{{ calculateSize(file) }}</td>
-
-        <td align="right" class="hover-pointer">
-          <font-awesome-icon icon="times" @click="removeUpload(file.asset_name)" />
-        </td>
-      </tr>
-    </table>
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { computed, onMounted, ref } from '@vue/composition-api';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
-import { onMounted, watch } from '@vue/composition-api';
-import Vue from 'vue';
+import useValidationState from '@/compositions/validation/validationState';
+import usePublishFormAssetsValidation from '@/compositions/validation/publishFormAssetsValidation';
 
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
+import AssetTable from '@/components/forms/AssetTable.vue';
+import ValidatedField from '@/components/forms/ValidatedField.vue';
+import Dropzone from '@/components/forms/Dropzone.vue';
 
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faUpload, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-library.add(faUpload, faTimes);
+import { DropzoneFile } from 'dropzone';
 
 export default {
   components: {
-    FontAwesomeIcon,
+    AssetTable,
+    ValidatedField,
+    Dropzone,
   },
-  setup(_, context) {
+
+  setup() {
     const {
       // States
       fileList,
@@ -102,21 +93,31 @@ export default {
       previewSettings,
       // Methods
       useFileStateManagement,
-      useScoreshelfHelpers,
     } = useScoreshelfPublisher();
 
-    const { publishModalEditData } = dashboardStore.useState(['publishModalEditData']);
+    const { validatePage } = usePublishFormAssetsValidation();
+    const { ValidationStore } = useValidationState();
+    const publishAssetsValidation = computed(() => ValidationStore.publishFormAssets);
 
-    useFileStateManagement.initAssetData();
+    onMounted(() => {
+      initPreviewSelector();
+      initThumbSelector();
+    });
 
     // ---------- Methods ----------
-
-    function processUploadEvent() {
-      const newFiles = context.refs.file.files;
-      useFileStateManagement.processUpload(newFiles);
+    // ---- Actions for the dropzone ----
+    const dropzoneRef = ref();
+    function processDropzoneUpload(file: DropzoneFile) {
+      if (file.accepted) {
+        useFileStateManagement.processUpload(file);
+        thumbPage.value = '';
+        dropzoneRef.value.uploadsValid = true;
+      } else {
+        dropzoneRef.value.uploadsValid = false;
+      }
     }
-
-    function removeUpload(fileName) {
+    // ---- Actions for the asset table ----
+    function removeUpload(fileName: string) {
       fileList.value.forEach((file) => {
         if (file.asset_name === fileName) {
           if (file.isStored) {
@@ -127,34 +128,68 @@ export default {
           }
         }
       });
-    }
-
-    function newThumbSelected(event, checkedAsset) {
-      const isChecked = event.target.checked;
-      if (isChecked) {
-        for (let asset in thumbnailSettings.value) {
-          if (asset != checkedAsset) {
-            thumbnailSettings.value[asset] = makeBlankThumbnail();
-          }
-        }
-      } else {
-        for (let asset in thumbnailSettings.value) {
-          thumbnailSettings.value[asset] = makeBlankThumbnail();
-        }
+      if (fileName === previewAsset.value) previewAsset.value = '';
+      if (fileName === thumbAsset.value) {
+        thumbAsset.value = '';
+        thumbPage.value = '';
       }
     }
 
-    function newPreviewSelected(event, checkedAsset) {
-      const isChecked = event.target.checked;
-      if (isChecked) {
-        for (let asset in previewSettings.value) {
-          if (asset != checkedAsset) {
-            previewSettings.value[asset].isPreview = false;
+    // ---- Actions for the selectors below ----
+    const thumbAsset = ref<string | null>('');
+    const thumbPage = ref<number | string | null>(null);
+
+    function initThumbSelector() {
+      if (thumbnailSettings.value) {
+        for (let asset in thumbnailSettings.value) {
+          if (thumbnailSettings.value[asset].isThumbnail) {
+            thumbAsset.value = asset;
+            thumbPage.value = thumbnailSettings.value[asset].page;
+            validatePage();
           }
         }
-      } else {
+      }
+    }
+    function newThumbSelected() {
+      for (let asset in thumbnailSettings.value) {
+        if (asset === thumbAsset.value) {
+          thumbnailSettings.value[asset].isThumbnail = true;
+          thumbnailSettings.value[asset].page = thumbPage.value;
+        } else {
+          thumbnailSettings.value[asset].isThumbnail = false;
+          thumbnailSettings.value[asset].page = null;
+        }
+      }
+    }
+    function newThumbPage() {
+      for (let asset in thumbnailSettings.value) {
+        if (thumbnailSettings.value[asset].isThumbnail) {
+          thumbnailSettings.value[asset].page = thumbPage.value;
+        } else {
+          thumbnailSettings.value[asset].page = null;
+        }
+      }
+    }
+    function handlePageInput(value: string) {
+      thumbPage.value = value;
+      newThumbPage();
+    }
+
+    const previewAsset = ref('');
+    function initPreviewSelector() {
+      if (previewSettings.value) {
         for (let asset in previewSettings.value) {
-          console.log(previewSettings.value[asset]);
+          if (previewSettings.value[asset].isPreview) {
+            previewAsset.value = asset;
+          }
+        }
+      }
+    }
+    function newPreviewSelected() {
+      for (let asset in previewSettings.value) {
+        if (asset === previewAsset.value) {
+          previewSettings.value[asset].isPreview = true;
+        } else {
           previewSettings.value[asset].isPreview = false;
         }
       }
@@ -163,24 +198,74 @@ export default {
     return {
       // ---- Data ----
       fileList,
-      thumbnailSettings,
       previewSettings,
+      previewAsset,
+      thumbnailSettings,
+      thumbAsset,
+      thumbPage,
+      publishAssetsValidation,
+      dropzoneRef,
       // ---- Methods ----
       removeUpload,
       newThumbSelected,
-      processUploadEvent,
+      newThumbPage,
+      // processUploadEvent,
+      processDropzoneUpload,
       newPreviewSelected,
-      calculateSize: useScoreshelfHelpers.calculateSize,
+      handlePageInput,
     };
   },
 };
 </script>
 
-<style scoped>
-.hover-pointer:hover {
-  cursor: pointer;
+<style lang="scss" scoped>
+@import '@/styles/index.scss';
+
+#asset-options-grid {
+  display: grid;
+  grid-template-columns: auto 56% auto auto;
+  grid-template-rows: auto auto;
+  column-gap: 8px;
+
+  .label {
+    padding-top: 8px;
+  }
+
+  #preview.label {
+    grid-row: 1;
+    grid-column: 1;
+  }
+  #preview.field {
+    grid-row: 1;
+    grid-column-start: 2;
+    grid-column-end: 5;
+  }
+  #thumbnail.label {
+    grid-row: 2;
+    grid-column: 1;
+  }
+  #thumbnail.field {
+    grid-row: 2;
+    grid-column: 2;
+  }
+  #page.label {
+    grid-row: 2;
+    grid-column: 3;
+  }
+  #page.field {
+    grid-row: 2;
+    grid-column: 4;
+  }
 }
+
+span.file-cta.is-invalid {
+  border-color: $orange;
+}
+
 .page-picker {
   width: 15px;
+}
+.bottom-margin {
+  margin-bottom: 25px;
 }
 </style>

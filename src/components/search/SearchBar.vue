@@ -12,7 +12,10 @@
         />
       </div>
       <div class="control search-submit">
-        <a class="button is-info is-medium" @click="executeSearch">
+        <a
+          :class="['button', 'is-info', 'is-medium', { 'is-loading': searchIsLoading }]"
+          @click="executeSearch"
+        >
           <font-awesome-icon icon="arrow-right" />
         </a>
       </div>
@@ -27,23 +30,20 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faArrowRight);
 
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const searchStore = createNamespacedHelpers('search');
-
-import useSearch from '@/compositions/search/search.js';
+import useSearch from '@/compositions/search/search';
 
 export default {
   components: {
     FontAwesomeIcon,
   },
   setup(_, context) {
-    const { executeSearch, searchInput } = useSearch(context);
-    const { searchbarIsShowing } = searchStore.useState(['searchbarIsShowing']);
+    const { executeSearch, searchInput, searchbarIsShowing, searchIsLoading } = useSearch(context);
 
     return {
       // ---- Data ----
       searchInput,
       searchbarIsShowing,
+      searchIsLoading,
       // ---- Methods ----
       executeSearch,
     };

@@ -1,148 +1,76 @@
 <template>
   <section class="modal-card-body">
-    <div class="field">
-      <label class="label">Title</label>
-      <div class="control">
-        <input class="input" type="text" v-model="formData.title" placeholder="Title" />
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="label">Subtitle</label>
-      <div class="control">
-        <input class="input" type="text" v-model="formData.subtitle" placeholder="Subtitle" />
-      </div>
-    </div>
+    <publish-form-stepper ref="stepper" />
 
     <hr />
 
-    <div class="field">
-      <label class="label">Composer(s)</label>
-      <div class="control">
-        <input
-          class="input"
-          type="text"
-          v-model="formData.composer"
-          placeholder="Person 1, Person 2"
-        />
-      </div>
+    <publish-form-info v-show="activeStep === 'info'" />
+    <publish-form-format v-show="activeStep === 'formats'" />
+    <publish-form-asset v-show="activeStep === 'assets'" />
+    <publish-form-review v-show="activeStep === 'review'" />
+
+    <div class="level form-nav">
+      <button
+        class="button level-left is-tan"
+        v-show="activeStep !== 'info'"
+        @click="oneStep('prev')"
+      >
+        <font-awesome-icon icon="angle-left" /> <span>{{ '\xa0' + '\xa0' + 'Previous' }} </span>
+      </button>
+      <!-- Put something here when back button is hidden to keep next of the left -->
+      <div v-show="activeStep !== 'review'"></div>
+      <button
+        :disabled="nextStepDisabled"
+        class="button level-right is-tan"
+        v-show="activeStep !== 'review'"
+        @click="oneStep('next')"
+      >
+        <span>{{ 'Next' + '\xa0' + '\xa0' }}</span> <font-awesome-icon icon="angle-right" />
+      </button>
     </div>
-
-    <div class="field">
-      <label class="label">Year of Completion</label>
-      <div class="control">
-        <input class="input" type="text" v-model="formData.year" placeholder="2020" />
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="label">Duration</label>
-      <div class="control">
-        <input class="input" type="text" v-model="formData.duration" placeholder="6:20" />
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="label">Commission or Dedication</label>
-      <div class="control">
-        <input class="input" type="text" v-model="formData.commission" placeholder="to Mother" />
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="label">Program Notes</label>
-      <div class="control">
-        <textarea class="textarea" v-model="formData.programNotes" />
-      </div>
-    </div>
-
-    <hr />
-
-    <div class="field">
-      <label class="label">Ensemble</label>
-      <div class="control">
-        <input class="input" type="text" v-model="formData.ensemble" placeholder="String Quartet" />
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="label">Instrumentation</label>
-      <div class="control">
-        <input
-          class="input"
-          type="text"
-          v-model="formData.instrumentation"
-          placeholder="Violin 1, Violin 2, Viola, Cello"
-        />
-      </div>
-    </div>
-
-    <hr />
-
-    <publish-form-format ref="formats" />
-
-    <hr />
-
-    <publish-form-asset ref="assets" />
   </section>
 </template>
 
-<script>
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const dashboardStore = createNamespacedHelpers('dashboard'); // specific module name
+<script lang="ts">
+import PublishFormStepper from './PublishFormStepper.vue';
+import PublishFormInfo from './PublishFormInfo.vue';
+import PublishFormAsset from './PublishFormAsset.vue';
+import PublishFormFormat from './PublishFormFormat.vue';
+import PublishFormReview from './PublishFormReview.vue';
 
-import PublishFormFormat from './PublishFormFormat';
-import PublishFormAsset from './PublishFormAsset';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+library.add(faAngleLeft, faAngleRight);
 
-import { watch, onBeforeMount } from '@vue/composition-api';
-
-import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
+import { computed } from '@vue/composition-api';
+import usePublishForm from '@/compositions/form/publishForm';
+import useValidationState from '@/compositions/validation/validationState';
 
 export default {
   components: {
-    PublishFormFormat,
+    PublishFormStepper,
+    PublishFormInfo,
     PublishFormAsset,
+    PublishFormFormat,
+    PublishFormReview,
+    FontAwesomeIcon,
   },
   setup() {
-    const { formData } = useSharetribePublisher();
-    const { publishModalEditData } = dashboardStore.useState(['publishModalEditData']);
-    initFormData();
-
-    // ========== Methods ==========
-    function initFormData() {
-      if (publishModalEditData.value != null && publishModalEditData.value?.attributes) {
-        formData.value.title = publishModalEditData.value.attributes.title;
-        formData.value.subtitle = publishModalEditData.value.attributes.publicData.subtitle;
-        formData.value.composer = publishModalEditData.value.attributes.publicData.composer;
-        formData.value.commission = publishModalEditData.value.attributes.publicData.commission;
-        formData.value.duration = publishModalEditData.value.attributes.publicData.duration;
-        formData.value.programNotes = publishModalEditData.value.attributes.publicData.programNotes;
-        formData.value.year = publishModalEditData.value.attributes.publicData.year;
-        formData.value.ensemble = publishModalEditData.value.attributes.publicData.ensemble;
-        formData.value.instrumentation =
-          publishModalEditData.value.attributes.publicData.instrumentation;
-      } else {
-        for (const field in formData.value) {
-          formData.value[field] = '';
-        }
-      }
-    }
+    const { usePublishFormNavigation, activeStep } = usePublishForm();
+    const { useTrackValidation } = useValidationState();
 
     return {
-      formData,
+      activeStep: activeStep,
+      oneStep: usePublishFormNavigation.oneStep,
+      nextStepDisabled: useTrackValidation.nextStepDisabled,
     };
   },
 };
 </script>
 
-<style scoped>
-.bottom-margin {
-  margin-bottom: 24px;
-}
-.hover-pointer:hover {
-  cursor: pointer;
-}
-.page-picker {
-  width: 15px;
+<style lang="scss" scoped>
+.form-nav {
+  margin-bottom: 25px;
 }
 </style>

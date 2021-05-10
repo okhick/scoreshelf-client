@@ -1,0 +1,5623 @@
+[
+  {
+    "Instrument": "Afoxé",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "112.122",
+    "Origin": "Edo (Nigeria), Brazil",
+    "Common classification": "unpitched percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Agogô",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.242",
+    "Origin": "Yoruba",
+    "Common classification": "unpitched percussion",
+    "Relation": "bell"
+  },
+  {
+    "Instrument": "Agung",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.241.2",
+    "Origin": "Indonesia",
+    "Common classification": "unpitched percussion",
+    "Relation": "slit drum"
+  },
+  {
+    "Instrument": "Angklung",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.232",
+    "Origin": "Indonesia",
+    "Common classification": "pitched percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Babendil",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.242.1",
+    "Origin": "Philippines",
+    "Common classification": "unpitched percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Bak",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.12",
+    "Origin": "Korea",
+    "Common classification": "",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Bamileke log drum",
+    "Photo": " ",
+    "Classification": "idiophones",
+    "H-S Number": "",
+    "Origin": "Africa,[1] Asia[2]",
+    "Common classification": "unpitched percussion",
+    "Relation": "slit drum"
+  },
+  {
+    "Instrument": "Balafon",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.212",
+    "Origin": "Africa, Burkina Faso, Chad, Gambia, Guinea, Mali, Senegal",
+    "Common classification": "pitched percussion",
+    "Relation": "keyboard"
+  },
+  {
+    "Instrument": "Batá drum",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "211.242.12",
+    "Origin": "Cuba, Nigeria, Yoruba",
+    "Common classification": "",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Cabasa",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "112.122",
+    "Origin": "",
+    "Common classification": "percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Cajón",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.2",
+    "Origin": "Peru",
+    "Common classification": "unpitched percussion",
+    "Relation": "box drum"
+  },
+  {
+    "Instrument": "Carillon",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.242.2",
+    "Origin": "Belgium, Switzerland",
+    "Common classification": "pitched percussion",
+    "Relation": "bell"
+  },
+  {
+    "Instrument": "Castanets",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.141",
+    "Origin": "Spain",
+    "Common classification": "unpitched percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Caxirola",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "",
+    "Origin": "Brazil",
+    "Common classification": "unpitched percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Caxixi",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.141",
+    "Origin": "West Africa, Brazil",
+    "Common classification": "",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Chácaras",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "",
+    "Origin": "Canary Islands",
+    "Common classification": "unpitched percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Clapstick",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "",
+    "Origin": "Australia",
+    "Common classification": "unpitched percussion",
+    "Relation": "clave sticks"
+  },
+  {
+    "Instrument": "Claves",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.11",
+    "Origin": "Australia",
+    "Common classification": "unpitched percussion",
+    "Relation": "clave sticks"
+  },
+  {
+    "Instrument": "Cowbell",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.242",
+    "Origin": "Switzerland",
+    "Common classification": "unpitched percussion",
+    "Relation": "bell"
+  },
+  {
+    "Instrument": "Crotales",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.22",
+    "Origin": "",
+    "Common classification": "pitched percussion",
+    "Relation": "cymbal"
+  },
+  {
+    "Instrument": "Cymbal",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "",
+    "Origin": "Romania",
+    "Common classification": "unpitched percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Ferrinho",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "",
+    "Origin": "Cape Verde",
+    "Common classification": "unpitched percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Flexatone",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "112.12",
+    "Origin": "",
+    "Common classification": "pitched percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Octa-Vibraphone",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "",
+    "Origin": "United States",
+    "Common classification": "percussion",
+    "Relation": "keyboard"
+  },
+  {
+    "Instrument": "Gandingan",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "",
+    "Origin": "Indonesia",
+    "Common classification": "",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Ghatam",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.24",
+    "Origin": "China",
+    "Common classification": "unpitched percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Glockenspiel",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.212",
+    "Origin": "France/Germany",
+    "Common classification": "pitched percussion",
+    "Relation": "keyboard"
+  },
+  {
+    "Instrument": "Gong",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "",
+    "Origin": "Brunei, China, Indonesia, Japan, Korea, Malaysia, Myanmar, Tibet",
+    "Common classification": "",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Güiro",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "112.23",
+    "Origin": "Cuba, Panama",
+    "Common classification": "unpitched percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Handpan",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.24",
+    "Origin": "",
+    "Common classification": "pitched percussion",
+    "Relation": "steelpan"
+  },
+  {
+    "Instrument": "Hang",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.24",
+    "Origin": "",
+    "Common classification": "pitched percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Kayamb",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "",
+    "Origin": "Africa",
+    "Common classification": "",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Kemanak",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "",
+    "Origin": "Indonesia",
+    "Common classification": "unpitched percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Khartal",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "",
+    "Origin": "Mauritius, Réunion",
+    "Common classification": "",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Kouxian",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "121.2",
+    "Origin": "China",
+    "Common classification": "",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Kulintang",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "",
+    "Origin": "Brunei, Indonesia, Malaysia, Philippines",
+    "Common classification": "",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Maraca",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "112.1",
+    "Origin": "Venezuela",
+    "Common classification": "unpitched percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Marimba",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.212",
+    "Origin": "Africa, Guatemala, Mexico, Honduras, Nicaragua, & Costa Rica",
+    "Common classification": "pitched percussion",
+    "Relation": "keyboard"
+  },
+  {
+    "Instrument": "Mbira",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "122.1",
+    "Origin": "Africa, Equatorial Guinea, Zimbabwe",
+    "Common classification": "pitched percussion",
+    "Relation": "keyboard"
+  },
+  {
+    "Instrument": "Pate",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.24",
+    "Origin": "Polynesia",
+    "Common classification": "",
+    "Relation": "slit drum"
+  },
+  {
+    "Instrument": "Shekere",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "112.122",
+    "Origin": "Brazil, Burkina Faso, Cuba, Gambia, Guinea, Guinea-Bissau, Ivory Coast, Mali, Nigeria, Senegal",
+    "Common classification": "percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Slit drum",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.24",
+    "Origin": "",
+    "Common classification": "",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Spoon",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.14",
+    "Origin": "Greece, Russia, Turkey",
+    "Common classification": "unpitched percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Steelpan",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.24",
+    "Origin": "Trinidad & Tobago",
+    "Common classification": "pitched percussion",
+    "Relation": "steelpan"
+  },
+  {
+    "Instrument": "Tambourine",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "211.311",
+    "Origin": "Belarus, Bosnia and Herzegovina, Czech, Greece, Hungary, Iran, North Macedonia, Pakistan, Poland, Portugal, Russia, Slovenia, Tajikistan, Turkey, Ukraine, United Arab Emirates",
+    "Common classification": "unpitched percussion",
+    "Relation": "frame drum"
+  },
+  {
+    "Instrument": "Teponaztli",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.24",
+    "Origin": "El Salvador, Guatemala, Mexico",
+    "Common classification": "",
+    "Relation": "slit drum"
+  },
+  {
+    "Instrument": "Triangle",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.2",
+    "Origin": "Cajuns",
+    "Common classification": "unpitched percussion",
+    "Relation": "triangle"
+  },
+  {
+    "Instrument": "Txalaparta",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.222",
+    "Origin": "Basque",
+    "Common classification": "unpitched percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Vibraphone",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.222",
+    "Origin": "",
+    "Common classification": "pitched percussion",
+    "Relation": "keyboard"
+  },
+  {
+    "Instrument": "Vibraslap",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "112.12",
+    "Origin": "United States",
+    "Common classification": "",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Washboard",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "",
+    "Origin": "Cajuns, United States",
+    "Common classification": "unpitched percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Wood block",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.24",
+    "Origin": "",
+    "Common classification": "unpitched percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Wooden fish",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.24",
+    "Origin": "China",
+    "Common classification": "",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Xylophone",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.212",
+    "Origin": "Ghana, Uganda, Zambia",
+    "Common classification": "pitched percussion",
+    "Relation": "keyboard"
+  },
+  {
+    "Instrument": "Zill",
+    "Photo": "",
+    "Classification": "idiophones",
+    "H-S Number": "111.142",
+    "Origin": "Asia, Saudi Arabia, Turkey",
+    "Common classification": "unpitched percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Agida",
+    "Classification": "membranophones",
+    "H-S Number": "201.212",
+    "Origin": "Suriname",
+    "Common classification": "percussion",
+    "Relation": "bass drum"
+  },
+  {
+    "Instrument": "Alfaia",
+    "Classification": "membranophones",
+    "H-S Number": "211.212.1",
+    "Origin": "Brazil",
+    "Common classification": "percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Apinti",
+    "Classification": "membranophones",
+    "H-S Number": "211.212",
+    "Origin": "Suriname",
+    "Common classification": "percussion",
+    "Relation": "tenor drum"
+  },
+  {
+    "Instrument": "Arobapá",
+    "Classification": "membranophones",
+    "H-S Number": "211.21",
+    "Origin": "Cuba",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Ashiko",
+    "Classification": "membranophones",
+    "H-S Number": "211.251.1",
+    "Origin": "Yoruba",
+    "Common classification": "percussion",
+    "Relation": "djembe"
+  },
+  {
+    "Instrument": "Atabaque",
+    "Classification": "membranophones",
+    "H-S Number": "211.221.1",
+    "Origin": "Brazil",
+    "Common classification": "percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Baboula",
+    "Classification": "membranophones",
+    "H-S Number": "211.221.1",
+    "Origin": "Grenada",
+    "Common classification": "percussion",
+    "Relation": "barrel drum"
+  },
+  {
+    "Instrument": "Balaban",
+    "Classification": "membranophones",
+    "H-S Number": "211.311",
+    "Origin": "Montserrat",
+    "Common classification": "percussion",
+    "Relation": "frame drum"
+  },
+  {
+    "Instrument": "Balsié",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "Dominican Republic",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Bamboula",
+    "Classification": "membranophones",
+    "H-S Number": "211.211.2",
+    "Origin": "Haiti",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Bara",
+    "Classification": "membranophones",
+    "H-S Number": "211.11",
+    "Origin": "Burkina Faso, Ivory Coast, Mali",
+    "Common classification": "percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Barrel drum",
+    "Classification": "membranophones",
+    "H-S Number": "211.222",
+    "Origin": "Cuba",
+    "Common classification": "percussion",
+    "Relation": "barrel drum"
+  },
+  {
+    "Instrument": ["Barriles", "Buleador", "Primo", "Repicador", "Subidor"],
+    "Classification": "membranophones",
+    "H-S Number": "211.221.2",
+    "Origin": "Puerto Rico",
+    "Common classification": "percussion",
+    "Relation": "barrel drum"
+  },
+  {
+    "Instrument": "Bass drum",
+    "Classification": "membranophones",
+    "H-S Number": "211.212",
+    "Origin": "",
+    "Common classification": "percussion",
+    "Relation": "bass drum"
+  },
+  {
+    "Instrument": "Bedug",
+    "Classification": "membranophones",
+    "H-S Number": "211.212.1",
+    "Origin": "Indonesia",
+    "Common classification": "percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Bodhrán",
+    "Classification": "membranophones",
+    "H-S Number": "211.321",
+    "Origin": "Ireland, Scotland",
+    "Common classification": "percussion",
+    "Relation": "frame drum"
+  },
+  {
+    "Instrument": "Bongo drums",
+    "Classification": "membranophones",
+    "H-S Number": "211.251.2",
+    "Origin": "Cuba",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Boobam",
+    "Classification": "membranophones",
+    "H-S Number": "211.211.1",
+    "Origin": "US",
+    "Common classification": "percussion",
+    "Relation": "tom-tom"
+  },
+  {
+    "Instrument": ["Candombe", "Chico", "Repique"],
+    "Classification": "membranophones",
+    "H-S Number": "211.221.1",
+    "Origin": "Uruguay",
+    "Common classification": "percussion",
+    "Relation": "conga"
+  },
+  {
+    "Instrument": [
+      "Chenda (Chande)",
+      "Uruttu chenda",
+      "Veekku chenda",
+      "Acchan chenda"
+    ],
+    "Classification": "membranophones",
+    "H-S Number": "211.212",
+    "Origin": "India",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": [
+      "Conga (Tumbadora)",
+      "Ricardo",
+      "Requinto",
+      "Quinto",
+      "Conga",
+      "Tumba",
+      "Supertumba"
+    ],
+    "Classification": "membranophones",
+    "H-S Number": "211.221.1",
+    "Origin": "Caribbean",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Cuíca",
+    "Classification": "membranophones",
+    "H-S Number": "231.11",
+    "Origin": "Brazil",
+    "Common classification": "percussion",
+    "Relation": "friction drum"
+  },
+  {
+    "Instrument": "Culoepuya",
+    "Classification": "membranophones",
+    "H-S Number": "",
+    "Origin": "Venezuela",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Dabakan",
+    "Classification": "membranophones",
+    "H-S Number": "211.261.2",
+    "Origin": "Philippines",
+    "Common classification": "percussion",
+    "Relation": "goblet drum"
+  },
+  {
+    "Instrument": "Daf (Dap, Def)",
+    "Classification": "membranophones",
+    "H-S Number": "211.311",
+    "Origin": "Iran",
+    "Common classification": "percussion",
+    "Relation": "frame drum"
+  },
+  {
+    "Instrument": "Damaru",
+    "Classification": "membranophones",
+    "H-S Number": "211.3",
+    "Origin": "India, Nepal, Tibet",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": [
+      "Davul (Dahol, Daul, Daouli, Dhaulli)",
+      "Dohol",
+      "Tapan, Topan, Tupan",
+      "Tabl",
+      "Toba, Towla",
+      "Tof"
+    ],
+    "Classification": "membranophones",
+    "H-S Number": "211.212",
+    "Origin": "Turkey",
+    "Common classification": "percussion",
+    "Relation": "bass drum"
+  },
+  {
+    "Instrument": "Dayereh",
+    "Classification": "membranophones",
+    "H-S Number": "211.311",
+    "Origin": "Azerbaijan, Bulgaria, Iran, Kazakhstan, Kyrgyzstan, North Macedonia, Tajikistan, Turkmenistan, Uzbekistan",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Den-den daiko",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "Japan",
+    "Common classification": "percussion",
+    "Relation": "bell"
+  },
+  {
+    "Instrument": "Dhak",
+    "Classification": "membranophones",
+    "H-S Number": "",
+    "Origin": "Bangladesh, India",
+    "Common classification": "percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Dhimay (Dhimaya)",
+    "Classification": "membranophones",
+    "H-S Number": "211.212",
+    "Origin": "Nepal",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Dhol",
+    "Classification": "membranophones",
+    "H-S Number": "211.212",
+    "Origin": "Asia, India, Pakistan",
+    "Common classification": "percussion",
+    "Relation": "bass drum"
+  },
+  {
+    "Instrument": "Dholak (Dholaki)",
+    "Classification": "membranophones",
+    "H-S Number": "211.222",
+    "Origin": "Asia, Bangladesh, India, Nepal, Pakistan, Sri Lanka",
+    "Common classification": "percussion",
+    "Relation": "barrel drum"
+  },
+  {
+    "Instrument": "Dimdi",
+    "Classification": "membranophones",
+    "H-S Number": "211.311",
+    "Origin": "India",
+    "Common classification": "percussion",
+    "Relation": "frame drum"
+  },
+  {
+    "Instrument": "Djembe",
+    "Classification": "membranophones",
+    "H-S Number": "211.261.1",
+    "Origin": "West Africa, Burkina Faso, Gambia, Guinea, Guinea-Bissau, Mali, Senegal",
+    "Common classification": "percussion",
+    "Relation": "goblet drum"
+  },
+  {
+    "Instrument": "Dollu",
+    "Classification": "membranophones",
+    "H-S Number": "211.222.1",
+    "Origin": "India",
+    "Common classification": "percussion",
+    "Relation": "frame drum"
+  },
+  {
+    "Instrument": "Drum",
+    "Classification": "membranophones",
+    "H-S Number": "",
+    "Origin": "",
+    "Common classification": "percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Drum kit",
+    "Classification": "idiophones and membranophones",
+    "H-S Number": "1/2",
+    "Origin": "North American",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Dunun (Dundun)",
+    "Classification": "membranophones",
+    "H-S Number": "211.212.1",
+    "Origin": "West Africa, Burkina Faso, Ivory Coast, Gambia, Guinea, Mali, Senegal",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Gran Cassa",
+    "Classification": "membranophones",
+    "H-S Number": "211.212",
+    "Origin": "Italy",
+    "Common classification": "percussion",
+    "Relation": "bass drum"
+  },
+  {
+    "Instrument": "Goblet drum",
+    "Classification": "membranophones",
+    "H-S Number": "211.26",
+    "Origin": "Ancient",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Gong bass drum",
+    "Classification": "membranophones",
+    "H-S Number": "",
+    "Origin": "",
+    "Common classification": "percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Hira-daiko",
+    "Classification": "membranophones",
+    "H-S Number": "1",
+    "Origin": "Japan",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Idakka",
+    "Classification": "membranophones",
+    "H-S Number": "211.242.1",
+    "Origin": "Southern India",
+    "Common classification": "percussion",
+    "Relation": "Talking drum"
+  },
+  {
+    "Instrument": "Ilimba drum",
+    "Classification": "membranophones",
+    "H-S Number": "211.11",
+    "Origin": "Zimbabwe",
+    "Common classification": "percussion",
+    "Relation": "gourd drum"
+  },
+  {
+    "Instrument": ["Ingoma", "Ishakwe", "Inyahura", "Igihumurizo"],
+    "Classification": "membranophones",
+    "H-S Number": "211.212",
+    "Origin": "Rwanda",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Janggu (Janggo, changgo)",
+    "Classification": "membranophones",
+    "H-S Number": "211.242",
+    "Origin": "Korea",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Jew's harp",
+    "Classification": "membranophones",
+    "H-S Number": "121.22",
+    "Origin": "China",
+    "Common classification": "percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Junjung",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "Gambia, Senegal",
+    "Common classification": "percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Kakko",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "Japan",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Kanjira",
+    "Classification": "membranophones",
+    "H-S Number": "211.311",
+    "Origin": "India",
+    "Common classification": "percussion",
+    "Relation": "frame drum"
+  },
+  {
+    "Instrument": "Kebero",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "Ethiopia",
+    "Common classification": "percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Kendang",
+    "Classification": "membranophones",
+    "H-S Number": "211.222",
+    "Origin": "Indonesia",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Khol (Mrdanga)",
+    "Classification": "membranophones",
+    "H-S Number": "211.232",
+    "Origin": "India",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Krakebs",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "Algeria, Berbers, Morocco, Saudi Arabia, Tunisia",
+    "Common classification": "percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Lambeg drum",
+    "Classification": "membranophones",
+    "H-S Number": "211.212",
+    "Origin": "Ireland",
+    "Common classification": "percussion",
+    "Relation": "bass drum"
+  },
+  {
+    "Instrument": "Madhalam",
+    "Classification": "membranophones",
+    "H-S Number": "211.212",
+    "Origin": "India",
+    "Common classification": "percussion",
+    "Relation": "mridangam"
+  },
+  {
+    "Instrument": "Madal",
+    "Classification": "membranophones",
+    "H-S Number": "211.212",
+    "Origin": "India, Nepal",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Maddale",
+    "Classification": "membranophones",
+    "H-S Number": "211.212",
+    "Origin": "India",
+    "Common classification": "percussion",
+    "Relation": "mridangam"
+  },
+  {
+    "Instrument": "Maktoum (maktoom, katem)",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "Afro-Arab",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Maram",
+    "Classification": "membranophones",
+    "H-S Number": "",
+    "Origin": "India",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Mirwas",
+    "Classification": "membranophones",
+    "H-S Number": "",
+    "Origin": "Bahrain, Brunei, Indonesia, Oman, Saudi Arabia, Yemen",
+    "Common classification": "percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Mridangam",
+    "Classification": "membranophones",
+    "H-S Number": "211.212",
+    "Origin": "India",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Nagara",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "Asia, Azerbaijan, Dagestan, Iran, Turkey, Turkmenistan",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Naqareh",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "Azerbaijan, India, Saudi Arabia, Turkey, Turkmenistan, Uzbekistan",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "O-daiko",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "Japan",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Okedo-daiko",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "Japan",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Octaban",
+    "Classification": "membranophones",
+    "H-S Number": "211.211.1",
+    "Origin": "US",
+    "Common classification": "percussion",
+    "Relation": "boobam"
+  },
+  {
+    "Instrument": "Padayani thappu",
+    "Classification": "membranophones",
+    "H-S Number": "211.311",
+    "Origin": "India",
+    "Common classification": "percussion",
+    "Relation": "frame drum"
+  },
+  {
+    "Instrument": "Pakhavaj",
+    "Classification": "membranophones",
+    "H-S Number": "211.212",
+    "Origin": "India",
+    "Common classification": "percussion",
+    "Relation": "mridangam"
+  },
+  {
+    "Instrument": "Pandero",
+    "Classification": "membranophones",
+    "H-S Number": "211.3",
+    "Origin": "Dominican",
+    "Common classification": "percussion",
+    "Relation": "frame drum"
+  },
+  {
+    "Instrument": "Parai",
+    "Classification": "membranophones",
+    "H-S Number": "211.311",
+    "Origin": "India",
+    "Common classification": "percussion",
+    "Relation": "frame drum"
+  },
+  {
+    "Instrument": "Qilaut",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "North American, Nunavut",
+    "Common classification": "percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Rebana",
+    "Classification": "membranophones",
+    "H-S Number": "211.311",
+    "Origin": "Brunei, Indonesia, Malaysia",
+    "Common classification": "percussion",
+    "Relation": "frame drum"
+  },
+  {
+    "Instrument": "Sabar",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "Gambia, Senegal",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Sambal",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "India",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Samphor",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "Cambodia",
+    "Common classification": "percussion",
+    "Relation": "barrel drum"
+  },
+  {
+    "Instrument": "Shime-daiko",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "Japan",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Snare drum",
+    "Classification": "membranophones",
+    "H-S Number": "211.212.11",
+    "Origin": "",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Surdo",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "Brazil",
+    "Common classification": "percussion",
+    "Relation": "bass drum"
+  },
+  {
+    "Instrument": "Tabla",
+    "Classification": "membranophones",
+    "H-S Number": "211.12",
+    "Origin": "Afghanistan, Bangladesh, India, Nepal, Pakistan, Sri Lanka",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Taiko",
+    "Classification": "membranophones",
+    "H-S Number": "211.12",
+    "Origin": "Japan",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Talking drum",
+    "Classification": "membranophones",
+    "H-S Number": "211.241.2",
+    "Origin": "West Africa, Ghana, Ivory Coast, Senegal, Yoruba",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Tsukeshime-daiko",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "Japan",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Tambor huacana",
+    "Classification": "idiophones or membranophones",
+    "H-S Number": "1/2",
+    "Origin": "Mexico",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Tambori",
+    "Classification": "membranophones",
+    "H-S Number": "1/2",
+    "Origin": "Andorra, Catalonia, Spain",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Tamborim",
+    "Classification": "membranophones",
+    "H-S Number": "211.311",
+    "Origin": "Brazil",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Tamborita calentana (Mexico)",
+    "Classification": "membranophones",
+    "H-S Number": "1/2",
+    "Origin": "Mexico",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Tambou bas a dé fas",
+    "Classification": "membranophones",
+    "H-S Number": "211.212.2",
+    "Origin": "Guadeloupe",
+    "Common classification": "percussion",
+    "Relation": "bass drum"
+  },
+  {
+    "Instrument": "Tambou bas a yon fas",
+    "Classification": "membranophones",
+    "H-S Number": "211.221-7",
+    "Origin": "Guadeloupe",
+    "Common classification": "percussion",
+    "Relation": "bass drum"
+  },
+  {
+    "Instrument": "Tan-tan",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "Brazil",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Taphon",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "Thailand",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Tar",
+    "Classification": "membranophones",
+    "H-S Number": "211.311",
+    "Origin": "Saudi Arabia",
+    "Common classification": "percussion",
+    "Relation": "frame drum"
+  },
+  {
+    "Instrument": "Tbilat",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "Morocco, Saudi Arabia",
+    "Common classification": "percussion",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Thavil",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "India",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Timbales",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "Cuba",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Timpani (kettledrum)",
+    "Classification": "membranophones",
+    "H-S Number": "211.11-922",
+    "Origin": "",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Tom-tom",
+    "Classification": "membranophones",
+    "H-S Number": "211.212.1",
+    "Origin": "",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Tombak",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "Iran",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Tsuzumi",
+    "Classification": "membranophones",
+    "H-S Number": "1/2",
+    "Origin": "Japan",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Tsuri-daiko",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "Japan",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Repique",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "Brazil",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Uchiwa-daiko",
+    "Classification": "membranophones",
+    "H-S Number": "2",
+    "Origin": "Japan",
+    "Common classification": "percussion",
+    "Relation": "drum"
+  },
+  {
+    "Instrument": "Accordina (instrument)",
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "Italy",
+    "Common classification": "free reed instruments",
+    "Relation": "clarinet"
+  },
+  {
+    "Instrument": [
+      "Accordion",
+      "Button accordion",
+      "Cajun accordion",
+      "Chromatic button accordion",
+      "Diatonic button accordion",
+      "Free bass accordion",
+      "Piano accordion",
+      "Schrammel accordion",
+      "Steirische Harmonika"
+    ],
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "Europe",
+    "Common classification": "free reed instruments",
+    "Relation": "accordion"
+  },
+  {
+    "Instrument": "Accordola",
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "United States of America",
+    "Common classification": "free reed instruments",
+    "Relation": "mouth organ"
+  },
+  {
+    "Instrument": "Air horn",
+    "Classification": "aerophones",
+    "H-S Number": "423",
+    "Origin": "",
+    "Common classification": "Plosive?",
+    "Relation": "Trumpet"
+  },
+  {
+    "Instrument": "Alboka",
+    "Classification": "aerophones",
+    "H-S Number": "422.2",
+    "Origin": "Basque Country",
+    "Common classification": "reed instruments",
+    "Relation": "clarinet"
+  },
+  {
+    "Instrument": "Algaita",
+    "Classification": "aerophones",
+    "H-S Number": "",
+    "Origin": "Niger",
+    "Common classification": "reed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Alphorn",
+    "Classification": "aerophones",
+    "H-S Number": "423.121.22",
+    "Origin": "Switzerland",
+    "Common classification": "woodwinds",
+    "Relation": "natural trumpet"
+  },
+  {
+    "Instrument": "Alto horn",
+    "Classification": "aerophones",
+    "H-S Number": "423.232",
+    "Origin": "Belgium",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Arghul",
+    "Classification": "aerophones",
+    "H-S Number": "422.2",
+    "Origin": "Egypt, Syria, Turkey",
+    "Common classification": "reed instruments",
+    "Relation": "clarinet"
+  },
+  {
+    "Instrument": "Atenteben",
+    "Classification": "aerophones",
+    "H-S Number": "422.2",
+    "Origin": "Ghana",
+    "Common classification": "woodwinds",
+    "Relation": "flute"
+  },
+  {
+    "Instrument": "Aulos",
+    "Classification": "aerophones",
+    "H-S Number": "",
+    "Origin": "",
+    "Common classification": "reed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Bagpipe",
+    "Classification": "aerophones",
+    "H-S Number": "422",
+    "Origin": "Europe",
+    "Common classification": "reed instruments",
+    "Relation": "bagpipe"
+  },
+  {
+    "Instrument": "Balaban",
+    "Classification": "aerophones",
+    "H-S Number": "422.111.2",
+    "Origin": "Azerbaijan, Iran",
+    "Common classification": "reed instruments",
+    "Relation": "oboe, duduk"
+  },
+  {
+    "Instrument": "Bandoneón",
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "Latin America",
+    "Common classification": "free reed instruments",
+    "Relation": "accordion"
+  },
+  {
+    "Instrument": "Bansuri",
+    "Classification": "aerophones",
+    "H-S Number": "421.121.12",
+    "Origin": "India",
+    "Common classification": "woodwinds",
+    "Relation": "flute"
+  },
+  {
+    "Instrument": "Baritone horn",
+    "Classification": "aerophones",
+    "H-S Number": "423.232",
+    "Origin": "Germany",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Baritone voice",
+    "Classification": "aerophones",
+    "H-S Number": "43",
+    "Origin": "",
+    "Common classification": "vocal registers",
+    "Relation": "human voice"
+  },
+  {
+    "Instrument": ["Bassoon", "Contrabassoon/double bassoon", "Tenoroon"],
+    "Classification": "aerophones",
+    "H-S Number": "422.112.2–71",
+    "Origin": "Western Europe",
+    "Common classification": "reed instruments",
+    "Relation": "oboe"
+  },
+  {
+    "Instrument": "Bawu",
+    "Classification": "aerophones",
+    "H-S Number": "412.131",
+    "Origin": "China",
+    "Common classification": "free reed instruments",
+    "Relation": "pitch pipe"
+  },
+  {
+    "Instrument": "Bayan",
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "Russia",
+    "Common classification": "free reed instruments",
+    "Relation": "accordion"
+  },
+  {
+    "Instrument": "Bazooka",
+    "Classification": "aerophones",
+    "H-S Number": "423.121.11",
+    "Origin": "",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Beatboxing",
+    "Classification": "aerophones",
+    "H-S Number": "43",
+    "Origin": "",
+    "Common classification": "vocal techniques",
+    "Relation": "human voice"
+  },
+  {
+    "Instrument": "Bifora",
+    "Classification": "aerophones",
+    "H-S Number": "422.11",
+    "Origin": "Italy (Sicily)",
+    "Common classification": "reed instruments",
+    "Relation": "oboe"
+  },
+  {
+    "Instrument": "Birbynė",
+    "Classification": "aerophones",
+    "H-S Number": "422.112.2",
+    "Origin": "Lithuania",
+    "Common classification": "reed instruments",
+    "Relation": "oboe"
+  },
+  {
+    "Instrument": "Blul",
+    "Classification": "aerophones",
+    "H-S Number": "421.111.12",
+    "Origin": "Greece",
+    "Common classification": "woodwinds",
+    "Relation": "end-blown flute, kaval"
+  },
+  {
+    "Instrument": "Blown bottle",
+    "Classification": "aerophones",
+    "H-S Number": "",
+    "Origin": "",
+    "Common classification": "",
+    "Relation": ""
+  },
+  {
+    "Instrument": ["Bombarde", "Chromatic bombarde"],
+    "Classification": "aerophones",
+    "H-S Number": "422.112.2",
+    "Origin": "France",
+    "Common classification": "reed instruments",
+    "Relation": "oboe"
+  },
+  {
+    "Instrument": "Buccina",
+    "Classification": "aerophones",
+    "H-S Number": "423.121.21",
+    "Origin": "Italy (Ancient Rome)",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Bugle",
+    "Classification": "aerophones",
+    "H-S Number": "423.121.22",
+    "Origin": "Europe",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Bullroarer",
+    "Classification": "aerophones",
+    "H-S Number": "41",
+    "Origin": "Ancient civilizations",
+    "Common classification": "noise makers",
+    "Relation": "sirens"
+  },
+  {
+    "Instrument": "Calliope",
+    "Classification": "aerophones",
+    "H-S Number": "421.222.3",
+    "Origin": "Western Europe/North America",
+    "Common classification": "fipple flutes",
+    "Relation": "organ"
+  },
+  {
+    "Instrument": "Castrato",
+    "Classification": "aerophones",
+    "H-S Number": "43",
+    "Origin": "",
+    "Common classification": "vocal registers",
+    "Relation": "human voice"
+  },
+  {
+    "Instrument": "Chalumeau",
+    "Classification": "aerophones",
+    "H-S Number": "422.2",
+    "Origin": "France",
+    "Common classification": "reed instruments",
+    "Relation": "clarinet"
+  },
+  {
+    "Instrument": "Cimbasso",
+    "Classification": "aerophones",
+    "H-S Number": "423.232",
+    "Origin": "Italy",
+    "Common classification": "brass instruments",
+    "Relation": "trombone"
+  },
+  {
+    "Instrument": [
+      "Alto clarinet",
+      "Bass clarinet",
+      "Basset clarinet",
+      "Basset horn",
+      "Clarinette d'amour",
+      "Contra-alto clarinet",
+      "Contrabass clarinet",
+      "Piccolo clarinet",
+      "A♭ clarinet",
+      "Sopranino clarinet",
+      "E♭ clarinet",
+      "D clarinet",
+      "Soprano clarinet",
+      "C clarinet",
+      "B♭ clarinet",
+      "A clarinet",
+      "G clarinet",
+      "Octocontra-alto clarinet",
+      "Octocontrabass clarinet"
+    ],
+    "Classification": "aerophones",
+    "H-S Number": "422.2",
+    "Origin": "Germany",
+    "Common classification": "reed instruments",
+    "Relation": "clarinet"
+  },
+  {
+    "Instrument": "Clarytone",
+    "Classification": "aerophones",
+    "H-S Number": "421.221",
+    "Origin": "South Africa",
+    "Common classification": "fipple flutes",
+    "Relation": "tin whistle"
+  },
+  {
+    "Instrument": ["Concertina", "Chemnitzer concertina"],
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "Europe",
+    "Common classification": "free reed instruments",
+    "Relation": "accordion"
+  },
+  {
+    "Instrument": "Conch",
+    "Classification": "aerophones",
+    "H-S Number": "423.111",
+    "Origin": "",
+    "Common classification": "trumpets",
+    "Relation": "conch"
+  },
+  {
+    "Instrument": "Cornamuse",
+    "Classification": "aerophones",
+    "H-S Number": "422.111.2",
+    "Origin": "Europe",
+    "Common classification": "reed instruments",
+    "Relation": "oboe"
+  },
+  {
+    "Instrument": ["Cornet", "Soprano cornet"],
+    "Classification": "aerophones",
+    "H-S Number": "423.232",
+    "Origin": "France",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Cornett",
+    "Classification": "aerophones",
+    "H-S Number": "423.2",
+    "Origin": "Northern Europe",
+    "Common classification": "natural trumpets",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Cornu",
+    "Classification": "aerophones",
+    "H-S Number": "423.121.21",
+    "Origin": "Italy (Ancient Rome)",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Corrugaphone",
+    "Classification": "aerophones",
+    "H-S Number": "411",
+    "Origin": "",
+    "Common classification": "noise makers",
+    "Relation": "whip"
+  },
+  {
+    "Instrument": "Countertenor",
+    "Classification": "aerophones",
+    "H-S Number": "43",
+    "Origin": "",
+    "Common classification": "vocal registers",
+    "Relation": "human voice"
+  },
+  {
+    "Instrument": "Cromorne",
+    "Classification": "aerophones",
+    "H-S Number": "422.11",
+    "Origin": "France",
+    "Common classification": "reed instruments",
+    "Relation": "oboe"
+  },
+  {
+    "Instrument": "Crumhorn",
+    "Classification": "aerophones",
+    "H-S Number": "422.111.2",
+    "Origin": "Western Europe",
+    "Common classification": "reed instruments",
+    "Relation": "oboe"
+  },
+  {
+    "Instrument": "Danso",
+    "Classification": "aerophones",
+    "H-S Number": "421.111.12",
+    "Origin": "Korea",
+    "Common classification": "woodwinds",
+    "Relation": "end-blown flute"
+  },
+  {
+    "Instrument": "Death growl",
+    "Classification": "aerophones",
+    "H-S Number": "43",
+    "Origin": "England",
+    "Common classification": "vocal techniques",
+    "Relation": "human voice"
+  },
+  {
+    "Instrument": "Didgeridoo",
+    "Classification": "aerophones",
+    "H-S Number": "423.121.11",
+    "Origin": "Australia",
+    "Common classification": "natural trumpets",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Diple (or dvojnice)",
+    "Classification": "aerophones",
+    "H-S Number": "422.21/22",
+    "Origin": "Croatia",
+    "Common classification": "reed instruments",
+    "Relation": "bagpipe"
+  },
+  {
+    "Instrument": "Dizi",
+    "Classification": "aerophones",
+    "H-S Number": "421.121.12",
+    "Origin": "China",
+    "Common classification": "woodwinds",
+    "Relation": "flute"
+  },
+  {
+    "Instrument": "Double bell euphonium",
+    "Classification": "aerophones",
+    "H-S Number": "423.232",
+    "Origin": "United States of America",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Doulophone/cuprophone",
+    "Classification": "aerophones",
+    "H-S Number": "423.121.22",
+    "Origin": "US",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Duduk",
+    "Classification": "aerophones",
+    "H-S Number": "422.111.2",
+    "Origin": "Armenia",
+    "Common classification": "reed instruments",
+    "Relation": "oboe"
+  },
+  {
+    "Instrument": "Dulcian",
+    "Classification": "aerophones",
+    "H-S Number": "422.112.2",
+    "Origin": "Western Europe",
+    "Common classification": "reed instruments",
+    "Relation": "bassoon"
+  },
+  {
+    "Instrument": "Dulzaina",
+    "Classification": "aerophones",
+    "H-S Number": "422.112.2",
+    "Origin": "Spain",
+    "Common classification": "reed instruments",
+    "Relation": "oboe"
+  },
+  {
+    "Instrument": "Dung-Dkar",
+    "Classification": "aerophones",
+    "H-S Number": "423.111",
+    "Origin": "Tibet",
+    "Common classification": "trumpets",
+    "Relation": "conch"
+  },
+  {
+    "Instrument": "Dzhamara",
+    "Classification": "aerophones",
+    "H-S Number": "421.111.12",
+    "Origin": "Greece",
+    "Common classification": "woodwinds",
+    "Relation": "end-blown flute, kaval"
+  },
+  {
+    "Instrument": "English horn",
+    "Classification": "aerophones",
+    "H-S Number": "422.112.-71",
+    "Origin": "Western Europe",
+    "Common classification": "reed instruments",
+    "Relation": "oboe"
+  },
+  {
+    "Instrument": "Euphonium",
+    "Classification": "aerophones",
+    "H-S Number": "423.232",
+    "Origin": "Germany",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Falsetto",
+    "Classification": "aerophones",
+    "H-S Number": "43",
+    "Origin": "",
+    "Common classification": "vocal techniques",
+    "Relation": "human voice"
+  },
+  {
+    "Instrument": "Fife",
+    "Classification": "aerophones",
+    "H-S Number": "421.121.12",
+    "Origin": "Portugal, Switzerland",
+    "Common classification": "woodwinds",
+    "Relation": "flute"
+  },
+  {
+    "Instrument": "Firebird (trumpet)",
+    "Classification": "aerophones",
+    "H-S Number": "423.21/22",
+    "Origin": "Canada",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet, slide trumpet"
+  },
+  {
+    "Instrument": "Fiscorn",
+    "Classification": "aerophones",
+    "H-S Number": "423.231",
+    "Origin": "Spain",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Flabiol",
+    "Classification": "aerophones",
+    "H-S Number": "421.221.12",
+    "Origin": "Aragon, Balearic Islands, Spain",
+    "Common classification": "fipple flutes",
+    "Relation": "recorder"
+  },
+  {
+    "Instrument": "Flageolet",
+    "Classification": "aerophones",
+    "H-S Number": "421.221.12",
+    "Origin": "France",
+    "Common classification": "fipple flutes",
+    "Relation": "recorder"
+  },
+  {
+    "Instrument": "Flatt trumpet",
+    "Classification": "aerophones",
+    "H-S Number": "423.21/22",
+    "Origin": "England",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet, slide trumpet"
+  },
+  {
+    "Instrument": "Flugelhorn",
+    "Classification": "aerophones",
+    "H-S Number": "423.232",
+    "Origin": "Germany",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Flumpet",
+    "Classification": "aerophones",
+    "H-S Number": "423.233",
+    "Origin": "US",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Flutina",
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "Europe",
+    "Common classification": "free reed instruments",
+    "Relation": "accordion"
+  },
+  {
+    "Instrument": "Flute",
+    "Classification": "aerophones",
+    "H-S Number": "",
+    "Origin": "France",
+    "Common classification": "woodwinds",
+    "Relation": "flute"
+  },
+  {
+    "Instrument": "Folgerphone",
+    "Classification": "aerophones",
+    "H-S Number": "422.2",
+    "Origin": "United States of America",
+    "Common classification": "reed instruments",
+    "Relation": "clarinet"
+  },
+  {
+    "Instrument": "French horn",
+    "Classification": "aerophones",
+    "H-S Number": "423.232",
+    "Origin": "Europe",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Fujara",
+    "Classification": "aerophones",
+    "H-S Number": "421.221.12",
+    "Origin": "Slovakia",
+    "Common classification": "fipple flutes",
+    "Relation": "recorder"
+  },
+  {
+    "Instrument": "Gaida",
+    "Classification": "aerophones",
+    "H-S Number": "422",
+    "Origin": "Balkans, Southeast Europe",
+    "Common classification": "reed instruments",
+    "Relation": "bagpipe"
+  },
+  {
+    "Instrument": "Gaita gastoreña",
+    "Classification": "aerophones",
+    "H-S Number": "",
+    "Origin": "Andalusia",
+    "Common classification": "hornpipe",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Garmon",
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "Russia, Tatarstan",
+    "Common classification": "free reed instruments",
+    "Relation": "accordion"
+  },
+  {
+    "Instrument": "Gemshorn",
+    "Classification": "aerophones",
+    "H-S Number": "421.221.42",
+    "Origin": "Germany",
+    "Common classification": "fipple flutes",
+    "Relation": "ocarina"
+  },
+  {
+    "Instrument": "Gralla",
+    "Classification": "aerophones",
+    "H-S Number": "422.112",
+    "Origin": "Spain",
+    "Common classification": "reed instruments",
+    "Relation": "oboe, shawm,"
+  },
+  {
+    "Instrument": ["Guan", "Guanzi", "Houguan"],
+    "Classification": "aerophones",
+    "H-S Number": "422.111.2",
+    "Origin": "China",
+    "Common classification": "reed instruments",
+    "Relation": "oboe"
+  },
+  {
+    "Instrument": "Hano",
+    "Classification": "aerophones",
+    "H-S Number": "421.111.12",
+    "Origin": "Hawaii",
+    "Common classification": "woodwinds",
+    "Relation": "nose flute"
+  },
+  {
+    "Instrument": "Harmoneon",
+    "Classification": "aerophones",
+    "H-S Number": "421.132",
+    "Origin": "Hawaii",
+    "Common classification": "free reed instruments",
+    "Relation": "accordion"
+  },
+  {
+    "Instrument": [
+      "Harmonica",
+      "Chromatic harmonica",
+      "Diatonic harmonica",
+      "Tremolo harmonica",
+      "Orchestral harmonica",
+      "ChenGong harmonica"
+    ],
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "Germany",
+    "Common classification": "free reed instruments",
+    "Relation": "harmonica"
+  },
+  {
+    "Instrument": "Harmonium",
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "Denmark",
+    "Common classification": "free reed instruments",
+    "Relation": "reed organ"
+  },
+  {
+    "Instrument": ["Heckelphone", "Piccolo heckelphone", "Terz heckelphone"],
+    "Classification": "aerophones",
+    "H-S Number": "422.112.2",
+    "Origin": "Germany",
+    "Common classification": "reed instruments",
+    "Relation": "oboe, English horn"
+  },
+  {
+    "Instrument": "Helicon",
+    "Classification": "aerophones",
+    "H-S Number": "423.232",
+    "Origin": "Europe",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Horagai",
+    "Classification": "aerophones",
+    "H-S Number": "423.111.2",
+    "Origin": "Japan",
+    "Common classification": "trumpets",
+    "Relation": "conch"
+  },
+  {
+    "Instrument": "Hosaphone",
+    "Classification": "aerophones",
+    "H-S Number": "423.1",
+    "Origin": "",
+    "Common classification": "natural trumpets",
+    "Relation": "tube trumpet"
+  },
+  {
+    "Instrument": "Hotchiku",
+    "Classification": "aerophones",
+    "H-S Number": "421.111.12",
+    "Origin": "Japan",
+    "Common classification": "woodwinds",
+    "Relation": "end-blown flute"
+  },
+  {
+    "Instrument": "Hulusi",
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "China",
+    "Common classification": "free reed instruments",
+    "Relation": "harmonica"
+  },
+  {
+    "Instrument": "Hun",
+    "Classification": "aerophones",
+    "H-S Number": "421.221.42",
+    "Origin": "Korea",
+    "Common classification": "fipple flutes",
+    "Relation": "ocarina"
+  },
+  {
+    "Instrument": "Inci",
+    "Classification": "aerophones",
+    "H-S Number": "421.221.12",
+    "Origin": "Philippines",
+    "Common classification": "fipple flutes",
+    "Relation": "tumpong"
+  },
+  {
+    "Instrument": "Irish flute",
+    "Classification": "aerophones",
+    "H-S Number": "421.121.12",
+    "Origin": "Ireland",
+    "Common classification": "woodwinds",
+    "Relation": "flute"
+  },
+  {
+    "Instrument": "Jug",
+    "Classification": "aerophones",
+    "H-S Number": "423.111.1",
+    "Origin": "North America",
+    "Common classification": "trumpets",
+    "Relation": "conch"
+  },
+  {
+    "Instrument": "Kagurabue",
+    "Classification": "aerophones",
+    "H-S Number": "421.121.12",
+    "Origin": "Japan",
+    "Common classification": "woodwinds",
+    "Relation": "flute"
+  },
+  {
+    "Instrument": "Kalaleng",
+    "Classification": "aerophones",
+    "H-S Number": "421.111.12",
+    "Origin": "Philippines",
+    "Common classification": "woodwinds",
+    "Relation": "nose flute"
+  },
+  {
+    "Instrument": "Kaval",
+    "Classification": "aerophones",
+    "H-S Number": "421.111.12",
+    "Origin": "Bashkortostan, Turkey",
+    "Common classification": "woodwinds",
+    "Relation": "end-blown flute"
+  },
+  {
+    "Instrument": "Kazoo",
+    "Classification": "aerophones",
+    "H-S Number": "–",
+    "Origin": "US",
+    "Common classification": "Woodwind",
+    "Relation": "Whistle"
+  },
+  {
+    "Instrument": "Kèn bầu",
+    "Classification": "aerophones",
+    "H-S Number": "422.112.2",
+    "Origin": "Vietnam",
+    "Common classification": "reed instruments",
+    "Relation": "oboe, suona"
+  },
+  {
+    "Instrument": "Key bugle",
+    "Classification": "aerophones",
+    "H-S Number": "423.21",
+    "Origin": "",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Khene",
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "Laos",
+    "Common classification": "free reed instruments",
+    "Relation": "harmonica"
+  },
+  {
+    "Instrument": "Khloy",
+    "Classification": "aerophones",
+    "H-S Number": "421.221.12",
+    "Origin": "Cambodia",
+    "Common classification": "fipple flutes",
+    "Relation": "recorder"
+  },
+  {
+    "Instrument": "Khlui",
+    "Classification": "aerophones",
+    "H-S Number": "421.221.12",
+    "Origin": "Thailand",
+    "Common classification": "fipple flutes",
+    "Relation": "recorder"
+  },
+  {
+    "Instrument": "Komabue",
+    "Classification": "aerophones",
+    "H-S Number": "421.121.12",
+    "Origin": "Japan",
+    "Common classification": "woodwinds",
+    "Relation": "flute"
+  },
+  {
+    "Instrument": "Koncovka",
+    "Classification": "aerophones",
+    "H-S Number": "421.221.12",
+    "Origin": "Slovakia",
+    "Common classification": "fipple flutes",
+    "Relation": "recorder"
+  },
+  {
+    "Instrument": "Kortholt",
+    "Classification": "aerophones",
+    "H-S Number": "421.",
+    "Origin": "Europe",
+    "Common classification": "capped reed",
+    "Relation": "crumhorn"
+  },
+  {
+    "Instrument": "Koudi",
+    "Classification": "aerophones",
+    "H-S Number": "421.121.12",
+    "Origin": "China",
+    "Common classification": "woodwinds",
+    "Relation": "flute"
+  },
+  {
+    "Instrument": "Kuhlohorn",
+    "Classification": "aerophones",
+    "H-S Number": "423.232",
+    "Origin": "Germany",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Launeddas",
+    "Classification": "aerophones",
+    "H-S Number": "422.2",
+    "Origin": "Italy, Sardinia",
+    "Common classification": "reed instruments",
+    "Relation": "clarinet"
+  },
+  {
+    "Instrument": "Livenka",
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "Russia",
+    "Common classification": "free reed instruments",
+    "Relation": "accordion"
+  },
+  {
+    "Instrument": "Lur",
+    "Classification": "aerophones",
+    "H-S Number": "423.121.22",
+    "Origin": "Denmark, Norway",
+    "Common classification": "natural trumpets",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Lusheng",
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "China",
+    "Common classification": "free reed instruments",
+    "Relation": "harmonica"
+  },
+  {
+    "Instrument": "Lituus",
+    "Classification": "aerophones",
+    "H-S Number": "423.1",
+    "Origin": "Europe",
+    "Common classification": "natural trumpets",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Mellophone",
+    "Classification": "aerophones",
+    "H-S Number": "423.232",
+    "Origin": "Europe",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Melodica",
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "Italy",
+    "Common classification": "free reed instruments",
+    "Relation": "reed organ"
+  },
+  {
+    "Instrument": "Melodeon",
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "US",
+    "Common classification": "free reed instruments",
+    "Relation": "reed organ"
+  },
+  {
+    "Instrument": "Mezzo-soprano",
+    "Classification": "aerophones",
+    "H-S Number": "43",
+    "Origin": "",
+    "Common classification": "vocal registers",
+    "Relation": "human voice"
+  },
+  {
+    "Instrument": "Mijwiz",
+    "Classification": "aerophones",
+    "H-S Number": "422.2",
+    "Origin": "Saudi Arabia",
+    "Common classification": "reed instruments",
+    "Relation": "clarinet"
+  },
+  {
+    "Instrument": "Mizmar",
+    "Classification": "aerophones",
+    "H-S Number": "422.112.2",
+    "Origin": "Algeria, Saudi Arabia, Tunisia",
+    "Common classification": "reed instruments",
+    "Relation": "oboe"
+  },
+  {
+    "Instrument": "Mizwad",
+    "Classification": "aerophones",
+    "H-S Number": "",
+    "Origin": "Saudi Arabia",
+    "Common classification": "reed instruments",
+    "Relation": "bagpipe"
+  },
+  {
+    "Instrument": "Musette de cour",
+    "Classification": "aerophones",
+    "H-S Number": "422",
+    "Origin": "France",
+    "Common classification": "reed instruments",
+    "Relation": "bagpipe"
+  },
+  {
+    "Instrument": "Nadaswaram",
+    "Classification": "aerophones",
+    "H-S Number": "422.112.2",
+    "Origin": "South India",
+    "Common classification": "reed instruments",
+    "Relation": "oboe, shehnai"
+  },
+  {
+    "Instrument": "Nagak",
+    "Classification": "aerophones",
+    "H-S Number": "423.111",
+    "Origin": "Korea",
+    "Common classification": "trumpets",
+    "Relation": "conch"
+  },
+  {
+    "Instrument": "Natural trumpet",
+    "Classification": "aerophones",
+    "H-S Number": "423.1",
+    "Origin": "Denmark, Norway",
+    "Common classification": "brass instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Ney",
+    "Classification": "aerophones",
+    "H-S Number": "421.111.12",
+    "Origin": "Iran",
+    "Common classification": "woodwinds",
+    "Relation": "end-blown flute"
+  },
+  {
+    "Instrument": "Nguru",
+    "Classification": "aerophones",
+    "H-S Number": "421.111.12",
+    "Origin": "New Zealand",
+    "Common classification": "woodwinds",
+    "Relation": "nose flute"
+  },
+  {
+    "Instrument": "Nohkan",
+    "Classification": "aerophones",
+    "H-S Number": "421.121.12",
+    "Origin": "Iran",
+    "Common classification": "woodwinds",
+    "Relation": "flute"
+  },
+  {
+    "Instrument": "Nose flute",
+    "Classification": "aerophones",
+    "H-S Number": "421.111.12",
+    "Origin": "Polynesia, Africa, East Asia",
+    "Common classification": "woodwinds",
+    "Relation": "nose flute"
+  },
+  {
+    "Instrument": "Nplooj",
+    "Classification": "aerophones",
+    "H-S Number": "421.111.12",
+    "Origin": "Hmong people (China)",
+    "Common classification": "woodwinds",
+    "Relation": "leaf"
+  },
+  {
+    "Instrument": "Nulophone",
+    "Classification": "aerophones",
+    "H-S Number": "421.111.12",
+    "Origin": "Khyber Pakhtunkhwa (Pakistan)",
+    "Common classification": "woodwinds",
+    "Relation": "flute"
+  },
+  {
+    "Instrument": [
+      "Oboe",
+      "Bass/Baritone oboe",
+      "Contrabass oboe",
+      "Cor anglais/English horn",
+      "Oboe d'amore",
+      "Oboe da caccia",
+      "Piccolo oboe/Oboe musette"
+    ],
+    "Classification": "aerophones",
+    "H-S Number": "422.112-71",
+    "Origin": "Western Europe",
+    "Common classification": "reed instruments",
+    "Relation": "oboe"
+  },
+  {
+    "Instrument": [
+      "Ocarina",
+      "Transverse ocarina",
+      "Pendant ocarina",
+      "Inline ocarina",
+      "Multi chambered ocarina",
+      "Keyed ocarina",
+      "Slide ocarina"
+    ],
+    "Classification": "aerophones",
+    "H-S Number": "421.221.42",
+    "Origin": "Italy",
+    "Common classification": "fipple flutes",
+    "Relation": "ocarina"
+  },
+  {
+    "Instrument": "Octavin",
+    "Classification": "aerophones",
+    "H-S Number": "422.2",
+    "Origin": "Germany",
+    "Common classification": "reed instruments",
+    "Relation": "clarinet"
+  },
+  {
+    "Instrument": "Ophicleide",
+    "Classification": "aerophones",
+    "H-S Number": "423.21",
+    "Origin": "France",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Paixiao",
+    "Classification": "aerophones",
+    "H-S Number": "421.112",
+    "Origin": "China",
+    "Common classification": "woodwinds",
+    "Relation": "pan flute"
+  },
+  {
+    "Instrument": "Palendag",
+    "Classification": "aerophones",
+    "H-S Number": "421.111.12",
+    "Origin": "Philippines",
+    "Common classification": "woodwinds",
+    "Relation": "end-blown flute"
+  },
+  {
+    "Instrument": "Pan flute",
+    "Classification": "aerophones",
+    "H-S Number": "421.112",
+    "Origin": "South America",
+    "Common classification": "woodwinds",
+    "Relation": "pan flute"
+  },
+  {
+    "Instrument": "Pasiyak or water whistle",
+    "Classification": "aerophones",
+    "H-S Number": "4",
+    "Origin": "Philippines",
+    "Common classification": "fipple flutes",
+    "Relation": "recorder"
+  },
+  {
+    "Instrument": "Pavari",
+    "Classification": "aerophones",
+    "H-S Number": "421.121.12",
+    "Origin": "India",
+    "Common classification": "woodwinds",
+    "Relation": "flute"
+  },
+  {
+    "Instrument": "Pibgorn",
+    "Classification": "aerophones",
+    "H-S Number": "422.2",
+    "Origin": "Wales",
+    "Common classification": "reed instruments",
+    "Relation": "clarinet"
+  },
+  {
+    "Instrument": "Picco pipe",
+    "Classification": "aerophones",
+    "H-S Number": "421.221.12",
+    "Origin": "Western Europe",
+    "Common classification": "fipple flutes",
+    "Relation": "recorder"
+  },
+  {
+    "Instrument": "Piccolo",
+    "Classification": "aerophones",
+    "H-S Number": "421.121.12",
+    "Origin": "Western Europe",
+    "Common classification": "woodwinds",
+    "Relation": "flute"
+  },
+  {
+    "Instrument": "Piccolo trumpet",
+    "Classification": "aerophones",
+    "H-S Number": "423.232",
+    "Origin": "Western Europe",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Pipe organ (diaphone pipes)",
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "",
+    "Common classification": "free reed instruments",
+    "Relation": "reed organ/recorder"
+  },
+  {
+    "Instrument": "Pipe organ (flue pipes)",
+    "Classification": "aerophones",
+    "H-S Number": "421.221.11",
+    "Origin": "",
+    "Common classification": "fipple flutes",
+    "Relation": "recorder"
+  },
+  {
+    "Instrument": "Pipe organ (free reed pipes)",
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "",
+    "Common classification": "free reed instruments",
+    "Relation": "reed organ"
+  },
+  {
+    "Instrument": "Pipe organ (reed pipes)",
+    "Classification": "aerophones",
+    "H-S Number": "422.112",
+    "Origin": "",
+    "Common classification": "reed instruments",
+    "Relation": "organ"
+  },
+  {
+    "Instrument": "Pitch pipe",
+    "Classification": "aerophones",
+    "H-S Number": "412.131",
+    "Origin": "",
+    "Common classification": "free reed instruments",
+    "Relation": "pitch pipe"
+  },
+  {
+    "Instrument": "Pocket cornet",
+    "Classification": "aerophones",
+    "H-S Number": "423.232",
+    "Origin": "",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Pocket trumpet",
+    "Classification": "aerophones",
+    "H-S Number": "423.232",
+    "Origin": "United States of America",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Post horn",
+    "Classification": "aerophones",
+    "H-S Number": "423.121.22",
+    "Origin": "Western Europe",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Pu",
+    "Classification": "aerophones",
+    "H-S Number": "423.111",
+    "Origin": "Polynesia",
+    "Common classification": "trumpets",
+    "Relation": "conch"
+  },
+  {
+    "Instrument": "Pulalu",
+    "Classification": "aerophones",
+    "H-S Number": "421.111.12",
+    "Origin": "Philippines",
+    "Common classification": "woodwinds",
+    "Relation": "end-blown flute, palendag"
+  },
+  {
+    "Instrument": "Qeej",
+    "Classification": "aerophones",
+    "H-S Number": "421.111.12",
+    "Origin": "Hmong people (China)",
+    "Common classification": "woodwinds",
+    "Relation": "end-blown flute"
+  },
+  {
+    "Instrument": "Quena",
+    "Classification": "aerophones",
+    "H-S Number": "421.111.12",
+    "Origin": "South America",
+    "Common classification": "woodwinds",
+    "Relation": "end-blown flute"
+  },
+  {
+    "Instrument": "Quinticlave",
+    "Classification": "aerophones",
+    "H-S Number": "423.21",
+    "Origin": "",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet, ophicleide"
+  },
+  {
+    "Instrument": "Raj",
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "Hmong people (China)",
+    "Common classification": "free reed instruments",
+    "Relation": "harmonica"
+  },
+  {
+    "Instrument": "Rackett",
+    "Classification": "aerophones",
+    "H-S Number": "422.111.2",
+    "Origin": "Western Europe",
+    "Common classification": "reed instruments",
+    "Relation": "oboe"
+  },
+  {
+    "Instrument": "Ralé-poussé",
+    "Classification": "aerophones",
+    "H-S Number": "",
+    "Origin": "Réunion",
+    "Common classification": "free reed instruments",
+    "Relation": "accordion"
+  },
+  {
+    "Instrument": "Rapping",
+    "Classification": "aerophones",
+    "H-S Number": "43",
+    "Origin": "",
+    "Common classification": "vocal techniques",
+    "Relation": "human voice"
+  },
+  {
+    "Instrument": "Rauschpfeife",
+    "Classification": "aerophones",
+    "H-S Number": "422.112.2",
+    "Origin": "Europe",
+    "Common classification": "reed instruments",
+    "Relation": "oboe"
+  },
+  {
+    "Instrument": [
+      "Recorder",
+      "Garklein",
+      "Sopranino Recorder",
+      "Descant Recorder",
+      "Treble or alto Recorder",
+      "Tenor Recorder",
+      "Bass Recorder",
+      "Great bass Recorder",
+      "Contra bass Recorder",
+      "Subcontra bass Recorder",
+      "Sub-subcontrabass Recorder",
+      "Venova"
+    ],
+    "Classification": "aerophones",
+    "H-S Number": "421.221.12",
+    "Origin": "Germany",
+    "Common classification": "fipple flutes",
+    "Relation": "recorder"
+  },
+  {
+    "Instrument": "Reed contrabass",
+    "Classification": "aerophones",
+    "H-S Number": "422.112.2",
+    "Origin": "Belgium",
+    "Common classification": "reed instruments",
+    "Relation": "oboe"
+  },
+  {
+    "Instrument": "Reed organ",
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "",
+    "Common classification": "free reed instruments",
+    "Relation": "reed organ"
+  },
+  {
+    "Instrument": "Rhaita",
+    "Classification": "aerophones",
+    "H-S Number": "422.112.2",
+    "Origin": "Northern Africa",
+    "Common classification": "reed instruments",
+    "Relation": "oboe"
+  },
+  {
+    "Instrument": "Robero",
+    "Classification": "aerophones",
+    "H-S Number": "422.2",
+    "Origin": "Spain",
+    "Common classification": "reed instruments",
+    "Relation": "clarinet"
+  },
+  {
+    "Instrument": "Roman tuba",
+    "Classification": "aerophones",
+    "H-S Number": "423.121.11",
+    "Origin": "Etruscan",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Ryuteki",
+    "Classification": "aerophones",
+    "H-S Number": "421.121.12",
+    "Origin": "Japan",
+    "Common classification": "woodwinds",
+    "Relation": "flute"
+  },
+  {
+    "Instrument": "Sac de gemecs",
+    "Classification": "aerophones",
+    "H-S Number": "",
+    "Origin": "Andorra, Catalonia",
+    "Common classification": "",
+    "Relation": "bagpipe"
+  },
+  {
+    "Instrument": [
+      "Sackbut",
+      "Alto sackbut",
+      "Tenor sackbut",
+      "Bass sackbut",
+      "Double bass sackbut"
+    ],
+    "Classification": "aerophones",
+    "H-S Number": "423.22",
+    "Origin": "France",
+    "Common classification": "brass instruments",
+    "Relation": "trombone"
+  },
+  {
+    "Instrument": "Saenghwang",
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "Korea",
+    "Common classification": "free reed instruments",
+    "Relation": "harmonica"
+  },
+  {
+    "Instrument": "Samponia",
+    "Classification": "aerophones",
+    "H-S Number": "421.112",
+    "Origin": "Peru",
+    "Common classification": "woodwinds",
+    "Relation": "pan flute"
+  },
+  {
+    "Instrument": "Saratovskaya garmonika",
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "Russia",
+    "Common classification": "free reed instruments",
+    "Relation": "accordion"
+  },
+  {
+    "Instrument": [
+      "Sarrusophones",
+      "Alto sarrusophone",
+      "Baritone sarrusophone",
+      "Bass sarrusophone",
+      "Contrabass sarrusophone",
+      "Sopranino sarrusophone",
+      "Soprano sarrusophone",
+      "Tenor sarrusophone"
+    ],
+    "Classification": "aerophones",
+    "H-S Number": "422.112.2",
+    "Origin": "France",
+    "Common classification": "reed instruments",
+    "Relation": "oboe"
+  },
+  {
+    "Instrument": [
+      "Alto saxophone",
+      "Baritone saxophone",
+      "Bass saxophone",
+      "C melody saxophone",
+      "C Soprano saxophone",
+      "Contrabass saxophone",
+      "Mezzo-soprano saxophone (Alto in F)",
+      "Sopranino saxophone",
+      "Soprano saxophone",
+      "Soprillo",
+      "Subcontrabass saxophone",
+      "Tenor saxophone",
+      "Tubax",
+      "Venova",
+      "Xaphoon"
+    ],
+    "Classification": "aerophones",
+    "H-S Number": "422.2",
+    "Origin": "Belgium",
+    "Common classification": "reed instruments",
+    "Relation": "clarinet"
+  },
+  {
+    "Instrument": "Saxhorn",
+    "Classification": "aerophones",
+    "H-S Number": "423.231",
+    "Origin": "Belgium",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Saxotromba",
+    "Classification": "aerophones",
+    "H-S Number": "423.231",
+    "Origin": "Belgium",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Saxtuba",
+    "Classification": "aerophones",
+    "H-S Number": "423.231",
+    "Origin": "Belgium",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Scat singing",
+    "Classification": "aerophones",
+    "H-S Number": "43",
+    "Origin": "",
+    "Common classification": "vocal techniques",
+    "Relation": "human voice"
+  },
+  {
+    "Instrument": "Schwyzerörgeli",
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "Switzerland",
+    "Common classification": "free reed instruments",
+    "Relation": "accordion"
+  },
+  {
+    "Instrument": "Serpent",
+    "Classification": "aerophones",
+    "H-S Number": "423.21",
+    "Origin": "France",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet, cornett"
+  },
+  {
+    "Instrument": "Shakuhachi",
+    "Classification": "aerophones",
+    "H-S Number": "421.111.12",
+    "Origin": "Japan",
+    "Common classification": "woodwinds",
+    "Relation": "end-blown flute"
+  },
+  {
+    "Instrument": "Shankha",
+    "Classification": "aerophones",
+    "H-S Number": "423.111",
+    "Origin": "India",
+    "Common classification": "trumpets",
+    "Relation": "conch"
+  },
+  {
+    "Instrument": "Shawm",
+    "Classification": "aerophones",
+    "H-S Number": "422.112.2",
+    "Origin": "Switzerland",
+    "Common classification": "reed instruments",
+    "Relation": "oboe"
+  },
+  {
+    "Instrument": "Shehnai",
+    "Classification": "aerophones",
+    "H-S Number": "422.112.2",
+    "Origin": "North India",
+    "Common classification": "reed instruments",
+    "Relation": "oboe"
+  },
+  {
+    "Instrument": "Sheng",
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "China",
+    "Common classification": "free reed instruments",
+    "Relation": "harmonica"
+  },
+  {
+    "Instrument": "Shinobue",
+    "Classification": "aerophones",
+    "H-S Number": "421.121.12",
+    "Origin": "Japan",
+    "Common classification": "woodwinds",
+    "Relation": "flute"
+  },
+  {
+    "Instrument": "Shofar",
+    "Classification": "aerophones",
+    "H-S Number": "423.121.21",
+    "Origin": "Levant",
+    "Common classification": "natural trumpets",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Shō",
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "Japan",
+    "Common classification": "free reed instruments",
+    "Relation": "harmonica"
+  },
+  {
+    "Instrument": "Shvi",
+    "Classification": "aerophones",
+    "H-S Number": "421.221.12",
+    "Origin": "Armenia",
+    "Common classification": "fipple flutes",
+    "Relation": "recorder"
+  },
+  {
+    "Instrument": "Siku",
+    "Classification": "aerophones",
+    "H-S Number": "421.112",
+    "Origin": "Bolivia",
+    "Common classification": "woodwinds",
+    "Relation": "pan flute"
+  },
+  {
+    "Instrument": "Siren",
+    "Classification": "aerophones",
+    "H-S Number": "41",
+    "Origin": "Scotland",
+    "Common classification": "noise makers",
+    "Relation": "siren"
+  },
+  {
+    "Instrument": [
+      "Slide trumpet",
+      "Medieval slide trumpet",
+      "Renaissance slide trumpet",
+      "Baroque slide trumpet"
+    ],
+    "Classification": "aerophones",
+    "H-S Number": "423.21/22",
+    "Origin": "Europe",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": ["Slide whistle", "Jazz flute", "Swanee whistle"],
+    "Classification": "aerophones",
+    "H-S Number": "421.121.312",
+    "Origin": "England",
+    "Common classification": "fipple flutes",
+    "Relation": "whistle"
+  },
+  {
+    "Instrument": "Sneng",
+    "Classification": "aerophones",
+    "H-S Number": "422.212",
+    "Origin": "Cambodia",
+    "Common classification": "reed instruments",
+    "Relation": "hornpipe"
+  },
+  {
+    "Instrument": "Sodina",
+    "Classification": "aerophones",
+    "H-S Number": "421.111.12",
+    "Origin": "Madagascar",
+    "Common classification": "woodwinds",
+    "Relation": "end-blown flute"
+  },
+  {
+    "Instrument": "Sopila",
+    "Classification": "aerophones",
+    "H-S Number": "422.112.2",
+    "Origin": "Croatia",
+    "Common classification": "reed instruments",
+    "Relation": "oboe"
+  },
+  {
+    "Instrument": "Soprano",
+    "Classification": "aerophones",
+    "H-S Number": "43",
+    "Origin": "",
+    "Common classification": "vocal registers",
+    "Relation": "human voice"
+  },
+  {
+    "Instrument": "Sorna",
+    "Classification": "aerophones",
+    "H-S Number": "422.112.2",
+    "Origin": "Iran",
+    "Common classification": "reed instruments",
+    "Relation": "oboe"
+  },
+  {
+    "Instrument": "Sousaphone",
+    "Classification": "aerophones",
+    "H-S Number": "423.232",
+    "Origin": "US",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet, tuba"
+  },
+  {
+    "Instrument": "Sralai",
+    "Classification": "aerophones",
+    "H-S Number": "422.112.2",
+    "Origin": "Cambodia",
+    "Common classification": "reed instruments",
+    "Relation": "oboe"
+  },
+  {
+    "Instrument": "Sudrophone",
+    "Classification": "aerophones",
+    "H-S Number": "423.21",
+    "Origin": "France",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet, ophicleide"
+  },
+  {
+    "Instrument": "Suling",
+    "Classification": "aerophones",
+    "H-S Number": "421.111.12",
+    "Origin": "Indonesia/Philippines",
+    "Common classification": "woodwinds",
+    "Relation": "end-blown flute"
+  },
+  {
+    "Instrument": ["Suona", "Laba", "Haidi"],
+    "Classification": "aerophones",
+    "H-S Number": "422.112.2",
+    "Origin": "China",
+    "Common classification": "reed instruments",
+    "Relation": "oboe"
+  },
+  {
+    "Instrument": "Superbone",
+    "Classification": "aerophones",
+    "H-S Number": "423.22",
+    "Origin": "Canada",
+    "Common classification": "brass instruments",
+    "Relation": "trombone"
+  },
+  {
+    "Instrument": "Swordblade",
+    "Classification": "aerophones",
+    "H-S Number": "411",
+    "Origin": "",
+    "Common classification": "noise makers",
+    "Relation": "whip"
+  },
+  {
+    "Instrument": "Tabor pipe",
+    "Classification": "aerophones",
+    "H-S Number": "421.221.12",
+    "Origin": "Western Europe",
+    "Common classification": "fipple flutes",
+    "Relation": "recorder"
+  },
+  {
+    "Instrument": "Taepyeongso",
+    "Classification": "aerophones",
+    "H-S Number": "422.112.2",
+    "Origin": "Korea",
+    "Common classification": "reed instruments",
+    "Relation": "oboe, suona,"
+  },
+  {
+    "Instrument": "Tarogato",
+    "Classification": "aerophones",
+    "H-S Number": "422.112-71",
+    "Origin": "Central Europe",
+    "Common classification": "reed instruments",
+    "Relation": "oboe, suona,"
+  },
+  {
+    "Instrument": "Tenor",
+    "Classification": "aerophones",
+    "H-S Number": "43",
+    "Origin": "",
+    "Common classification": "vocal registers",
+    "Relation": "human voice"
+  },
+  {
+    "Instrument": "Tenora",
+    "Classification": "aerophones",
+    "H-S Number": "422.112",
+    "Origin": "Spain",
+    "Common classification": "reed instruments",
+    "Relation": "oboe, shawm,"
+  },
+  {
+    "Instrument": "Throat singing",
+    "Classification": "aerophones",
+    "H-S Number": "43",
+    "Origin": "",
+    "Common classification": "vocal techniques",
+    "Relation": "human voice"
+  },
+  {
+    "Instrument": "Tible",
+    "Classification": "aerophones",
+    "H-S Number": "422.112",
+    "Origin": "Spain",
+    "Common classification": "reed instruments",
+    "Relation": "oboe, shawm,"
+  },
+  {
+    "Instrument": "Tin whistle",
+    "Classification": "aerophones",
+    "H-S Number": "421.221.12",
+    "Origin": "Celtic",
+    "Common classification": "fipple flutes",
+    "Relation": "recorder"
+  },
+  {
+    "Instrument": "Toasting",
+    "Classification": "aerophones",
+    "H-S Number": "43",
+    "Origin": "",
+    "Common classification": "vocal technique",
+    "Relation": "human voice"
+  },
+  {
+    "Instrument": "Tonette",
+    "Classification": "aerophones",
+    "H-S Number": "421.111.12",
+    "Origin": "North America",
+    "Common classification": "woodwinds",
+    "Relation": "end-blown flute"
+  },
+  {
+    "Instrument": "Trikiti",
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "Spain",
+    "Common classification": "free reed instruments",
+    "Relation": "accordion"
+  },
+  {
+    "Instrument": [
+      "Trombone",
+      "Sopranino trombone",
+      "Soprano trombone",
+      "Alto trombone",
+      "Tenor trombone",
+      "Bass trombone",
+      "Contrabass trombone",
+      "Valve trombone"
+    ],
+    "Classification": "aerophones",
+    "H-S Number": "423.22",
+    "Origin": "Western Europe",
+    "Common classification": "brass instruments",
+    "Relation": "trombone"
+  },
+  {
+    "Instrument": "Tromboon",
+    "Classification": "aerophones",
+    "H-S Number": "422.112.2",
+    "Origin": "US",
+    "Common classification": "reed instruments",
+    "Relation": "bassoon, trombone"
+  },
+  {
+    "Instrument": "Trompeta china",
+    "Classification": "aerophones",
+    "H-S Number": "422.112.2",
+    "Origin": "Cuba",
+    "Common classification": "reed instruments",
+    "Relation": "oboe, suona,"
+  },
+  {
+    "Instrument": [
+      "Trumpet",
+      "Soprano trumpet",
+      "Bass trumpet",
+      "Baroque trumpet",
+      "Rotary valve trumpet"
+    ],
+    "Classification": "aerophones",
+    "H-S Number": "423.232",
+    "Origin": "",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": [
+      "Tuba",
+      "Bass tuba",
+      "Contrabass tuba",
+      "Subcontrabass tuba"
+    ],
+    "Classification": "aerophones",
+    "H-S Number": "423.232",
+    "Origin": "Germany",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Tube trumpet",
+    "Classification": "aerophones",
+    "H-S Number": "423.1",
+    "Origin": "",
+    "Common classification": "natural trumpets",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Tumpong",
+    "Classification": "aerophones",
+    "H-S Number": "421.111.12",
+    "Origin": "Philippines",
+    "Common classification": "woodwinds",
+    "Relation": "end-blown flute"
+  },
+  {
+    "Instrument": "Tungso",
+    "Classification": "aerophones",
+    "H-S Number": "421.111.12",
+    "Origin": "Korea",
+    "Common classification": "woodwinds",
+    "Relation": "end-blown flute"
+  },
+  {
+    "Instrument": "Tutek",
+    "Classification": "aerophones",
+    "H-S Number": "4",
+    "Origin": "Azerbaijan",
+    "Common classification": "woodwinds",
+    "Relation": "flute"
+  },
+  {
+    "Instrument": "Txistu",
+    "Classification": "aerophones",
+    "H-S Number": "421.221.12",
+    "Origin": "Spain",
+    "Common classification": "fipple flutes",
+    "Relation": "recorder"
+  },
+  {
+    "Instrument": "Uilleann pipes",
+    "Classification": "aerophones",
+    "H-S Number": "422",
+    "Origin": "Ireland",
+    "Common classification": "reed instruments",
+    "Relation": "bagpipe"
+  },
+  {
+    "Instrument": "Venu",
+    "Classification": "aerophones",
+    "H-S Number": "421.121.12",
+    "Origin": "South India",
+    "Common classification": "woodwinds",
+    "Relation": "flute"
+  },
+  {
+    "Instrument": "Vibrandoneon (instrument)",
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "Italy",
+    "Common classification": "free reed instruments",
+    "Relation": "clarinets"
+  },
+  {
+    "Instrument": "Vienna horn",
+    "Classification": "aerophones",
+    "H-S Number": "423.232",
+    "Origin": "Austria",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet, French horn"
+  },
+  {
+    "Instrument": "Vocal percussion",
+    "Classification": "aerophones",
+    "H-S Number": "43",
+    "Origin": "",
+    "Common classification": "vocal techniques",
+    "Relation": "human voice"
+  },
+  {
+    "Instrument": "Vuvuzela",
+    "Classification": "aerophones",
+    "H-S Number": "423.121.22",
+    "Origin": "South-Africa",
+    "Common classification": "natural trumpets",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Wagner tuba",
+    "Classification": "aerophones",
+    "H-S Number": "423.232",
+    "Origin": "Germany",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet"
+  },
+  {
+    "Instrument": "Washint",
+    "Classification": "aerophones",
+    "H-S Number": "421.111.12",
+    "Origin": "Ethiopia",
+    "Common classification": "woodwinds",
+    "Relation": "end-blown flute"
+  },
+  {
+    "Instrument": [
+      "Flute",
+      "Alto flute",
+      "Bass flute",
+      "Contra-alto flute",
+      "Contrabass flute",
+      "Subcontrabass flute",
+      "Double contrabass flute",
+      "Hyperbass flute"
+    ],
+    "Classification": "aerophones",
+    "H-S Number": "421.121.12",
+    "Origin": "Western Europe",
+    "Common classification": "woodwinds",
+    "Relation": "flute"
+  },
+  {
+    "Instrument": "Whip",
+    "Classification": "aerophones",
+    "H-S Number": "411",
+    "Origin": "",
+    "Common classification": "noise makers",
+    "Relation": "whip"
+  },
+  {
+    "Instrument": ["Whistle", "Pea whistle", "Steam whistle", "Train whistle"],
+    "Classification": "aerophones",
+    "H-S Number": "421.221.11",
+    "Origin": "",
+    "Common classification": "fipple flutes",
+    "Relation": "whistle"
+  },
+  {
+    "Instrument": "Willow flute",
+    "Classification": "aerophones",
+    "H-S Number": "421.221.11",
+    "Origin": "Scandinavia",
+    "Common classification": "fipple flutes",
+    "Relation": "recorder"
+  },
+  {
+    "Instrument": "Xeremia",
+    "Classification": "aerophones",
+    "H-S Number": "",
+    "Origin": "Balearic Islands",
+    "Common classification": "",
+    "Relation": "bagpipe"
+  },
+  {
+    "Instrument": "Xiao",
+    "Classification": "aerophones",
+    "H-S Number": "421.111.12",
+    "Origin": "China",
+    "Common classification": "woodwinds",
+    "Relation": "end-blown flute"
+  },
+  {
+    "Instrument": "Xun",
+    "Classification": "aerophones",
+    "H-S Number": "421.221.42",
+    "Origin": "China",
+    "Common classification": "fipple flutes",
+    "Relation": "ocarina"
+  },
+  {
+    "Instrument": "Yodel",
+    "Classification": "aerophones",
+    "H-S Number": "43",
+    "Origin": "",
+    "Common classification": "vocal techniques",
+    "Relation": "human voice"
+  },
+  {
+    "Instrument": "Yotar",
+    "Classification": "aerophones",
+    "H-S Number": "4",
+    "Origin": "",
+    "Common classification": "woodwinds",
+    "Relation": "flute"
+  },
+  {
+    "Instrument": "Yu",
+    "Classification": "aerophones",
+    "H-S Number": "412.132",
+    "Origin": "China",
+    "Common classification": "free reed instruments",
+    "Relation": "harmonica"
+  },
+  {
+    "Instrument": "Zhaleika",
+    "Classification": "aerophones",
+    "H-S Number": "422.2",
+    "Origin": "Russia",
+    "Common classification": "reed instruments",
+    "Relation": "clarinet"
+  },
+  {
+    "Instrument": "Zufolo",
+    "Classification": "aerophones",
+    "H-S Number": "421.111.12",
+    "Origin": "Italy",
+    "Common classification": "fipple flutes",
+    "Relation": "recorder"
+  },
+  {
+    "Instrument": "Zugtrompette",
+    "Classification": "aerophones",
+    "H-S Number": "423.21/22",
+    "Origin": "Germany",
+    "Common classification": "brass instruments",
+    "Relation": "trumpet, slide trumpet"
+  },
+  {
+    "Instrument": ["Zurna (Turkey)", "Surnay"],
+    "Classification": "aerophones",
+    "H-S Number": "422.112.2",
+    "Origin": "Turkey",
+    "Common classification": "reed instruments",
+    "Relation": "oboe"
+  },
+  {
+    "Instrument": "Adungu",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Uganda",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Aeolian harp",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Germany",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Ajaeng",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Korea",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Akkordolia",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Austria, Germany",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Algerian mandole",
+    "Classification": "chordophones",
+    "H-S Number": "321.322",
+    "Origin": "Algeria, Berbers, Saudi Arabia, Tunisia",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Angélique",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Appalachian dulcimer",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Germany, United States",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Arbajo",
+    "Classification": "chordophones",
+    "H-S Number": "321.321-6",
+    "Origin": "Nepal",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Archlute",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "Western Europe",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Arpeggione",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Austria",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Autoharp",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "US",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Bağlama",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "Armenia, Azerbaijan, Bosnia and Herzegovina, Kurdistan, Macedonia, Turkmenistan",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Bajo sexto",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Mexico",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Balalaika",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "Russia",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Bandola",
+    "Classification": "chordophones",
+    "H-S Number": "321.322",
+    "Origin": "Colombia, Venezuela",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Bandolin",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Ecuador",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Bandolón",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Mexico",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Bandura",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "Ukraine",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Bandora",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Bandurria",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "Aragon, Philippines, Spain",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Banhu",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": [
+      "Banjo",
+      "Banjo cello",
+      "Bass banjo",
+      "Five-stringed banjo",
+      "Bluegrass banjo",
+      "Four-stringed banjo",
+      "Plectrum banjo",
+      "Six-stringed banjo",
+      "Tenor banjo",
+      "Zither banjo"
+    ],
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "North America",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Banjo ukulele",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "US",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Barbat",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "Armenia, Iran",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Baryton",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "England",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Berimbau",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Brazil",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Bipa",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Korea",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Biwa",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "Japan",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Bordonua",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Puerto Rico",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Bouzouki",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "Greece",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Buzuq",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "Saudi Arabia",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Carimba",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Mexico",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Cavaquinho",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Portugal",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": ["Cello (violoncello)", "Cello da spalla", "Electric cello"],
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Chapman stick",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "US",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": [
+      "Charangos",
+      "Charango",
+      "Charangón",
+      "Hualaycho (Walaycho)",
+      "Ronroco",
+      "Hatun charango",
+      "Chillador",
+      "Ayacucho",
+      "Bajo charango",
+      "Chango",
+      "Charango mediano",
+      "KhonKhota",
+      "Moquegua",
+      "Pampeno",
+      "Shreiker",
+      "Sonko",
+      "Vallegrandino"
+    ],
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "Argentina, Bolivia, Chile, Peru,",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Chitarra battente",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Italy",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Chitarra Italiana",
+    "Classification": "chordophones",
+    "H-S Number": "321.322",
+    "Origin": "",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Choghur",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Azerbaijan",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": ["Cimbalom", "Electric cymbalum"],
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Central and Eastern Europe",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Cimboa",
+    "Classification": "chordophones",
+    "H-S Number": "321.322",
+    "Origin": "Cape Verde",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Citole",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Western Europe",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Cittern",
+    "Classification": "chordophones",
+    "H-S Number": "321.322",
+    "Origin": "England, Scotland, Switzerland",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Clavichord",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Western Europe",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Clavinet",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "USA",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": [
+      "Concheras",
+      "Mandolinos de concheros or Mandolina conchera",
+      "Vihuelas de concheros or Vihuela conchera",
+      "Guitarras de concheros or Guitarra conchera"
+    ],
+    "Classification": "chordophones",
+    "H-S Number": "321.321-6",
+    "Origin": "Mexico",
+    "Common classification": "stringed instruments",
+    "Relation": "charango, mandolin, Mexican vihuela, guitar"
+  },
+  {
+    "Instrument": "Contraguitar",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Crwth (Crowd)",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Wales",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Cuatro",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Latin America",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Cümbüş",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Turkey",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Đàn bầu",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Vietnam",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Đàn đáy",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Vietnam",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Đàn gáo",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Vietnam",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Đàn nguyệt",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Vietnam",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Đàn tam thập lục",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Vietnam",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Đàn tranh",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Vietnam",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Đàn tỳ bà",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Vietnam",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Diddley bow",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "US",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Dihu",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Dombra",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "Azerbaijan, Bashkortostan, Kazakhstan, Kyrgyzstan, Russia, Tatarstan, Uzbekistan",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Domra",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "Russia",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Doshpuluur",
+    "Classification": "chordophones",
+    "H-S Number": "321.322",
+    "Origin": "Tuva",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Dotara",
+    "Classification": "chordophones",
+    "H-S Number": "321.321-6",
+    "Origin": "Bangladesh",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": ["Double bass", "Five-string double bass"],
+    "Classification": "chordophones",
+    "H-S Number": "321.322-71",
+    "Origin": "Western Europe",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Dreadnought",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Dulcimer",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "England",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Dutar",
+    "Classification": "chordophones",
+    "H-S Number": "321.322",
+    "Origin": "Azerbaijan, Iran, Kazakhstan, Kyrgyzstan, Tajikistan, Turkmenistan, Uzbekistan",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Duxianqin",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Ektara",
+    "Classification": "chordophones",
+    "H-S Number": "33-5",
+    "Origin": "India, Pakistan",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Erhu",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Erxian",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Esraj",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "India",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Faglong/Fuglung",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Philippines",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Fegereng",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Philippines",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Fiddle",
+    "Classification": "chordophones",
+    "H-S Number": "321.322-71",
+    "Origin": "Western Europe",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Gaohu",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Gayageum",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Korea",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Geomungo",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Korea",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Gittern",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Western Europe",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Gottuvadhyam",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "India",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": [
+      "Guitar",
+      "Acoustic guitar",
+      "Acoustic bass guitar",
+      "Acoustic-electric guitar",
+      "Archtop guitar",
+      "Baritone guitar",
+      "Baroque guitar",
+      "Bass guitar",
+      "Bahian guitar",
+      "Brahms guitar",
+      "Chitarra battente",
+      "Cigar box guitar",
+      "Classical guitar",
+      "Console steel guitar",
+      "Electric guitar",
+      "English guitar",
+      "Fretless guitar",
+      "Lyre-guitar",
+      "Extended-range guitars",
+      "Alto guitar",
+      "Seven-string guitar",
+      "Eight-string guitar",
+      "Nine-string guitar",
+      "Ten-string guitar",
+      "Eleven-string alto guitar",
+      "Twelve-string guitar",
+      "Flamenco guitar",
+      "Fusetar",
+      "Guitarra quinta huapanguera",
+      "Guitar synthesizer",
+      "Guitarrón (chileno)",
+      "Guitarrón (mexicano)",
+      "Guitarrón (uruguayo)",
+      "Gut-stringed guitars",
+      "Lap steel guitars",
+      "Dobro",
+      "National Steel",
+      "Multi-neck guitar",
+      "Double-neck guitar",
+      "Triple-neck guitar",
+      "Quadruple-neck guitar",
+      "Five-neck guitar",
+      "Six-neck guitar",
+      "Seven-neck guitar",
+      "Eight-neck guitar",
+      "Rock Ock",
+      "Twelve-neck guitar",
+      "Octave guitar",
+      "Parlor guitar",
+      "Pedal steel guitar",
+      "Resophonic guitar",
+      "Romantic guitar",
+      "Russian guitar",
+      "Selmer guitar",
+      "Semi-acoustic guitar",
+      "Slide guitar",
+      "Silent guitar",
+      "Steel guitar",
+      "Steel-string acoustic guitar",
+      "Tenor guitar",
+      "Terz guitar",
+      "Yotar"
+    ],
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Spain, et al",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Guitarra de golpe",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Mexico",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Guitarra panzona",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Mexico",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Guitarra séptima",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Mexico",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Guitarro",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Andalusia, Aragon, Spain",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Gusli",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Russia",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Guqin",
+    "Classification": "chordophones",
+    "H-S Number": "312.22",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Guzheng",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Haegeum",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Korea",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Hammered dulcimer",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Austria, England, Germany, Hungary, Poland, Romania, Saudi Arabia, United States",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Hardanger fiddle",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Norway",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Harmonico",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": ["Harp", "Electric harp"],
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Worldwide",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Harp guitar",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "France",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Harpsichord",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Western Europe",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Hegelong",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Philippines",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Huapanguera",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Mexico",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Huluhu",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Huqin",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Hurdy-gurdy",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Austria, Belarus, Czech, England, France, Germany, Hungary, Ireland, Italy, Poland, Portugal, Russia, Slovakia, Spain, Switzerland, Ukraine",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Igil",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "Tuva",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Irish bouzouki",
+    "Classification": "chordophones",
+    "H-S Number": "321.322",
+    "Origin": "Greece, Ireland",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Janzi",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Uganda",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Jarana jarocho",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Mexico",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Jarana huasteca",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Mexico",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Jarana mosquito",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Mexico",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Jarana segunda",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Mexico",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Jarana tercera",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Mexico",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Jiaohu",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Kabosy",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Madagascar",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Kadlong",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Philippines",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Kamancha",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Persia",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Kantele",
+    "Classification": "chordophones",
+    "H-S Number": "314.122-5",
+    "Origin": "Finland",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Kemenche",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Turkey",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Khim",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Thailand/Cambodia",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Kobza",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Ukraine",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Kokle",
+    "Classification": "chordophones",
+    "H-S Number": "314.122-5",
+    "Origin": "Latvia",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Kokyū",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Japan",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Komuz",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Azerbaijan, Dagestan, Hungary, Khakassia, Kyrgyzstan, Turkmenistan, Uzbekistan",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Kora",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "West Africa",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Koto",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Japan",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Kubing",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Philippines",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Kudyapi",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Philippines",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Kwitra",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Algeria, Saudi Arabia",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Langeleik",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Norway",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Laouto",
+    "Classification": "chordophones",
+    "H-S Number": "321.321-6",
+    "Origin": "Greece",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Laruan",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Laúd",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "Cuba, Philippines, Spain",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Lavta",
+    "Classification": "chordophones",
+    "H-S Number": "321.321-6",
+    "Origin": "Armenia, Greece, Turkey",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Leiqin",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Leona",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Mexico",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Lirone",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Italy",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Liuqin",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Lokanga",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Madagascar",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Lute",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Western Europe",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Lute guitar",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Germany",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Lyra (Cretan)",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Greece",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Lyra (Byzantine)",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Byzantine Empire",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Lyre",
+    "Classification": "chordophones",
+    "H-S Number": "321.2",
+    "Origin": "England, Greece",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Maguhu",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Mandobass",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Mandola",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": [
+      "Mandolin",
+      "Mandolin-banjo",
+      "Mandocello",
+      "Mandola",
+      "Bluegrass mandolin",
+      "Electric mandolin",
+      "Octave mandolin",
+      "Resonator mandolin"
+    ],
+    "Classification": "chordophones",
+    "H-S Number": "321.321-6 or 321.322-6",
+    "Origin": "Bashkortostan, Brazil, Germany, Greece, Italy, Japan, Portugal, Ukraine, United States, Venezuela",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Mandolute",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Mandora",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "Central Europe",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Mandore",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "France",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Marovany",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Madagascar",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Mejoranera",
+    "Classification": "chordophones",
+    "H-S Number": "321.322",
+    "Origin": "Panama",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Mexican vihuela",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Mexico",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Mohan veena",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "India",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Moraharpa",
+    "Classification": "chordophones",
+    "H-S Number": "",
+    "Origin": "Sweden",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Morin khuur",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Mongolia, Tuva",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Musical bow",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "South Africa",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Nyckelharpa",
+    "Classification": "chordophones",
+    "H-S Number": "321.322-71",
+    "Origin": "Sweden",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Octobass",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "France",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Oud",
+    "Classification": "chordophones",
+    "H-S Number": "321.321-6",
+    "Origin": "Armenia, Azerbaijan, Greece, Iran, Kurdistan, Saudi Arabia, Turkey",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Paqin",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": ["Piano", "Electric piano", "Fortepiano", "Pedal piano"],
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Italy",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Pipa",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Piwancha",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Nepal",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Pochette",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Portuguese guitar",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Portugal",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Psaltery",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Greece",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Qanun",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Armenia, Egypt, Greece, Saudi Arabia, Turkey",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Qinqin",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Rabeca",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Brazil",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Rajão",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Portugal",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Ravanahatha",
+    "Classification": "chordophones",
+    "H-S Number": "4",
+    "Origin": "Sri Lanka, India",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Rebab",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Afghanistan",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Rebec",
+    "Classification": "chordophones",
+    "H-S Number": "321.21-71",
+    "Origin": "Italy, Switzerland",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Requinto jarocho",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Mexico",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Rubab",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Afghanistan, Pakistan, Azerbaijan, India, Iran, Turkey, Iraq, Tajikistan, and Uzbekistan",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": [
+      "Ruan",
+      "Gaoyinruan",
+      "Xiaoruan",
+      "Zhongruan",
+      "Daruan",
+      "Diyinruan"
+    ],
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Rudra vina",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "India",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Sallameh",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Iran",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Sanshin",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Okinawa",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Santoor",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Iran",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Sanxian",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Sarangi",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "India",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Šargija",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "Albania, Bosnia and Herzegovina, Croatia, Serbia",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Sarod",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "India",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Saung",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Burma",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Saw sam sai",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Thailand",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Se",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Seul",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Korea",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Setar (lute)",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "Azerbaijan, Iran",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Shamisen",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Japan",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Sintir",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Algeria, Morocco",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Sitar",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "India",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Sitarla",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Japan",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Surbahar",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "India",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Swarmandal",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Tamburica",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "Croatia/Serbia",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Tanbur",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Iran, Kurdistan,",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Tanpura",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "India",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Tar (lute)",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Armenia, Azerbaijan, Iran, Kurdistan,",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Tea chest bass",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Western Europe",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Tembûr",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "curdo-persiano",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Theorbo",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "Europe",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Timple",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Canary Islands",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Tiple",
+    "Classification": "chordophones",
+    "H-S Number": "321.322",
+    "Origin": "Colombia, Cuba, Peru, Puerto Rico, Spain",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Tovshuur",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "Altai, Khakassia, Mongolia, Tuva",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": ["Tres", "Tres Cubano", "Tres Puerto Rico"],
+    "Classification": "chordophones",
+    "H-S Number": "321.322",
+    "Origin": "Cuba",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Tricordia",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Tro",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Cambodia",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Trumpet marine/tromba marina",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Western Europe",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Tsymbaly",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Ukraine, Belarus",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Tuhu",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Tzouras",
+    "Classification": "chordophones",
+    "H-S Number": "321.321",
+    "Origin": "Greece",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": [
+      "Ukulele",
+      "Concert ukulele",
+      "Electric ukulele",
+      "Harp ukulele",
+      "Lap steel ukulele",
+      "Pocket ukulele",
+      "Resonator ukulele",
+      "Soprano ukulele",
+      "Tahitian ukulele",
+      "Tenor ukulele",
+      "Eight-string tenor",
+      "Five-string tenor",
+      "Lili'u",
+      "Six-string tenor",
+      "Baritone ukulele",
+      "Bass ukulele",
+      "Contrabass ukulele",
+      "U-bass",
+      "Cigar box ukulele"
+    ],
+    "Classification": "chordophones",
+    "H-S Number": "321.322",
+    "Origin": "Portugal/Hawaii",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Ukelin",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Valiha",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Madagascar",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Veena",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "India",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Vertical viola (and other members of the violin octet family)",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Vichitra veena",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "India",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Vielle",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Western Europe",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Vihuela",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Spain",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": [
+      "Viol",
+      "Pardessus de viole",
+      "Treble viol (dessus)",
+      "Alto viol",
+      "Bass viol",
+      "Division viol",
+      "Lyra viol",
+      "Tenor viol (taille)",
+      "Great bass violone",
+      "Contrabass violone"
+    ],
+    "Classification": "chordophones",
+    "H-S Number": "321.322-71",
+    "Origin": "Spain",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Viola da gamba (see Viol)",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Viola amarantina",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Portugal",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Viola bastarda",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Portugal",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Viola beiroa",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Portugal",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Viola caipira",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Brazil",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Viola d'amore",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Viola da terra",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Portugal",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Viola de arame",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Portugal",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Viola de cocho",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Brazil",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Viola organista",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Italy (Da Vinci)",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Viola profonda",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": [
+      "Violin",
+      "Piccolo violino",
+      "Baroque violin",
+      "Bass violin",
+      "Electric violin",
+      "Five string violin",
+      "Stroh violin",
+      "Tenor violin"
+    ],
+    "Classification": "chordophones",
+    "H-S Number": "321.322-71",
+    "Origin": "Italy and Western Europe",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Violone",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Violotta",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Germany",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Walaycho",
+    "Classification": "chordophones",
+    "H-S Number": "321.321-5",
+    "Origin": "",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Waldzither",
+    "Classification": "chordophones",
+    "H-S Number": "321.322",
+    "Origin": "Germany",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Washtub bass",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "USA",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Whamola",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "USA",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Wheelharp",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "USA",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Xalam/Khalam",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "West Africa",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Yaylı tanbur",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Turkey",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Yangqin",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Yazheng",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Yehu",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Yelatáj chos woley",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "Argentina",
+    "Common classification": "stringed instruments",
+    "Relation": "Musical bow"
+  },
+  {
+    "Instrument": "Yueqin",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Zhongruan",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Zhonghu",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Zhu (string instrument)",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Zhengni",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": "Zhuihu",
+    "Classification": "chordophones",
+    "H-S Number": "3",
+    "Origin": "China",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  },
+  {
+    "Instrument": [
+      "Zither",
+      "Alpine zither (harp zither)",
+      "Concert zither",
+      "Guitar zither",
+      "Overtone zither"
+    ],
+    "Classification": "chordophones",
+    "H-S Number": "314.122",
+    "Origin": "Belarus, Croatia, Czech, Germany, Hungary, Poland, Russia, Slovakia, Slovenia, Switzerland, Ukraine,",
+    "Common classification": "stringed instruments",
+    "Relation": ""
+  }
+]

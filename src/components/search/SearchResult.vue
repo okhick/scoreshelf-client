@@ -13,7 +13,7 @@
       </div>
       <div class="info-spacer"></div>
       <div class="info" @click="goToListing">
-        <div class="human secondary-info">{{ listing.attributes.publicData.composer }}</div>
+        <div class="human secondary-info">{{ roles }}</div>
         <div class="result-titles">
           <div class="result-title">
             {{ listing.attributes.title }} <span class="result-year">{{ showYear }}</span>
@@ -41,30 +41,47 @@
   </div>
 </template>
 
-<script>
-import { ref, computed } from '@vue/composition-api';
-import useScoreshelf from '@/compositions/scoreshelf/scoreshelf.js';
-
+<script lang="ts">
+import { ref, computed, PropType, defineComponent } from '@vue/composition-api';
+import useScoreshelf from '@/compositions/scoreshelf/scoreshelf';
+import useSearch from '@/compositions/search/search';
 import debounce from 'lodash.debounce';
 
-export default {
-  props: { listing: Object },
+import { Listing, isListingThumbnailHydrated } from '@/@types';
+// using defineComponent is key to getting the props working here
+export default defineComponent({
+  props: {
+    listing: {
+      required: true,
+      type: Object as PropType<Listing>,
+    },
+  },
   setup({ listing }, context) {
     const showEnsembleOrInstrumentation = computed(() => {
       return listing.attributes.publicData.ensemble
         ? listing.attributes.publicData.ensemble
-        : listing.attributes.publicData.instrumentation;
+        : listing.attributes.publicData.instrumentation.join(', ');
     });
 
     const showYear = computed(() => {
       return listing.attributes.publicData.year ? `(${listing.attributes.publicData.year})` : '';
     });
 
+    const { stringifyRoles } = useSearch(context);
+    const roles = computed(() => {
+      if (listing.attributes.publicData.role) {
+        return stringifyRoles(listing);
+      } else {
+        return '';
+      }
+    });
+
     // ========== Get thumbnail link ==========
     const pathToThumbnail = computed(() => {
       const { THUMBNAIL_BASE_URL } = useScoreshelf();
-      if (listing.attributes.publicData.thumbnail) {
-        const thumbnail = listing.attributes.publicData.thumbnail;
+      const thumbnail = listing.attributes.publicData.thumbnail;
+
+      if (thumbnail && isListingThumbnailHydrated(thumbnail)) {
         return `${THUMBNAIL_BASE_URL}/${thumbnail.sharetribe_user_id}/${thumbnail.sharetribe_listing_id}/${thumbnail.asset_name}`;
       } else {
         // TODO: this should just be a default thumbnail
@@ -79,7 +96,14 @@ export default {
       peek: 'transform: scale(1) translateY(0px);',
       hide: 'transform: translateY(80px);',
     });
-    function calculateTransfrorm(event) {
+
+    interface SizedEvent {
+      target: {
+        width: number;
+        height: number;
+      };
+    }
+    function calculateTransfrorm(event: SizedEvent & Event) {
       // These constants are also set in the CSS below
       const CARD_HEIGHT = 380; // .work-card
       const TOP_BUFFER = 20; //   .thumb
@@ -147,6 +171,7 @@ export default {
       // ---- Computed ----
       showEnsembleOrInstrumentation,
       pathToThumbnail,
+      roles,
       // ---- Methods ----
       showThumbnail,
       showYear,
@@ -156,7 +181,7 @@ export default {
       goToListing,
     };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

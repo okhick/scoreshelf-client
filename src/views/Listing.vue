@@ -17,7 +17,7 @@
 
 <script>
 import { onMounted, ref, reactive, toRefs, watch } from '@vue/composition-api';
-import useListing from '@/compositions/listing/listing.js';
+import useListing from '@/compositions/listing/listing';
 
 import ListingMain from '@/components/listing/ListingMain.vue';
 import ListingPreview from '@/components/listing/ListingPreview';

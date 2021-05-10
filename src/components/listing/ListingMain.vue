@@ -4,7 +4,9 @@
     <h3 v-if="listing.attributes.publicData.subtitle" class="title is-3 subtitle">
       {{ listing.attributes.publicData.subtitle }}
     </h3>
-    <h4 class="title is-4 composer">{{ listing.attributes.publicData.composer }}</h4>
+    <div class="roles">
+      <div class="role" v-for="(role, index) in rolesString" :key="index" v-html="role"></div>
+    </div>
 
     <listing-formats />
 
@@ -14,7 +16,7 @@
       <table>
         <tr v-if="listing.attributes.publicData.instrumentation">
           <td>Instrumentation:</td>
-          <td>{{ listing.attributes.publicData.instrumentation }}</td>
+          <td>{{ stringifyInstruments(listing.attributes.publicData.instrumentation) }}</td>
         </tr>
         <tr v-if="listing.attributes.publicData.ensemble">
           <td>Ensemble:</td>
@@ -35,16 +37,17 @@
       </table>
     </div>
 
-    <div class="program-notes">
-      <h5>Program Notes:</h5>
-      <p>{{ listing.attributes.publicData.programNotes }}</p>
+    <div class="other-notes">
+      <!-- <h5>Program Notes:</h5> -->
+      <p v-html="listing.attributes.publicData.otherNotes"></p>
     </div>
   </div>
 </template>
 
-<script>
-import useListing from '@/compositions/listing/listing.js';
-import { watch, ref, computed } from '@vue/composition-api';
+<script lang="ts">
+import useListing from '@/compositions/listing/listing';
+import { computed, SetupContext } from '@vue/composition-api';
+import { Data } from '@/@types';
 
 import ListingFormats from '@/components/listing/ListingFormats.vue';
 
@@ -52,16 +55,30 @@ export default {
   components: {
     ListingFormats,
   },
-  setup() {
-    const { listingData, selectedFormat, scrollPos } = useListing();
+  setup(_: Data, context: SetupContext) {
+    const { listingData, selectedFormat, stringifyRoles } = useListing(undefined, context);
 
     function addToCart() {
       console.log(selectedFormat.value, 'has been selected for cart');
     }
 
+    function stringifyInstruments(instruments: string[]) {
+      return instruments.join(', ');
+    }
+
+    const rolesString = computed(() => {
+      if (listingData.value?.attributes.publicData.role) {
+        return stringifyRoles();
+      } else {
+        return '';
+      }
+    });
+
     return {
       listing: listingData,
       addToCart,
+      stringifyInstruments,
+      rolesString,
     };
   },
 };
@@ -73,9 +90,6 @@ export default {
 .publication {
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
-  /* screen height - search bar height - bulma padding on columns */
-  /* min-height: calc(100vh - 64px - 12px); */
   margin-top: 32px;
 }
 h2.title.is-2.title {
@@ -84,21 +98,8 @@ h2.title.is-2.title {
   font-size: 48px;
 }
 
-h3.subtitle {
-  color: $black;
-  font-size: 36px;
-  margin: 0;
-}
-
-h3.title.is-3,
-h4.title.is-4 {
+h3.title.is-3 {
   font-weight: 500;
-}
-
-h4.title.is-4.composer {
-  margin-top: 40px;
-  margin-bottom: 40px;
-  font-size: 28px;
 }
 
 .add-to-cart {
@@ -136,16 +137,36 @@ h4.title.is-4.composer {
   padding: 0 3px 0 3px;
 }
 
-.program-notes {
+.other-notes {
   color: $black;
 }
-.program-notes h5 {
+.other-notes h5 {
   font-size: 20px;
   font-family: 'lato';
   font-weight: bold;
 }
-.program-notes p {
+.other-notes p {
   font-size: 16px;
 }
 </style>
 
+<style lang="scss">
+// There's something at the global scope polluting this so it can't be scoped
+@import '@/styles/index.scss';
+.roles {
+  margin-bottom: 24px;
+
+  .role {
+    h4.is-4.role-name {
+      font-weight: 500;
+      font-size: 20px;
+      font-family: $family-secondary;
+      display: inline;
+    }
+    span.role-role {
+      font-size: 15px;
+      font-family: $family-primary;
+    }
+  }
+}
+</style>

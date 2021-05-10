@@ -12,7 +12,7 @@
         </p>
         <p><b>Total results:</b> {{ searchResultsMeta.totalItems }}</p>
       </div>
-      <div class="searchResults">
+      <div class="searchResults" v-if="searchResultsMeta.totalItems > 0">
         <search-result
           v-for="listing in searchListingData"
           :key="listing.id.uuid"
@@ -29,13 +29,10 @@
 import { onMounted } from '@vue/composition-api';
 import SearchResult from '../components/search/SearchResult';
 
-import useSearch from '@/compositions/search/search.js';
+import useSearch from '@/compositions/search/search';
 
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
-
-import { createNamespacedHelpers } from 'vuex-composition-helpers/dist';
-const searchStore = createNamespacedHelpers('search'); // specific module name
 
 export default {
   components: {
@@ -44,13 +41,12 @@ export default {
   },
   setup(_, context) {
     const {
+      executeSearch,
+      searchInput,
       searchIsLoading,
       searchListingData,
       searchResultsMeta,
-      resetSearchStore,
-    } = searchStore.useState(['searchIsLoading', 'searchListingData', 'searchResultsMeta']);
-
-    const { executeSearch, searchInput } = useSearch(context);
+    } = useSearch(context);
 
     onMounted(() => {
       // check if we're at a query route but there hasn't been a query
