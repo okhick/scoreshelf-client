@@ -15,14 +15,12 @@
     >
       <router-view />
     </div>
-    <audio-player />
   </div>
 </template>
 
 <script>
 import SidenavBar from '@/components/sidenav/SidenavBar.vue';
 import SearchBar from '@/components/search/SearchBar.vue';
-import AudioPlayer from './components/audioplayer/AudioPlayer.vue';
 
 import { vTeleportLocation } from '@desislavsd/vue-teleport';
 
@@ -37,7 +35,6 @@ export default {
     SidenavBar,
     SearchBar,
     vTeleportLocation,
-    AudioPlayer,
   },
 
   setup() {

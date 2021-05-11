@@ -1,5 +1,6 @@
 <template>
-  <div class="preview-wrapper" :style="previewHeight" @click="$emit('toggle-preview-size')">
+  <div class="preview-wrapper" :style="previewHeight">
+    <!-- @click="$emit('toggle-preview-size')" -->
     <span :class="['toggle-size', toggleSettings.iconJustify]">
       <progress
         class="progress"
@@ -10,6 +11,7 @@
       <font-awesome-icon v-show="loadAmount === 100" :icon="toggleSettings.icon" size="lg" />
     </span>
     <p class="toggle-size-text">{{ toggleSettings.text }}</p>
+    <audio-player />
     <pdf
       v-for="i in numPages"
       :key="i"
@@ -26,6 +28,8 @@ import { onMounted, ref, computed, watch, defineComponent, PropType } from '@vue
 import pdf from 'vue-pdf';
 import useListing from '@/compositions/listing/listing';
 
+import AudioPlayer from '@/components/audioplayer/AudioPlayer.vue';
+
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faAngleDoubleRight, faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -37,6 +41,7 @@ export default defineComponent({
   components: {
     pdf,
     FontAwesomeIcon,
+    AudioPlayer,
   },
   props: {
     currentSize: {
