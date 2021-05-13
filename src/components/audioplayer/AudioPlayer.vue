@@ -1,16 +1,23 @@
 <template>
-  <div class="audio-wrapper">
+  <div
+    :class="[
+      'audio-wrapper',
+      { 'margin-player-is-small': currentSize === 'isSmall' },
+      { 'margin-player-is-large': currentSize === 'isLarge' },
+    ]"
+    @click.stop
+  >
     <font-awesome-icon class="play" :icon="['far', 'play-circle']" size="2x" />
     <div class="audio-progress">
-      <vue-slider v-model="progress" :lazy="true"></vue-slider>
+      <vue-slider v-model="progress" tooltip-placement="bottom" :lazy="true"></vue-slider>
     </div>
 
     <div class="audio-time">2:34</div>
   </div>
 </template>
 
-<script>
-import { onMounted, ref } from '@vue/composition-api';
+<script lang="ts">
+import { defineComponent, onMounted, ref, PropType } from '@vue/composition-api';
 
 import VueSlider from 'vue-slider-component';
 
@@ -19,19 +26,30 @@ import { faPlayCircle } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faPlayCircle);
 
-export default {
+export default defineComponent({
   components: {
     FontAwesomeIcon,
     VueSlider,
   },
+  props: {
+    currentSize: {
+      required: true,
+      type: String as PropType<string>,
+    },
+  },
   setup() {
     const progress = ref(0);
 
+    function test() {
+      console.log('play pause');
+    }
+
     return {
       progress,
+      test,
     };
   },
-};
+});
 </script>
 
 <style lang="scss">
@@ -51,9 +69,21 @@ $bgColor: $off-white;
 @import '@/styles/index.scss';
 
 .audio-wrapper {
-  margin: 0 12px 8px;
+  position: sticky;
   display: flex;
   align-items: center;
+  top: 0;
+  // margin: 8px 8px;
+  padding: 8px 6px;
+  background-color: $maroon;
+  z-index: 2;
+
+  &.margin-player-is-small {
+    margin-right: 26px;
+  }
+  &.margin-player-is-large {
+    margin-left: 26px;
+  }
 
   .audio-progress {
     flex-grow: 1;
