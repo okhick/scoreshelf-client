@@ -1,22 +1,41 @@
 <template>
-  <div class="preview-wrapper" :style="previewHeight" @click="$emit('toggle-preview-size')">
-    <span :class="['toggle-size', toggleSettings.iconJustify]">
-      <progress
-        class="progress"
-        v-show="loadAmount !== 100"
-        :value="loadAmount ? loadAmount : 0"
-        max="100"
+  <div @click="$emit('toggle-preview-size')" class="preview-wrapper" :style="previewHeight">
+    <!-- @click="$emit('toggle-preview-size')" -->
+    <audio-player @click.prevent :currentSize="currentSize" />
+
+    <span :class="['toggle-size', { 'enable-overlay': loadAmount !== 100 }]">
+      <font-awesome-icon
+        style="margin: auto"
+        v-show="loadAmount === 100 && currentSize === 'isLarge'"
+        icon="angle-double-left"
+        size="lg"
       />
-      <font-awesome-icon v-show="loadAmount === 100" :icon="toggleSettings.icon" size="lg" />
+      <div :class="['progress-overlay', { 'enable-overlay': loadAmount !== 100 }]">
+        <progress
+          class="progress"
+          v-show="loadAmount !== 100"
+          :value="loadAmount ? loadAmount : 0"
+          max="100"
+        />
+      </div>
+      <font-awesome-icon
+        style="margin: auto"
+        v-show="loadAmount === 100 && currentSize === 'isSmall'"
+        icon="angle-double-right"
+        size="lg"
+      />
     </span>
     <p class="toggle-size-text">{{ toggleSettings.text }}</p>
+
     <pdf
       v-for="i in numPages"
       :key="i"
       :src="loadingTask"
       :page="i"
       :class="['pdf-page', toggleSettings.pdfClass]"
+      @click="$emit('toggle-preview-size')"
       @page-loaded="pageLoaded = $event"
+      @error="catchError"
     />
   </div>
 </template>
@@ -25,6 +44,8 @@
 import { onMounted, ref, computed, watch, defineComponent, PropType } from '@vue/composition-api';
 import pdf from 'vue-pdf';
 import useListing from '@/compositions/listing/listing';
+
+import AudioPlayer from '@/components/audioplayer/AudioPlayer.vue';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faAngleDoubleRight, faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons';
@@ -37,6 +58,7 @@ export default defineComponent({
   components: {
     pdf,
     FontAwesomeIcon,
+    AudioPlayer,
   },
   props: {
     currentSize: {
@@ -60,16 +82,12 @@ export default defineComponent({
       switch (props.currentSize) {
         case 'isSmall':
           return {
-            icon: 'angle-double-right',
-            iconJustify: 'right',
             text: 'CLICK TO EXPAND',
             pdfClass: 'small',
           };
           break;
         case 'isLarge':
           return {
-            icon: 'angle-double-left',
-            iconJustify: 'left',
             text: 'CLICK TO COLLAPSE',
             pdfClass: 'large',
           };
@@ -95,6 +113,10 @@ export default defineComponent({
       loadingTask.value = pdf.createLoadingTask(previewBuffer.value);
       const loadPdf = await loadingTask.value.promise;
       numPages.value = loadPdf.numPages;
+    }
+
+    function catchError(err: any) {
+      // do thing for now!
     }
 
     // ======== Resize preview on vertical scroll ==========
@@ -125,6 +147,7 @@ export default defineComponent({
       // ---- for pdf render ----
       loadingTask,
       numPages,
+      catchError,
       // ---- loading bar ----
       pageLoaded,
       loadAmount,
@@ -153,33 +176,44 @@ export default defineComponent({
   position: sticky;
   top: calc(108px - 8px);
 }
+
 .toggle-size {
-  padding: 6px 8px 6px 8px;
+  padding: 0 8px;
   position: sticky;
-  top: 0;
-  background-color: $maroon-transp;
-  z-index: 2;
+  top: 8px;
+  // background-color: $maroon-transp;
   display: flex;
+
+  &.enable-overlay {
+    z-index: 2;
+  }
+
+  svg {
+    color: $off-white;
+  }
 }
-.toggle-size svg {
-  color: $off-white;
+
+.progress-overlay {
+  width: 100%;
+  display: flex;
+  padding: 8px 4px;
+  min-height: 32px;
+
+  &.enable-overlay {
+    background-color: $maroon;
+  }
+
+  .progress {
+    background-color: $off-white;
+  }
 }
-.right {
-  justify-content: right;
-}
-.left {
-  justify-content: left;
-}
+
 .toggle-size-text {
   text-align: center;
   color: $off-white;
   font-size: 13px;
   padding: 0px 8px 6px 8px;
-}
-
-.preview-wrapper .progress {
-  margin: 4px;
-  background-color: $off-white;
+  margin-top: -26px;
 }
 
 .small {

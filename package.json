@@ -13,6 +13,7 @@
   "dependencies": {
     "@desislavsd/vue-teleport": "^0.1.2",
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-regular-svg-icons": "^5.15.3",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/vue-fontawesome": "^0.1.10",
     "@trevoreyre/autocomplete-vue": "^2.2.0",
@@ -25,6 +26,7 @@
     "crypto-random-string": "^3.3.0",
     "dotenv": "^8.2.0",
     "dropzone": "^5.8.0",
+    "howler": "^2.2.1",
     "lodash.debounce": "^4.0.8",
     "lodash.startcase": "^4.4.0",
     "lodash.throttle": "^4.1.1",
@@ -40,9 +42,11 @@
     "vue-loading-overlay": "^3.4.2",
     "vue-moment": "^4.1.0",
     "vue-pdf": "^4.2.0",
-    "vue-router": "^3.4.9"
+    "vue-router": "^3.4.9",
+    "vue-slider-component": "^3.2.11"
   },
   "devDependencies": {
+    "@types/howler": "^2.2.2",
     "@types/lodash.debounce": "^4.0.6",
     "@types/lodash.throttle": "^4.1.6",
     "@types/luxon": "^1.25.0",
