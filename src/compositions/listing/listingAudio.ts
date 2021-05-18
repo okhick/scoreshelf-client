@@ -1,16 +1,25 @@
-import { reactive, toRefs } from '@vue/composition-api';
+import { onMounted, reactive, toRefs } from '@vue/composition-api';
 import { Howl } from 'howler';
 
 // ============================================
 
 interface IListingAudioState {
   isPlaying: boolean;
-  audioProgress: number | Howl;
+  audioProgress: {
+    percent: number;
+    seconds: number | Howl;
+  };
+  audioDuration: number;
   restartAfterScrub: boolean;
 }
 const ListingAudioState = reactive<IListingAudioState>({
   isPlaying: false,
-  audioProgress: 0,
+  // the slider progress is 0-100 and Howl is 0-n seconds. Keep track of both.
+  audioProgress: {
+    percent: 0,
+    seconds: 0,
+  },
+  audioDuration: 0,
   restartAfterScrub: false,
 });
 
@@ -20,10 +29,12 @@ export function useListingAudio() {
   const audio = new Howl({
     src: ['https://nyc3.digitaloceanspaces.com/scoreshelf/Give_me%20Jesus.mp3'],
     html5: true,
+    preload: 'metadata',
   });
 
-  // ===== Handle starting and stopping =====
+  audio.on('load', () => (ListingAudioState.audioDuration = audio.duration()));
 
+  // ===== Handle starting and stopping =====
   function pauseAudio() {
     audio.pause();
     ListingAudioState.isPlaying = false;
@@ -44,7 +55,10 @@ export function useListingAudio() {
   // ===== Handle progress and scrubbing =====
   function getProgress() {
     if (ListingAudioState.isPlaying) {
-      ListingAudioState.audioProgress = audio.seek();
+      ListingAudioState.audioProgress.seconds = <number>audio.seek();
+      ListingAudioState.audioProgress.percent =
+        (ListingAudioState.audioProgress.seconds / ListingAudioState.audioDuration) * 100;
+
       setTimeout(() => getProgress(), 250);
     }
   }
@@ -53,10 +67,13 @@ export function useListingAudio() {
     pauseAudio();
   }
   function scrubAudio() {
-    audio.seek(<number>ListingAudioState.audioProgress);
+    // the ListingAudioState.audioProgress.percent is modeled to the slider so it's up to date
+    ListingAudioState.audioProgress.seconds =
+      (ListingAudioState.audioProgress.percent / 100) * ListingAudioState.audioDuration;
+
+    audio.seek(<number>ListingAudioState.audioProgress.seconds);
     if (ListingAudioState.restartAfterScrub) {
       playAudio();
-      // reset this
       ListingAudioState.restartAfterScrub = false;
     }
   }

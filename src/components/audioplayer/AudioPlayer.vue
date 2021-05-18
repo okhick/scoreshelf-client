@@ -10,16 +10,17 @@
     <font-awesome-icon class="play" :icon="['far', playIcon]" size="2x" @click="togglePlaying" />
     <div class="audio-progress">
       <vue-slider
-        v-model="audioProgress"
+        v-model="audioProgress.percent"
         :lazy="true"
         tooltip="hover"
         tooltip-placement="bottom"
+        :tooltip-formatter="(val) => secondsToDuration((val / 100) * audioDuration)"
         @drag-start="beginScrubAudio"
-        @drag-end="scrubAudio"
+        @drag-end="scrubAudio()"
       ></vue-slider>
     </div>
 
-    <div class="audio-time">2:34</div>
+    <div class="audio-time">{{ audioTimestamp }}</div>
   </div>
 </template>
 
@@ -28,6 +29,7 @@ import { defineComponent, computed, PropType } from '@vue/composition-api';
 import { useListingAudio } from '@/compositions/listing/listingAudio';
 
 import VueSlider from 'vue-slider-component';
+import { Duration } from 'luxon';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faPlayCircle, faPauseCircle } from '@fortawesome/free-regular-svg-icons';
@@ -50,6 +52,7 @@ export default defineComponent({
       // ----- state
       isPlaying,
       audioProgress,
+      audioDuration,
       // ----- methods
       togglePlaying,
       beginScrubAudio,
@@ -58,13 +61,30 @@ export default defineComponent({
 
     const playIcon = computed(() => (isPlaying.value ? 'pause-circle' : 'play-circle'));
 
+    const audioTimestamp = computed(() => {
+      if (audioProgress.value.seconds === 0) {
+        return secondsToDuration(audioDuration.value);
+      }
+
+      return secondsToDuration(audioProgress.value.seconds);
+    });
+
+    function secondsToDuration(seconds: number): string {
+      const duration = Duration.fromObject({ seconds: seconds });
+      return duration.toFormat('m:ss');
+    }
+
     return {
-      beginScrubAudio,
       isPlaying,
       audioProgress,
+      audioDuration,
       playIcon,
+      audioTimestamp,
+      // ----
       togglePlaying,
+      beginScrubAudio,
       scrubAudio,
+      secondsToDuration,
     };
   },
 });
