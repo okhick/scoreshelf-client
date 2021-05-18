@@ -7,9 +7,16 @@
     ]"
     @click.stop
   >
-    <font-awesome-icon class="play" :icon="['far', 'play-circle']" size="2x" />
+    <font-awesome-icon class="play" :icon="['far', playIcon]" size="2x" @click="togglePlaying" />
     <div class="audio-progress">
-      <vue-slider v-model="progress" tooltip-placement="bottom" :lazy="true"></vue-slider>
+      <vue-slider
+        v-model="audioProgress"
+        :lazy="true"
+        tooltip="hover"
+        tooltip-placement="bottom"
+        @drag-start="beginScrubAudio"
+        @drag-end="scrubAudio"
+      ></vue-slider>
     </div>
 
     <div class="audio-time">2:34</div>
@@ -17,14 +24,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, PropType } from '@vue/composition-api';
+import { defineComponent, computed, PropType } from '@vue/composition-api';
+import { useListingAudio } from '@/compositions/listing/listingAudio';
 
 import VueSlider from 'vue-slider-component';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faPlayCircle } from '@fortawesome/free-regular-svg-icons';
+import { faPlayCircle, faPauseCircle } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-library.add(faPlayCircle);
+library.add(faPlayCircle, faPauseCircle);
 
 export default defineComponent({
   components: {
@@ -38,15 +46,25 @@ export default defineComponent({
     },
   },
   setup() {
-    const progress = ref(0);
+    const {
+      // ----- state
+      isPlaying,
+      audioProgress,
+      // ----- methods
+      togglePlaying,
+      beginScrubAudio,
+      scrubAudio,
+    } = useListingAudio();
 
-    function test() {
-      console.log('play pause');
-    }
+    const playIcon = computed(() => (isPlaying.value ? 'pause-circle' : 'play-circle'));
 
     return {
-      progress,
-      test,
+      beginScrubAudio,
+      isPlaying,
+      audioProgress,
+      playIcon,
+      togglePlaying,
+      scrubAudio,
     };
   },
 });
@@ -54,8 +72,12 @@ export default defineComponent({
 
 <style lang="scss">
 @import '@/styles/index.scss';
+
 $themeColor: $off-white;
 $bgColor: $off-white;
+$dotShadow: none;
+$tooltipColor: $black;
+
 @import '~vue-slider-component/lib/theme/default.scss';
 
 // override the inline padding.

@@ -26,6 +26,7 @@
     "crypto-random-string": "^3.3.0",
     "dotenv": "^8.2.0",
     "dropzone": "^5.8.0",
+    "howler": "^2.2.1",
     "lodash.debounce": "^4.0.8",
     "lodash.startcase": "^4.4.0",
     "lodash.throttle": "^4.1.1",
@@ -45,6 +46,7 @@
     "vue-slider-component": "^3.2.11"
   },
   "devDependencies": {
+    "@types/howler": "^2.2.2",
     "@types/lodash.debounce": "^4.0.6",
     "@types/lodash.throttle": "^4.1.6",
     "@types/luxon": "^1.25.0",
