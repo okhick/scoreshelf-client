@@ -7,7 +7,7 @@ interface IListingAudioState {
   isPlaying: boolean;
   audioProgress: {
     percent: number;
-    seconds: number | Howl;
+    seconds: number;
   };
   audioDuration: number;
   restartAfterScrub: boolean;
