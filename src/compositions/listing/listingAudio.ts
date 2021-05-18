@@ -26,13 +26,12 @@ const ListingAudioState = reactive<IListingAudioState>({
 // ============================================
 
 export function useListingAudio() {
-  const audio = new Howl({
+  const audio: Howl = new Howl({
     src: ['https://nyc3.digitaloceanspaces.com/scoreshelf/Give_me%20Jesus.mp3'],
     html5: true,
     preload: 'metadata',
+    onload: () => (ListingAudioState.audioDuration = audio.duration()),
   });
-
-  audio.on('load', () => (ListingAudioState.audioDuration = audio.duration()));
 
   // ===== Handle starting and stopping =====
   function pauseAudio() {
