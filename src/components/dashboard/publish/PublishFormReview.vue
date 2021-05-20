@@ -47,7 +47,7 @@
     <div id="otherNotes">
       <p v-html="formData.otherNotes"></p>
     </div>
-    <div v-if="formData.tags" id="tags">
+    <div v-if="formData.tags && formData.tags.length > 0" id="tags">
       <p>{{ `#${formData.tags.join(', #')}` }}</p>
     </div>
   </div>
@@ -57,7 +57,6 @@
 import useSharetribePublisher from '@/compositions/sharetribe/sharetribePublisher';
 import useSharetribe from '@/compositions/sharetribe/sharetribe';
 import useScoreshelfPublisher from '@/compositions/scoreshelf/scoreshelfPublisher';
-import useDashboardState from '@/compositions/dashboard/dashboardState';
 import { Asset, ListingRole, UploadedFile } from '@/@types';
 
 export default {
@@ -65,7 +64,6 @@ export default {
     const { formData, DISPLAY_NAME } = useSharetribePublisher();
     const { useSharetribeState } = useSharetribe();
     const { formats, fileList } = useScoreshelfPublisher();
-    const { userProfile } = useDashboardState();
 
     function getRoleName(role: ListingRole): string {
       if (role.name === DISPLAY_NAME.value) {
@@ -103,7 +101,7 @@ export default {
 
   td#format {
     white-space: nowrap;
-    padding-left: 0;
+    text-align: right;
   }
 }
 
