@@ -29,6 +29,26 @@
         <p class="help">Choose a document to be shown as the preview on the publication page.</p>
       </div>
 
+      <div id="audio-preview" class="label"><label>Audio Preview</label></div>
+      <div id="audio-preview" class="field">
+        <div class="control">
+          <div class="select is-fullwidth">
+            <select
+              :disabled="Object.keys(audioPreviewSettings).length === 0"
+              v-model="audioPreviewAsset"
+              @change="newAudioPreviewAssetSelected"
+            >
+              <!-- :class="{ 'is-invalid': !publishAssetsValidation.preview.status }" -->
+              <option value="" disabled selected hidden>Choose uploaded file...</option>
+              <option v-for="file in Object.keys(audioPreviewSettings)" :key="file">
+                {{ file }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <p class="help">Choose an audio file to be shown on the publication page.</p>
+      </div>
+
       <!-- thumbnail -->
       <div id="thumbnail" class="label"><label>Thumbnail</label></div>
       <div id="thumbnail" class="field">
@@ -91,6 +111,7 @@ export default {
       fileList,
       thumbnailSettings,
       previewSettings,
+      audioPreviewSettings,
       // Methods
       useFileStateManagement,
     } = useScoreshelfPublisher();
@@ -195,6 +216,17 @@ export default {
       }
     }
 
+    const audioPreviewAsset = ref('');
+    function newAudioPreviewAssetSelected() {
+      for (let asset in audioPreviewSettings.value) {
+        if (asset === audioPreviewAsset.value) {
+          audioPreviewSettings.value[asset].isAudioPreview = true;
+        } else {
+          audioPreviewSettings.value[asset].isAudioPreview = false;
+        }
+      }
+    }
+
     return {
       // ---- Data ----
       fileList,
@@ -203,6 +235,9 @@ export default {
       thumbnailSettings,
       thumbAsset,
       thumbPage,
+      audioPreviewSettings,
+      audioPreviewAsset,
+      newAudioPreviewAssetSelected,
       publishAssetsValidation,
       dropzoneRef,
       // ---- Methods ----
@@ -223,8 +258,8 @@ export default {
 
 #asset-options-grid {
   display: grid;
-  grid-template-columns: auto 56% auto auto;
-  grid-template-rows: auto auto;
+  grid-template-columns: auto 55% auto auto;
+  grid-template-rows: auto auto auto;
   column-gap: 8px;
 
   .label {
@@ -240,20 +275,29 @@ export default {
     grid-column-start: 2;
     grid-column-end: 5;
   }
-  #thumbnail.label {
+  #audio-preview.label {
     grid-row: 2;
     grid-column: 1;
   }
-  #thumbnail.field {
+  #audio-preview.field {
     grid-row: 2;
+    grid-column-start: 2;
+    grid-column-end: 5;
+  }
+  #thumbnail.label {
+    grid-row: 3;
+    grid-column: 1;
+  }
+  #thumbnail.field {
+    grid-row: 3;
     grid-column: 2;
   }
   #page.label {
-    grid-row: 2;
+    grid-row: 3;
     grid-column: 3;
   }
   #page.field {
-    grid-row: 2;
+    grid-row: 3;
     grid-column: 4;
   }
 }

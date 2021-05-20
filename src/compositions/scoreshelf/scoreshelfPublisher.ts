@@ -13,6 +13,7 @@ import {
   AssetMetadata,
   ListingAssetData,
   ProfilePicture,
+  AudioPreviewSettings,
 } from '@/@types';
 import { DropzoneFile } from 'dropzone';
 
@@ -28,6 +29,7 @@ interface IFileState {
   filesToBeRemoved: (UploadedFile | Asset)[];
   thumbnailSettings: ThumbnailSettings;
   previewSettings: PreviewSettings;
+  audioPreviewSettings: AudioPreviewSettings;
   formats: ListingFormat[];
 }
 
@@ -36,6 +38,7 @@ const FileState = reactive<IFileState>({
   filesToBeRemoved: [],
   thumbnailSettings: {},
   previewSettings: {},
+  audioPreviewSettings: {},
   formats: [],
 });
 
@@ -71,13 +74,21 @@ export default function useScoreshelfPublisher() {
 
 function FileStateManagement() {
   function processUpload(file: DropzoneFile) {
-    // pass in a DropzoneFile and recast as UploadedFile so we can extent it
+    // pass in a DropzoneFile and recast as UploadedFile so we can extend it
     const newFile = file as UploadedFile;
     newFile.isStored = false;
     newFile.asset_name = file.name; // we use asset name everywhere else, start from the beg
     addFileToFileList(newFile);
-    initThumbnail(newFile);
-    initPreview(newFile);
+    if (file.type === 'application/pdf') {
+      initThumbnail(newFile);
+      initPreview(newFile);
+      return;
+    }
+    if (
+      ['audio/mpeg', 'audio/aiff', 'audio/wav', 'audio/x-wav', 'audio/flac'].includes(file.type)
+    ) {
+      initAudioPreview(newFile);
+    }
   }
 
   function addFileToFileList(payload: UploadedFile | Asset) {
@@ -109,6 +120,7 @@ function FileStateManagement() {
     FileState.filesToBeRemoved = [];
     FileState.thumbnailSettings = {};
     FileState.previewSettings = {};
+    FileState.audioPreviewSettings = {};
     FileState.formats = [];
   }
 
@@ -189,6 +201,12 @@ function FileStateManagement() {
   function initPreview(file: UploadedFile | Asset) {
     Vue.set(FileState.previewSettings, file.asset_name, {
       isPreview: false,
+    });
+  }
+
+  function initAudioPreview(file: UploadedFile | Asset) {
+    Vue.set(FileState.audioPreviewSettings, file.asset_name, {
+      isAudioPreview: false,
     });
   }
 

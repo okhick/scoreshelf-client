@@ -55,6 +55,8 @@ export {
   PreviewSettings,
   ThumbnailSetting,
   ThumbnailSettings,
+  AudioPreviewSetting,
+  AudioPreviewSettings,
   AssetMetadata,
   UploadParams,
   Publisher,

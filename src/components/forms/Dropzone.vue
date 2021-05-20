@@ -29,7 +29,7 @@ export default {
           <p class="help">Accepted file types: PDF, MP3, AIFF, WAV, FLAC, JPEG, PNG, ZIP</p>
         `,
         acceptedFiles:
-          'application/pdf, audio/mpeg, audio/aiff, audio/wav, audio/flac, image/jpeg, image/png, application/zip',
+          'application/pdf, audio/mpeg, audio/aiff, audio/wav, audio/x-wav, audio/flac, image/jpeg, image/png, application/zip',
 
         // ----- Disable some stuff -----
         // turn this off because we have a table for that
@@ -67,7 +67,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/index.scss';
-@import '../../../node_modules/dropzone/dist/dropzone.css';
+@import '~dropzone/dist/dropzone.css';
 .dropzone {
   background: $white;
   border: $border 1px solid;

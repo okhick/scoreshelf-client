@@ -45,6 +45,14 @@ export interface ThumbnailSetting {
   page: string | number | null;
 }
 
+export interface AudioPreviewSettings {
+  [key: string]: AudioPreviewSetting;
+}
+
+export interface AudioPreviewSetting {
+  isAudioPreview: boolean;
+}
+
 export interface AssetMetadata {
   sharetribe_listing_id: string | undefined;
   sharetribe_user_id: string | undefined;
