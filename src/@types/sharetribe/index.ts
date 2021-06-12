@@ -55,6 +55,7 @@ export interface ListingPublicData extends Data {
   preview: ListingPreview;
   formats: ListingFormat[];
   thumbnail: { thumbnail_id: string } | ListingThumbnailHydrated;
+  audioPreview: { asset_id: string };
 }
 
 export interface ListingRole {

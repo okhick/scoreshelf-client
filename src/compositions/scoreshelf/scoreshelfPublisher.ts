@@ -13,6 +13,7 @@ import {
   AssetMetadata,
   ListingAssetData,
   ProfilePicture,
+  AudioPreviewSettings,
 } from '@/@types';
 import { DropzoneFile } from 'dropzone';
 
@@ -28,6 +29,7 @@ interface IFileState {
   filesToBeRemoved: (UploadedFile | Asset)[];
   thumbnailSettings: ThumbnailSettings;
   previewSettings: PreviewSettings;
+  audioPreviewSettings: AudioPreviewSettings;
   formats: ListingFormat[];
 }
 
@@ -36,6 +38,7 @@ const FileState = reactive<IFileState>({
   filesToBeRemoved: [],
   thumbnailSettings: {},
   previewSettings: {},
+  audioPreviewSettings: {},
   formats: [],
 });
 
@@ -71,13 +74,20 @@ export default function useScoreshelfPublisher() {
 
 function FileStateManagement() {
   function processUpload(file: DropzoneFile) {
-    // pass in a DropzoneFile and recast as UploadedFile so we can extent it
+    const { isAudioFile } = ScoreshelfHelpers();
+    // pass in a DropzoneFile and recast as UploadedFile so we can extend it
     const newFile = file as UploadedFile;
     newFile.isStored = false;
     newFile.asset_name = file.name; // we use asset name everywhere else, start from the beg
     addFileToFileList(newFile);
-    initThumbnail(newFile);
-    initPreview(newFile);
+    if (file.type === 'application/pdf') {
+      initThumbnail(newFile);
+      initPreview(newFile);
+      return;
+    }
+    if (isAudioFile(file.type)) {
+      initAudioPreview(newFile);
+    }
   }
 
   function addFileToFileList(payload: UploadedFile | Asset) {
@@ -109,6 +119,7 @@ function FileStateManagement() {
     FileState.filesToBeRemoved = [];
     FileState.thumbnailSettings = {};
     FileState.previewSettings = {};
+    FileState.audioPreviewSettings = {};
     FileState.formats = [];
   }
 
@@ -170,10 +181,27 @@ function FileStateManagement() {
           : null;
         FileState.thumbnailSettings[file.asset_name].isThumbnail = true;
       }
+
       if (publishModalEditData.value?.attributes.publicData?.preview) {
         const previewAsset = publishModalEditData.value.attributes.publicData.preview.asset_id;
         if ('_id' in file && file._id === previewAsset) {
           FileState.previewSettings[file.asset_name].isPreview = true;
+        }
+      }
+
+      if (publishModalEditData.value?.attributes.publicData.audioPreview) {
+        const audioPreviewAssetId =
+          publishModalEditData.value?.attributes.publicData.audioPreview.asset_id;
+        const audioPreviewAsset = FileState.fileList.find((file) => {
+          if ('_id' in file) {
+            return file._id === audioPreviewAssetId;
+          }
+        });
+        if (audioPreviewAsset) {
+          FileState.audioPreviewSettings = {};
+          FileState.audioPreviewSettings[audioPreviewAsset.asset_name] = {
+            isAudioPreview: true,
+          };
         }
       }
     });
@@ -189,6 +217,12 @@ function FileStateManagement() {
   function initPreview(file: UploadedFile | Asset) {
     Vue.set(FileState.previewSettings, file.asset_name, {
       isPreview: false,
+    });
+  }
+
+  function initAudioPreview(file: UploadedFile | Asset) {
+    Vue.set(FileState.audioPreviewSettings, file.asset_name, {
+      isAudioPreview: false,
     });
   }
 
@@ -223,6 +257,7 @@ function ScoreshelfUploadManagement() {
     const res: { uploadRes: any; deleteRes: any } = { uploadRes: undefined, deleteRes: undefined };
     const uploadParams = {
       thumbnailSettings: FileState.thumbnailSettings,
+      audioPreviewSettings: FileState.audioPreviewSettings,
     };
 
     if (scoreshelfUploadHelpers.areNewFiles()) {
@@ -249,7 +284,7 @@ function ScoreshelfUploadManagement() {
       }
     });
 
-    const assetMetadata = scoreshelfAssetManagement.formatNewAssetMetadata(uploadParams);
+    const assetMetadata = scoreshelfAssetManagement.formatNewAssetMetadata();
     // stringify this so we can stuff it in a form field
     formData.append('assetMetadata', JSON.stringify(assetMetadata));
     // send off the files. returns the files uploaded
@@ -326,7 +361,7 @@ function ScoreshelfAssetManagement() {
   }
 
   // TODO: Combine these two functions.
-  function formatNewAssetMetadata(uploadParams: UploadParams) {
+  function formatNewAssetMetadata() {
     const formattedUploadParams = <AssetMetadata>{};
 
     formattedUploadParams.sharetribe_listing_id = getCurrentListingId();
@@ -334,13 +369,14 @@ function ScoreshelfAssetManagement() {
     formattedUploadParams.metadata = {};
 
     // Is this even needed?! I don't think so...
-    const newFiles = FileState.fileList.filter((file) => !file.isStored);
-    newFiles.forEach((file) => {
-      formattedUploadParams.metadata[file.asset_name] = {
-        thumbnailSettings: uploadParams.thumbnailSettings[file.asset_name],
-        // do more formatting here
-      };
-    });
+    // const newFiles = FileState.fileList.filter((file) => !file.isStored);
+    // newFiles.forEach((file) => {
+    //   formattedUploadParams.metadata[file.asset_name] = {
+    //     thumbnailSettings: uploadParams.thumbnailSettings[file.asset_name],
+    //     audioPreviewSettings: uploadParams.audioPreviewSettings[file.asset_name],
+    //     // do more formatting here
+    //   };
+    // });
 
     return formattedUploadParams;
   }
@@ -354,12 +390,15 @@ function ScoreshelfAssetManagement() {
 
     FileState.fileList.forEach((file) => {
       if ('_id' in file) {
-        formattedUploadParams.metadata[file._id] = {
-          thumbnailSettings: uploadParams.thumbnailSettings[file.asset_name],
-          // do more formatting here
-        };
+        if (uploadParams.thumbnailSettings[file.asset_name]) {
+          formattedUploadParams.metadata[file._id] = {
+            thumbnailSettings: uploadParams.thumbnailSettings[file.asset_name],
+          };
+        }
+        // do more formatting here
       }
     });
+
     return formattedUploadParams;
   }
 
@@ -453,9 +492,15 @@ function ScoreshelfHelpers() {
     }
   }
 
+  function isAudioFile(fileType: string): boolean {
+    const fileTypes = ['audio/mpeg', 'audio/aiff', 'audio/wav', 'audio/x-wav', 'audio/flac'];
+    return fileTypes.includes(fileType);
+  }
+
   return {
     areNewFiles,
     calculateSize,
     testScoreshelf,
+    isAudioFile,
   };
 }
