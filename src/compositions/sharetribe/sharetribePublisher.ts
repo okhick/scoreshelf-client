@@ -69,7 +69,13 @@ export default function useSharetribePublisher() {
 // ============================================================================
 
 function SharetribePublisherForm() {
-  const { fileList, formats, thumbnailSettings, previewSettings } = useScoreshelfPublisher();
+  const {
+    fileList,
+    formats,
+    thumbnailSettings,
+    previewSettings,
+    audioPreviewSettings,
+  } = useScoreshelfPublisher();
 
   function clearFormData() {
     for (const field in PublishFormState.formData) {
@@ -113,6 +119,7 @@ function SharetribePublisherForm() {
     cleanFormData.publicData.formats = formatFormatData();
     cleanFormData.publicData.thumbnail = formatThumbnailData();
     cleanFormData.publicData.preview = formatPreviewData();
+    cleanFormData.publicData.audioPreview = formatAudioPreviewData();
     return cleanFormData;
   }
 
@@ -121,7 +128,7 @@ function SharetribePublisherForm() {
 
     fileList.value.forEach((file) => {
       if ('_id' in file) {
-        const thumbnail_id = thumbnailSettings.value[file.asset_name].isThumbnail
+        const thumbnail_id = thumbnailSettings.value[file.asset_name]?.isThumbnail
           ? file.thumbnail_settings?._id
           : null;
 
@@ -141,33 +148,47 @@ function SharetribePublisherForm() {
     return assetData;
   }
 
+  // TODO: combine these format___Data functions.
   function formatThumbnailData() {
     if (thumbnailSettings.value == null) {
       return { thumbnail_id: '' };
-    } else {
-      for (const asset in thumbnailSettings.value) {
-        if (thumbnailSettings.value[asset].isThumbnail) {
-          const file = <Asset>fileList.value.find((file) => file.asset_name === asset);
-          return {
-            thumbnail_id: file.thumbnail_settings ? file.thumbnail_settings._id : '',
-          };
-        }
-      }
-      return { thumbnail_id: '' };
     }
+    for (const asset in thumbnailSettings.value) {
+      if (thumbnailSettings.value[asset].isThumbnail) {
+        const file = <Asset>fileList.value.find((file) => file.asset_name === asset);
+        return {
+          thumbnail_id: file.thumbnail_settings ? file.thumbnail_settings._id : '',
+        };
+      }
+    }
+    return { thumbnail_id: '' };
   }
 
   function formatPreviewData() {
     if (previewSettings.value == null) {
       return { asset_id: '' };
-    } else {
-      for (const asset in previewSettings.value) {
-        if (previewSettings.value[asset].isPreview) {
-          const file = <Asset>fileList.value.find((file) => file.asset_name === asset);
-          return {
-            asset_id: file._id,
-          };
-        }
+    }
+    for (const asset in previewSettings.value) {
+      if (previewSettings.value[asset].isPreview) {
+        const file = <Asset>fileList.value.find((file) => file.asset_name === asset);
+        return {
+          asset_id: file._id,
+        };
+      }
+    }
+    return { asset_id: '' };
+  }
+
+  function formatAudioPreviewData() {
+    if (audioPreviewSettings == null) {
+      return { asset_id: '' };
+    }
+    for (const asset in audioPreviewSettings.value) {
+      if (audioPreviewSettings.value[asset].isAudioPreview) {
+        const file = <Asset>fileList.value.find((file) => file.asset_name === asset);
+        return {
+          asset_id: file._id,
+        };
       }
     }
     return { asset_id: '' };

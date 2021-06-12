@@ -59,12 +59,14 @@ export interface AssetMetadata {
   metadata: {
     [key: string]: {
       thumbnailSettings: ThumbnailSetting;
+      // audioPreviewSettings: AudioPreviewSetting;
     };
   };
 }
 
 export interface UploadParams {
   thumbnailSettings: ThumbnailSettings;
+  audioPreviewSettings: AudioPreviewSettings;
 }
 
 export interface Publisher {

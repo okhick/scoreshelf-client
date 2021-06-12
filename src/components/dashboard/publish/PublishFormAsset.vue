@@ -123,6 +123,7 @@ export default {
     onMounted(() => {
       initPreviewSelector();
       initThumbSelector();
+      initAudioPreviewSelector();
     });
 
     // ---------- Methods ----------
@@ -217,6 +218,17 @@ export default {
     }
 
     const audioPreviewAsset = ref('');
+    /**
+     * THIS ONLY LOADS UP ONE AUDIO FILE INTO THE SELECT IF THERE'S MORE THAN ONE.
+     * TODO: NEED TO SAVE FILETYPE TO DO PROPERLY...
+     */
+    function initAudioPreviewSelector() {
+      const keys = Object.keys(audioPreviewSettings.value);
+      if (keys.length > 0) {
+        audioPreviewAsset.value = keys[0];
+      }
+    }
+
     function newAudioPreviewAssetSelected() {
       for (let asset in audioPreviewSettings.value) {
         if (asset === audioPreviewAsset.value) {
